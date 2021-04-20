@@ -1,0 +1,8 @@
+{
+  "db_information": {
+    "name_db": "turbine_plt.db",
+    "path_db": "../resources/database_turbine/turbine_plt_n.db",
+    "schema_db": "../resources/database_turbine/schema_database.json",
+    "info_mysql_db": "../resources/database_turbine/mysql_conf.json"
+  }
+}

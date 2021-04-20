@@ -1,0 +1,55 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+option csharp_namespace = "PltWindTurbine.Services.ObtainInfoTurbine";
+package obtaininfoturbine;
+
+service ObtainInfo {
+ 
+  rpc InfoFailureTurbine(stream CodeAndPeriodRequest) returns (stream CodeAndPeriodResponse);
+}
+message CodeAndPeriodRequest{
+	oneof Action{
+		OnlySerieByPeriodAndCode msg =1;
+		SeriePeriodByCodeWithStandarDeviation msg2=2;
+	}
+}
+message SeriePeriodByCodeWithStandarDeviation{
+	OnlySerieByPeriodAndCode periodAndCode = 1;
+}
+message OnlySerieByPeriodAndCode{
+	string initPeriod = 1;
+	string finishPeriod = 2;
+	string code = 3;
+	string idTurbine = 4;
+}
+message CodeAndPeriodResponse{
+	oneof Action{
+		OnlySerieByPeriodAndCodeResponse msg = 1;
+		SeriePeriodByCodeWithStandarDeviationResponse msg2 = 2;
+	}
+}
+message OnlySerieByPeriodAndCodeResponse{
+	
+	string nameTurbine = 1;
+	repeated string value = 2;
+	int actual =3;
+	int total = 4;
+}
+message SeriePeriodByCodeWithStandarDeviationResponse{
+	OnlySerieByPeriodAndCodeResponse msg1=1;
+	string standardDeviation = 2;
+}

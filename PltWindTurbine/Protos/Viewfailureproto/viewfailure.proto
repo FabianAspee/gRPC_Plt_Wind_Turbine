@@ -1,0 +1,55 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+package view_failure;
+
+service ViewFailure {
+  // Sends a greeting
+  rpc print_series_turbine (InfoTurbine) returns (stream ResultByTurbine) {}
+  rpc select_error_codes_by_condition (ErrorCodeByCondition) returns (stream ResultErrorCode) {}
+  rpc view_failure_turbine (InfoTurbine) returns (stream ResultErrorTurbine) {}
+  rpc select_all_point_with_failures (InfoTurbine) returns (stream ResultAllPointFailure) {}
+  rpc select_all_point_with_failures_by_turbine (InfoTurbine) returns (stream ResultPointFailureByTurbine) {}
+}
+
+// The request message containing the id of the wind turbine.
+message InfoTurbine {
+  int32 id = 1;
+}
+message ErrorCodeByCondition {
+  int32 id = 1;
+  int32 max_value = 2;
+  int32 min_value = 3;
+}
+message ResultErrorCode{
+  ResultValue result = 1;
+}
+message ResultByTurbine{
+  repeated ResultValue result = 1;
+}
+message ResultErrorTurbine{
+  ResultValue result = 1;
+}
+message ResultAllPointFailure{
+  repeated ResultValue result = 1;
+}
+message ResultPointFailureByTurbine{
+  ResultValue result = 1;
+}
+message ResultValue{
+  int32 id = 1;
+  string result = 2;
+  float remaining = 3;
+}

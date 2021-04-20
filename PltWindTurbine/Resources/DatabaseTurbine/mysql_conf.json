@@ -1,0 +1,7 @@
+{
+  "host": "137.204.72.73",
+  "database": "plt_wind_turbine",
+  "user": "root",
+  "password": "mysql",
+  "port": 3306 
+}

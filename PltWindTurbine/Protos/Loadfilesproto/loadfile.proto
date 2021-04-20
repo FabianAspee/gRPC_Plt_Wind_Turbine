@@ -1,0 +1,97 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+ 
+option csharp_namespace = "PltWindTurbine.Services.Loadfilesservices";
+package loadfile;
+
+service LoadFiles {
+
+  rpc LoadFilesInfoTurbine(stream FileUploadRequest) returns (stream FileUploadResponse);
+  rpc ReadSensor(stream ReadInfoSensor) returns (stream FileUploadResponse);
+}
+
+message ReadInfoSensor{
+  oneof Action{
+        ReadNormalSensor msg1 = 1;
+        ReadEventSensor msg2 = 2; 
+    }
+    bool isUpload = 5;
+    int64 totalDimension = 6;
+    int32 block = 7;
+}
+
+message ReadNormalSensor{ 
+  FileUploadRequestInfo files = 1;
+}
+message ReadEventSensor{ 
+  FileUploadRequestInfo files = 1;
+}
+
+
+message FileUploadRequest { 
+    oneof Action{
+        InfoTurbine msg1 = 1;
+        NameSensor msg2 = 2;
+        NameErrorSensor msg3 = 3;
+        ErrorCode msg4 = 4;
+    }
+    bool isUpload = 5;
+    int64 totalDimension = 6;
+    int32 block = 7;
+}
+
+message InfoTurbine{
+    FileUploadRequestInfo file = 1;
+    string nameTable = 2;
+}
+message NameSensor{
+    FileUploadRequestInfo file = 1;
+    string nameTable = 2;
+}
+message NameErrorSensor{
+    FileUploadRequestInfo file = 1;
+    string nameTable = 2;
+}
+message ErrorCode{
+    FileUploadRequestInfo file = 1;
+    string nameTable = 2;
+}
+message FileUploadRequestInfo {
+    MetaData metadata = 1;
+    File file = 2;
+}
+
+message MetaData {
+  string name = 1;
+  string type = 2;
+}
+
+message File {
+  bytes content = 1;
+  string separator = 2;
+}
+
+message FileUploadResponse {
+  string name = 1;
+  Status status = 2;
+  string description = 3;
+}
+enum Status {
+  PENDING = 0;
+  IN_PROGRESS = 1;
+  SUCCESS = 2;
+  FAILED = 3;
+}
