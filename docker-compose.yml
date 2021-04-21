@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  pltwindturbine:
+    image: ${DOCKER_REGISTRY-}pltwindturbine
+    build:
+      context: .
+      dockerfile: PltWindTurbine/Dockerfile
+  clientplt:
+    image: ${DOCKER_REGISTRY-}clientplt
+    build:
+      context: .
+      dockerfile: ClientPltTurbine/Dockerfile

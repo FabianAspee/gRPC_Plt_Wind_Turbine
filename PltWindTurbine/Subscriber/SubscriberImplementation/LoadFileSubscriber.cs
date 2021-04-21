@@ -1,4 +1,4 @@
-﻿using PltWindTurbine.Services.Loadfilesservices;
+﻿using PltWindTurbine.Services.LoadFilesService;
 using PltWindTurbine.Subscriber.SubscriberContract;
 using System;
 using System.Collections.Generic;
@@ -163,7 +163,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                 var groupDt = !isEvent ? AddNameSensor(normalizedData, nameSensors) : AddNameSensor(ChangeNameColumn(normalizedData, nameTurbine), nameSensors); 
                 return CreateDataFrameTurbine(groupDt, nameTurbine, nameSensors, isEvent);
             }, TaskContinuationOptions.OnlyOnRanToCompletion).ContinueWith(finalResult=> { 
-                finalResult.Result.ForEach(task =>task.ContinueWith(async res => await database.InsertInfoWindTurbine(res.Result),TaskContinuationOptions.OnlyOnRanToCompletion));
+                finalResult.Result.ForEach(task =>task.ContinueWith(res => database.InsertInfoWindTurbine(res.Result), TaskContinuationOptions.ExecuteSynchronously));
                   
             }, TaskContinuationOptions.OnlyOnRanToCompletion); 
         }
@@ -230,14 +230,11 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                 var nameTurbine = nameTurbines.FirstOrDefault(name =>
                  RemoveSpecialCharacters(keyAndValue.Key).Contains(RemoveSpecialCharacters(name.ToSpecialString())) || keyAndValue.Key.StartsWith(SelectNameTurbine(name.ToSpecialString())));
                 if (nameTurbine is not null && !isEvent)
-                {      //ReconstructSerie
-                    Console.WriteLine("Clear");
+                {    
                     return (Task.Run(() => ClearFinalValue(date.Concat(new Dictionary<string, List<string>>() { { "value", keyAndValue.Value } }).ToDictionary(values => values.Key, values => values.Value.ToList()))), nameTurbine);
                 }
                 else if (nameTurbine is not null && isEvent)
-                {
-
-                    Console.WriteLine("Reconstruct");
+                { 
                     return (Task.Run(() => ReconstructSeries(date.ToDictionary(key=>key.Key,value=>value.Value).Concat(new Dictionary<string, List<string>>() { { "value", keyAndValue.Value} }).ToDictionary(values => values.Key, values => values.Value.ToList()))), nameTurbine);
                 }
                 else

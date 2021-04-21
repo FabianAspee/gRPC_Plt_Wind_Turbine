@@ -13,9 +13,9 @@
 // limitations under the License.
 
 syntax = "proto3";
-package metric_calculus;
+package modelpredict;
 
-service ModelPredict {
+service ModelPredicts {
   // Sends a greeting
   rpc call_mlp_predict (InfoTurbine) returns (stream ResultMetricCalculus) {}
 }

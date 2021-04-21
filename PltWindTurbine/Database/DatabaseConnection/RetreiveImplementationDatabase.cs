@@ -20,7 +20,7 @@ namespace PltWindTurbine.Database.DatabaseConnection
             get { return instance.Value; }
         }
         public bool IsMysql() => DataSource.Contains("Sqlite");
-        public CommonImplementationDatabase ImplementationDatabase=> SelectDatabase() ? new Mysql.TurbineCrud() : new Sqlite.TurbineCrud();
+        public CommonImplementationDatabase ImplementationDatabase=> SelectDatabase() ? new Mysql.TurbineCrud() : Sqlite.TurbineCrud.Instance;
 
        private bool SelectDatabase()
        {

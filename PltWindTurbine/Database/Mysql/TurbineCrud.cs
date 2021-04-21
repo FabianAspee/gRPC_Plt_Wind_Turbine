@@ -13,10 +13,10 @@ namespace PltWindTurbine.Database.Mysql
     {
         private readonly ConnectionToDatabase connectionTo = RetreiveImplementationDatabase.Instance.connectionToDatabase; 
         private static InfoByTurbineToTable ReplaceSpecialCharacter(InfoByTurbineToTable infoByTurbines)=>
-             new InfoByTurbineToTable(infoByTurbines.BaseInfoTurbine.Select(keyValues=>
+             new(infoByTurbines.BaseInfoTurbine.Select(keyValues=>
             (keyValues.Key,keyValues.Value.Select(value=>value=="NV"?null:value))).ToDictionary(key=>key.Key,value=>value.Item2.ToList())
             , infoByTurbines.IdTurbine, infoByTurbines.IdSensor); 
-        public override Task InsertInfoWindTurbine(InfoByTurbineToTable infoTurbine)=> base.InsertInfoWindTurbine(ReplaceSpecialCharacter(infoTurbine));
+        public override void InsertInfoWindTurbine(InfoByTurbineToTable infoTurbine)=> base.InsertInfoWindTurbine(ReplaceSpecialCharacter(infoTurbine));
         
     }
 }

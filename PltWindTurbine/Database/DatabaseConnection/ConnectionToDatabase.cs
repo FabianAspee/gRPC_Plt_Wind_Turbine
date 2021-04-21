@@ -2,6 +2,7 @@
 using PltWindTurbine.Database.TableDatabase;
 using PltWindTurbine.Database.Utils;
 using SQLitePCL;
+using System;
 using System.Configuration;
 using System.IO;
 using System.Reflection;
@@ -9,13 +10,14 @@ using System.Reflection;
 namespace PltWindTurbine.Database.DatabaseConnection
 {
     public class ConnectionToDatabase  : DbContext
-    {
-        private static DbContextOptionsBuilder<ConnectionToDatabase> Options = new(); 
+    { 
+        private static readonly DbContextOptionsBuilder<ConnectionToDatabase> Options = new(); 
         private static readonly string PathDb = ConfigurationManager.AppSettings["configpath"];
         private static readonly string PathConfigMysql = ConfigurationManager.AppSettings["mysqlinfo"];  
-        private static readonly object lockObject = new object();
+        private static readonly object lockObject = new();
         private ConnectionToDatabase() { }
-        private ConnectionToDatabase(DbContextOptions<ConnectionToDatabase> options) : base(options) { } 
+        private ConnectionToDatabase(DbContextOptions<ConnectionToDatabase> options) : base(options) { }
+       
         public static ConnectionToDatabase CreateSqliteConnection()
         { 
             var contextOptions = Options.UseSqlite(ConnectionStringSqlite()).Options;

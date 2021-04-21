@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using PltWindTurbine.Subscriber.SubscriberContract;
 using PltWindTurbine.Subscriber.EventArgument;
 
-namespace PltWindTurbine.Services.Loadfilesservices
+namespace PltWindTurbine.Services.LoadFilesService
 {
     public class LoadFileService : LoadFiles.LoadFilesBase
     {

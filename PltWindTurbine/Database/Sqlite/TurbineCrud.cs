@@ -11,7 +11,16 @@ namespace PltWindTurbine.Database.Sqlite
 {
     public class TurbineCrud : CommonImplementationDatabase
     {
-        public override Task InsertInfoWindTurbine(InfoByTurbineToTable infoTurbine)=>base.InsertInfoWindTurbine(infoTurbine);
+        private static Lazy<TurbineCrud> instance = new(() => new TurbineCrud());
+        private TurbineCrud() { }
+        public static TurbineCrud Instance => instance.Value;
+        public override void InsertInfoWindTurbine(InfoByTurbineToTable infoTurbine)
+        {
+            lock (this)
+            {
+                base.InsertInfoWindTurbine(infoTurbine);
+            }
+        }
         
     }
 }

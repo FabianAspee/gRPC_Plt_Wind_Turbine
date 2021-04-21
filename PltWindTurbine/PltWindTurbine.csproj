@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>d15eb9af-b4d9-4dc3-a65c-f51399f900ba</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,7 +21,10 @@
   </ItemGroup>
 	
     <ItemGroup>
-	    <Protobuf Include="Protos\Loadfilesproto\loadfile.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\LoadFilesProto\loadfile.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\MetricCalculusProto\metriccalculus.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\ViewFailuresProto\viewfailure.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" GrpcServices="Server" />
     </ItemGroup>
 
 </Project>

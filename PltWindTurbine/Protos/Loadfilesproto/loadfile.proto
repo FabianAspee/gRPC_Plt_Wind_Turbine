@@ -14,7 +14,7 @@
 
 syntax = "proto3";
  
-option csharp_namespace = "PltWindTurbine.Services.Loadfilesservices";
+option csharp_namespace = "PltWindTurbine.Services.LoadFilesService";
 package loadfile;
 
 service LoadFiles {

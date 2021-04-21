@@ -2,7 +2,7 @@
 using Grpc.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using PltWindTurbine.Services.Loadfilesservices;
+using PltWindTurbine.Services.LoadFilesService;
 using System;
 using System.Collections.Generic;
 using System.Data;

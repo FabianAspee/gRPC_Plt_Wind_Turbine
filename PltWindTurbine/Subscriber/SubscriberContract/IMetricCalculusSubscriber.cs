@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PltWindTurbine.Services.NewFolder
+namespace PltWindTurbine.Subscriber.SubscriberContract
 {
-    public class ObtainInfoTurbines
+    public interface IMetricCalculusSubscriber : ISubscriber
     {
     }
 }

@@ -36,45 +36,39 @@ namespace PltWindTurbine.Database.Utils
             transaction.Commit();
         } 
          
-        public virtual Task InsertInfoWindTurbine(InfoByTurbineToTable infoByTurbine)
-        { 
-            return Task.Run(() =>
-            { 
-                Console.WriteLine($"Inserendo {infoByTurbine.IdTurbine}");
-                lock (this)
-                {
-                    using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
-                    using var transaction = connection.Database.BeginTransaction();
-                    using var command = connection.Database.GetDbConnection().CreateCommand();
-                   
+        public virtual void InsertInfoWindTurbine(InfoByTurbineToTable infoByTurbine)
+        {  
+            Console.WriteLine($"Inserendo {infoByTurbine.IdTurbine}"); 
+            using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
+            using var transaction = connection.Database.BeginTransaction();
+            using var command = connection.Database.GetDbConnection().CreateCommand();
 
-                    var columnsWithoutUnion = infoByTurbine.BaseInfoTurbine.Select(keyValue => keyValue.Key);
-                    var columns = columnsWithoutUnion.Union(
-                        new List<string>() { infoByTurbine.IdTurbine.nameColumnT, infoByTurbine.IdSensor.nameColumnS }).ToArray();
-                    var columnsValues = columns.Select(name => $"${name}");
-                    command.CommandText = $@"INSERT INTO value_sensor_turbine({string.Join(",", columns)})  VALUES ({string.Join(",", columnsValues)})";
-                    command.Parameters.AddRange(columnsValues.Select(column =>
-                    {
-                        var parameter = command.CreateParameter();
-                        parameter.ParameterName = column;
-                        return parameter;
-                    }).ToArray());
-                    var idTurbine = infoByTurbine.IdTurbine.idTurbine.ToString();
-                    var idSensor = infoByTurbine.IdSensor.idSensor.ToString();
-                    Enumerable.Range(0, infoByTurbine.BaseInfoTurbine.Values.First().Count).ToList().ForEach(index =>
-                    {
-                        var row = columnsWithoutUnion.Select(key => infoByTurbine.BaseInfoTurbine[key][index]).Append(idTurbine).Append(idSensor);
-                        row.Zip(columnsValues).ToList().ForEach(valueWithColumn =>
-                        {
-                            object t = valueWithColumn.Second is not "$value" ? valueWithColumn.First : (valueWithColumn.First is null ? DBNull.Value : valueWithColumn.First);
-                            object t2 = valueWithColumn.First is null ? DBNull.Value : valueWithColumn.First;
-                            command.Parameters[valueWithColumn.Second].Value = valueWithColumn.Second is not "$value" ? valueWithColumn.First : (valueWithColumn.First is null ? DBNull.Value : valueWithColumn.First);
-                        });
-                        command.ExecuteNonQuery();
-                    });
-                    transaction.Commit();
-                }
-            }); 
+
+            var columnsWithoutUnion = infoByTurbine.BaseInfoTurbine.Select(keyValue => keyValue.Key);
+            var columns = columnsWithoutUnion.Union(
+                new List<string>() { infoByTurbine.IdTurbine.nameColumnT, infoByTurbine.IdSensor.nameColumnS }).ToArray();
+            var columnsValues = columns.Select(name => $"${name}");
+            command.CommandText = $@"INSERT INTO value_sensor_turbine({string.Join(",", columns)})  VALUES ({string.Join(",", columnsValues)})";
+            command.Parameters.AddRange(columnsValues.Select(column =>
+            {
+                var parameter = command.CreateParameter();
+                parameter.ParameterName = column;
+                return parameter;
+            }).ToArray());
+            var idTurbine = infoByTurbine.IdTurbine.idTurbine.ToString();
+            var idSensor = infoByTurbine.IdSensor.idSensor.ToString();
+            Enumerable.Range(0, infoByTurbine.BaseInfoTurbine.Values.First().Count).ToList().ForEach(index =>
+            {
+                var row = columnsWithoutUnion.Select(key => infoByTurbine.BaseInfoTurbine[key][index]).Append(idTurbine).Append(idSensor);
+                row.Zip(columnsValues).ToList().ForEach(valueWithColumn =>
+                {
+                    object t = valueWithColumn.Second is not "$value" ? valueWithColumn.First : (valueWithColumn.First is null ? DBNull.Value : valueWithColumn.First);
+                    object t2 = valueWithColumn.First is null ? DBNull.Value : valueWithColumn.First;
+                    command.Parameters[valueWithColumn.Second].Value = valueWithColumn.Second is not "$value" ? valueWithColumn.First : (valueWithColumn.First is null ? DBNull.Value : valueWithColumn.First);
+                });
+                command.ExecuteNonQuery();
+            });
+            transaction.Commit(); 
         }
 
         public List<Wind_Turbine_Info> ReadAllTurbine()

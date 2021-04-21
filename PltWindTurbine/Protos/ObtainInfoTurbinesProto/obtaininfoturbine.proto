@@ -14,10 +14,10 @@
 
 syntax = "proto3";
 
-option csharp_namespace = "PltWindTurbine.Services.ObtainInfoTurbine";
+option csharp_namespace = "PltWindTurbine.Services.ObtainInfoTurbinesService";
 package obtaininfoturbine;
 
-service ObtainInfo {
+service ObtainInfoTurbines {
  
   rpc InfoFailureTurbine(stream CodeAndPeriodRequest) returns (stream CodeAndPeriodResponse);
 }
@@ -46,8 +46,8 @@ message OnlySerieByPeriodAndCodeResponse{
 	
 	string nameTurbine = 1;
 	repeated string value = 2;
-	int actual =3;
-	int total = 4;
+	int32 actual =3;
+	int32 total = 4;
 }
 message SeriePeriodByCodeWithStandarDeviationResponse{
 	OnlySerieByPeriodAndCodeResponse msg1=1;

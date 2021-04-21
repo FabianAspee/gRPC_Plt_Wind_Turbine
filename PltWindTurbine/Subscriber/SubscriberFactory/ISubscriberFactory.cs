@@ -10,5 +10,8 @@ namespace PltWindTurbine.Subscriber.SubscriberFactory
     public interface ISubscriberFactory
     {
         ILoadFileSubscriber GetLoadFileSubscriber();
+        IMetricCalculusSubscriber GetMetricCalculusSubscriber();
+        IObtainInfoTurbinesSubscriber GetObtainInfoTurbinesSubscriber();
+        IViewFailureSubscriber GetViewFailureSubscriber();
     }
 }

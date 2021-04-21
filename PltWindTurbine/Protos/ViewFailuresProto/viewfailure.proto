@@ -13,9 +13,10 @@
 // limitations under the License.
 
 syntax = "proto3";
-package view_failure;
+option csharp_namespace = "PltWindTurbine.Services.ViewFailuresService";
+package viewfailure;
 
-service ViewFailure {
+service ViewFailures {
   // Sends a greeting
   rpc print_series_turbine (InfoTurbine) returns (stream ResultByTurbine) {}
   rpc select_error_codes_by_condition (ErrorCodeByCondition) returns (stream ResultErrorCode) {}

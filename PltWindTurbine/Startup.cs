@@ -5,7 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PltWindTurbine.Database.DatabaseConnection;
-using PltWindTurbine.Services.Loadfilesservices;
+using PltWindTurbine.Services.LoadFilesService;
+using PltWindTurbine.Services.MetricCalculusService;
+using PltWindTurbine.Services.ObtaininfoTurbinesService;
+using PltWindTurbine.Services.ViewFailuresService;
 using PltWindTurbine.Subscriber.SubscriberFactory;
 
 namespace PltWindTurbine
@@ -35,6 +38,9 @@ namespace PltWindTurbine
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<LoadFileService>();
+                endpoints.MapGrpcService<MetricCalculuService>();
+                endpoints.MapGrpcService<ObtainInfoTurbineService>();
+                endpoints.MapGrpcService<ViewFailureService>();
 
                 endpoints.MapGet("/", async context =>
                 {

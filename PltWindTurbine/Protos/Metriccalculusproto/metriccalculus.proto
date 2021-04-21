@@ -13,12 +13,13 @@
 // limitations under the License.
 
 syntax = "proto3";
-package metric_calculus;
+option csharp_namespace = "PltWindTurbine.Services.MetricCalculusService";
+package metriccalculus;
 
-service MetricCalculus {
+service MetricCalculusS {
   // Sends a greeting
-  rpc calculate_auto_correlation (InfoTurbine) returns (stream ResultMetricCalculus) {}
-  rpc calculate_pearson_correlation (InfoTurbine) returns (stream ResultMetricCalculus) {}
+  rpc calculate_auto_correlation (InfoTurbine) returns (stream ResultMetricCalculus);
+  rpc calculate_pearson_correlation (InfoTurbine) returns (stream ResultMetricCalculus);
 }
 
 // The request message containing the id of the wind turbine.

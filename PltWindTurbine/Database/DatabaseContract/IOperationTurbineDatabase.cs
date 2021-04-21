@@ -14,7 +14,7 @@ namespace PltWindTurbine.Database.DatabaseContract
         public void InsertInfoPlt(DataTable dt_info, string name_table);
         public DataTable ReadInfoByTurbine(string path, string nameFile);
 
-        public Task InsertInfoWindTurbine(InfoByTurbineToTable infoTurbine);
+        public void InsertInfoWindTurbine(InfoByTurbineToTable infoTurbine);
         public List<string> SelectColumnFrom(string nameTable);
         public List<Wind_Turbine_Info> SelectAllTurbineInfo();
         public List<Sensor_Info> SelectAllNameSensor();
