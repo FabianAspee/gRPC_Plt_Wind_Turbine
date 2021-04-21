@@ -37,15 +37,16 @@ namespace PltWindTurbine.Database.Utils
         } 
          
         public virtual Task InsertInfoWindTurbine(InfoByTurbineToTable infoByTurbine)
-        {
+        { 
             return Task.Run(() =>
-            {
+            { 
+                Console.WriteLine($"Inserendo {infoByTurbine.IdTurbine}");
                 lock (this)
                 {
-                    Console.WriteLine($"Inserendo {infoByTurbine.IdTurbine}");
                     using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
                     using var transaction = connection.Database.BeginTransaction();
                     using var command = connection.Database.GetDbConnection().CreateCommand();
+                   
 
                     var columnsWithoutUnion = infoByTurbine.BaseInfoTurbine.Select(keyValue => keyValue.Key);
                     var columns = columnsWithoutUnion.Union(
@@ -72,7 +73,7 @@ namespace PltWindTurbine.Database.Utils
                         command.ExecuteNonQuery();
                     });
                     transaction.Commit();
-                } 
+                }
             }); 
         }
 

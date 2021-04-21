@@ -1,0 +1,1333 @@
+﻿ECName;WTGEvent;type;description;isDowntime;isFault;Cause;Nature;resetType;alarmLevel;notes;changed
+V80VestasErrorCode;572;No error;[572] - Close Gridbreaker 2;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;719;No error;[719] - Close Gridbreaker 3;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;674;No error;[674] - Commence motorstart Gen;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;672;No error;[672] - Commence thyristor test Gen;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;668;No error;[668] - Commencing thyristor-in;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;669;No error;[669] - Commencing thyristor-out;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;267;No error;[267] - ComSystemState reset by user;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;607;No error;[607] - Control of LT blocked;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;997;Grid;[997] - Curtailed;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;996;Grid;[996] - Curtailed 1;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;374;No error;[374] - De-ice event: Ice climate;0;0;ENV;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;371;No error;[371] - De-ice event: Ice detected;0;0;ENV;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;372;No error;[372] - De-ice event: Mass unbalance;0;0;ENV;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;373;No error;[373] - De-ice event: Power loss;0;0;ENV;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;370;No error;[370] - De-ice event: System OFF;0;0;ENV;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;369;No error;[369] - De-ice event: System ON;0;0;ENV;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;728;No error;[728] - Dip detec, V;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;245;No error;[245] - Hot HV trafo;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;439;No error;[439] - Hot IGBTs;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;438;No error;[438] - Hot top ctrl;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;440;No error;[440] - Hot VRCC water;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;66;No error;[66] - Hub fan;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;882;No error;[882] - Hub heating;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;68;No error;[68] - HV Trafo vent,;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;3232;Turbine;[3232] - HighPressPump2ThermoInvalid;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;3035;Turbine;[3035] - HubArcNetRec1LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3036;Turbine;[3036] - HubArcNetRec2LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3037;Turbine;[3037] - HubArcNetRec3LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3038;Turbine;[3038] - HubArcNetRec4LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3039;Turbine;[3039] - HubArcNetRec5LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3021;Turbine;[3021] - HubControllerProcessorBattLaw;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3012;Turbine;[3012] - HydrHighPressPump1NegFBError;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3013;Turbine;[3013] - HydrHighPressPump1PosFBError;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3014;Turbine;[3014] - HydrHighPressPump2NegFBError;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;650;Turbine;[650] - No satelites tracked;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;651;Turbine;[651] - One satelite tracked;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;969;No error;[969] - OptiStop Int Battery Fault;0;0;OTH;Other;Auto short;0;;-1
+V80VestasErrorCode;2892;Turbine;[2892] - PB OilDiffHigh Main A;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2893;Turbine;[2893] - PB OilDiffHigh Main B;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2894;Turbine;[2894] - PB OilDiffHigh Main C;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2902;Turbine;[2902] - PitA Not lock C;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2887;Turbine;[2887] - PitA Sys;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2896;Turbine;[2896] - PitA: PFB;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2903;Turbine;[2903] - PitB Not lock;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2888;Turbine;[2888] - PitB Sys;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2904;Turbine;[2904] - PitC Not lock;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2889;Turbine;[2889] - PitC Sys;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2898;Turbine;[2898] - PitC: PFB;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2905;Turbine;[2905] - Pitch A BL unlock Warning;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2899;Turbine;[2899] - Pitch A: PFB indi open;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;905;Turbine;[905] - Pitch accu fail;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2906;Turbine;[2906] - Pitch B BL unlock Warning;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2900;Turbine;[2900] - Pitch B: PFB indi open;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2907;Turbine;[2907] - Pitch C BL unlock Warning;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2901;Turbine;[2901] - Pitch C: PFB indi open;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;994;No error;[994] - Pitch error on all blades;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;3235;Turbine;[3235] - PitchAccTestSysAccFail;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3237;Turbine;[3237] - PitchManifAAccFailed;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3238;Turbine;[3238] - PitchManifADrainVlvFail;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3239;Turbine;[3239] - PitchManifBAccFailed;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3240;No error;[3240] - PitchManifBDrainVlvFail;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3241;Turbine;[3241] - PitchManifCAccFailed;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3242;Turbine;[3242] - PitchManifCDrainVlvFail;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3236;Turbine;[3236] - PitchSystDrainValveFail;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2912;Turbine;[2912] - PosFB: SupplyContHydrMotor;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2918;Turbine;[2918] - PosFB: SupplyContOtherMot;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2915;Turbine;[2915] - PosFB: SupplyContYawMotor;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;877;No error;[877] - Power drop;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;3059;Turbine;[3059] - PowerStop1Error;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;3060;Turbine;[3060] - PowerStop2Error;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;3061;Turbine;[3061] - PowerStop3Error;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;3062;Turbine;[3062] - PowerStop4Error;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2862;Turbine;[2862] - PreSensorErr;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;164;Turbine;[164] - Press, drop hydr, filter;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;215;Turbine;[215] - Press, drop hydr, Filt, Hub;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;849;No error;[849] - RT DC Undervoltage;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;566;No error;[566] - SF6 Pressure low;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;564;No error;[564] - Shortcircuitindicator1 Active;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;565;No error;[565] - Shortcircuitindicator2 Active;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;691;Turbine;[691] - Signal error;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;690;Turbine;[690] - Signal operatinal;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;975;Turbine;[975] - SlipRTemp Diff T;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;717;No error;[717] - SMTP client failed;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;828;Grid;[828] - Start Frequency error;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;109;No error;[109] - Thermerr offlin;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;305;No error;[305] - Timeout comm, Tower acc,;0;0;OTH;Other;Auto short;0;;-1
+V80VestasErrorCode;422;Ambient;[422] - Too low nacelle temp;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;298;No error;[298] - Tow: acc, X - Warn,;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;299;No error;[299] - Tow: acc, Y - Warn,;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;985;Turbine;[985] - TowerAcc signal dead;0;0;OTH;Other;Auto long;0;;-1
+V80VestasErrorCode;3313;Turbine;[3313] - Transf Fan Neg Feedback Error;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3312;Turbine;[3312] - Transf Fan Pos Feedback Error;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;600;No error;[600] - UPS battery activated;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2955;Turbine;[2955] - UPS Battery Low;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;479;Turbine;[479] - VCMS:Node Initialize error;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;483;Turbine;[483] - VCMS:Node Ping error;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;481;Turbine;[481] - VCMS:Node Selftest error;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;484;Turbine;[484] - VCMS: Node Warn, Temp;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;487;Turbine;[487] - VCMS:SEW11 A=2;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;486;Turbine;[486] - VCMS:SEW11;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;496;Turbine;[496] - VCMS:SEW12 A=2;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;495;Turbine;[495] - VCMS:SEW12;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;505;Turbine;[505] - VCMS:SEW13 A=2;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;504;Turbine;[504] - VCMS:SEW13;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;514;Turbine;[514] - VCMS:SEW14 A=2;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;513;Turbine;[513] - VCMS:SEW14;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;523;Turbine;[523] - VCMS:SEW15 A=2;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;522;Turbine;[522] - VCMS:SEW15;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;532;Turbine;[532] - VCMS:SEW31 A=2;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;531;Turbine;[531] - VCMS:SEW31;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;541;Turbine;[541] - VCMS:SEW32 A=2;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;540;Turbine;[540] - VCMS:SEW32;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;763;Turbine;[763] - VCMS:SEW51 A=2;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;762;Turbine;[762] - VCMS:SEW51;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;773;Turbine;[773] - VCMS:SEW52 A=2;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;772;Turbine;[772] - VCMS:SEW52;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;783;Turbine;[783] - VCMS:SEW53 A=2;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;782;Turbine;[782] - VCMS:SEW53;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;795;Turbine;[795] - VCMS:Socket error;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;551;No error;[551] - VCMS:Undefined error code;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;552;No error;[552] - VCMS:Unknown Command received;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;844;No error;[844] - VCS/VCRS dummy warn1;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;845;No error;[845] - VCS/VCRS dummy warn2;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;846;No error;[846] - VCS/VCRS dummy warn3;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;823;Turbine;[823] - Feedback: Phasecomp 12;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;813;Turbine;[813] - Feedback: Phasecomp 2;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;814;Turbine;[814] - Feedback: Phasecomp 3;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;815;Turbine;[815] - Feedback: Phasecomp 4;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;816;Turbine;[816] - Feedback: Phasecomp 5;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;817;Turbine;[817] - Feedback: Phasecomp 6;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;818;Turbine;[818] - Feedback: Phasecomp 7;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;819;Turbine;[819] - Feedback: Phasecomp 8;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;820;Turbine;[820] - Feedback: Phasecomp 9;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;617;Turbine;[617] - Feedback: Phasecomp;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;411;Turbine;[411] - Feedback: SlipR heat S;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;656;Turbine;[656] - Feedback: VRCC Fan S A;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;657;Turbine;[657] - Feedback: VRCC Fan S B;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;655;Turbine;[655] - Feedback: VRCC Pump S;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;174;Turbine;[174] - Feedback: Hydraulicmotor;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;385;Turbine;[385] - Feedback: SlipR fan S;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;386;Turbine;[386] - Feedback: VCS fan S;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;73;Turbine;[73] - Feedback Ext, Gen, Fan S;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;173;Turbine;[173] - Feedback: Gearoil cool S;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;206;Turbine;[206] - Feedback: Hydroilcool S;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;71;Turbine;[71] - Feedback: Int, Gen, Fan S A;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;72;Turbine;[72] - Feedback: Int, Gen, Fan S B;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;172;Turbine;[172] - Feedback: Nacelle fan S;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3126;Turbine;[3126] - FlushTestErrEMCPilot;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;932;Turbine;[932] - Gear oil bypass;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;2926;Turbine;[2926] - Gear Oil Contaminated Drain A;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2927;Turbine;[2927] - Gear Oil Contaminated Drain B;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2928;Turbine;[2928] - Gear Oil Contaminated Drain C;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3350;Turbine;[3350] - GearHeat Neg Fb Err;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3349;Turbine;[3349] - GearHeat Pos Fb Err;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3351;Turbine;[3351] - GearHeat Signal Err;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2991;Turbine;[2991] - GearHydWaterPumpFBInvalid;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2990;Turbine;[2990] - GearHydWaterPumpNegativeFB;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2989;Turbine;[2989] - GearHydWaterPumpPositiveFB;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2986;Turbine;[2986] - GearHydWaterPumpSignalInvalid;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2988;Turbine;[2988] - GearHydWaterPumpThermoInvalid;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2924;Turbine;[2924] - GearLeak:MainTankVol;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2920;Turbine;[2920] - GearLubrGravityTankFault;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3325;Turbine;[3325] - GenerLubrErr:MissLubrTime;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2948;Turbine;[2948] - GenWarmPhaseTemp;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3025;Turbine;[3025] - GndArcNetRec1LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3026;Turbine;[3026] - GndArcNetRec2LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3027;Turbine;[3027] - GndArcNetRec3LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3028;Turbine;[3028] - GndArcNetRec4LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3029;Turbine;[3029] - GndArcNetRec5LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3020;Turbine;[3020] - GndControllerProcessorBattLaw;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;241;No error;[241] - GPS reciever out of order;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;3184;Turbine;[3184] - GrayCodeInvShift;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;3211;Turbine;[3211] - GrayCodeResetShiftMiss;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;3210;Turbine;[3210] - GrayCodeResetShiftUnexp;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;3015;Turbine;[3015] - HydrHighPressPump2PosFBError;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3127;Turbine;[3127] - HydrPress, EMCPilot;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3128;Turbine;[3128] - HydrPress, EMCPilot;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;368;No error;[368] - Ice sensor error;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2913;Turbine;[2913] - InvFB: SupplyContHydrMotor;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2919;Turbine;[2919] - InvFB: SupplyContOtherMot;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2916;Turbine;[2916] - InvFB: SupplyContYawMotor;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;995;No error;[995] - Last ArcNet reconfig count;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;242;No error;[242] - Light det, Error;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;359;No error;[359] - Lightn det, emergency suppl;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;358;No error;[358] - Lightn detect power supplied;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;239;No error;[239] - Lightning blade;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;357;Ambient;[357] - Lightning detected;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;936;Turbine;[936] - Lo DP inlin fltr;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;981;Turbine;[981] - Load sensor not calibrated;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3018;Turbine;[3018] - Load/PowerMode invalid config;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3017;Turbine;[3017] - Load/PowerMode invalid winddir;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;982;Turbine;[982] - Loadsensor A error;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;983;Turbine;[983] - Loadsensor B error;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;984;Turbine;[984] - Loadsensor C error;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;735;No error;[735] - Long EMCpitch time blade;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;3218;Turbine;[3218] - Low Battery VPC;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;699;Turbine;[699] - Low Battry CT291;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;701;Turbine;[701] - Low Battry CT3601 Hub;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;700;Turbine;[700] - Low Battry CT3601 Nacelle;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;252;No error;[252] - Low oil flow;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3086;Turbine;[3086] - ManBladeSelectorSignalMismatch;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;303;No error;[303] - Marine Lamp error;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;304;No error;[304] - Marine Lamp shift;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;254;No error;[254] - Max DP filt A;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;902;No error;[902] - Max DP filt A;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;287;No error;[287] - Max DP filt B;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3081;Turbine;[3081] - ModeSelectorNacelleSignalError;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3080;Turbine;[3080] - ModeSelectorTowerSignalError;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3030;Turbine;[3030] - NacArcNetRec1LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3031;Turbine;[3031] - NacArcNetRec2LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3032;Turbine;[3032] - NacArcNetRec3LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3033;Turbine;[3033] - NacArcNetRec4LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3034;Turbine;[3034] - NacArcNetRec5LightErr;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3207;Turbine;[3207] - Nacelle pos reset missing;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;3204;Turbine;[3204] - Nacelle position err;0;0;OTH;Other;Auto short;0;;-1
+V80VestasErrorCode;3206;Turbine;[3206] - Nacelle position reset;0;0;OTH;Other;Local;0;;-1
+V80VestasErrorCode;855;No error;[855] - Nacelle reset not found;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;3022;Turbine;[3022] - NacelleControllerProcBattLaw;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3511;Turbine;[3511] - NacelleHeater Neg Fb Err;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3510;Turbine;[3510] - NacelleHeater Pos Fb Err;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;3512;Turbine;[3512] - NacelleHeater Signal Err;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2911;Turbine;[2911] - NegFB: SupplyContHydrMotor;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2917;Turbine;[2917] - NegFB: SupplyContOtherMot;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;2914;Turbine;[2914] - NegFB: SupplyContYawMotor;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;972;Turbine;[972] - VCP upload failed;1;1;DEV_UN;Other;Auto short no count;11;;-1
+V80VestasErrorCode;107;Turbine;[107] - VCPM OpSt, change timeout;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;345;Turbine;[345] - VCPM to MDSP Comm, timeout;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;99;Turbine;[99] - VCPM err, Address;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;64;Turbine;[64] - VCPMstate queue overflow;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;351;Turbine;[351] - VCS Low water level;1;1;DEV_UN;Other;Auto long;11;;-1
+V80VestasErrorCode;839;Turbine;[839] - VCS/VCRS dummy alarm1;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;840;Turbine;[840] - VCS/VCRS dummy alarm2;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;841;Turbine;[841] - VCS/VCRS dummy alarm3;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;842;Turbine;[842] - VCS/VCRS dummy alarm4;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;843;Turbine;[843] - VCS/VCRS dummy alarm5;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;60;Turbine;[60] - VDI telegram format error;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;54;Turbine;[54] - VDI telegram xmit error;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;2890;Turbine;[2890] - VibrShockAct X Y;1;1;DEV_UN;Vibration;Remote;1;;-1
+V80VestasErrorCode;3159;Turbine;[3159] - VPCIntSWErr;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;649;Turbine;[649] - VRCC: bin File missing;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;237;Turbine;[237] - WATCHDOG was not trigged;1;1;DEV_UN;Other;Not to be acknowledged;1;;-1
+V80VestasErrorCode;3263;Turbine;[3263] - WeldedContactor;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;2923;Turbine;[2923] - WetSump Lev;1;1;DEV_UN;Other;Auto long;11;;-1
+V80VestasErrorCode;5;Turbine;[5] - Wrong ARCNet node no;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;432;Turbine;[432] - Wrong LSI Version;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;944;Ambient;[944] - WS1 Anemometer Frozen;1;1;ENV;Anemometer;Auto short;11;;-1
+V80VestasErrorCode;952;Ambient;[952] - WS1 Vane in Turbulence/Frozen;1;1;ENV;Turbolence;Auto long;11;;-1
+V80VestasErrorCode;951;Ambient;[951] - WS1 Wind Vane Frosen;1;1;ENV;Ice;Auto long;11;;-1
+V80VestasErrorCode;1004;Ambient;[1004] - WS2 Anemometer Frozen;1;1;ENV;Anemometer;Auto long;11;;-1
+V80VestasErrorCode;1006;Ambient;[1006] - WS2 Vane Frozen;1;1;ENV;Ice;Auto long;11;;-1
+V80VestasErrorCode;1007;Ambient;[1007] - WS2 Vane in Turbulence/Frozen;1;1;ENV;Turbolence;Auto long;11;;-1
+V80VestasErrorCode;1012;Ambient;[1012] - WS2 Vane Misaligned;1;1;ENV;Other;Auto long;11;;-1
+V80VestasErrorCode;976;Turbine;[976] - Yaw activity is not dectected;1;1;DEV_UN;Yaw_system;Auto short;11;;-1
+V80VestasErrorCode;421;User;[421] - Yaw Curve Error point;1;1;DEV_UN;Yaw_system;Remote;1;;-1
+V80VestasErrorCode;605;Turbine;[605] - Brush on gen, slip ring is worn;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;1016;Turbine;[1016] - Bus Bar AC under Maintenance;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;2857;Turbine;[2857] - BypsPressHigh;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3185;Turbine;[3185] - CamPulsMiss;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;706;No error;[706] - Ch High res, dev,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;584;No error;[584] - CL Capacitor under voltage;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;3100;Turbine;[3100] - CMSGearVibrSignal1High;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3101;Turbine;[3101] - CMSGearVibrSignal2High;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3102;Turbine;[3102] - CMSGearVibrSignal3High;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3103;Turbine;[3103] - CMSGearVibrSignal4High;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3104;Turbine;[3104] - CMSGearVibrSignal5High;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3105;Turbine;[3105] - CMSGearVibrSignal6High;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3106;Turbine;[3106] - CMSGearVibrSignal7High;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3114;Turbine;[3114] - CMSGenVibrSignal1High;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3115;Turbine;[3115] - CMSGenVibrSignal2High;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3118;Turbine;[3118] - CMSMainBearingVibrHigh;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3275;Turbine;[3275] - CodeResShiftMiss;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;614;No error;[614] - Contac switching max;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3040;Turbine;[3040] - ConvArcNetRc3LightErr;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3041;Turbine;[3041] - ConvArcNetRc4LightErr;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3023;Turbine;[3023] - ConvControllerProcessorBattLaw;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3249;Turbine;[3249] - ConvGenWatCooHeaterSignInvalid;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3252;Turbine;[3252] - ConvGenWatCoolHeatFeedBInvalid;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3251;Turbine;[3251] - ConvGenWatCoolHeatNegFeedback;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3250;Turbine;[3250] - ConvGenWatCoolHeatPosFeedback;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3248;Turbine;[3248] - ConvGenWatCoolPumpNegFeedback;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3247;Turbine;[3247] - ConvGenWatCoolPumpNegFeedback;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3246;Turbine;[3246] - ConvGenWatCoolPumpPosFeedback;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3243;Turbine;[3243] - ConvGenWatCoolPumpSignInvalid;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;3245;Turbine;[3245] - ConvGenWatCoolPumpThermInvalid;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;3244;Turbine;[3244] - ConvGenWatCoolPumpThermoFault;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;2865;Turbine;[2865] - ConvWatCoolTempSlopeExceeded;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;2864;Turbine;[2864] - ConvWaterCoolWatLevelLow;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;961;Turbine;[961] - Cooling water level low;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3208;Turbine;[3208] - CT Est, Twist fault;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;3274;Turbine;[3274] - CTCodeResetShiftUnexp;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;580;No error;[580] - Current Limiter Voltage inval;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;329;Turbine;[329] - DC Overvolt;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;178;Turbine;[178] - Def, Fuse lightn, Prot, (F9-11);0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;364;No error;[364] - De-Ice curr, Dev,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;365;No error;[365] - De-Ice feedback=0;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;366;No error;[366] - De-Ice feedback=1;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;363;No error;[363] - De-Ice System timeout;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;367;No error;[367] - De-Ice temp, Feedback;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;378;Turbine;[378] - De-Ice: Feedback K1064;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;441;Ambient;[441] - Derated at C ambi by;0;0;DEV_UN;Other;Auto long;0;;-1
+V80VestasErrorCode;2859;Turbine;[2859] - DiffPressHigh;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;3129;Turbine;[3129] - DODP Valve Failure;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;934;Turbine;[934] - DP Gear oil fltr;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;3047;Turbine;[3047] - DrainTestInitialPressMissing;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;2922;Turbine;[2922] - DrySump Lev;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;734;No error;[734] - Error EMC pitch blade;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;599;No error;[599] - Error in UPS;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;610;No error;[610] - Error Slip Ring Fan Diff;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;113;Turbine;[113] - Error Smoke Detector;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;611;Turbine;[611] - External error;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;1014;Turbine;[1014] - FeedBack: GBT Pump S;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;812;Turbine;[812] - Feedback: Phasecomp 1;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;821;Turbine;[821] - Feedback: Phasecomp 10;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;822;Turbine;[822] - Feedback: Phasecomp 11;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3219;Turbine;[3219] - GrayCodeShiftMiss;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;3205;Turbine;[3205] - GrayCodeShiftUnexp Err,;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;595;No error;[595] - Help button activated;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;927;No error;[927] - High Delta Gearbear;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;420;Turbine;[420] - High hydr, Pressure;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;110;No error;[110] - High pres offlin;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3230;Turbine;[3230] - HighPressPump1FeedbackInvalid;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;3228;Turbine;[3228] - HighPressPump1SignalInvalid;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;3233;Turbine;[3233] - HighPressPump2FeedbackInvalid;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;3231;Turbine;[3231] - HighPressPump2SignalInvalid;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;987;Turbine;[987] - Thermoerror WaterPump;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;186;Turbine;[186] - Thermoerror yawmotor F;1;1;DEV_UN;Yaw_system;Remote;1;;-1
+V80VestasErrorCode;58;User;[58] - Time constant (thau) is zero;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;875;Turbine;[875] - Timeout comm: Tower acc,;1;1;DEV_UN;Vibration;Remote;1;;-1
+V80VestasErrorCode;757;Turbine;[757] - VCMS:AMA13;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;521;Turbine;[521] - VCMS:AMA14 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;758;Turbine;[758] - VCMS:AMA14;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;530;Turbine;[530] - VCMS:AMA15 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;759;Turbine;[759] - VCMS:AMA15;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;760;Turbine;[760] - VCMS:AMA31 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;539;Turbine;[539] - VCMS:AMA31;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;761;Turbine;[761] - VCMS:AMA32 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;548;Turbine;[548] - VCMS:AMA32;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;770;Turbine;[770] - VCMS:AMA51 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;771;Turbine;[771] - VCMS:AMA51;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;780;Turbine;[780] - VCMS:AMA52 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;781;Turbine;[781] - VCMS:AMA52;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;790;Turbine;[790] - VCMS:AMA53 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;791;Turbine;[791] - VCMS:AMA53;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;794;Turbine;[794] - VCMS:Assertion failure;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;550;Turbine;[550] - VCMS:Element alarm bearing;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;553;User;[553] - VCMS:Error in INI file;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;688;Turbine;[688] - VCMS:Error in RS INI file;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;493;Turbine;[493] - VCMS:FEA11 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;492;Turbine;[492] - VCMS:FEA11;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;502;Turbine;[502] - VCMS:FEA12 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;501;Turbine;[501] - VCMS:FEA12;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;511;Turbine;[511] - VCMS:FEA13 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;510;Turbine;[510] - VCMS:FEA13;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;520;Turbine;[520] - VCMS:FEA14 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;519;Turbine;[519] - VCMS:FEA14;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;529;Turbine;[529] - VCMS:FEA15 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;528;Turbine;[528] - VCMS:FEA15;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;538;Turbine;[538] - VCMS:FEA31 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;537;Turbine;[537] - VCMS:FEA31;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;547;Turbine;[547] - VCMS:FEA32 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;546;Turbine;[546] - VCMS:FEA32;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;769;Turbine;[769] - VCMS:FEA51 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;768;Turbine;[768] - VCMS:FEA51;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;779;Turbine;[779] - VCMS:FEA52 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;778;Turbine;[778] - VCMS:FEA52;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;789;Turbine;[789] - VCMS:FEA53 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;788;Turbine;[788] - VCMS:FEA53;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;560;Turbine;[560] - VCMS:File open error;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;793;Turbine;[793] - VCMS:Node reset error;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;489;Turbine;[489] - VCMS:SEA11 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;488;Turbine;[488] - VCMS:SEA11;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;498;Turbine;[498] - VCMS:SEA12 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;497;Turbine;[497] - VCMS:SEA12;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;507;Turbine;[507] - VCMS:SEA13 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;506;Turbine;[506] - VCMS:SEA13;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;516;Turbine;[516] - VCMS:SEA14 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;515;Turbine;[515] - VCMS:SEA14;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;525;Turbine;[525] - VCMS:SEA15 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;524;Turbine;[524] - VCMS:SEA15;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;534;Turbine;[534] - VCMS:SEA31 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;533;Turbine;[533] - VCMS:SEA31;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;543;Turbine;[543] - VCMS:SEA32 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;542;Turbine;[542] - VCMS:SEA32;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;765;Turbine;[765] - VCMS:SEA51 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;764;Turbine;[764] - VCMS:SEA51;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;775;Turbine;[775] - VCMS:SEA52 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;774;Turbine;[774] - VCMS:SEA52;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;785;Turbine;[785] - VCMS:SEA53 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;784;Turbine;[784] - VCMS:SEA53;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;796;Turbine;[796] - VCMS:Start client error;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;654;Turbine;[654] - VCMS:theApp is suspended;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;554;Turbine;[554] - VCMS:Timer is inactive;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;702;Turbine;[702] - VCP detects Q8 feedback missin;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;892;Ambient;[892] - Yaw gear protection stop;1;1;ENV;Yaw_system;Remote;1;;-1
+V80VestasErrorCode;891;Ambient;[891] - Yaw prot,;1;1;ENV;Yaw_system;Auto short;11;;-1
+V80VestasErrorCode;200;Turbine;[200] - Yaw speed error;1;1;ENV;Yaw_system;Local;1;;-1
+V80VestasErrorCode;3298;Turbine;[3298] - Yaw To Cable Twist Reset;1;1;DEV_UN;Cable_untwist;Local;1;;-1
+V80VestasErrorCode;3296;Turbine;[3296] - Yaw To Nacelle Position Reset;1;1;DEV_UN;Yaw_system;Local;1;;-1
+V80VestasErrorCode;2973;Turbine;[2973] - YawMotorLowVol;1;1;DEV_UN;Yaw_system;Remote;1;;-1
+V80VestasErrorCode;3209;Turbine;[3209] - YawSignals Invalid;1;1;DEV_UN;Yaw_system;Local;1;;-1
+V80VestasErrorCode;3271;Turbine;[3271] - YawToCableTwistResetFailed;1;1;DEV_UN;Cable_untwist;Local;1;;-1
+V80VestasErrorCode;3270;Turbine;[3270] - YawToCableTwistResetNotAvail;1;1;DEV_UN;Cable_untwist;Local;1;;-1
+V80VestasErrorCode;3297;Turbine;[3297] - YawToNacPositResetErr;1;1;DEV_UN;Yaw_system;Local;1;;-1
+V80VestasErrorCode;3273;Turbine;[3273] - YawUntwistCCW;1;1;OTH;Yaw_system;Local;1;;-1
+V80VestasErrorCode;3272;Turbine;[3272] - YawUntwistCW;1;1;OTH;Yaw_system;Local;1;;-1
+V80VestasErrorCode;52;Grid;[52] - ZeroCross interrupt missing;1;1;OTH;Electrical;Auto short;11;;-1
+V80VestasErrorCode;3042;Turbine;[3042] - AccTestInitPressMissing;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;923;Turbine;[923] - Accumulator fail Mechanical;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;908;Turbine;[908] - Accumulator fail Solenoid;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;300;No error;[300] - Aviation Lamp error;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;301;No error;[301] - Aviation Lamp shift;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;42;User;[42] - Aviation light error;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;736;No error;[736] - Blade pitch react,;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;907;Turbine;[907] - Brake accu fail;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3330;Turbine;[3330] - Brake Warning;0;0;DEV_UN;Other;Auto short;0;;-1
+V80VestasErrorCode;2879;Turbine;[2879] - Brake Worn;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3095;Turbine;[3095] - BrakeAccPressTooHigh;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3044;Turbine;[3044] - BrakeAccTestMaxTimeErr;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3043;Turbine;[3043] - BrakeAccTestMinTimeErr;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;2875;Turbine;[2875] - BrakeAccumulatorPressLow;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;2872;Turbine;[2872] - BrakeApplyValve1CBActivated;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;2874;Turbine;[2874] - BrakeDrainValveCBActivated;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3096;Turbine;[3096] - BrakePressureTooHigh;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;2870;Turbine;[2870] - BrakeReleasedPressHigh;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;915;Turbine;[915] - Shutdown timeout Stop Slow;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;695;Turbine;[695] - Signal error: EMERGENCY;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;692;Turbine;[692] - Signal error: pause (a);1;1;DEV_UN;Other;Auto long;11;;-1
+V80VestasErrorCode;693;Turbine;[693] - Signal error: Pause;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;694;Turbine;[694] - Signal error: STOP;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;338;Turbine;[338] - Slip: bove limits;1;1;DEV_UN;Slipring;Auto short;11;;-1
+V80VestasErrorCode;401;Turbine;[401] - Smoke detected;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;3254;Turbine;[3254] - Software Err On PSC Controller;1;1;DEV_UN;Control_system;Remote;1;;-1
+V80VestasErrorCode;276;Ambient;[276] - Start auto-outyawing CCW;1;1;OTH;Yaw_system;;11;;-1
+V80VestasErrorCode;275;Ambient;[275] - Start auto-outyawing CW;1;1;OTH;Yaw_system;;11;;-1
+V80VestasErrorCode;436;Ambient;[436] - Start yawing to reset CCW;1;1;OTH;Yaw_system;Auto short;11;;-1
+V80VestasErrorCode;435;Ambient;[435] - Start yawing to reset CW;1;1;OTH;Yaw_system;Auto short;11;;-1
+V80VestasErrorCode;3464;Turbine;[3464] - StatorVoltSensorContactorError;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;2968;Turbine;[2968] - Supply Aux Main CB Opened;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;2969;Turbine;[2969] - Supply CommonCB Nacelle Opened;1;1;DEV_UN;Nacelle_Sensor;Auto long;11;;-1
+V80VestasErrorCode;912;Grid;[912] - Supply error;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;2967;Turbine;[2967] - SupplyError Max;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;2956;Turbine;[2956] - SupplyError Min;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;259;User;[259] - SW versionconflict GND/GRID;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;40;User;[40] - SW versionconflict GND/HUB;1;1;DEV_UN;Hub;Local;1;;-1
+V80VestasErrorCode;44;User;[44] - SW versionconflict GND/TOP;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;562;User;[562] - SW versionconflict GND/VCMS;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;45;User;[45] - SW versionconflict GND/VCPM;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;857;Turbine;[857] - SW/Param def, Vers, Conflict;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;861;Turbine;[861] - SW/Param value vers, Conflict;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;831;Ambient;[831] - SWDS High Wind;1;1;ENV;Wind_out_of_range;Auto short no count;11;;-1
+V80VestasErrorCode;962;Ambient;[962] - SWDS Low Wind;1;1;ENV;Wind_out_of_range;Auto short no count;11;;-1
+V80VestasErrorCode;3135;Turbine;[3135] - SyncParam GenSyncState;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;90;Turbine;[90] - System error (1);1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;91;Turbine;[91] - System error (2);1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;92;Turbine;[92] - System error (3);1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;55;Turbine;[55] - Telegram lost during reception;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;56;Turbine;[56] - Telegram lost during xmission;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;41;Turbine;[41] - Telegram not sent;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;33;Turbine;[33] - TelegramRcv resource too small;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;3260;Turbine;[3260] - TempSwitch DCChopper;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;3256;Turbine;[3256] - TempSwitch DVDFilter;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;3261;Turbine;[3261] - TempSwitch GridChoke1;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;3262;Turbine;[3262] - TempSwitch GridChoke2;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;384;Turbine;[384] - Thermo error Gen, Slip Ring Fan;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;302;Turbine;[302] - Thermo error: hydr, Oilcooler;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;312;Turbine;[312] - Thermo error: ventilators T53;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;199;Turbine;[199] - Thermo table full;1;1;DEV_UN;Temperature;Local;1;;-1
+V80VestasErrorCode;729;No error;[729] - Timeout EMCPitchSelfTest;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;418;Turbine;[418] - Timeout generator reconnecting;1;1;DEV_UN;Generator;Auto short;11;;-1
+V80VestasErrorCode;829;Grid;[829] - Timeout Start Frequency error;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;256;Ambient;[256] - Too low nacel temp;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;49;Turbine;[49] - Too many ArcNet reconf,;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;48;Turbine;[48] - Too many ArcNet retransmiss,;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;100;Turbine;[100] - Too many auto-restarts;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;748;Turbine;[748] - Too many contactor supervis,;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;14;Turbine;[14] - Too many DecOpState routines;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;12;Turbine;[12] - Too many digital filters;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;20;Turbine;[20] - Too many event timers;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;15;Turbine;[15] - Too many IncOpState routines;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;17;Turbine;[17] - Too many interval timers;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;807;Turbine;[807] - Too many interval usec timers;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;39;Turbine;[39] - Too many log slaves;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;19;Turbine;[19] - Too many msec timers;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;18;Turbine;[18] - Too many sec timers;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;29;Turbine;[29] - Too many square filters;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;13;Turbine;[13] - Too many sublogics;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;921;Turbine;[921] - Too many Tow: acc, X warnings;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;249;No error;[249] - Too many warnings in queue;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;16;Turbine;[16] - Too many WriteProlog routines;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;4;User;[4] - Top CT missing;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;106;Turbine;[106] - Top OpSt: change timeout;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;98;Turbine;[98] - Top err, Address;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;910;Turbine;[910] - Tow: acc, X Fault;1;1;DEV_UN;Vibration;Auto short;11;;-1
+V80VestasErrorCode;296;Turbine;[296] - Tow: acc, X Alarm;1;1;ENV;Vibration;Auto short;11;;-1
+V80VestasErrorCode;922;Turbine;[922] - Tow: acc, X-dead;1;1;ENV;Vibration;Remote;1;;-1
+V80VestasErrorCode;911;Turbine;[911] - Tow: acc, Y Fault;1;1;ENV;Vibration;Auto short;11;;-1
+V80VestasErrorCode;297;Turbine;[297] - Tow: acc, Y Alarm;1;1;ENV;Vibration;Auto short;11;;-1
+V80VestasErrorCode;986;Turbine;[986] - TowerAcc No zero cross;1;1;ENV;Vibration;Auto long;11;;-1
+V80VestasErrorCode;960;Turbine;[960] - Transformer Hatch Fb;1;1;ENV;Transformer;Remote;1;;-1
+V80VestasErrorCode;3174;Turbine;[3174] - TransformerHighCoreTemp;1;1;ENV;Transformer;Remote;1;;-1
+V80VestasErrorCode;430;Turbine;[430] - Transm: osc,;1;1;ENV;Other;Auto short;11;;-1
+V80VestasErrorCode;3144;Turbine;[3144] - TransParam MainLSCState;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3136;Turbine;[3136] - TransParam MainLSCState;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;2661;Turbine;[2661] - TransTempExtHigh;1;1;DEV_UN;Temperature;Local;1;;-1
+V80VestasErrorCode;89;Turbine;[89] - Trip F60 L;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;311;Turbine;[311] - Trip Q8 Feedback error K;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;314;Turbine;[314] - Trip Q8 high current L;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;128;Grid;[128] - Trip Q8 L;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;3073;Turbine;[3073] - TripHVButtonActivated;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;942;Turbine;[942] - TripQ8 extr high HydTemp;1;1;DEV_UN;Temperature;Local;1;;-1
+V80VestasErrorCode;3158;Turbine;[3158] - UnexpContFB;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;11;Turbine;[11] - Unexpected interrupt;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;65;Turbine;[65] - Unused Opcode;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;663;Turbine;[663] - VCMS: error in historic DB;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;681;Turbine;[681] - VCMS: No gnd communication;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;682;Turbine;[682] - VCMS: No hub communication;1;1;DEV_UN;Hub;Remote;1;;-1
+V80VestasErrorCode;680;Turbine;[680] - VCMS: No top communication;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;683;Turbine;[683] - VCMS: No VCPM communication;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;684;Turbine;[684] - VCMS: Parameter mismatch;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;494;Turbine;[494] - VCMS:AMA11 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;755;Turbine;[755] - VCMS:AMA11;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;503;Turbine;[503] - VCMS:AMA12 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;756;Turbine;[756] - VCMS:AMA12;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;512;Turbine;[512] - VCMS:AMA13 A=2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;929;Turbine;[929] - No Pitch Hydraulic Power;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;850;Turbine;[850] - No RT DC Undervoltage;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;754;Grid;[754] - no RT Dip no e-2;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;726;Turbine;[726] - No RT Ex, Hig, Rot, Cur L;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;725;Turbine;[725] - No RT High Rotor Cur L;1;1;DEV_UN;Rotor;Auto short;11;;-1
+V80VestasErrorCode;727;Turbine;[727] - No RT Rotor HW Error L;1;1;DEV_UN;Rotor;Auto short;11;;-1
+V80VestasErrorCode;250;No error;[250] - No space in warning log;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;180;Turbine;[180] - No yawpulses;1;1;DEV_UN;Yaw_system;Remote;1;;-1
+V80VestasErrorCode;216;Turbine;[216] - Oil leakage in Hub;1;1;DEV_UN;Hub;Local;1;;-1
+V80VestasErrorCode;31;Turbine;[31] - OpSt change: Run -> Run;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;965;Turbine;[965] - OptiStop Alive Fault;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;964;Turbine;[964] - OptiStop Communication Fault;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;963;Turbine;[963] - OptiStop Internal Fault;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;968;Turbine;[968] - OptiStop Plug Mounted Fault;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;966;Turbine;[966] - OptiStop Rotor Speed Fault;1;1;DEV_UN;Rotor;Auto short;11;;-1
+V80VestasErrorCode;967;Turbine;[967] - OptiStop Rotor Speed Std Dev;1;1;DEV_UN;Rotor;Auto short;11;;-1
+V80VestasErrorCode;970;Turbine;[970] - OptiStop Ups1 Battery Fault;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;971;Turbine;[971] - OptiStop Ups2 Battery Fault;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;32;Turbine;[32] - Out of ArcNet xmit pools;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;185;Turbine;[185] - Outyawing too much;1;1;DEV_UN;Yaw_system;Local;1;;-1
+V80VestasErrorCode;3323;Turbine;[3323] - OverspeedGuardConfErr:Setting;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;337;Turbine;[337] - Overtemp charging DC;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;340;Turbine;[340] - OVP active UDC;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;341;Turbine;[341] - OVPHwErr UDC;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;884;Ambient;[884] - P Curve Ice;1;1;ENV;Ice;Auto short;11;;-1
+V80VestasErrorCode;3122;Turbine;[3122] - PitchValCErr: VelocityC;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;3123;Turbine;[3123] - PitchVelocityDiffExceed;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;1000;Grid;[1000] - Power Backup On/Off Status;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;883;Turbine;[883] - Power Curve;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;63;Turbine;[63] - Power telegraph timeout;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;133;Turbine;[133] - Power OpSt Run;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;3453;Turbine;[3453] - PowerBackupSupplyActive;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;195;Turbine;[195] - PowerError;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;193;Turbine;[193] - PowerSTD;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;3172;Turbine;[3172] - PowerStopHighTemp;1;1;DEV_UN;Temperature;Local;1;;-1
+V80VestasErrorCode;3173;Turbine;[3173] - PowerStopOverTemp;1;1;DEV_UN;Temperature;Local;1;;-1
+V80VestasErrorCode;2954;Turbine;[2954] - PowerSupplyHighFreq;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;2953;Turbine;[2953] - PowerSupplyLowFreq;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;3348;Turbine;[3348] - PressureControlSuppressed;1;1;DEV_UN;Control_system;Remote;1;;-1
+V80VestasErrorCode;3166;Turbine;[3166] - PSCCCANErr ConvMod;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3165;Turbine;[3165] - PSCCHWErr ConvMod;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3164;Turbine;[3164] - PwrStopActive;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;352;User;[352] - Q7 breaker open;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;353;User;[353] - Q8 breaker open;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;838;Turbine;[838] - Q8 contactor in state;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;642;Turbine;[642] - RCC CE overvoltage;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;636;Turbine;[636] - RCC communication error;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;626;Turbine;[626] - RCC CRC error;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;637;Turbine;[637] - RCC error in master prom;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;630;Turbine;[630] - RCC header error;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;644;Turbine;[644] - RCC high temperature;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;646;Turbine;[646] - RCC high voltage;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;632;Turbine;[632] - RCC ILIM error;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;631;Turbine;[631] - RCC IVCE error;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;645;Turbine;[645] - RCC low temperature;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;647;Turbine;[647] - RCC low voltage;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;638;Turbine;[638] - RCC NAK during upload;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;639;Turbine;[639] - RCC NAK start appl,;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;874;Turbine;[874] - RCC not ready at gen, Connect;1;1;DEV_UN;Generator;Auto short;11;;-1
+V80VestasErrorCode;643;Turbine;[643] - RCC OVP active;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;635;Turbine;[635] - RCC RAM error;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;629;Turbine;[629] - RCC status error;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;633;Turbine;[633] - RCC temperature error;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;627;Turbine;[627] - RCC Timeout;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;634;Turbine;[634] - RCC voltage error;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;686;Turbine;[686] - RCC bin File missing;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;685;Turbine;[685] - RCCPRM bin File missing;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;689;Turbine;[689] - Remote AP Crash;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;604;Turbine;[604] - Remote Reboot;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;328;Turbine;[328] - Rotor inv, HW error L;1;1;DEV_UN;Rotor;Auto short;11;;-1
+V80VestasErrorCode;158;Turbine;[158] - Rotor RPM Gen, RPM;1;1;DEV_UN;Rotor;Auto short;11;;-1
+V80VestasErrorCode;837;Turbine;[837] - RT AGO2Sta Cyc, Count;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;703;Grid;[703] - RT Dip exc, lim,;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;811;Grid;[811] - RT not allowed, Dip no;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;836;Turbine;[836] - RT IntAGO2CtrlErr;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;3155;Turbine;[3155] - RundownTimeout;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;162;Turbine;[162] - Safety-pressostat brake;1;1;DEV_UN;Brake_system;Remote;1;;-1
+V80VestasErrorCode;3328;Turbine;[3328] - SafetySysCheckSumErr;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;3327;Turbine;[3327] - SafetySysCommErr;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3069;Turbine;[3069] - SafetySystemErr;1;1;DEV_UN;Hub;Local;1;;-1
+V80VestasErrorCode;22;Turbine;[22] - Sec timer not initialized;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;6;Turbine;[6] - Serial communication not init;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;914;Turbine;[914] - Shutdown timeout Pause Fast;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;913;Turbine;[913] - Shutdown timeout Pause Slow;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;916;Turbine;[916] - Shutdown timeout Stop Fast;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;169;Turbine;[169] - Thermoerr: Nac, Fan;1;1;DEV_UN;Temperature;Auto short;11;;-1
+V80VestasErrorCode;170;Turbine;[170] - Thermoerr: oil pump;1;1;DEV_UN;Temperature;Auto short;11;;-1
+V80VestasErrorCode;662;Turbine;[662] - Thermoerr: VRCC fan High F;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;398;Turbine;[398] - Thermoerror ext, VCS Fan F;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;219;Turbine;[219] - Thermoerror Ext, Gen, Fan F;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;2936;Turbine;[2936] - Thermoerror gear oil pump;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;801;Turbine;[801] - Thermoerror Hydr: cool F;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;166;Turbine;[166] - Thermoerror hydraulicmotor;1;1;DEV_UN;Hydraulic_system;Auto long;11;;-1
+V80VestasErrorCode;400;Turbine;[400] - Thermoerror IGBT fan F;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;399;Turbine;[399] - Thermoerror IGBT pump F;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;397;Turbine;[397] - Thermoerror Int: VCS Fan F;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;217;Turbine;[217] - Thermoerror Int: Gen, Fan F A;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;218;Turbine;[218] - Thermoerror Int: Gen, Fan F B;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;661;Turbine;[661] - Thermoerror VRCC fan low F A;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;660;Turbine;[660] - Thermoerror VRCC Pump F;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;594;Turbine;[594] - Hoist mode failure;1;1;DEV_UN;Other;Not to be acknowledged;1;;-1
+V80VestasErrorCode;3;User;[3] - Hub CT missing;1;1;DEV_UN;Hub;Local;1;;-1
+V80VestasErrorCode;687;Turbine;[687] - Hub Top Sync timeout;1;1;DEV_UN;Hub;Local;1;;-1
+V80VestasErrorCode;2999;Turbine;[2999] - HubPanelTempHigh;1;1;DEV_UN;Hub;Remote;1;;-1
+V80VestasErrorCode;3000;Turbine;[3000] - HubPanelTempLow;1;1;DEV_UN;Hub;Remote;1;;-1
+V80VestasErrorCode;3074;Turbine;[3074] - HVCBError;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;903;Turbine;[903] - Low oil level;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;80;Turbine;[80] - Low oil pressure;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;165;Turbine;[165] - Low oil-level: hydraulic;1;1;DEV_UN;Hydraulic_system;Local;1;;-1
+V80VestasErrorCode;177;Turbine;[177] - Low processor temp, in ground;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;78;Turbine;[78] - Low processor temp, in Hub;1;1;DEV_UN;Hub;Auto long;11;;-1
+V80VestasErrorCode;77;Turbine;[77] - Low processor temp, in Nacelle;1;1;DEV_UN;Nacelle_Sensor;Auto long;11;;-1
+V80VestasErrorCode;145;Turbine;[145] - Low processor temp, in top;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;93;Grid;[93] - Low supply voltage CT3503;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;918;Turbine;[918] - Low temp, Gen bear DE;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;920;Turbine;[920] - Low temp, Gen bear NDE;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;851;Turbine;[851] - Low temp, Gen bearing;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;406;Turbine;[406] - Low temp, Slipring;1;1;DEV_UN;Slipring;Auto short;11;;-1
+V80VestasErrorCode;201;Turbine;[201] - Low temperature Gen;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;135;Grid;[135] - Low voltage L;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;163;Turbine;[163] - Low workingpressure;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3258;Turbine;[3258] - LSCCurrLoadShare PSC Phase;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3139;Turbine;[3139] - LSCHWErr ConvModule Par2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3140;Turbine;[3140] - LSCHWErr_Info PhNr Par2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3372;Turbine;[3372] - Man Untwist Req;1;1;DEV_UN;Cable_untwist;Remote;1;;-1
+V80VestasErrorCode;183;Turbine;[183] - Max autoyawtime;1;1;DEV_UN;Yaw_system;Remote;1;;-1
+V80VestasErrorCode;112;Turbine;[112] - Max DP filt, A;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;253;Turbine;[253] - Max DP filt, A;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;286;Turbine;[286] - Max DP filt, B;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;153;Turbine;[153] - Max generator RPM;1;1;DEV_UN;Generator;Auto short;11;;-1
+V80VestasErrorCode;196;Turbine;[196] - Max generator RPM;1;1;DEV_UN;Generator;Auto long;11;;-1
+V80VestasErrorCode;171;Turbine;[171] - Max no of pitchconnect cmd;1;1;DEV_UN;Pitch_system;Auto short;11;;-1
+V80VestasErrorCode;184;Turbine;[184] - Max outyawtime superceeded;1;1;DEV_UN;Yaw_system;Local;1;;-1
+V80VestasErrorCode;130;Turbine;[130] - Max power Gen;1;1;DEV_UN;Generator;Remote;1;;-1
+V80VestasErrorCode;154;Turbine;[154] - Max rotor RPM;1;1;DEV_UN;Rotor;Remote;1;;-1
+V80VestasErrorCode;3324;Turbine;[3324] - Max time hydr, Pumping;1;1;DEV_UN;Hydraulic_system;Remote;1;;-1
+V80VestasErrorCode;161;Turbine;[161] - Max time hydr, Pumping;1;1;DEV_UN;Hydraulic_system;Remote;1;;-1
+V80VestasErrorCode;429;Turbine;[429] - Max warnings gen;1;1;DEV_UN;Generator;Auto short;11;;-1
+V80VestasErrorCode;824;Turbine;[824] - Max Ph, Comp, FB Warnings;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;79;Ambient;[79] - Max Yaw error;1;1;DEV_UN;Yaw_system;Auto short;11;;-1
+V80VestasErrorCode;344;Turbine;[344] - MDSP to VCPM Comm, timeout;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;431;Turbine;[431] - MDSP-SDSP Comm, timeout;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;3134;Turbine;[3134] - MechGeneratorSpeed;1;1;DEV_UN;Generator;Remote;1;;-1
+V80VestasErrorCode;561;Turbine;[561] - Memory allocation failed;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;211;Turbine;[211] - Metal chip detec;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;209;Turbine;[209] - Missing VAMS permission;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;3178;Turbine;[3178] - ModeSelectorInStop;1;1;DEV_UN;Vibration;Local;1;;-1
+V80VestasErrorCode;3082;Turbine;[3082] - ModeSelectorOperationErr;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;3255;Turbine;[3255] - MSCCurrLoadShare;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3130;Turbine;[3130] - MSCHWErr ConvModID;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3131;Turbine;[3131] - MSCHWErrInfo Phase;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;23;Turbine;[23] - mSec timer not initialized;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;3181;Turbine;[3181] - Nac Temp, Panel2Temp;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;3180;Turbine;[3180] - Nac Temp, Panel2Temp;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;2997;Turbine;[2997] - NacelleTemp, PanelTemp;1;1;DEV_UN;Nacelle_Sensor;Remote;1;;-1
+V80VestasErrorCode;2996;Turbine;[2996] - NacelleTemp, PanelTemp;1;1;DEV_UN;Nacelle_Sensor;Remote;1;;-1
+V80VestasErrorCode;131;Turbine;[131] - Negative power Gen;1;1;DEV_UN;Generator;Remote;1;;-1
+V80VestasErrorCode;379;Turbine;[379] - No comm, with DeIce;1;1;DEV_UN;Ice;Local;1;;-1
+V80VestasErrorCode;38;Turbine;[38] - No comm, with Hub;1;1;DEV_UN;Hub;Local;1;;-1
+V80VestasErrorCode;50;Turbine;[50] - No communication with CT3251;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;36;Turbine;[36] - No communication with Top;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;563;Turbine;[563] - No communication with VCMS;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;37;Turbine;[37] - No communication with VCPM;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;111;Turbine;[111] - No offline filtrat,;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;856;Turbine;[856] - No ParameterDefinition file;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;860;Turbine;[860] - No ParameterValues file;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;2970;Turbine;[2970] - PanelPowerSupplyHub24VError;1;1;DEV_UN;Hub;Remote;1;;-1
+V80VestasErrorCode;2971;Turbine;[2971] - PanelPowerSupplyNacelle24VErr;1;1;DEV_UN;Nacelle_Sensor;Remote;1;;-1
+V80VestasErrorCode;2972;Turbine;[2972] - PanelPowerSupplyTower24VError;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;751;Turbine;[751] - Parameters not recovered;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;959;Grid;[959] - pause after grid drop;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;957;Grid;[957] - pause after power cut out;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;309;Ambient;[309] - Pause over RCS;1;1;DEV_SC;Other;;1;;-1
+V80VestasErrorCode;900;Ambient;[900] - Pause through local keyboard;1;1;DEV_SC;Other;;1;;-1
+V80VestasErrorCode;1017;Turbine;[1017] - Pause through remote keyboard;1;1;DEV_SC;Other;Not to be acknowledged;1;;-1
+V80VestasErrorCode;350;User;[350] - PFC breaker open;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;825;Turbine;[825] - Ph, C: low reac, Pow;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;339;Grid;[339] - Phase L;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;105;Turbine;[105] - Phase sequence check timed out;1;1;DEV_UN;Other;Lokal (Man, Computer;1;;-1
+V80VestasErrorCode;3132;Turbine;[3132] - MaxRotorCurr;1;1;DEV_UN;Rotor;Remote;1;;-1
+V80VestasErrorCode;103;Grid;[103] - PhaseSequence error;1;1;DEV_UN;Electrical;Lokal (Man, Computer;1;;-1
+V80VestasErrorCode;104;Turbine;[104] - Phasesequence not measured;1;1;DEV_UN;Other;Lokal (Man, Computer;1;;-1
+V80VestasErrorCode;2908;Turbine;[2908] - Pitch A BL unlock alarm;1;1;DEV_UN;Pitch_system;Local;1;;-1
+V80VestasErrorCode;190;Turbine;[190] - Pitch A ref;1;1;DEV_UN;Pitch_system;Auto short;11;;-1
+V80VestasErrorCode;2909;Turbine;[2909] - Pitch B BL unlock alarm;1;1;DEV_UN;Pitch_system;Local;1;;-1
+V80VestasErrorCode;81;Turbine;[81] - Pitch B ref;1;1;DEV_UN;Pitch_system;Auto short;11;;-1
+V80VestasErrorCode;2910;Turbine;[2910] - Pitch C BL unlock alarm;1;1;DEV_UN;Pitch_system;Local;1;;-1
+V80VestasErrorCode;82;Turbine;[82] - Pitch C ref;1;1;DEV_UN;Pitch_system;Auto short;11;;-1
+V80VestasErrorCode;87;Turbine;[87] - Pitch dev, min;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;194;Turbine;[194] - Pitch too low;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;3125;Turbine;[3125] - Pitch Valves Test Failure;1;1;DEV_UN;Pitch_system;Local;1;;-1
+V80VestasErrorCode;74;Turbine;[74] - PitchA pos;1;1;DEV_UN;Pitch_system;Auto short;11;;-1
+V80VestasErrorCode;3234;Turbine;[3234] - PitchAccumulatorTestAccFailed;1;1;DEV_UN;Pitch_system;Local;1;;-1
+V80VestasErrorCode;75;Turbine;[75] - PitchB pos;1;1;DEV_UN;Pitch_system;Auto short;11;;-1
+V80VestasErrorCode;76;Turbine;[76] - PitchC pos;1;1;DEV_UN;Pitch_system;Auto short;11;;-1
+V80VestasErrorCode;3201;Turbine;[3201] - PitchPress Diff Hi, A;1;1;DEV_UN;Pitch_system;Auto short;11;;-1
+V80VestasErrorCode;3202;Turbine;[3202] - PitchPress Diff Hi, B;1;1;DEV_UN;Pitch_system;Auto short;11;;-1
+V80VestasErrorCode;3203;Turbine;[3203] - PitchPress Diff Hi, C;1;1;DEV_UN;Pitch_system;Auto short;11;;-1
+V80VestasErrorCode;3120;Turbine;[3120] - PitchValAErr: VelocityA;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;3121;Turbine;[3121] - PitchValBErr: VelocityB;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;899;Turbine;[899] - Grid volt above stop lim;1;1;ENV;Electrical;Auto long;11;;-1
+V80VestasErrorCode;998;Turbine;[998] - Grid volt under stop lim;1;1;ENV;Electrical;Auto long;11;;-1
+V80VestasErrorCode;3465;Turbine;[3465] - GridFilterContactErr Filter;1;1;GRID;Electrical;Remote;1;;-1
+V80VestasErrorCode;3152;Turbine;[3152] - GridFilterContErr;1;1;GRID;Electrical;Remote;1;;-1
+V80VestasErrorCode;3151;Turbine;[3151] - GridFilterContErr;1;1;GRID;Electrical;Remote;1;;-1
+V80VestasErrorCode;3153;Turbine;[3153] - GridFiltNotCon;1;1;GRID;Electrical;Remote;1;;-1
+V80VestasErrorCode;3150;Turbine;[3150] - GridPhase SeqErr;1;1;GRID;Electrical;Remote;1;;-1
+V80VestasErrorCode;826;Turbine;[826] - Gridstate queue overflow;1;1;GRID;Electrical;Local;1;;-1
+V80VestasErrorCode;62;Turbine;[62] - Ground status report timeout;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;43;Turbine;[43] - Ground:ServiceHandler called;1;1;DEV_UN;Ice;Local;1;;-1
+V80VestasErrorCode;896;Ambient;[896] - Heating Hydraulic oil;1;1;OTH;Hydraulic_system;Auto short;11;;-1
+V80VestasErrorCode;895;Ambient;[895] - Heating nacelle;1;1;OTH;Nacelle_Sensor;Auto short;11;;-1
+V80VestasErrorCode;894;Ambient;[894] - Heating nacelle and gear oil;1;1;OTH;Nacelle_Sensor;Auto short;11;;-1
+V80VestasErrorCode;893;Ambient;[893] - Heating slipring (H=0/PH=1);1;1;OTH;Slipring;Auto short;11;;-1
+V80VestasErrorCode;897;Ambient;[897] - Heating valve block (pause);1;1;OTH;Temperature;Auto short;11;;-1
+V80VestasErrorCode;898;Ambient;[898] - Heating valve block (stop);1;1;OTH;Temperature;Auto short;11;;-1
+V80VestasErrorCode;935;Turbine;[935] - Hi DP inlin fltr;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;933;Turbine;[933] - Hi Gear sys pres;1;1;DEV_UN;Gearbox;Remote;1;;-1
+V80VestasErrorCode;175;Turbine;[175] - High Bus Bar Temperature;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;334;Turbine;[334] - High cur, grid inv, L;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;333;Turbine;[333] - High cur, rotor inv, L;1;1;DEV_UN;Rotor;Auto short;11;;-1
+V80VestasErrorCode;123;Turbine;[123] - High curr Gen0 L;1;1;DEV_UN;Generator;Remote;1;;-1
+V80VestasErrorCode;142;Turbine;[142] - High curr Gen1 L;1;1;DEV_UN;Generator;Auto long;11;;-1
+V80VestasErrorCode;143;Turbine;[143] - High curr Gen2 L;1;1;DEV_UN;Generator;Auto long;11;;-1
+V80VestasErrorCode;147;Turbine;[147] - High gear temp;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;155;Turbine;[155] - High Gen, SlipRTemp;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;974;Turbine;[974] - High temp NRE main bear;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;973;Turbine;[973] - High temp RE main bear;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;168;Turbine;[168] - High temp top ctrl;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;326;Turbine;[326] - High temp, Aux;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;917;Turbine;[917] - High temp, Gen bear DE;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;919;Turbine;[919] - High temp, Gen bear NDE;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;151;Turbine;[151] - High temp, Gen bearing;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;322;Turbine;[322] - High temp, Grid Inv, L;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;930;Turbine;[930] - High temp, main bear;1;1;DEV_UN;Temperature;Local;1;;-1
+V80VestasErrorCode;320;Turbine;[320] - High temp, Rotor Inv, L;1;1;DEV_UN;Rotor;Auto long;11;;-1
+V80VestasErrorCode;324;Turbine;[324] - High temp, VCP Board;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;325;Turbine;[325] - High temp, VCS System;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;150;Turbine;[150] - High temp, Gear bearing;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;659;Turbine;[659] - High temp, VRCC coolwater;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;160;Turbine;[160] - High temperature brake disc;1;1;DEV_UN;Temperature;Local;1;;-1
+V80VestasErrorCode;148;Turbine;[148] - High temperature Gen;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;149;Turbine;[149] - High temperature T53;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;134;Grid;[134] - High voltage L;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;730;No error;[730] - High wind EMC Pitchtest;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;144;Ambient;[144] - High windspeed;1;1;ENV;Wind_out_of_range;Auto short no count;11;;-1
+V80VestasErrorCode;3072;Turbine;[3072] - HVCBNotReconnected;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;3071;Turbine;[3071] - HVCBTripError;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;167;Turbine;[167] - Hydr, temperature high;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;88;Turbine;[88] - Hydr, temperature low;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;3006;Turbine;[3006] - HydrFiltOilPressDiffHigh;1;1;DEV_UN;Hydraulic_system;Local;1;;-1
+V80VestasErrorCode;3007;Turbine;[3007] - HydrFiltOilPressDiffTooH;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;2995;Turbine;[2995] - HydrHighPressPumpNotFunctional;1;1;DEV_UN;Hydraulic_system;Local;1;;-1
+V80VestasErrorCode;3005;Turbine;[3005] - HydrInitPressMissing;1;1;DEV_UN;Hydraulic_system;Local;1;;-1
+V80VestasErrorCode;3004;Turbine;[3004] - HydrMainPressHigh;1;1;DEV_UN;Hydraulic_system;Local;1;;-1
+V80VestasErrorCode;3003;Turbine;[3003] - HydrMainPressLow;1;1;DEV_UN;Hydraulic_system;Local;1;;-1
+V80VestasErrorCode;3175;Turbine;[3175] - HydrOilExtremeHighTemp;1;1;DEV_UN;Temperature;Local;1;;-1
+V80VestasErrorCode;3009;Turbine;[3009] - HydrOilTempHigh;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;375;Ambient;[375] - Ice safety stop;1;1;ENV;Ice;Remote;1;;-1
+V80VestasErrorCode;108;Turbine;[108] - Illegal gen, cmd;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;678;Turbine;[678] - Illegal GenLogicState;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;2823;Turbine;[2823] - Illegal InitVal data in PROM;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;26;Turbine;[26] - Illegal parameter group;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;28;Turbine;[28] - Illegal picture no;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;648;Turbine;[648] - Illegal RCCState;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;27;Turbine;[27] - Illegal text no;1;1;DEV_UN;Other;Auto long;11;;-1
+V80VestasErrorCode;61;Turbine;[61] - Illegal VDI subscription;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;9;Turbine;[9] - Initialisation of ArcNet;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;2861;Turbine;[2861] - InlDiffPressLow;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;937;Turbine;[937] - Insp inline fltr;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;30;Turbine;[30] - Internal sublogic error;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;21;Turbine;[21] - Interval timer not initialized;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;808;Turbine;[808] - Interval usec timer not init;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;804;Turbine;[804] - Invalid Turbine ID-number;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;132;Turbine;[132] - Leak current;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;3192;Turbine;[3192] - Leakage pitch accum, A;1;1;DEV_UN;Pitch_system;Auto short;11;;-1
+V80VestasErrorCode;3193;Turbine;[3193] - Leakage pitch accum, B;1;1;DEV_UN;Pitch_system;Auto short;11;;-1
+V80VestasErrorCode;3194;Turbine;[3194] - Leakage pitch accum, C;1;1;DEV_UN;Pitch_system;Auto short;11;;-1
+V80VestasErrorCode;3179;Turbine;[3179] - LIDARExtremeGustDetec;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;240;Ambient;[240] - Lightning blade;1;1;ENV;Blade;Remote;1;;-1
+V80VestasErrorCode;376;Ambient;[376] - Lightning detected (stopped);1;1;ENV;Lightning;Remote;1;;-1
+V80VestasErrorCode;3461;Turbine;[3461] - LineSideBreaker Err ModuleID;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;3469;Turbine;[3469] - LineSideBreakResetErr Module;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3466;Turbine;[3466] - LineSideBreakTrippedModuleID;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;3147;Turbine;[3147] - LockLSCParam, MainLSCState;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3137;Turbine;[3137] - LockMSCParam, MainMSCState;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;619;Turbine;[619] - Logic error phase compensation;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;319;Turbine;[319] - Long DC charge time;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;120;Grid;[120] - Low curr, L1;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;121;Grid;[121] - Low curr, L2;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;122;Grid;[122] - Low curr, L3;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;407;Turbine;[407] - Low delta temp, Slipr;1;1;DEV_UN;Temperature;Auto short;11;;-1
+V80VestasErrorCode;3195;Turbine;[3195] - Low flow tank block A;1;1;DEV_UN;Hydraulic_system;Auto short;11;;-1
+V80VestasErrorCode;3196;Turbine;[3196] - Low flow tank block B;1;1;DEV_UN;Hydraulic_system;Auto short;11;;-1
+V80VestasErrorCode;3197;Turbine;[3197] - Low flow tank block C;1;1;DEV_UN;Hydraulic_system;Auto short;11;;-1
+V80VestasErrorCode;210;Turbine;[210] - Low gear temp;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;444;Turbine;[444] - Low HydrPress Block;1;1;DEV_UN;Hydraulic_system;Auto short;11;;-1
+V80VestasErrorCode;658;Turbine;[658] - Low level VRCC cool water;1;1;DEV_UN;Hydraulic_system;Local;1;;-1
+V80VestasErrorCode;251;Turbine;[251] - Low oil flow;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;214;Turbine;[214] - Low oil level;1;1;DEV_UN;Other;Auto long;11;;-1
+V80VestasErrorCode;362;Turbine;[362] - De-Ice System overtemp;1;1;DEV_UN;Ice;Remote;1;;-1
+V80VestasErrorCode;2860;Turbine;[2860] - DiffPressTooHigh;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;926;Turbine;[926] - Disc brake accumulator failure;1;1;DEV_UN;Brake_system;Not to be acknowledged;1;;-1
+V80VestasErrorCode;3154;Turbine;[3154] - DischargeSupvTimeout;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;928;Grid;[928] - Disconnect High Freq;1;1;GRID;Electrical;Auto short;11;;-1
+V80VestasErrorCode;3138;Turbine;[3138] - DiscTransPrm MainMSCState;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3146;Turbine;[3146] - DisTransPrm MainLSCState;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3329;Turbine;[3329] - DODP Leak Failure;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;346;Turbine;[346] - DSP checksum err;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;348;Turbine;[348] - DSP internal error;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;347;Turbine;[347] - DSP mat: Overflow;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;732;No error;[732] - EMC pitchtest deviation;1;1;OTH;Other;Remote;1;;-1
+V80VestasErrorCode;3188;Turbine;[3188] - EMC valve err in pitch blockA;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;3189;Turbine;[3189] - EMC valve err in pitch blockB;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;3190;Turbine;[3190] - EMC valve err in pitch blockC;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;417;Turbine;[417] - EMCV: Pitch;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;414;Turbine;[414] - EMCValv - Pitch A vel;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;415;Turbine;[415] - EMCValv - Pitch B vel;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;416;Turbine;[416] - EMCValv: Pitch C ver;1;1;DEV_UN;Pitch_system;Remote;1;;-1
+V80VestasErrorCode;116;Turbine;[116] - Emerg, Stop: Output active;1;1;DEV_UN;Other;Auto long;11;;-1
+V80VestasErrorCode;152;Turbine;[152] - Emerg, Stop: Rot;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;101;User;[101] - Emerg, Stop: EMC not conn;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;102;User;[102] - Emergency circuit open;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;3070;Turbine;[3070] - EmergStopButtonActivated;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;925;Turbine;[925] - EMF accumulator failures;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;342;Turbine;[342] - Encoder hardware error;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;343;Turbine;[343] - Encoder signal error;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;349;Turbine;[349] - Error in Cal Val on VCPM;1;1;DEV_UN;Other;Lokal (Man, Computer;1;;-1
+V80VestasErrorCode;602;Turbine;[602] - Error in ColdBoot file;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;3161;Turbine;[3161] - ExtMSCInfo: PhNr, Par2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;852;Turbine;[852] - Extr Extr high volt, L;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;126;Grid;[126] - Extr, high volt L;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;127;Grid;[127] - Extr, low voltage L;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;124;Turbine;[124] - Extr, high curr, Gen1 L;1;1;DEV_UN;Generator;Auto short;11;;-1
+V80VestasErrorCode;125;Turbine;[125] - Extr, high curr, Gen2 L;1;1;DEV_UN;Generator;Auto short;11;;-1
+V80VestasErrorCode;119;Grid;[119] - Extrem frequency;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;356;Ambient;[356] - Extreme yawerror;1;1;ENV;Yaw_system;Auto short;11;;-1
+V80VestasErrorCode;1003;Turbine;[1003] - Failure in Anemometer;1;1;DEV_UN;Anemometer;Auto short;11;;-1
+V80VestasErrorCode;943;Turbine;[943] - Failure in Anemometer Sensor;1;1;DEV_UN;Anemometer;Auto short;11;;-1
+V80VestasErrorCode;945;Turbine;[945] - Failure in Wind Vane Sensor;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;1005;Turbine;[1005] - Failure in Wind Vane Sensor;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;189;Turbine;[189] - Feedback Brake;1;1;DEV_UN;Brake_system;Remote;1;;-1
+V80VestasErrorCode;665;Turbine;[665] - Feedback Bypass contactor;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;885;Turbine;[885] - Feedback Bypass L1;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;886;Turbine;[886] - Feedback Bypass L2;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;887;Turbine;[887] - Feedback Bypass L3;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;666;Turbine;[666] - Feedback Generator;1;1;DEV_UN;Generator;Remote;1;;-1
+V80VestasErrorCode;182;Turbine;[182] - Feedback yawing CCW;1;1;DEV_UN;Yaw_system;Remote;1;;-1
+V80VestasErrorCode;181;Turbine;[181] - Feedback yawing CW;1;1;DEV_UN;Yaw_system;Remote;1;;-1
+V80VestasErrorCode;51;Turbine;[51] - Feedback table full;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;443;Grid;[443] - Frequency error 1;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;202;Grid;[202] - Frequency error 1;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;203;Grid;[203] - Frequency error 2;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;204;Grid;[204] - Frequency error 3;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;205;Grid;[205] - Frequency error 4;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;129;Grid;[129] - Frequency error;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;618;Turbine;[618] - Fuse phasecomp + Gen2 cut;1;1;DEV_UN;Generator;Local;1;;-1
+V80VestasErrorCode;2925;Turbine;[2925] - Gear Leak: Flow;1;1;DEV_UN;Gearbox;Auto long;11;;-1
+V80VestasErrorCode;2930;Turbine;[2930] - Gear Oil Level High:Main;1;1;DEV_UN;Gearbox;Auto long;11;;-1
+V80VestasErrorCode;2931;Turbine;[2931] - Gear Oil Level Low: Main;1;1;DEV_UN;Gearbox;Auto long;11;;-1
+V80VestasErrorCode;868;Turbine;[868] - Gear temp, Diff;1;1;DEV_UN;Temperature;Auto short;11;;-1
+V80VestasErrorCode;2929;Turbine;[2929] - GearboxOilLevelHigh:Main;1;1;DEV_UN;Gearbox;Auto long;11;;-1
+V80VestasErrorCode;3363;Turbine;[3363] - GearDerate Time;1;1;DEV_UN;Gearbox;Remote;1;;-1
+V80VestasErrorCode;3364;Turbine;[3364] - GearHS A Temp High Derate;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;3365;Turbine;[3365] - GearHS B Temp High Derate;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;3366;Turbine;[3366] - GearHS C Temp High Derate;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;2987;Turbine;[2987] - GearHydWaterPumpThermoError;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;3352;Turbine;[3352] - GearLubr StartPressLow;1;1;DEV_UN;Gearbox;Remote;1;;-1
+V80VestasErrorCode;3353;Turbine;[3353] - GearLubr StartPressLow;1;1;DEV_UN;Gearbox;Remote;1;;-1
+V80VestasErrorCode;2934;Turbine;[2934] - GearOilInletPressLow;1;1;DEV_UN;Gearbox;Auto long;11;;-1
+V80VestasErrorCode;2933;Turbine;[2933] - GearOilTempHigh;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;157;Turbine;[157] - Gen, RPM OpSt;1;1;DEV_UN;Generator;Remote;1;;-1
+V80VestasErrorCode;3362;Turbine;[3362] - GenBearTempDerate;1;1;DEV_UN;Temperature;Auto short;11;;-1
+V80VestasErrorCode;677;User;[677] - Generatorbreaker open;1;1;DEV_UN;Generator;Remote;1;;-1
+V80VestasErrorCode;2952;Turbine;[2952] - GenHighBearTemp;1;1;DEV_UN;Temperature;Auto short;11;;-1
+V80VestasErrorCode;2950;Turbine;[2950] - GenHighPhaseTemp;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;2951;Turbine;[2951] - GenLowBearTemp;1;1;DEV_UN;Temperature;Auto short;11;;-1
+V80VestasErrorCode;2949;Turbine;[2949] - GenLowPhaseTemp;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;3361;Turbine;[3361] - GenPhase Derate time;1;1;DEV_UN;Generator;Remote;1;;-1
+V80VestasErrorCode;803;Turbine;[803] - GenRpm error measurem,;1;1;DEV_UN;Generator;Remote;1;;-1
+V80VestasErrorCode;3462;Turbine;[3462] - GenSideBreaker Err ModuleID;1;1;DEV_UN;Generator;Auto short;11;;-1
+V80VestasErrorCode;3470;Turbine;[3470] - GenSideBreakResetErr Module;1;1;DEV_UN;Generator;Remote;1;;-1
+V80VestasErrorCode;3467;Turbine;[3467] - GenSideBreakTripped ModuleID;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;97;Turbine;[97] - Gnd err, Address;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;3001;Turbine;[3001] - GndPanelTempHigh;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;3002;Turbine;[3002] - GndPanelTempLow;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;989;Grid;[989] - Grid freq above frequency where the turbine is;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;327;Turbine;[327] - Grid inv, HW error L;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;3141;Turbine;[3141] - HighILSC PhNr, MaxLSCCurr;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3224;Turbine;[3224] - HighTemp DCChop;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;3225;Turbine;[3225] - HighTempGridChoke1;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;3226;Turbine;[3226] - HighTempGridChoke2;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;3223;Turbine;[3223] - HighTempLSC IGBT;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;3222;Turbine;[3222] - HighTempMSC IGBT;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;3253;Turbine;[3253] - HighTempPwrStopRes;1;1;DEV_UN;Temperature;Remote;1;;-1
+V80VestasErrorCode;3450;Turbine;[3450] - HighVoltageRoom SPDFuseL1Blown;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;3451;Turbine;[3451] - HighVoltageRoom SPDFuseL2Blown;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;3452;Turbine;[3452] - HighVoltageRoom SPDFuseL3Blown;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;718;Turbine;[718] - Hoist failure - max gen, Rpm;1;1;DEV_UN;Generator;Not to be acknowledged;1;;-1
+V80VestasErrorCode;716;Turbine;[716] - Hoist failure -low brake press;1;1;DEV_UN;Brake_system;Not to be acknowledged;1;;-1
+V80VestasErrorCode;1008;Turbine;[1008] - Pause;1;1;DEV_SC;Other;;11;;-1
+V80VestasErrorCode;1011;Turbine;[1011] - Stop;1;1;DEV_SC;Other;Auto long;11;;-1
+V80VestasErrorCode;1010;Turbine;[1010] - Stop;1;1;DEV_SC;Other;Auto long;11;;-1
+V80VestasErrorCode;1009;Turbine;[1009] - Stop;1;1;DEV_SC;Other;Auto short;11;;-1
+V80VestasErrorCode;731;No error;[731] - EMC pitchAccu failed;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;603;Turbine;[603] - 3218 - bin File missing;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;191;Turbine;[191] - A Ctrl P Vel;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;192;Turbine;[192] - A CtrlV STD;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;705;Turbine;[705] - Ch High IGBT load C;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;704;Turbine;[704] - Ch High res - load C;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;3463;Turbine;[3463] - ChargeContactor Err ModuleID;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;156;Turbine;[156] - Chock sensor trigged;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3468;Turbine;[3468] - ChoperRes MaxLoad EstTemp;1;1;DEV_UN;Temperature;Auto short;11;;-1
+V80VestasErrorCode;598;Turbine;[598] - Circuit breaker open;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;653;Turbine;[653] - CL VMP Timeout;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;579;Turbine;[579] - CL - time exceeded;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;864;Turbine;[864] - Cmd scan suspended;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;3107;Turbine;[3107] - CMSGearVibr1TooHigh;1;1;DEV_UN;Vibration;Local;1;;-1
+V80VestasErrorCode;3108;Turbine;[3108] - CMSGearVibr2TooHigh;1;1;DEV_UN;Vibration;Local;1;;-1
+V80VestasErrorCode;3109;Turbine;[3109] - CMSGearVibr3TooHigh;1;1;DEV_UN;Vibration;Local;1;;-1
+V80VestasErrorCode;3110;Turbine;[3110] - CMSGearVibr4TooHigh;1;1;DEV_UN;Vibration;Local;1;;-1
+V80VestasErrorCode;3111;Turbine;[3111] - CMSGearVibr5TooHigh;1;1;DEV_UN;Vibration;Local;1;;-1
+V80VestasErrorCode;3112;Turbine;[3112] - CMSGearVibr6TooHigh;1;1;DEV_UN;Vibration;Local;1;;-1
+V80VestasErrorCode;3113;Turbine;[3113] - CMSGearVibr7TooHigh;1;1;DEV_UN;Vibration;Local;1;;-1
+V80VestasErrorCode;3116;Turbine;[3116] - CMSGenerVibr1TooHigh;1;1;DEV_UN;Vibration;Local;1;;-1
+V80VestasErrorCode;3117;Turbine;[3117] - CMSGenerVibr2TooHigh;1;1;DEV_UN;Vibration;Local;1;;-1
+V80VestasErrorCode;3119;Turbine;[3119] - CMSMainBearVibrTooHigh;1;1;DEV_UN;Vibration;Local;1;;-1
+V80VestasErrorCode;750;Turbine;[750] - Coldboot parameters lost;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;95;Turbine;[95] - Com err: Address;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;625;Turbine;[625] - Command to VCMS failed;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3191;Turbine;[3191] - Common accu failed test;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;3187;Turbine;[3187] - Common EMC Valve Fail;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;1;Turbine;[1] - Conflict: Rack/Turbinetype;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;317;Turbine;[317] - Feedback r: failed;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;316;Turbine;[316] - Feedback s: failed;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;3460;Turbine;[3460] - ConvPanel Humidity Err;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;2863;Turbine;[2863] - ConvWaterCoolPressLow;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;96;Turbine;[96] - Crash;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;628;Turbine;[628] - CRC/Timeout error to RCC;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;3315;Turbine;[3315] - Critical Pitch Ref - Blade A;1;1;DEV_UN;Blade;Remote;1;;-1
+V80VestasErrorCode;3318;Turbine;[3318] - Critical Pitch Ref - Blade Avg;1;1;DEV_UN;Blade;Remote;1;;-1
+V80VestasErrorCode;3316;Turbine;[3316] - Critical Pitch Ref - Blade B;1;1;DEV_UN;Blade;Remote;1;;-1
+V80VestasErrorCode;3317;Turbine;[3317] - Critical Pitch Ref - Blade C;1;1;DEV_UN;Blade;Remote;1;;-1
+V80VestasErrorCode;47;Turbine;[47] - CT 3218 data error;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;46;User;[46] - CT illegal version;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;679;Turbine;[679] - CT316 driver fail;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;7;Turbine;[7] - CT3218 initialization error;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;8;Turbine;[8] - CT3220 initial - error pos;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;424;Turbine;[424] - CT3223 init error;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;10;Turbine;[10] - CT3232 initialization error;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;410;Turbine;[410] - CT3234 init error;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;291;Turbine;[291] - CT3251 OpSt - change timeout;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;3186;Turbine;[3186] - CTStopReached:Code;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;577;Turbine;[577] - Current Limiter Feedback error;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;582;Turbine;[582] - Current Limiter Run Error;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;581;Turbine;[581] - Current Limiter temp - high R;1;1;DEV_UN;Temperature;Local;1;;-1
+V80VestasErrorCode;652;Turbine;[652] - Current Limiter temp - high Thy;1;1;DEV_UN;Temperature;Local;1;;-1
+V80VestasErrorCode;583;Turbine;[583] - Current Limiter Timeout;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;901;Turbine;[901] - DC Overvolt stop;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;331;Turbine;[331] - DC Undervoltage;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;3148;Turbine;[3148] - DCChopperHWErr ConvModule;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3149;Turbine;[3149] - DCChopperHWErrInfo ConvMod;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3143;Turbine;[3143] - DCLink PrechTimeout;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3145;Turbine;[3145] - DCLink PreDiscTimeout;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3471;Turbine;[3471] - DCLinkContOpenFailed Module;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3259;Turbine;[3259] - DCLinkFuseBlownOnPSC Module;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3455;Ambient;[3455] - DeIce Heater Group Fault;1;1;DEV_UN;Ice;Remote;1;;-1
+V80VestasErrorCode;3456;Turbine;[3456] - DeIce Relay Contact Err;1;1;DEV_UN;Ice;Remote;1;;-1
+V80VestasErrorCode;53;Turbine;[53] - Error in CT3232;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;859;Turbine;[859] - Error in Param: def, Parser;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;863;Turbine;[863] - Error in Param: Value parser;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;858;Turbine;[858] - Error in ParameterDef File;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;862;Turbine;[862] - Error in ParameterValue File;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;176;Turbine;[176] - Error on all wind sensors;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;377;Turbine;[377] - Error on US: change to 0/90;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;25;Turbine;[25] - Error Parameter Checksum;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;213;Turbine;[213] - Error temp, sensor R blade;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;212;Turbine;[212] - Error temp, sensor R;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;179;Turbine;[179] - Error: yawcontrol;1;1;DEV_UN;Yaw_system;Remote;1;;-1
+V80VestasErrorCode;428;Turbine;[428] - Event in ConvCtrl state;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;24;Turbine;[24] - Event timer not initialized;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;315;Grid;[315] - ExEx low voltage L;1;1;GRID;Electrical;Auto long;11;;-1
+V80VestasErrorCode;1001;Turbine;[1001] - Ext Yaw Alarm Ignored Stat;1;1;DEV_UN;Yaw_system;Local;1;;-1
+V80VestasErrorCode;741;Turbine;[741] - Ext, 24V persistent in Hub;1;1;DEV_UN;Hub;Local;1;;-1
+V80VestasErrorCode;336;Turbine;[336] - Ext, High cur, Grid inv, L;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;330;Turbine;[330] - Ext, high DC voltage;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;323;Turbine;[323] - Ext, high temp, Ginv, L;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;321;Turbine;[321] - Ext, high temp, Rinv, L;1;1;DEV_UN;Temperature;Auto long;11;;-1
+V80VestasErrorCode;332;Turbine;[332] - Ext, low DC voltage;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;159;Turbine;[159] - Ext, RPM guard;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;999;Turbine;[999] - Extended Yaw On/Off Status;1;1;DEV_UN;Yaw_system;Auto short;11;;-1
+V80VestasErrorCode;187;Turbine;[187] - External 24 V power supply;1;1;DEV_UN;Electrical;Auto short;11;;-1
+V80VestasErrorCode;188;Turbine;[188] - External 24 V power supply eq,;1;1;DEV_UN;Electrical;Local;1;;-1
+V80VestasErrorCode;889;Turbine;[889] - External RPM not Reset;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;335;Turbine;[335] - ExtHighIRotorInv phase;1;1;DEV_UN;Rotor;Auto short;11;;-1
+V80VestasErrorCode;3162;Turbine;[3162] - ExtLSC, ConMod InsGridCurr;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;3163;Turbine;[3163] - ExtLSCInfo: PhNr, Par2;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;3160;Turbine;[3160] - ExtMSC: ConMod, InsGenCurr;1;1;DEV_UN;Generator;Remote;1;;-1
+V80VestasErrorCode;3198;Turbine;[3198] - Accu A failed in test;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;3199;Turbine;[3199] - Accu B failed in test;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;3200;Turbine;[3200] - Accu C failed in test;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;3157;Turbine;[3157] - Actual Level;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;876;Turbine;[876] - AGO timeout state;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;313;Ambient;[313] - Ambient temperature high;1;1;ENV;Temperature;Auto short no count;11;;-1
+V80VestasErrorCode;146;Ambient;[146] - Ambient temperature low;1;1;ENV;Temperature;Auto short no count;11;;-1
+V80VestasErrorCode;118;Turbine;[118] - Anemom error;1;1;ENV;Anemometer;Remote;1;;-1
+V80VestasErrorCode;117;Turbine;[117] - Anemom error;1;1;ENV;Anemometer;Auto long;11;;-1
+V80VestasErrorCode;931;Turbine;[931] - Arc detected in trafo room;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;57;Turbine;[57] - ArcNet reconfiguration;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;3024;Turbine;[3024] - ArcNetReconfigMaxLimit;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;136;Grid;[136] - Asym currL1;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;137;Grid;[137] - Asym currL2;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;138;Grid;[138] - Asym currL3;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;139;Grid;[139] - Asym voltL1;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;140;Grid;[140] - Asym voltL2;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;141;Grid;[141] - Asym voltL3;1;1;DEV_UN;Electrical;Auto long;11;;-1
+V80VestasErrorCode;752;Turbine;[752] - Automatic reestablish failed;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;753;Turbine;[753] - Automatic reestablish OK;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;2668;Turbine;[2668] - AuxTransformer Temp High;1;1;DEV_UN;Transformer;Auto short;11;;-1
+V80VestasErrorCode;83;Turbine;[83] - B Ctrl P Vel;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;85;Turbine;[85] - B CtrlV STD;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;35;Turbine;[35] - Bad ArcNet sub address;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;34;Turbine;[34] - Bad telegram xmit format;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;733;No error;[733] - Blade EMC pitchSystem Err;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;940;Turbine;[940] - Blade bearing Act;1;1;DEV_UN;Bearing;Local;1;;-1
+V80VestasErrorCode;939;Turbine;[939] - Blade bearing;1;1;DEV_UN;Bearing;Local;1;;-1
+V80VestasErrorCode;3368;Turbine;[3368] - Blade root load exceed limit;1;1;DEV_UN;Blade;Remote;1;;-1
+V80VestasErrorCode;3257;Turbine;[3257] - Boot Failure PSC Module;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;2876;Turbine;[2876] - BrakeAccPressLowManInNac;1;1;DEV_UN;Brake_system;Remote;1;;-1
+V80VestasErrorCode;2869;Turbine;[2869] - BrakeApplyPressureLow;1;1;DEV_UN;Brake_system;Remote;1;;-1
+V80VestasErrorCode;3045;Turbine;[3045] - BrakeApplyValve1ErrPress;1;1;DEV_UN;Brake_system;Local;1;;-1
+V80VestasErrorCode;3048;Turbine;[3048] - BrakeApplyValve2ErrPress;1;1;DEV_UN;Brake_system;Local;1;;-1
+V80VestasErrorCode;3046;Turbine;[3046] - BrakeDrainValveFailed;1;1;DEV_UN;Brake_system;Local;1;;-1
+V80VestasErrorCode;2878;Turbine;[2878] - BrakeHotHighBrakePress;1;1;DEV_UN;Brake_system;Remote;1;;-1
+V80VestasErrorCode;2877;Turbine;[2877] - BrakeHotLowBrakePressure;1;1;DEV_UN;Brake_system;Remote;1;;-1
+V80VestasErrorCode;2871;Turbine;[2871] - BrakeReleasedPressTooHigh;1;1;DEV_UN;Brake_system;Remote;1;;-1
+V80VestasErrorCode;3264;Turbine;[3264] - BreakerTrip;1;1;DEV_UN;Electrical;Remote;1;;-1
+V80VestasErrorCode;616;Turbine;[616] - Bypass miss before phasecomp;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;676;Turbine;[676] - Bypass missing before gen;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;2858;Turbine;[2858] - BypsPressTooHigh;1;1;DEV_UN;Other;Local;1;;-1
+V80VestasErrorCode;84;Turbine;[84] - C Ctrl P Vel;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;86;Turbine;[86] - C CtrlV STD;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;3371;Turbine;[3371] - CableTwistSens Fail;1;1;DEV_UN;Cable_untwist;Remote;1;;-1
+V80VestasErrorCode;696;Turbine;[696] - CAN API error;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;698;Turbine;[698] - CAN emergency error;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;697;Turbine;[697] - CAN SDO error;1;1;DEV_UN;Other;Remote;1;;-1
+V80VestasErrorCode;318;Turbine;[318] - Cannot syncronize RPM;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;707;Turbine;[707] - Ch hardware error C;1;1;DEV_UN;Other;Auto short;11;;-1
+V80VestasErrorCode;264;No error;[264] - VCPMSystemState reset by user;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;394;No error;[394] - VCS external vent, OFF;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;393;No error;[393] - VCS external vent, ON;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;392;No error;[392] - VCS int, fan OFF;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;391;No error;[391] - VCS int, fan ON;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;388;No error;[388] - VCS water pump OFF;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;387;No error;[387] - VCS water pump ON;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;290;No error;[290] - VDF data lost Code;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;295;No error;[295] - VMP halted: Program upload;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;360;No error;[360] - Warning log reestablished;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;434;No error;[434] - Warninglog reset by user;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;233;No error;[233] - WATCHDOG trigging disabled;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;247;No error;[247] - Wind derate to;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;265;No error;[265] - Wind Gen;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;979;No error;[979] - Yaw direction incorrect;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;938;No error;[938] - Yaw direction incorrect;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;978;No error;[978] - Yaw Speed Exc;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;280;No error;[280] - Yawcontr;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;282;No error;[282] - Yawing manually stopped;0;0;DEV_SC;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;977;No error;[977] - YawSpeedFault;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;396;No error;[396] - IGBT fan OFF;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;395;No error;[395] - IGBT fan ON;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;390;No error;[390] - IGBT pump OFFTop;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;389;No error;[389] - IGBT pump ON Top;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;873;No error;[873] - Instable CtrlState operation;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;606;No error;[606] - Item Updated by user;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;955;No error;[955] - Key switch: Local/Remote;0;0;DEV_SC;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;869;No error;[869] - Prepare Reconnecttimeout;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;854;No error;[854] - Puls Pause off;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;853;No error;[853] - Puls Pause on;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;587;No error;[587] - Q16 Close via RCS;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;585;No error;[585] - Q7 Close via RCS;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;586;No error;[586] - Q8 Close via RCS;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;641;No error;[641] - RCC upload;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;403;No error;[403] - RCS disconnected due to;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;404;No error;[404] - RCS reconnected;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;442;No error;[442] - Remote power setpoint kW;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;834;No error;[834] - Remote service panel free;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;832;No error;[832] - Remote service panel taken;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;1018;Turbine;[1018] - Remote:SERVICE state;0;0;DEV_SC;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;231;No error;[231] - Restart not possible;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;597;No error;[597] - Reverse Yaw;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;709;No error;[709] - RT Ext, High Rot, Cur, L;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;708;No error;[708] - RT High Rotor Current L;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;711;No error;[711] - RT Number LastRT times;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;710;No error;[710] - RT Rotor HW Error L;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;835;No error;[835] - RT UnexpAGO2Event CS;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;797;No error;[797] - RT NotReady during nextmin,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;225;No error;[225] - Run;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;310;No error;[310] - Run over RCS;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;872;No error;[872] - Running up timeout;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;382;No error;[382] - SlipR ext, Fan;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;881;No error;[881] - SSL Max - pitch vel;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;879;No error;[879] - SSL Power;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;880;No error;[880] - SSL RPMto <200;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;878;No error;[878] - SSL Time to Gen, Disc,;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;288;No error;[288] - Standby heating;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;278;No error;[278] - Start autoyawing CCW;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;277;No error;[277] - Start autoyawing CW;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;257;No error;[257] - Start hydr, Motor;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;281;No error;[281] - Start manual yawing CCW;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;283;No error;[283] - Start manual yawing CW;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;223;No error;[223] - Stop;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;284;No error;[284] - Stop auto-outyawing;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;279;No error;[279] - Stop autoyawing;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;667;No error;[667] - Stop error during thyr, firing;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;258;No error;[258] - Stop hydr, Motor;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;608;No error;[608] - STOP through RCS;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;285;No error;[285] - Stop yawing at twiststop(S104);0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;228;No error;[228] - SysState;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;308;No error;[308] - System log reestablished;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;742;No error;[742] - Test;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;671;No error;[671] - Thyristor firing interrupted;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;670;No error;[670] - Thyristors stopped;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;806;No error;[806] - Time changed more than sec;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;59;No error;[59] - Top fan;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;263;No error;[263] - TopSystemState reset by user;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;640;No error;[640] - Unknown RCC log message;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;591;No error;[591] - User access denied;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;588;No error;[588] - User primary access;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;408;No error;[408] - User defined alarm 1;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;409;User;[409] - User defined alarm 2;0;0;OTH;Other;Remote;0;;-1
+V80VestasErrorCode;248;No error;[248] - User power setpoint;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;888;No error;[888] - UTC time changed;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;273;No error;[273] - E Wind Nac, Dir;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;746;No error;[746] - EMC Pitch Accu Test Aborted;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;745;No error;[745] - EMC Pitch Accu Test Blade;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;747;No error;[747] - EMC Pitch Accu Test Failed;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;743;No error;[743] - EMC Pitch Accu Test Started;0;0;OTH;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;744;No error;[744] - EMC Pitch Accu Test Stopped;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;222;No error;[222] - Emergency RPM;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;906;No error;[906] - EMF accu fail: 5Z01 axis;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;675;No error;[675] - End motorstart Gen;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;673;No error;[673] - End thyristor test Gen;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;615;No error;[615] - Err Rem, Ack by user;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;235;No error;[235] - Errorckd: over RCS;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;236;No error;[236] - Errorcknowledged manual;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;221;No error;[221] - ERROR;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;425;No error;[425] - Event in ConvCtrl state;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;426;No error;[426] - Event in KxxCtrl state;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;427;No error;[427] - Event in StDlCtrl state;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;1002;No error;[1002] - Extended Yaw Current Status;0;0;DEV_UN;Other;Auto short;0;;-1
+V80VestasErrorCode;830;No error;[830] - External power ref,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;749;Turbine;[749] - Extra info;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;738;No error;[738] - F60 closed;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;740;No error;[740] - Fog horn active;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;739;No error;[739] - Fog horn inactive;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;293;No error;[293] - Frequency controller started;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;294;No error;[294] - Frequency controller stopped;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;94;No error;[94] - Frequency reg;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;292;No error;[292] - GearoilCooler;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;289;No error;[289] - Gearoilheater;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;383;No error;[383] - Gen SlipR, Fan;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;405;No error;[405] - Gen SlipR, Heat;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;67;No error;[67] - Gen, ext, vent,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;69;No error;[69] - Gen int, vent,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;870;No error;[870] - Gen Speed Control Connect;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;114;No error;[114] - Generator in;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;115;No error;[115] - Generator out;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;262;No error;[262] - GndSystemState reset by user;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;568;No error;[568] - Gridbreaker 1 closed;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;571;No error;[571] - Gridbreaker 1 grounded;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;570;No error;[570] - Gridbreaker 1 open;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;573;No error;[573] - Gridbreaker 2 closed;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;576;No error;[576] - Gridbreaker 2 grounded;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;575;No error;[575] - Gridbreaker 2 open;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;720;No error;[720] - Gridbreaker 3 closed;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;722;No error;[722] - Gridbreaker 3 open;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;909;No error;[909] - Heating slipring timeSec;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;246;No error;[246] - High voltage;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;596;No error;[596] - Hoist mode active;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;437;No error;[437] - Hot bearing;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;244;No error;[244] - Hot gear;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;243;No error;[243] - Hot generator;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;954;No error;[954] - Key switch: Remote control;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;220;No error;[220] - Local:SERVICE state;0;0;DEV_SC;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;260;No error;[260] - Log reset by user;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;871;No error;[871] - LSO Timeout State;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;833;No error;[833] - Main WS switch;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;255;No error;[255] - Manual;0;0;DEV_SC;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;234;No error;[234] - Miss, error ack before restart;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;827;No error;[827] - Nac Heaters;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;270;No error;[270] - Nac: vent, 0;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;271;No error;[271] - Nac: vent, 1;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;272;No error;[272] - Nac: vent, 2;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;274;No error;[274] - Nac: vent, 3;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;70;No error;[70] - Nacelle position reset;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;592;No error;[592] - New global account;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;593;No error;[593] - New local account;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;433;No error;[433] - Noise setting changed to;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;988;No error;[988] - NRMS NoiseMode: ClockHour;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;949;No error;[949] - NRMS NoiseMode: Dir;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;947;No error;[947] - NRMS NoiseMode: HourPeriod;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;948;No error;[948] - NRMS NoiseMode: Wind;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;950;No error;[950] - NRMS NoiseMode: 0 Deactivated;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;402;No error;[402] - NRMS sector;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;590;No error;[590] - Obsolete;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;724;No error;[724] - Obsolete;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;723;No error;[723] - Obsolete;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;589;No error;[589] - Obsolete;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;569;No error;[569] - Open Gridbreaker 1;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;574;No error;[574] - Open Gridbreaker 2;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;721;No error;[721] - Open Gridbreaker 3;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;306;No error;[306] - Operation log reestablished;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;354;No error;[354] - Par, set to rem,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;229;No error;[229] - Parameter set to;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;224;No error;[224] - Pause RPM;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;799;No error;[799] - Pcomp: dis, avr step;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;624;No error;[624] - Pcomp: dis, avr step;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;800;No error;[800] - Pcomp: dis, Step;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;890;Turbine;[890] - Peak Gen, RPM Rot,;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;361;No error;[361] - Pending warning in log;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;798;No error;[798] - Phasecomp temp, Disc,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;622;No error;[622] - Phasecomp temp, disconn,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;620;No error;[620] - Phasecomp In;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;621;No error;[621] - Phasecomp Out;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;802;No error;[802] - Pitch Lubricate Motion;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;266;No error;[266] - Pitch;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;269;No error;[269] - Pitchtest nr,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;268;No error;[268] - Pitchtest nr, Param,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;1013;Turbine;[1013] - PlantCtrl ConLostMode;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;227;No error;[227] - Power cutin;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;226;No error;[226] - Power cutout;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;232;No error;[232] - Power up after System error;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;2959;Turbine;[2959] - UPS DC Power Supply Missing;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;2957;Turbine;[2957] - UPS DC1 Battery Error;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;2960;Turbine;[2960] - UPS DC1 Error;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;2958;Turbine;[2958] - UPS DC2 Battery Error;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;2961;Turbine;[2961] - UPS DC2 Error;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;664;Turbine;[664] - VCMS: historic DB disabled;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;478;Turbine;[478] - VCMS: Net error;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;809;Turbine;[809] - VCMS: nodes not responding;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;549;Turbine;[549] - VCMS: Element warn, bearing;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;491;Turbine;[491] - VCMS:FEW11 A=2;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;490;Turbine;[490] - VCMS:FEW11;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;500;Turbine;[500] - VCMS:FEW12 A=2;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;499;Turbine;[499] - VCMS:FEW12;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;509;Turbine;[509] - VCMS:FEW13 A=2;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;508;Turbine;[508] - VCMS:FEW13;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;518;Turbine;[518] - VCMS:FEW14 A=2;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;517;Turbine;[517] - VCMS:FEW14;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;527;Turbine;[527] - VCMS:FEW15 A=2;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;526;Turbine;[526] - VCMS:FEW15;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;536;Turbine;[536] - VCMS:FEW31 A=2;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;535;Turbine;[535] - VCMS:FEW31;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;545;Turbine;[545] - VCMS:FEW32 A=2;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;544;Turbine;[544] - VCMS:FEW32;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;767;Turbine;[767] - VCMS:FEW51 A=2;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;766;Turbine;[766] - VCMS:FEW51;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;777;Turbine;[777] - VCMS:FEW52 A=2;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;776;Turbine;[776] - VCMS:FEW52;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;787;Turbine;[787] - VCMS:FEW53 A=2;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;786;Turbine;[786] - VCMS:FEW53;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;810;Turbine;[810] - VCMS:Net jammed;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;805;Turbine;[805] - VCMS:Node defect;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;792;Turbine;[792] - VCMS:Node overload error;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;482;Turbine;[482] - VCMS: Node Acc, Low level;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;485;Turbine;[485] - VCMS:Node Alarm Temp;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;480;Turbine;[480] - VCMS: Node Comm, Error;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;847;No error;[847] - VCS/VCRS dummy warn4;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;848;No error;[848] - VCS/VCRS dummy warn5;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;419;User;[419] - VDI Transmit resource Low;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;946;No error;[946] - VOG Test timed out;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;601;No error;[601] - Wind estimate dev,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;953;Ambient;[953] - Wind Speed Out of Range;0;0;ENV;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;866;Turbine;[866] - WS1 checksum err,;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;991;Ambient;[991] - WS1 Const, Wind Dir,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;990;Ambient;[990] - WS1 Const, Wind Speed;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;355;Turbine;[355] - WS1 Dir Frozen;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;380;Turbine;[380] - WS1 invalid data;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;381;Turbine;[381] - WS1 timeout err,;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;867;Turbine;[867] - WS2 checksum err,;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;993;Ambient;[993] - WS2 Const, Wind Dir,;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;992;Ambient;[992] - WS2 Const, Wind Speed;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;865;Turbine;[865] - WS2 Dir Frozen;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;412;Turbine;[412] - WS2 invalid data;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;413;Turbine;[413] - WS2 timeout err,;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;197;No error;[197] - Yaw activity not detected;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;958;No error;[958] - Yaw Lubrication Failed;0;0;DEV_UN;Other;Auto short;0;;-1
+V80VestasErrorCode;3277;Turbine;[3277] - Yaw Move Unexpected;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;198;No error;[198] - Yaw position is changed;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;980;Turbine;[980] - Yaw Position is changed;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3370;Turbine;[3370] - Yaw Pulse Missing;0;0;DEV_UN;Other;Remote;0;;-1
+V80VestasErrorCode;3220;Turbine;[3220] - Yaw Speed Low;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;3276;Turbine;[3276] - Yaw Wrong Direction;0;0;DEV_UN;Other;Local;0;;-1
+V80VestasErrorCode;924;No error;[924] - Accu test not completed;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;904;No error;[904] - Accumulator test done OK;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;307;No error;[307] - Alarm log reestablished;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;261;No error;[261] - Alarmlog reset by user;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;609;No error;[609] - Auto Yaw blocked;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;230;No error;[230] - Auto-restart aftersec;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;623;No error;[623] - Awaiting delay in phasecomp;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;941;No error;[941] - BBCM;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;423;Ambient;[423] - Blocking run nacelle;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;1015;No error;[1015] - Bus Bar Derating;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;238;No error;[238] - Busbarvent;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;712;No error;[712] - Ch active D;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;578;No error;[578] - CL active;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;737;No error;[737] - Close F60;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1
+V80VestasErrorCode;567;No error;[567] - Close Gridbreaker 1;0;0;DEV_UN;Other;Not to be acknowledged;0;;-1

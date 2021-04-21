@@ -9,16 +9,16 @@ using System.Reflection;
 namespace PltWindTurbine.Database.DatabaseConnection
 {
     public class ConnectionToDatabase  : DbContext
-    { 
-        public DbContextOptions<ConnectionToDatabase> Options { get; set; }
+    {
+        private static DbContextOptionsBuilder<ConnectionToDatabase> Options = new(); 
         private static readonly string PathDb = ConfigurationManager.AppSettings["configpath"];
         private static readonly string PathConfigMysql = ConfigurationManager.AppSettings["mysqlinfo"];  
         private static readonly object lockObject = new object();
         private ConnectionToDatabase() { }
-        private ConnectionToDatabase(DbContextOptions<ConnectionToDatabase> options) : base(options) => Options = options; 
+        private ConnectionToDatabase(DbContextOptions<ConnectionToDatabase> options) : base(options) { } 
         public static ConnectionToDatabase CreateSqliteConnection()
         { 
-            var contextOptions = new DbContextOptionsBuilder<ConnectionToDatabase>().UseSqlite(ConnectionStringSqlite()).Options; 
+            var contextOptions = Options.UseSqlite(ConnectionStringSqlite()).Options;
             return new ConnectionToDatabase(contextOptions);
         }
         public static ConnectionToDatabase CreateMysqlConnection()

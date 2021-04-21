@@ -183,7 +183,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
             var finalDt= ClearFinalValue(finalFrame.Select(values => {
                 indexDelete.ToList().ForEach(index => values.Value.RemoveAt(index));
                 return values;
-            }).ToDictionary(key=>key.Key,value=>value.Value));
+            }).ToDictionary(key=>key.Key,value=>value.Value.ToList()));
             var maxDate = finalDt.Values.First().Max(dateStr => ParserDateSpecificFormat(dateStr));
             var dictionary = new Dictionary<string,List<string>>();
             return DateTimeRange(new DateTime(2018, 6, 22, 00, 10, 00), maxDate, 10, finalDt).Aggregate(dictionary,(actual,next)=> {
@@ -231,11 +231,14 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                  RemoveSpecialCharacters(keyAndValue.Key).Contains(RemoveSpecialCharacters(name.ToSpecialString())) || keyAndValue.Key.StartsWith(SelectNameTurbine(name.ToSpecialString())));
                 if (nameTurbine is not null && !isEvent)
                 {      //ReconstructSerie
-                    return (Task.Run(() => ClearFinalValue(date.Concat(new Dictionary<string, List<string>>() { { "value", keyAndValue.Value } }).ToDictionary(values => values.Key, values => values.Value))), nameTurbine);
+                    Console.WriteLine("Clear");
+                    return (Task.Run(() => ClearFinalValue(date.Concat(new Dictionary<string, List<string>>() { { "value", keyAndValue.Value } }).ToDictionary(values => values.Key, values => values.Value.ToList()))), nameTurbine);
                 }
                 else if (nameTurbine is not null && isEvent)
-                { 
-                    return (Task.Run(() => ReconstructSeries(date.Concat(new Dictionary<string, List<string>>() { { "value", keyAndValue.Value } }).ToDictionary(values => values.Key, values => values.Value))), nameTurbine);
+                {
+
+                    Console.WriteLine("Reconstruct");
+                    return (Task.Run(() => ReconstructSeries(date.ToDictionary(key=>key.Key,value=>value.Value).Concat(new Dictionary<string, List<string>>() { { "value", keyAndValue.Value} }).ToDictionary(values => values.Key, values => values.Value.ToList()))), nameTurbine);
                 }
                 else
                 {
