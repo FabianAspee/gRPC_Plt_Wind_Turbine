@@ -1,300 +1,115 @@
-﻿using Google.Protobuf;
+﻿using ClientPltTurbine.Model.LoadFile.Contract;
+using ClientPltTurbine.Model.LoadFile.Implementation;
+using Google.Protobuf;
 using Grpc.Core;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using PltWindTurbine.Services.LoadFilesService;
+using Newtonsoft.Json.Linq; 
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Controllers.LoadFileController
 {
-    public class LoadFileController : BaseController, IAsyncDisposable, ILoadFileController
+    public class LoadFileController : BaseController, ILoadFileController
     {
-        private readonly LoadFiles.LoadFilesClient _clientReadBasicFiles;
-        private readonly AsyncDuplexStreamingCall<FileUploadRequest, FileUploadResponse> _duplexStreamReadBasicFiles;
-        private readonly AsyncDuplexStreamingCall<ReadInfoSensor, FileUploadResponse> _duplexStreamReadSensorFiles;
+        List<(string, string, int)> myList = new() { ("specifica_name_turbine.csv", ",", 1), ("name_sensor.csv", ",", 2), ("name_error_sensor.csv", ",", 3), ("Vestas Error Code List.csv", ";", 4) };
 
-        public LoadFileController()
+        public Task ReadBasicFiles()
         {
-            _clientReadBasicFiles = new LoadFiles.LoadFilesClient(channel);
-            _duplexStreamReadBasicFiles = _clientReadBasicFiles.LoadFilesInfoTurbine();
-            _duplexStreamReadSensorFiles = _clientReadBasicFiles.ReadSensor();
-            _ = HandleResponsesReadBasicFileAsync();
-            _ = HandleResponsesReadSensorFileAsync();
-        }
+            var myList = new List<(string, string, int)>() { ("specifica_name_turbine.csv", ",", 1), ("name_sensor.csv", ",", 2), ("name_error_sensor.csv", ",", 3), ("Vestas Error Code List.csv", ";", 4) };
+            var task = Directory.GetFiles("../ReadFillesAsDatatable/files/").ToList().Select((x) =>
+            {
+                if (myList.Exists(element => x.Contains(element.Item1)))
+                {
+                    var myitem = myList.First(name => x.Contains(name.Item1));
+                    var res = Task.Run(() => {
+                        //reading all the lines(rows) from the file.
+                        Console.WriteLine("Task {0} running on thread {1}",
+                                                  Task.CurrentId, Thread.CurrentThread.ManagedThreadId);
+                        string[] rows = File.ReadAllLines(x);
 
+                        DataTable rs = new();
+                        string[] rowValues = null;
+                        DataRow dr = rs.NewRow();
+
+                        //Creating columns
+                        if (rows.Length > 0)
+                        {
+                            foreach (string columnName in rows[0].Split(myitem.Item2))
+                                rs.Columns.Add(columnName);
+                        }
+
+                        //Creating row for each line.(except the first line, which contain column names)
+                        for (int row = 1; row < rows.Length; row++)
+                        {
+                            rowValues = rows[row].Split(myitem.Item2);
+                            dr = rs.NewRow();
+                            dr.ItemArray = rowValues;
+                            rs.Rows.Add(dr);
+                        }
+
+
+                        return (x, rs, myitem.Item3);
+                    });
+                    Console.WriteLine("ok2");
+                    return res;
+                }
+                return default;
+            }).Where(x => x != null).ToArray();
+            Task.WaitAll(task);
+            var final = task.ToList().Select(async (x) =>
+            {
+                ILoadFileModel loadFile = new LoadFileModel();
+                FileInfo fi = new(x.Result.x);
+                await loadFile.ProcessFileBasic(x.Result.rs, fi.Name, fi.Extension, "", x.Result.Item3);
+            }).ToArray();
+            Console.WriteLine("ok");
+            return final;
+        }
        
-        public ValueTask DisposeAsync()
+        public Task ReadSensorTurbine()
         {
-            throw new NotImplementedException();
-        }
-        private FileUploadRequest ConstructInfoTurbine(int dimension, int count, string name, string type, string sep, JObject rowAndColumn)
-        {
-            return new()
+            var task2 = Directory.GetFiles("../Resources/files/").ToList().Select((x) =>
             {
-                TotalDimension = dimension,
-                IsUpload = true,
-                Block = count,
-                Msg1 = new InfoTurbine
+                if (!myList.Exists(element => x.Contains(element.Item1)))
                 {
-                    File = new FileUploadRequestInfo
+                    return Task.Run(() =>
                     {
-                        Metadata = new MetaData { Name = name, Type = type },
-                        File = new File { Separator = sep, Content = ByteString.CopyFrom(Encoding.UTF8.GetBytes(rowAndColumn.ToString())) }
-                    },
-                    NameTable = "Wind_Turbine_Info"
-                }
-            };
-        }
-        private FileUploadRequest ConstructNameSensor(int dimension, int count, string name, string type, string sep, JObject rowAndColumn)
-        {
-            return new()
-            {
-                TotalDimension = dimension,
-                IsUpload = true,
-                Block = count,
-                Msg2 = new NameSensor
-                {
-                    File = new FileUploadRequestInfo
-                    {
-                        Metadata = new MetaData { Name = name, Type = type },
-                        File = new File { Separator = sep, Content = ByteString.CopyFrom(Encoding.UTF8.GetBytes(rowAndColumn.ToString())) }
-                    },
-                    NameTable = "Sensor_Info"
-                }
-            };
-        }
-        private FileUploadRequest ConstructNameErrorSensor(int dimension, int count, string name, string type, string sep, JObject rowAndColumn)
-        {
-            return new()
-            {
-                TotalDimension = dimension,
-                IsUpload = true,
-                Block = count,
-                Msg3 = new NameErrorSensor
-                {
-                    File = new FileUploadRequestInfo
-                    {
-                        Metadata = new MetaData { Name = name, Type = type },
-                        File = new File { Separator = sep, Content = ByteString.CopyFrom(Encoding.UTF8.GetBytes(rowAndColumn.ToString())) }
-                    },
-                    NameTable = "Error_Sensor"
-                }
-            };
-        }
-        private FileUploadRequest ConstructErrorCode(int dimension, int count, string name, string type, string sep, JObject rowAndColumn)
-        {
-            return new()
-            {
-                TotalDimension = dimension,
-                IsUpload = true,
-                Block = count,
-                Msg4 = new ErrorCode
-                {
-                    File = new FileUploadRequestInfo
-                    {
-                        Metadata = new MetaData { Name = name, Type = type },
-                        File = new File { Separator = sep, Content = ByteString.CopyFrom(Encoding.UTF8.GetBytes(rowAndColumn.ToString())) }
-                    },
-                    NameTable = "Error_Code"
-                }
-            };
-        }
+                        DataTable rs = new();
+                        Console.WriteLine("Task {0} running on thread {1}",
+                                                    Task.CurrentId, Thread.CurrentThread.ManagedThreadId);
+                        using var odConnection = new OleDbConnection($@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={x};Extended Properties='Excel 12.0;HDR=YES;IMEX=1;';");
 
-        private FileUploadRequest ConstructInfoTurbineFinal(string name, string type)
-        {
-            return new()
-            {
-                IsUpload = false,
-                Msg1 = new InfoTurbine
-                {
-                    File = new FileUploadRequestInfo
-                    {
-                        Metadata = new MetaData { Name = name, Type = type }
-                    }
+                        odConnection.Open();
+                        using OleDbCommand cmd = new();
+                        cmd.Connection = odConnection;
+                        cmd.CommandType = CommandType.Text;
+                        cmd.CommandText = "SELECT * FROM [Data Export$]";
+                        using OleDbDataAdapter oleda = new(cmd);
+                        {
+                            oleda.Fill(rs);
+                        }
+                        odConnection.Close();
+                        Console.WriteLine("ok2");
+                        return (x, rs);
+                    });
                 }
-            };
-        }
-        private FileUploadRequest ConstructNameSensorFinal(string name, string type)
-        {
-            return new()
-            {
-                IsUpload = false,
-                Msg2 = new NameSensor
-                {
-                    File = new FileUploadRequestInfo
-                    {
-                        Metadata = new MetaData { Name = name, Type = type }
-                    }
-                }
-            };
-        }
-        private FileUploadRequest ConstructNameErrorSensorFinal(string name, string type)
-        {
-            return new()
-            {
-                IsUpload = false,
-                Msg3 = new NameErrorSensor
-                {
-                    File = new FileUploadRequestInfo
-                    {
-                        Metadata = new MetaData { Name = name, Type = type }
-                    }
-                }
-            };
-        }
-        private FileUploadRequest ConstructErrorCodeFinal(string name, string type)
-        {
-            return new()
-            {
-                IsUpload = false,
-                Msg4 = new ErrorCode
-                {
-                    File = new FileUploadRequestInfo
-                    {
-                        Metadata = new MetaData { Name = name, Type = type }
-                    }
-                }
-            };
-        }
-        public Task ReadBasicFiles(DataTable file, string name, string type, string sep, int id)
-        {
-            return Task.Run(async () =>
-            {
-                Console.WriteLine(name);
-                var allColumn = file.Columns.OfType<DataColumn>().Select(x => x.ColumnName).ToList();
-                var count = 0;
-                var dimension = file.Rows.Count;
-                file.AsEnumerable().ToList().ForEach(x => {
-                    JArray jarray = new();
-                    JObject rowAndColumn = new();
-                    allColumn.ForEach(column => jarray.Add(column));
-                    rowAndColumn["Column"] = jarray;
-                    jarray = new();
-                    x.ItemArray.ToList().ForEach(row => jarray.Add(row));
-                    rowAndColumn["Row"] = jarray;
-                    FileUploadRequest fileUpload = id == 1 ? ConstructInfoTurbine(dimension, count, name, type, sep, rowAndColumn) : (id == 2 ? ConstructNameSensor(dimension, count, name, type, sep, rowAndColumn) :
-                    (id == 3 ? ConstructNameErrorSensor(dimension, count, name, type, sep, rowAndColumn) : (id == 4 ? ConstructErrorCode(dimension, count, name, type, sep, rowAndColumn) : throw new Exception())));
-                    _duplexStreamReadBasicFiles.RequestStream.WriteAsync(fileUpload).Wait();
-                    count++;
-                });
-                Console.WriteLine("ESTOY AQUI!");
-                FileUploadRequest fileUpload2 = id == 1 ? ConstructInfoTurbineFinal(name, type) : (id == 2 ? ConstructNameSensorFinal(name, type) :
-                    (id == 3 ? ConstructNameErrorSensorFinal(name, type) : (id == 4 ? ConstructErrorCodeFinal(name, type) : throw new Exception())));
-                await _duplexStreamReadBasicFiles.RequestStream.WriteAsync(fileUpload2);
-            });
-        }
-        private ReadInfoSensor ConstructSensor(int dimension, int count, string name, string type, string sep, JObject rowAndColumn)
-        {
-            return new()
-            {
-                TotalDimension = dimension,
-                IsUpload = true,
-                Block = count,
-                Msg1 = new ReadNormalSensor
-                { 
-                    Files = new FileUploadRequestInfo
-                    {
-                        Metadata = new MetaData { Name = name, Type = type },
-                        File = new File { Separator = sep, Content = ByteString.CopyFrom(Encoding.UTF8.GetBytes(rowAndColumn.ToString())) }
-                    }
-                }
-            };
-        }
-        private ReadInfoSensor ConstructSensorFinal(string name, string type)
-        {
-            return new()
-            {
-                IsUpload = false,
-                Msg1 = new ReadNormalSensor
-                {
-                    Files = new FileUploadRequestInfo
-                    {
-                        Metadata = new MetaData { Name = name, Type = type }
-                    }
-                }
-            };
-        }
-        private ReadInfoSensor ConstructEventSensor(int dimension, int count, string name, string type, string sep, JObject rowAndColumn)
-        {
-            return new()
-            {
-                TotalDimension = dimension,
-                IsUpload = true,
-                Block = count,
-                Msg2 = new ReadEventSensor
-                {
-                    Files = new FileUploadRequestInfo
-                    {
-                        Metadata = new MetaData { Name = name, Type = type },
-                        File = new File { Separator = sep, Content = ByteString.CopyFrom(Encoding.UTF8.GetBytes(rowAndColumn.ToString())) }
-                    }
-                }
-            };
-        }
-        private ReadInfoSensor ConstructEventSensorFinal(string name, string type)
-        {
-            return new()
-            {
-                IsUpload = false,
-                Msg2 = new ReadEventSensor
-                {
-                    Files = new FileUploadRequestInfo
-                    {
-                        Metadata = new MetaData { Name = name, Type = type }
-                    }
-                }
-            };
-        }
-        public Task ReadSensorTurbine(DataTable file, string name, string type, string sep, bool isEvent)
-        {
-            return Task.Run(async () =>
-            {
-                Console.WriteLine(name);
-                var allColumn = file.Columns.OfType<DataColumn>().Select(x => x.ColumnName).ToList();
-                var count = 0;
-                var dimension = file.Rows.Count;
-                file.AsEnumerable().ToList().ForEach(x => {
-                    JArray jarray = new();
-                    JObject rowAndColumn = new();
-                    allColumn.ForEach(column => jarray.Add(column));
-                    rowAndColumn["Column"] = jarray;
-                    jarray = new();
-                    x.ItemArray.ToList().ForEach(row => jarray.Add(row));
-                    rowAndColumn["Row"] = jarray;
-                    ReadInfoSensor fileUpload = !isEvent ? ConstructSensor(dimension, count, name, type, sep, rowAndColumn) : ConstructEventSensor(dimension, count, name, type, sep, rowAndColumn);
-                    _duplexStreamReadSensorFiles.RequestStream.WriteAsync(fileUpload).Wait();
-                    count++;
-                });
-                Console.WriteLine("ESTOY AQUI!");
-                ReadInfoSensor fileUpload2 = !isEvent? ConstructSensorFinal(name, type) :  ConstructEventSensorFinal(name, type) ;
-                await _duplexStreamReadSensorFiles.RequestStream.WriteAsync(fileUpload2);
-            });
-        }
-        private async Task HandleResponsesReadBasicFileAsync()
-        {
-            await foreach (var update in _duplexStreamReadBasicFiles.ResponseStream.ReadAllAsync())
-            {
-                Console.WriteLine($"name {update.Name} percent {update.Description} status {update.Status}");
-            }
-        }
-        private async Task HandleResponsesReadSensorFileAsync()
-        {
-            await foreach (var update in _duplexStreamReadSensorFiles.ResponseStream.ReadAllAsync())
-            {
-                Console.WriteLine($"name {update.Name} percent {update.Description} status {update.Status}");
-            }
-        }
-
-        public Task ReadAllFiles()
-        { 
-            Console.WriteLine("ReadAllFiles");
-            return Task.FromResult(1);
-        }
+                return default;
+            }).Where(x => x != null).ToList().Select(task =>
+                                task.ContinueWith(async value => {
+                                    ILoadFileModel loadFile = new LoadFileModel();
+                                    FileInfo fi = new(value.Result.x);
+                                    await loadFile.ReadSensorTurbine(value.Result.rs, fi.Name, fi.Extension, "", false);
+                                }, TaskContinuationOptions.OnlyOnRanToCompletion)).ToArray();
+            Console.WriteLine("ok");
+            Task.WaitAll(task2); 
+        } 
+         
     }
 }
 

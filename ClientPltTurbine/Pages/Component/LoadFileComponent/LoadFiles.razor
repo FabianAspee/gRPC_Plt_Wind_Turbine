@@ -1,0 +1,9 @@
+﻿@page "/loadfiles"
+
+@inject LoadFile LoadFile
+
+<h1>Load Files</h1>
+
+<p>Current count: @LoadFile.status</p>
+<button class="btn btn-primary" @onclick="LoadFile.LoadInfoTurbines">Load Info Turbines</button>
+<button class="btn btn-primary" @onclick="LoadFile.LoadSensorTurbines">Load Sensor Turbines</button>

@@ -1,6 +1,6 @@
 using ClientPltTurbine.Data;
-using ClientPltTurbine.Singleton.Contract;
-using ClientPltTurbine.Singleton.Implementation;
+using ClientPltTurbine.Pages.Component.GraphicComponent;
+using ClientPltTurbine.Pages.Component.LoadFileComponent;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,7 +28,8 @@ namespace ClientPltTurbine
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<LoadFile>();
-            services.AddSingleton<EventSingleton>();
+            services.AddSingleton<Graphic>(); 
+            services.AddSingleton<EventContainer.Implementation.EventContainer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
