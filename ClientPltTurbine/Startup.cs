@@ -2,6 +2,7 @@ using Blazored.Toast;
 using ClientPltTurbine.Data;
 using ClientPltTurbine.Pages.Component.GraphicComponent;
 using ClientPltTurbine.Pages.Component.LoadFileComponent;
+using ClientPltTurbine.Pages.Component.ModelPredictionComponent;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,7 +32,8 @@ namespace ClientPltTurbine
             services.AddBlazoredToast();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<LoadFile>();
-            services.AddSingleton<Graphic>(); 
+            services.AddSingleton<Graphic>();
+            services.AddSingleton<ModelPrediction>();
             services.AddSingleton<EventContainer.Implementation.EventContainer>();
         }
 

@@ -2,6 +2,7 @@
 using ClientPltTurbine.Pages.Component;
 using ClientPltTurbine.Pages.Component.LoadFileComponent.EventLoadFile;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
@@ -12,19 +13,14 @@ namespace ClientPltTurbine.EventContainer.Implementation
 {
     public class EventContainer : IEventContainer
     {
-        private readonly Dictionary<string, EventHandler<IEventComponent>> Events = new();
+        public ConcurrentDictionary<string, EventHandler<IEventComponent>> Events= new();
         private static readonly Lazy<EventContainer> container = new(() => new());
+        
         public static EventContainer Container => container.Value;
 
-        public Task AddEvent(EventKey key, EventHandler<IEventComponent> handler)
-        {
-            return Task.Run(() => Events.Add(key.ToString(), handler));
-        }
+        public async void AddEvent(EventKey key, EventHandler<IEventComponent> handler) => await Task.Run(() => Events.TryAdd(key.ToString(), handler)); 
 
-        public EventHandler<T> SelectEvent<T>(EventKey key)
-        {
-            var t =Events[key.ToString()] as EventHandler<T>;
-            return t;
-        }
+        public async Task<EventHandler<T>> SelectEvent<T>(EventKey key)=> await Task.FromResult(Events[key.ToString()] as EventHandler<T>); 
+        
     } 
 }

@@ -31,8 +31,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Model\" />
-    <Folder Include="Model\" />
     <Folder Include="Resources\CsvFile\EventFile\" />
   </ItemGroup>
   <ItemGroup>

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ClientPltTurbine.Controllers.GraphicController
+namespace ClientPltTurbine.Model.PredictionModel.Contract
 {
-    interface IGraphicController
+    interface IPredictionModel
     {
-        Task GraphAllTurbines();
     }
 }

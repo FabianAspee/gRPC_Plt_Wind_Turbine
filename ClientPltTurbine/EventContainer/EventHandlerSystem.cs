@@ -1,4 +1,5 @@
 ﻿using ClientPltTurbine.EventContainer.Contract;
+using ClientPltTurbine.Pages.Component;
 using ClientPltTurbine.Pages.Component.LoadFileComponent.EventLoadFile;
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,17 @@ namespace ClientPltTurbine.EventContainer
     {
 
         private readonly IEventContainer container = Implementation.EventContainer.Container;
-        public void SendEventLoadFile(string msg)
-        {
-            container.SelectEvent<LoadStatusRecord>(EventKey.LOAD_FILE_KEY).Invoke(this,new LoadStatusRecord(1,msg));
+        public async void SendEventLoadFile(string msg)
+        { 
+            await container.SelectEvent<IEventComponent>(EventKey.LOAD_FILE_KEY).ContinueWith(evento=>evento.Result.Invoke(this,new LoadStatusRecord(1,msg)));
         }
-        public void SendEventFinishLoadFile(string msg)
+        public async void SendEventFinishLoadFile(string msg)
         {
-            container.SelectEvent<LoadStatusRecord>(EventKey.LOAD_FILE_KEY).Invoke(this, new LoadStatusRecord(1, msg));
+            await container.SelectEvent<IEventComponent>(EventKey.LOAD_FILE_KEY).ContinueWith(evento => evento.Result.Invoke(this, new LoadStatusRecord(2, msg)));
+        }
+        public async void SendEventErrorLoadFile(string msg)
+        {
+            await container.SelectEvent<IEventComponent>(EventKey.LOAD_FILE_KEY).ContinueWith(evento => evento.Result.Invoke(this, new LoadStatusRecord(3, msg)));
         }
     }
 }

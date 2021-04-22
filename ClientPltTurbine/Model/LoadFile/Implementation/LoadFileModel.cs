@@ -60,7 +60,7 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
         }
 
         public Task ProcessFileBasic(DataTable file, string name, string type, string sep, int id)=>
-            Task.Run(async () =>
+            Task.Run(() =>
             { 
                 var allColumn = file.Columns.OfType<DataColumn>().Select(x => x.ColumnName).ToList();
                 var count = 0;
@@ -82,7 +82,7 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
                 FileUploadRequest fileUpload2 = id == 1 ? ConstructInfoTurbineFinal(name, type) : (id == 2 ? ConstructNameSensorFinal(name, type) :
                     (id == 3 ? ConstructNameErrorSensorFinal(name, type) : (id == 4 ? ConstructErrorCodeFinal(name, type) : throw new Exception())));
                 SendEventLoadFile($"Upload file is complete");
-                await _duplexStreamReadBasicFiles.RequestStream.WriteAsync(fileUpload2);
+                return _duplexStreamReadBasicFiles.RequestStream.WriteAsync(fileUpload2);
             }); 
 
         public Task<(string, DataTable)> LoadCsvFileSensor(string filePath) =>
@@ -110,7 +110,7 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
         }
 
         public Task ProcessSensorFile(DataTable file, string name, string type, string sep, bool isEvent) => 
-            Task.Run(async () =>
+            Task.Run(() =>
             {
                 Console.WriteLine(name);
                 var allColumn = file.Columns.OfType<DataColumn>().Select(x => x.ColumnName).ToList();
@@ -131,7 +131,7 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
                 }); 
                 ReadInfoSensor fileUpload2 = !isEvent ? ConstructSensorFinal(name, type) : ConstructEventSensorFinal(name, type);
                 SendEventLoadFile($"Upload file is complete");
-                await _duplexStreamReadSensorFiles.RequestStream.WriteAsync(fileUpload2);
+                return _duplexStreamReadSensorFiles.RequestStream.WriteAsync(fileUpload2);
             });
 
         private static bool ExistInCsv(string path) => System.IO.File.Exists(path);

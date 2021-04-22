@@ -9,5 +9,5 @@ namespace ClientPltTurbine.Pages.Component.LoadFileComponent.EventLoadFile
     {
         public event EventHandler<IEventComponent> LoadSatus;
     }
-    public record LoadStatusRecord(int TypeMsg, string Msg) : IEventComponent;
+    public record LoadStatusRecord(int TypeMsg, string Msg) : IEventComponent; 
 }

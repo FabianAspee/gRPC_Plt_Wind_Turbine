@@ -14,6 +14,6 @@
         LoadFile.Service = toastService;
         LoadFile.LoadSatus += async (sender, args) =>
                await LoadFile.WriteInfo(args);
-        await LoadFile.RegisterEvent();
+        await Task.Run(()=> LoadFile.RegisterEvent());
     }
 }

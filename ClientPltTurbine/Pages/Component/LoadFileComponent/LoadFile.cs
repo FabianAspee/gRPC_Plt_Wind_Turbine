@@ -17,14 +17,15 @@ namespace ClientPltTurbine.Pages.Component.LoadFileComponent
         public event EventHandler<IEventComponent> LoadSatus;
         private readonly LoadFileController Controller = new();
         private readonly IEventContainer container = EventContainer.Implementation.EventContainer.Container;
-        public async Task RegisterEvent()
+        public void RegisterEvent()
         {
-            await container.AddEvent(EventKey.LOAD_FILE_KEY, LoadSatus);
+            container.AddEvent(EventKey.LOAD_FILE_KEY, LoadSatus);
         }
         public Task WriteInfo(IEventComponent loadStatus) => loadStatus switch
         {
             LoadStatusRecord { Msg: _, TypeMsg: 1 } status => Task.Run(() => Service.ShowInfo(status.Msg)),
             LoadStatusRecord { Msg: _, TypeMsg: 2 } status => Task.Run(() => Service.ShowSuccess(status.Msg)),
+            LoadStatusRecord { Msg: _, TypeMsg: 3 } status => Task.Run(() => Service.ShowError(status.Msg)),
             _ => Task.Run(() => Service.ShowError("ERROR"))
         };
            
@@ -32,18 +33,25 @@ namespace ClientPltTurbine.Pages.Component.LoadFileComponent
         public async Task LoadInfoTurbines()
         {
             SendEventLoadFile("Start load basic file");
-            var allTask = Controller.ReadBasicFiles();
-            await Task.WhenAll(allTask);
+            try {
+
+                var allTask = Controller.ReadBasicFiles();
+                await Task.WhenAll(allTask);
+            }
+            catch(Exception e)
+            {
+                SendEventLoadFile(e.Message); 
+            }
              
         }
         public async Task LoadSensorTurbines()
         {
-            status = "Load Sensor Turbine!";
-            await Task.Run(() => {
-                SendEventLoadFile("Start load sensor file");
-                var allTask = Controller.ReadSensorTurbine();
-                Task.WaitAll(allTask.ToArray()); 
-            });  
+            status = "Load Sensor Turbine!"; 
+            SendEventLoadFile("Start load sensor file");
+            var allTask = Controller.ReadSensorTurbine();
+            await Task.WhenAll(allTask);
+            SendEventLoadFile("Start sssload sensor file"); 
+            status = "Finish Load Sensor Turbine!";
         }
         public async Task LoadEventSensorTurbines()
         {

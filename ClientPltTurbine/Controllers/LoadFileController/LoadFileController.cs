@@ -21,52 +21,75 @@ namespace ClientPltTurbine.Controllers.LoadFileController
         private static readonly List<(string, string, int)> myList = new() { ("specifica_name_turbine.csv", ",", 1), ("name_sensor.csv", ",", 2), ("name_error_sensor.csv", ",", 3), ("Vestas Error Code List.csv", ";", 4) };
         private static readonly List<string> sensors = new() { "Active_Power", "Nacelle_Dir", "Rotor_RPM", "Wind_Dir", "Wind_Speed", "Collarmele_K100", "Collarmele_K101" };
         private static readonly string eventsensor = "WTG_Event";
-        private bool IsCsv(string file)=> file.EndsWith(".csv"); 
-        public List<Task> ReadBasicFiles()=>
-            GetFileDirectory().ToList().Select((filePath) =>
-            { 
-                if (myList.Exists(element => filePath.Contains(element.Item1)))
+        private static bool IsCsv(string file)=> file.EndsWith(".csv"); 
+        public Task[] ReadBasicFiles()=>
+            GetFileDirectory().Select((filePath) =>
+            {  
+                FileInfo fi = new(filePath);
+                SendEventLoadFile($"Init load file {fi.Name}");
+                ILoadFileModel loadFile = new LoadFileModel();
+                if (IsCsv(filePath))
                 {
-                    FileInfo fi = new(filePath);
-                    SendEventLoadFile($"Init load file {fi.Name}");
-                    ILoadFileModel loadFile = new LoadFileModel();
-                    if (IsCsv(filePath))
-                    {
                         
-                        return (loadFile.LoadCsvFileBasic(filePath), loadFile);
+                    return (loadFile.LoadCsvFileBasic(filePath), loadFile);
                         
-                    }
-                    else
-                    {
-                        return (loadFile.LoadExcelFileBasic(filePath), loadFile);
-
-                    }
-                    
                 }
-                return default;
+                else
+                {
+                    return (loadFile.LoadExcelFileBasic(filePath), loadFile);
+
+                } 
             }).Where(x => x.Item1 != null && x.loadFile!=null).Select(task=> 
                 task.Item1.ContinueWith(result => {
                     var dt = result.Result;
                     FileInfo fi = new(dt.Item1);
                     SendEventLoadFile($"Send file {fi.Name} to server system");
                     task.loadFile.ProcessFileBasic(dt.Item2, fi.Name, fi.Extension, "", dt.Item3);
-                }, TaskContinuationOptions.OnlyOnRanToCompletion)).ToList();
+                }, TaskContinuationOptions.OnlyOnRanToCompletion)).ToArray();
 
-        private IEnumerable<string> GetFileDirectory(bool isEvent = false)
+       
+
+        public Task[] ReadSensorTurbine()=>
+            ReadFile().Where(x => x.Item1 != null && x.Item2!=null).Select(task =>
+                    task.Item1.ContinueWith(result => {
+                        var dt = result.Result;
+                        FileInfo fi = new(dt.Item1);
+                        SendEventLoadFile($"Send file {fi.Name} to server system");
+                        return task.Item2.ProcessSensorFile(dt.Item2, fi.Name, fi.Extension, "", false);
+                    }, TaskContinuationOptions.OnlyOnRanToCompletion)).ToArray();
+
+        public Task[] ReadEventSensorTurbine() =>
+             ReadFile(true).Where(x => x.Item1 != null && x.Item2 != null).Select(task =>
+                      task.Item1.ContinueWith(result => {
+                         var dt = result.Result;
+                         FileInfo fi = new(dt.Item1);
+                         SendEventLoadFile($"Send file {fi.Name} to server system");
+                         return task.Item2.ProcessSensorFile(dt.Item2, fi.Name, fi.Extension, "", false);
+                     }, TaskContinuationOptions.OnlyOnRanToCompletion)).ToArray();
+
+        private static IEnumerable<string> GetFileDirectoryFileSensor(bool isEvent = false)
         {
             foreach (var file in Directory.GetFiles("Resources/files/"))
-                if((file.EndsWith(".xlsx") || file.EndsWith(".csv") || file.EndsWith(".XLS")) && SelectFileSensor(file, isEvent))
+                if ((file.EndsWith(".xlsx") || file.EndsWith(".csv") || file.EndsWith(".XLS")) && SelectFileSensor(file, isEvent))
                     yield return file;
         }
+
+        private static IEnumerable<string> GetFileDirectory()//far async
+        {
+            foreach (var file in Directory.GetFiles("Resources/files/"))
+                if ((file.EndsWith(".xlsx") || file.EndsWith(".csv") || file.EndsWith(".XLS")) && myList.Exists(element => file.Contains(element.Item1)))
+                    yield return file;
+        }
+
         private static bool ConditionFilterFile(string sensor, string file) =>
             file.ToLower().Contains(sensor.ToLower()) || file.ToLower().Contains(sensor.Replace("_", "").ToLower())
             || file.ToLower().Contains(sensor.Replace("_", " ").ToLower());
 
-        private static bool SelectFileSensor(string nameFile, bool isEvent)=>
-            isEvent? ConditionFilterFile(eventsensor, nameFile) : sensors.Exists(sensor => ConditionFilterFile(sensor, nameFile)); 
+        private static bool SelectFileSensor(string nameFile, bool isEvent) =>
+            isEvent ? ConditionFilterFile(eventsensor, nameFile) : sensors.Exists(sensor => ConditionFilterFile(sensor, nameFile));
 
         private IEnumerable<(Task<(string, DataTable)>, ILoadFileModel)> ReadFile(bool isEvent = false) =>
-            GetFileDirectory(isEvent).Select((filePath) =>
+            GetFileDirectoryFileSensor(isEvent).Select((filePath) =>
             {
                 if (!myList.Exists(element => filePath.Contains(element.Item1)))
                 {
@@ -84,25 +107,6 @@ namespace ClientPltTurbine.Controllers.LoadFileController
                 }
                 return default;
             });
-
-        public List<Task> ReadSensorTurbine()=>
-            ReadFile().Where(x => x.Item1 != null && x.Item2!=null).Select(task =>
-                    task.Item1.ContinueWith(result => {
-                        var dt = result.Result;
-                        FileInfo fi = new(dt.Item1);
-                        SendEventLoadFile($"Send file {fi.Name} to server system");
-                        task.Item2.ProcessSensorFile(dt.Item2, fi.Name, fi.Extension, "", false);
-                    }, TaskContinuationOptions.OnlyOnRanToCompletion)).ToList();
-
-        public List<Task> ReadEventSensorTurbine() =>
-             ReadFile(true).Where(x => x.Item1 != null && x.Item2 != null).Select(task =>
-                      task.Item1.ContinueWith(result => {
-                         var dt = result.Result;
-                         FileInfo fi = new(dt.Item1);
-                         SendEventLoadFile($"Send file {fi.Name} to server system");
-                         task.Item2.ProcessSensorFile(dt.Item2, fi.Name, fi.Extension, "", false);
-                     }, TaskContinuationOptions.OnlyOnRanToCompletion)).ToList();
-
     }
 }
 

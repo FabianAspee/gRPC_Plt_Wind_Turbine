@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ClientPltTurbine.Controllers.GraphicController
+namespace ClientPltTurbine.Model.GraphModel.Contract
 {
-    interface IGraphicController
+    interface IGraphModel
     {
-        Task GraphAllTurbines();
+        Task GetAllInfoTurbineForGraph();
     }
 }
