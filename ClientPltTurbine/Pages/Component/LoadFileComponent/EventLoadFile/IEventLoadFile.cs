@@ -7,6 +7,7 @@ namespace ClientPltTurbine.Pages.Component.LoadFileComponent.EventLoadFile
 {
     internal interface IEventLoadFile
     {
-        public event EventHandler<string> LoadSatus;
+        public event EventHandler<LoadStatusRecord> LoadSatus;
     }
+    public record LoadStatusRecord(int TypeMsg, string Msg);
 }

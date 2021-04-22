@@ -18,7 +18,7 @@ namespace ReadFillesAsDatatable
         {
              
             var myList = new List<(string, string, int)>() { ("specifica_name_turbine.csv", ",", 1), ("name_sensor.csv", ",", 2), ("name_error_sensor.csv", ",", 3), ("Vestas Error Code List.csv", ";", 4) };
-             var task = Directory.GetFiles("../ReadFillesAsDatatable/files/").ToList().Select((x) =>
+            /* var task = Directory.GetFiles("../../../files/").ToList().Select((x) =>
              {
                  if (myList.Exists(element => x.Contains(element.Item1)))
                  {
@@ -66,8 +66,8 @@ namespace ReadFillesAsDatatable
                  await loadFile.ReadBasicFiles(x.Result.rs, fi.Name, fi.Extension, "", x.Result.Item3);
              }).ToArray();
              Console.WriteLine("ok");
-             Task.WaitAll(final); 
-            var task2= Directory.GetFiles("../ReadFillesAsDatatable/files/").ToList().Select((x) =>
+             Task.WaitAll(final); */
+            var task2= Directory.GetFiles("../../../files/").ToList().Select((x) =>
             {
                 if (!myList.Exists(element => x.Contains(element.Item1)))
                 {

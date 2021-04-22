@@ -1,9 +1,19 @@
 ﻿@page "/loadfiles"
 
 @inject LoadFile LoadFile
-
+@inject IToastService toastService
 <h1>Load Files</h1>
 
 <p>Current count: @LoadFile.status</p>
 <button class="btn btn-primary" @onclick="LoadFile.LoadInfoTurbines">Load Info Turbines</button>
 <button class="btn btn-primary" @onclick="LoadFile.LoadSensorTurbines">Load Sensor Turbines</button>
+<button class="btn btn-primary" @onclick="LoadFile.LoadEventSensorTurbines">Load Sensor Turbines</button>
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        LoadFile.Service = toastService;
+        LoadFile.LoadSatus += async (sender, args) =>
+               await LoadFile.WriteInfo(args.msg,args.typeMsg);
+        await LoadFile.RegisterEvent();
+    }
+}

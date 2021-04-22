@@ -1,3 +1,4 @@
+using Blazored.Toast;
 using ClientPltTurbine.Data;
 using ClientPltTurbine.Pages.Component.GraphicComponent;
 using ClientPltTurbine.Pages.Component.LoadFileComponent;
@@ -24,8 +25,10 @@ namespace ClientPltTurbine
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddBlazoredToast();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<LoadFile>();
             services.AddSingleton<Graphic>(); 

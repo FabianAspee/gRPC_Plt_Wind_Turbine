@@ -1,4 +1,5 @@
-﻿using Grpc.Net.Client;
+﻿using ClientPltTurbine.EventContainer;
+using Grpc.Net.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Model
 {
-    public abstract class BaseModel
+    public abstract class BaseModel:EventHandlerSystem
     {
         protected GrpcChannel channel = CreatedGrpcChannel();
         private static GrpcChannel CreatedGrpcChannel()
