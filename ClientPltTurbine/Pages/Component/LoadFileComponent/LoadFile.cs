@@ -21,9 +21,11 @@ namespace ClientPltTurbine.Pages.Component.LoadFileComponent
         {
             await container.AddEvent(EventKey.LOAD_FILE_KEY, LoadSatus);
         }
-        public Task WriteInfo(LoadStatusRecord loadStatus) => loadStatus switch {
-            LoadStatusRecord {Msg:_,TypeMsg:1 } => Task.Run(() => Service.ShowInfo(va)),
-            LoadStatusRecord value => Task.Run(() => Service.ShowSuccess(msg))
+        public Task WriteInfo(LoadStatusRecord loadStatus) => loadStatus switch
+        {
+            LoadStatusRecord { Msg: _, TypeMsg: 1 } status => Task.Run(() => Service.ShowInfo(status.Msg)),
+            LoadStatusRecord { Msg: _, TypeMsg: 2 } status => Task.Run(() => Service.ShowSuccess(status.Msg)),
+            _ => Task.Run(() => Service.ShowError("ERROR"))
         };
            
         

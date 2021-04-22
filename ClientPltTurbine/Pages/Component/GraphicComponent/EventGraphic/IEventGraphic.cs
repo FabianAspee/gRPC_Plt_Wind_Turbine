@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Pages.Component.GraphicComponent.EventGraphic
 {
-    public class IEventGraphic
+    public interface IEventGraphic
     {
     }
 }

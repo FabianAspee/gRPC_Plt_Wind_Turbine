@@ -12,7 +12,7 @@ namespace ClientPltTurbine.EventContainer
         private readonly IEventContainer container = Implementation.EventContainer.Container;
         public void SendEventLoadFile(string msg)
         {
-            container.SelectEvent(EventKey.LOAD_FILE_KEY).Invoke(this,msg);
+            container.SelectEvent<LoadF>(EventKey.LOAD_FILE_KEY).ReturnComponent().Invoke(this,msg);
         }
         public void SendEventFinishLoadFile(string msg)
         {
