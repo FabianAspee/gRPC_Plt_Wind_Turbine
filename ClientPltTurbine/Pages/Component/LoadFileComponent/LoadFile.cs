@@ -14,14 +14,14 @@ namespace ClientPltTurbine.Pages.Component.LoadFileComponent
     {
         public IToastService Service;
         public string status = string.Empty;
-        public event EventHandler<LoadStatusRecord> LoadSatus;
+        public event EventHandler<IEventComponent> LoadSatus;
         private readonly LoadFileController Controller = new();
         private readonly IEventContainer container = EventContainer.Implementation.EventContainer.Container;
         public async Task RegisterEvent()
         {
             await container.AddEvent(EventKey.LOAD_FILE_KEY, LoadSatus);
         }
-        public Task WriteInfo(LoadStatusRecord loadStatus) => loadStatus switch
+        public Task WriteInfo(IEventComponent loadStatus) => loadStatus switch
         {
             LoadStatusRecord { Msg: _, TypeMsg: 1 } status => Task.Run(() => Service.ShowInfo(status.Msg)),
             LoadStatusRecord { Msg: _, TypeMsg: 2 } status => Task.Run(() => Service.ShowSuccess(status.Msg)),

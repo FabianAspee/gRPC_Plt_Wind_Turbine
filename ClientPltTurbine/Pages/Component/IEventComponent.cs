@@ -9,8 +9,5 @@ namespace ClientPltTurbine.Pages.Component
     {
 
     }
-    public interface IEventComponent<T>:IEventComponent
-    {
-        public T ReturnComponent();
-    }
+   
 }

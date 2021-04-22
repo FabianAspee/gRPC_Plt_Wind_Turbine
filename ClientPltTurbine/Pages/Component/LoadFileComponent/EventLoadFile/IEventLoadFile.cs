@@ -5,13 +5,9 @@ using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Pages.Component.LoadFileComponent.EventLoadFile
 {
-    internal interface IEventLoadFile :IEventComponent
+    public interface IEventLoadFile 
     {
-        public event EventHandler<LoadStatusRecord> LoadSatus;
+        public event EventHandler<IEventComponent> LoadSatus;
     }
-    public record LoadStatusRecord(int TypeMsg, string Msg) : IEventComponent<EventHandler<LoadStatusRecord>>
-    {
-
-        public EventHandler<LoadStatusRecord> ReturnComponent() => this;
-    }
+    public record LoadStatusRecord(int TypeMsg, string Msg) : IEventComponent;
 }
