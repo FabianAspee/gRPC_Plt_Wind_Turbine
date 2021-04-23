@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,7 +9,8 @@ namespace PltWindTurbine.Database.TableDatabase
 {
     public class Error_Code
     {
-        public int Id { get; set; }
+        [Key]
+        public int Id { get; set; } 
         public int Id_Error_Sensor { get; set; }
         public string Ec_Name { get; set; }
         public int Wtg_Event { get; set; }
@@ -21,6 +24,5 @@ namespace PltWindTurbine.Database.TableDatabase
         public int Alarm_Level { get; set; }
         public string Notes { get; set; }
         public string Changed { get; set; }
-        public List<Error_Sensor> Error_Sensors { get; set; }
     }
 }

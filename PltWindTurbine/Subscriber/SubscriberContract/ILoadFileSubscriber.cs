@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 namespace PltWindTurbine.Subscriber.SubscriberContract
 {
     public interface ILoadFileSubscriber : ISubscriber
-    {
-        event EventHandler<StatusLoadFile> StatusLoad;
+    { 
         public Task LoadFilesInfoTurbine(FileUploadRequest file);
         public Task LoadFilesNameSensor(FileUploadRequest file);
         public Task LoadFilesNameErrorSensor(FileUploadRequest file);

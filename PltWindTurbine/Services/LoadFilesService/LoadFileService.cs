@@ -7,6 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using PltWindTurbine.Subscriber.SubscriberContract;
 using PltWindTurbine.Subscriber.EventArgument;
+using PltWindTurbine.Subscriber.EventArgument.LoadFileTurbine.Implementation;
+using PltWindTurbine.Subscriber.EventArgument.EventContainer.Contract;
+using PltWindTurbine.Subscriber.EventArgument.EventContainer.Implementation;
+using PltWindTurbine.Subscriber.EventArgument.EventContainer;
 
 namespace PltWindTurbine.Services.LoadFilesService
 {
@@ -14,18 +18,31 @@ namespace PltWindTurbine.Services.LoadFilesService
     {
         private readonly ISubscriberFactory _factoryMethod;
         private readonly ILogger<LoadFileService> _logger;
-        /// <include file="../Docs/Services/DataBaseService.xml" path='docs/members[@name="databaseservice"]/DataBaseServiceC/*'/>
+        private readonly IEventContainer container = EventContainer.Container;
+        private event EventHandler<IBaseEvent> StatusLoad;
+        private event EventHandler<IBaseEvent> StatusLoadReadSensor;
         public LoadFileService(ISubscriberFactory factoryMethod, ILogger<LoadFileService> logger)
         {
             _logger = logger;
             _factoryMethod = factoryMethod;
         }
+        private EventHandler<IBaseEvent> SelectEvent(EventKey key) => key switch
+        {
+            EventKey.LOAD_FILE_KEY => StatusLoad,
+            EventKey.LOAD_FILE_SENSOR_KEY => StatusLoadReadSensor,
+            _ => throw new NotImplementedException()
+        };
+        private void RegisterEvent(EventKey key)
+        { 
+            container.AddEvent(key, SelectEvent(key));
+        }
         public override async Task LoadFilesInfoTurbine(IAsyncStreamReader<FileUploadRequest> request, IServerStreamWriter<FileUploadResponse> response, ServerCallContext context)
         {
 
             using var subscriberLoadFilesInfoTurbine = _factoryMethod.GetLoadFileSubscriber();
-            subscriberLoadFilesInfoTurbine.StatusLoad += async (sender, args) =>
-               await WriteStatusLoadFileResponse(response, args);
+            StatusLoad += async (sender, args) =>
+               await WriteStatusLoadFileResponse(response, args as StatusLoadFile);
+            RegisterEvent(EventKey.LOAD_FILE_KEY);
             try
             {
                 await HandleActionsLoadFilesInfoTurbine(request, subscriberLoadFilesInfoTurbine);
@@ -42,9 +59,9 @@ namespace PltWindTurbine.Services.LoadFilesService
             {
                 var response = new FileUploadResponse
                 {
-                    Name = loadFileService.nameFile,
-                    Status = loadFileService.percent != 100 ? Status.InProgress : Status.Success,
-                    Description = $"{loadFileService.description} {loadFileService.percent}%"
+                    Name = loadFileService.NameFile,
+                    Status = loadFileService.Percent != 100 ? Status.InProgress : Status.Success,
+                    Description = $"{loadFileService.Description} {loadFileService.Percent}%"
                 };  
                 await stream.WriteAsync(response);
             }
@@ -86,8 +103,9 @@ namespace PltWindTurbine.Services.LoadFilesService
         {
             using var subscriberReadSensor = _factoryMethod.GetLoadFileSubscriber();
 
-            subscriberReadSensor.StatusLoad += async (sender, args) =>
-               await WriteStatusLoadFileResponse(response, args);
+            StatusLoadReadSensor += async (sender, args) =>
+               await WriteStatusLoadFileResponse(response, args as StatusLoadFile);
+            RegisterEvent(EventKey.LOAD_FILE_SENSOR_KEY);
             try
             {
                 await HandleActionsReadSensor(request, subscriberReadSensor);

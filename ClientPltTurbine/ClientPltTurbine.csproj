@@ -40,5 +40,8 @@
     <Protobuf Include="..\PltWindTurbine\Protos\LoadFilesProto\loadfile.proto" GrpcServices="Client">
       <Link>Protos\loadfile.proto</Link>
     </Protobuf>
+	  <Protobuf Include="..\PltWindTurbine\Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" GrpcServices="Client">
+		  <Link>Protos\obtaininfoturbine.proto</Link>
+	  </Protobuf>
   </ItemGroup>
 </Project>

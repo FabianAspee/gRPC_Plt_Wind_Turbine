@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Model.PredictionModel.Implementation
 {
-    public class PredictionModel: IPredictionModel
+    public class PredictionModel: BaseModel, IPredictionModel
     {
     }
 }

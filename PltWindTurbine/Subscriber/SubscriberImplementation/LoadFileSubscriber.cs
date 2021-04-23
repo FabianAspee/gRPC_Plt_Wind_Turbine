@@ -3,25 +3,22 @@ using PltWindTurbine.Subscriber.SubscriberContract;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PltWindTurbine.Subscriber.EventArgument;
-using System.Globalization;
 using PltWindTurbine.Database.Utils;
 using PltWindTurbine.Database.DatabaseConnection;
 using PltWindTurbine.Database.TableDatabase;
 using System.Text.RegularExpressions;
+using PltWindTurbine.Subscriber.EventArgument.EventContainer;
 
 namespace PltWindTurbine.Subscriber.SubscriberImplementation
 {
-    public class LoadFileSubscriber : ILoadFileSubscriber
-    {
-        public event EventHandler<StatusLoadFile> StatusLoad;
+    public class LoadFileSubscriber :EventHandlerSystem, ILoadFileSubscriber
+    { 
         private readonly Dictionary<string, List<CreateDataTable>> infoTurbines = new();
         private readonly CommonImplementationDatabase database = RetreiveImplementationDatabase.Instance.ImplementationDatabase;
         private readonly List<string> Turbines = new(){"Active_Power", "Nacelle_Dir", "Rotor_RPM", "Wind_Dir", "Wind_Speed", "Collarmele_K100","Collarmele_K101"};
@@ -67,7 +64,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                 var percent = await RemainingCalculus(info, table.TotalDimension);
                 if (percent % 10 == 0)
                 {
-                    StatusLoad.Invoke(this, new StatusLoadFile(table.Name, "Load File", Convert.ToInt32(percent)));
+                    SendEventLoadFile(table.Name, "Load File", Convert.ToInt32(percent));
                 }
                 return info;
             }
@@ -249,8 +246,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
         }
         private static string RemoveSpecialCharacters(string value) => string.Join("", value.Where(x =>char.IsLetterOrDigit(x)).ToArray()); 
          private static string SelectNameTurbine(string turbine)
-        {
-
+        { 
             var values = turbine.Split(".");
             return $"{values[^1]}_";
         }

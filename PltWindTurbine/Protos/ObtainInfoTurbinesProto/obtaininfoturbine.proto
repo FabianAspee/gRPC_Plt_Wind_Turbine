@@ -21,35 +21,59 @@ service ObtainInfoTurbines {
  
   rpc InfoFailureTurbine(stream CodeAndPeriodRequest) returns (stream CodeAndPeriodResponse);
 }
+
 message CodeAndPeriodRequest{
 	oneof Action{
-		OnlySerieByPeriodAndCode msg =1;
+		OnlySerieByPeriodAndCode msg1 =1;
 		SeriePeriodByCodeWithStandarDeviation msg2=2;
 	}
 }
+
 message SeriePeriodByCodeWithStandarDeviation{
 	OnlySerieByPeriodAndCode periodAndCode = 1;
 }
+
 message OnlySerieByPeriodAndCode{
-	string initPeriod = 1;
-	string finishPeriod = 2;
-	string code = 3;
-	string idTurbine = 4;
+	int32 months =1;
+	int32 qtaGraph=2;
+	int32 code = 3;
+	int32 idTurbine = 4;
 }
+
 message CodeAndPeriodResponse{
+	oneof Action{
+		StatusLoadInfo msg1=1;
+		ResponseCodePeriod msg2=2;
+	}
+}
+
+message ResponseCodePeriod{
 	oneof Action{
 		OnlySerieByPeriodAndCodeResponse msg = 1;
 		SeriePeriodByCodeWithStandarDeviationResponse msg2 = 2;
 	}
 }
-message OnlySerieByPeriodAndCodeResponse{
-	
-	string nameTurbine = 1;
-	repeated string value = 2;
-	int32 actual =3;
-	int32 total = 4;
+
+message StatusLoadInfo {
+  string name = 1;
+  Status status = 2;
+  string description = 3;
 }
+
+message OnlySerieByPeriodAndCodeResponse{ 
+	string nameTurbine = 1;
+	bytes values =2;
+	bool isFinish =3;
+}
+
 message SeriePeriodByCodeWithStandarDeviationResponse{
 	OnlySerieByPeriodAndCodeResponse msg1=1;
-	string standardDeviation = 2;
+	double standardDeviation = 2;
+}
+
+enum Status {
+  PENDING = 0;
+  IN_PROGRESS = 1;
+  SUCCESS = 2;
+  FAILED = 3;
 }

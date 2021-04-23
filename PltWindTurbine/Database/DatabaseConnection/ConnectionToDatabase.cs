@@ -19,7 +19,7 @@ namespace PltWindTurbine.Database.DatabaseConnection
         private ConnectionToDatabase(DbContextOptions<ConnectionToDatabase> options) : base(options) { }
        
         public static ConnectionToDatabase CreateSqliteConnection()
-        { 
+        {  
             var contextOptions = Options.UseSqlite(ConnectionStringSqlite()).Options;
             return new ConnectionToDatabase(contextOptions);
         }
