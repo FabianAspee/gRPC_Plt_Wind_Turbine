@@ -143,7 +143,7 @@ namespace PltWindTurbine.Database.Utils
             throw new NotImplementedException();
         }
 
-        private static async IAsyncEnumerable<ILoadInfoTurbine> GenerateSequence(OnlySerieByPeriodAndCode info, bool isWarning=false)
+        private async IAsyncEnumerable<ILoadInfoTurbine> GenerateSequence(OnlySerieByPeriodAndCode info, bool isWarning=false)
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             var values = connectionTo.Value_Sensor_Error.Where(error => error.Id_Turbine == info.IdTurbine && error.Value ==info.Code).OrderBy(value => value.Id).ToList(); 
@@ -156,9 +156,9 @@ namespace PltWindTurbine.Database.Utils
                     .Select(values=>new SerieBySensorTurbineError(values.Id,values.Date,values.Value)).ToListAsync();
                 if (isWarning)
                 {
-                   var warning = await connectionTo.Value_Sensor_Error.Where(error => error.Id_Turbine == info.IdTurbine &&
-                   string.Compare(error.Date, infoError.Date) < 0 && string.Compare(error.Date, DateTime.Parse(infoError.Date).AddMonths(info.Months).ToString("yyyy/MM/dd HH:mm:ss")) > 0)
-                        .Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync();
+                   var warning = await connectionTo.Value_Sensor_Error.Where(error =>error.Value.HasValue && error.Id_Turbine == info.IdTurbine &&
+                   string.Compare(error.Date, infoError.Date) < 0 && string.Compare(error.Date, DateTime.Parse(infoError.Date).AddMonths(info.Months).ToString("yyyy/MM/dd HH:mm:ss")) > 0 
+                   && warnings.Contains(error.Value.Value)).Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync();
                     var serieByPeriod = new ResponseSerieByPeriod(info.NameTurbine, info.NameSensor, JsonSerializer.Serialize(resultSerie), infoError.Id == last.Id); 
                     yield return new ResponseSerieByPeriodWithWarning(serieByPeriod, JsonSerializer.Serialize(warning));
                 }
@@ -171,7 +171,7 @@ namespace PltWindTurbine.Database.Utils
         } 
         public async Task CallSelectSeries(OnlySerieByPeriodAndCode info, bool isWarning = false)
         {
-            await foreach (var values in GenerateSequence(info))
+            await foreach (var values in GenerateSequence(info, isWarning))
             { 
                 SendEventLoadInfo(values); 
             }
@@ -187,7 +187,7 @@ from value_sensor_error as vs,wind_turbine_info as wt where vs.id_turbine =15 an
         public async void SelectSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info) => await CallSelectSeries(info, true); 
 
         private readonly IReadOnlyList<double> errors = new List<double> { 180, 3370, 186, 182, 181 };
-        private readonly IReadOnlyList<double> warning = new List<double> { 892, 891, 183, 79, 356 };
+        private readonly IReadOnlyList<double> warnings = new List<double> { 892, 891, 183, 79, 356 };
         public Task<List<string>> GetErrorByTurbine(int idTurbine) => Task.Run(() =>
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();

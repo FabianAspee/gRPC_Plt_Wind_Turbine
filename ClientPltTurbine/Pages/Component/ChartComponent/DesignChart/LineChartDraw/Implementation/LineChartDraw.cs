@@ -19,17 +19,19 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
 
         public ConfigBase CreateLineChart(ResponseSerieByPeriod responseSerieBy)
         {
-            throw new NotImplementedException(); 
+            var variant = _variants($"Serie Turbine {responseSerieBy.Record.NameTurbine} Sensor {responseSerieBy.Record.NameSensor}");
+            var lineConfigBase = CreateBaseLineConfig(variant, responseSerieBy);
+            return CreateLineChart(lineConfigBase, responseSerieBy, variant);
         }
         public ConfigBase CreateLineChartWarning(ResponseSerieByPeriodWarning serieByPeriodWarning)
         {
-            throw new NotImplementedException();
+            var variant = _variants($"Serie Turbine {serieByPeriodWarning.Record.RecordLinearChart.NameTurbine} Sensor {serieByPeriodWarning.Record.RecordLinearChart.NameSensor} with warnings");
+            var lineConfigBase = CreateBaseLineConfig(variant, serieByPeriodWarning);
+            return CreateLineChartWarning(lineConfigBase, serieByPeriodWarning, variant);
+             
         }
-        private ConfigBase CreateLineChart(IEventComponent periods)
+        private static LineConfig CreateBaseLineConfig(Variant variant,IEventComponent period)
         {
-            var title = "Test";
-            var period = periods as ResponseSerieByPeriod;
-            var variant = _variants(title);
             LineConfig ConfigLine = new()
             {
                 Options = new LineOptions
@@ -41,22 +43,56 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
                         Text = variant.Title
                     }
                 }
-            };
+            }; 
+            ConfigLine.Data.Labels.AddRange(SelectRecords(period));
+            return ConfigLine;
+        }
 
+        private static IEnumerable<string> SelectRecords(IEventComponent period) => period switch
+        {
+            ResponseSerieByPeriod value => value.Record.CustomInfo.Select(x => x.Date.ToShortDateString()).ToArray(),
+            ResponseSerieByPeriodWarning value => value.Record.RecordLinearChart.CustomInfo.Select(x => x.Date.ToShortDateString()).ToArray(),
+            _ => throw new NotImplementedException(),
+        };
+
+        private static ConfigBase CreateLineChart(LineConfig configLine, ResponseSerieByPeriod periods, Variant variant)
+        { 
             string steppedLineCamel = variant.SteppedLine.ToString();
-            steppedLineCamel = char.ToUpperInvariant(steppedLineCamel[0]) + steppedLineCamel.Substring(1);
-
-            ConfigLine.Data.Labels.AddRange(period.Record.CustomInfo.Select(x => x.Date.ToShortDateString()).ToArray());
-            ConfigLine.Data.Datasets.Add(new LineDataset<double?>(period.Record.CustomInfo.Select(x => x.Value).ToList())
+            steppedLineCamel = char.ToUpperInvariant(steppedLineCamel[0]) + steppedLineCamel[1..];
+            configLine.Data.Datasets.Add(new LineDataset<double?>(periods.Record.CustomInfo.Select(x => x.Value).ToList())
             {
-                Label = $"SteppedLine: SteppedLine.{steppedLineCamel}",
+                
+                Label = $"Value sensor: {steppedLineCamel}",
                 SteppedLine = variant.SteppedLine,
                 BorderColor = ColorUtil.FromDrawingColor(variant.Color),
                 Fill = FillingMode.Disabled
             });
 
-            return ConfigLine;
+            return configLine; 
+        }
+        private static ConfigBase CreateLineChartWarning(LineConfig configLine, ResponseSerieByPeriodWarning periods, Variant variant)
+        {
+            string steppedLineCamel = variant.SteppedLine.ToString();
+            steppedLineCamel = char.ToUpperInvariant(steppedLineCamel[0]) + steppedLineCamel[1..];
+            configLine.Data.Datasets.Add(new LineDataset<double?>(periods.Record.RecordLinearChart.CustomInfo.Select(x => x.Value).ToList())
+            {
 
+                Label = $"Value sensor: {steppedLineCamel}",
+                SteppedLine = variant.SteppedLine,
+                BorderColor = ColorUtil.FromDrawingColor(variant.Color),
+                Fill = FillingMode.Disabled
+            });
+          
+
+            configLine.Data.Datasets.Add( new LineDataset<double?>(periods.Record.InfoTurbineWarnings.Select(x => x.Value).ToList())
+            { 
+                Label = $"Value sensor: {steppedLineCamel}", 
+                SteppedLine = variant.SteppedLine,
+                BorderColor = ColorUtil.FromDrawingColor(ChartColors.Blue),
+                Fill = FillingMode.Disabled
+
+            });
+            return configLine;
         }
 
         public class Variant
