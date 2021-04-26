@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using PltWindTurbine.Database.DatabaseConnection;
+using PltWindTurbine.Database.DatabaseContract;
 using PltWindTurbine.Database.Utils;
 using PltWindTurbine.Services.ObtainInfoTurbinesService;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer;
@@ -16,11 +17,19 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
 {
     public class ObtainInfoTurbineSubscriber :EventHandlerSystem, IObtainInfoTurbinesSubscriber
     {
-        private readonly CommonImplementationDatabase database = RetreiveImplementationDatabase.Instance.ImplementationDatabase; 
+        private readonly IOperationTurbineDatabase database = RetreiveImplementationDatabase.Instance.ImplementationDatabase; 
 
         public void Dispose()
         {
             Console.WriteLine("Dispose");
+        }
+
+        public Task GetInforTurbineAndSensor()
+        {
+            return Task.Run(() =>
+            { 
+                database.SelectAllSensorAndTurbine();
+            });
         }
 
         public Task GetInfoTurbine(OnlySerieByPeriodAndCode info)

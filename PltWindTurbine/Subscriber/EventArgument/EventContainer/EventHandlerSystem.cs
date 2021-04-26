@@ -1,7 +1,9 @@
 ﻿using PltWindTurbine.Services.ObtainInfoTurbinesService;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer.Contract;
 using PltWindTurbine.Subscriber.EventArgument.LoadFileTurbine.Implementation;
+using PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Contract;
 using PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Implementation;
+using System.Collections.Generic;
 using loadFile = PltWindTurbine.Services.LoadFilesService;
 namespace PltWindTurbine.Subscriber.EventArgument.EventContainer
 {
@@ -22,7 +24,12 @@ namespace PltWindTurbine.Subscriber.EventArgument.EventContainer
         {
             await container.SelectEvent<IBaseEvent>(EventKey.LOAD_FILE_KEY).ContinueWith(evento => evento.Result.Invoke(this, new StatusLoadFile(name, description, percent, loadFile.Status.Failed)));
         }
-         
+
+        public async void SendEventLoadInfoTurbine(ILoadInfoTurbine loadInfo)
+        {
+            await container.SelectEvent<IBaseEvent>(EventKey.INFO_TURBINE_SENSOR).ContinueWith(evento => evento.Result.Invoke(this, loadInfo));
+        }
+       
         public async void SendEventLoadInfoTurbine(StatusEventInfoTurbine statusEvent)
         {
             await container.SelectEvent<IBaseEvent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, statusEvent));
@@ -39,10 +46,10 @@ namespace PltWindTurbine.Subscriber.EventArgument.EventContainer
         {
             await container.SelectEvent<IBaseEvent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, serie));
         }
-        public async void SendEventLoadInfoStandardDeviation(string nameTurbine, string values, bool isFinish, double standardDeviation)
+        public async void SendEventLoadInfoStandardDeviation(string nameTurbine, string nameSensor, string values, bool isFinish, double standardDeviation)
         {
             await container.SelectEvent<IBaseEvent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, 
-                new ResponseSerieByPeriodWithStandardDeviation(new ResponseSerieByPeriod(nameTurbine, values, isFinish), standardDeviation)));
+                new ResponseSerieByPeriodWithStandardDeviation(new ResponseSerieByPeriod(nameTurbine, nameSensor, values, isFinish), standardDeviation)));
         }
     }
 }

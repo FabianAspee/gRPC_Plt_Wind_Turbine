@@ -4,7 +4,8 @@
     {
         LOAD_FILE_KEY,
         GRAPH_KEY,
-        EVENT_KEY
+        EVENT_KEY,
+        INFO_TURBINE_SENSOR
     }
     
 }

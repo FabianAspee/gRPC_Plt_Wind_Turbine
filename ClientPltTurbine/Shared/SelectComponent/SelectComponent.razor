@@ -1,0 +1,9 @@
+﻿  
+<select class="custom-select " @onchange="OnValueChanged" title=@Warning>
+    <option value="Select" selected disabled="disabled">@Text</option>
+    @foreach (var value in Values)
+    {
+        <option value="@value.Id"> "@value.Value"</option> 
+    }
+</select>
+ 

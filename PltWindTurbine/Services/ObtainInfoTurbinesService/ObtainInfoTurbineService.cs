@@ -23,23 +23,30 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
         private readonly ISubscriberFactory _factoryMethod;
         private readonly ILogger<ObtainInfoTurbineService> _logger;
         private event EventHandler<IBaseEvent> Status;
+        private event EventHandler<IBaseEvent> LoadSensorAndTurbine;
         private readonly IEventContainer container = EventContainer.Container;
         public ObtainInfoTurbineService(ISubscriberFactory factoryMethod, ILogger<ObtainInfoTurbineService> logger)
         {
             _logger = logger;
             _factoryMethod = factoryMethod;
         }
-        private void RegisterEvent()
+        private EventHandler<IBaseEvent> SelectEvent(EventKey key) => key switch
         {
-            container.AddEvent(EventKey.GRAPH_KEY, Status);
-        }
+            EventKey.GRAPH_KEY => Status,
+            EventKey.INFO_TURBINE_SENSOR => LoadSensorAndTurbine,
+            _ => throw new NotImplementedException()
+        };
+        private void RegisterEvent(EventKey key)
+        {
+            container.AddEvent(key, SelectEvent(key));
+        } 
         public override async Task InfoFailureTurbine(IAsyncStreamReader<CodeAndPeriodRequest> request, IServerStreamWriter<CodeAndPeriodResponse> response, ServerCallContext context)
         {
 
             using var obtainInfoTurbinesSubscriber = _factoryMethod.GetObtainInfoTurbinesSubscriber();
             Status += async (sender, args) =>
                await WriteStatusLoadInfoTurbine(response, args as ILoadInfoTurbine);
-            RegisterEvent();
+            RegisterEvent(EventKey.GRAPH_KEY);
             try
             {
                 await HandleActionsInfoFailureTurbine(request, obtainInfoTurbinesSubscriber);
@@ -50,7 +57,22 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
             }
             _logger.LogInformation("Subscription finished.");
         }
-
+        public override async Task GetNameTurbineAndSensor(WithoutMessage request, IServerStreamWriter<ResponseNameTurbineAndSensor> responseStream, ServerCallContext context)
+        {
+            using var obtainInfoTurbinesSubscriber = _factoryMethod.GetObtainInfoTurbinesSubscriber();
+            LoadSensorAndTurbine += async (sender, args) =>
+               await SendInfoTurbineAndSensor(responseStream, args as ILoadInfoTurbine);
+            RegisterEvent(EventKey.INFO_TURBINE_SENSOR);
+            try
+            {
+                await obtainInfoTurbinesSubscriber.GetInforTurbineAndSensor();
+            }
+            catch (Exception e)
+            {
+                _logger.LogInformation(e.ToString());
+            }
+            _logger.LogInformation("Subscription finished.");
+        }
         private async Task HandleActionsInfoFailureTurbine(IAsyncStreamReader<CodeAndPeriodRequest> request, IObtainInfoTurbinesSubscriber obtainInfoTurbinesSubscriber)
         {
             await foreach (var action in request.ReadAllAsync())
@@ -72,7 +94,18 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
                 }
             }
         }
-
+        private async Task SendInfoTurbineAndSensor(IServerStreamWriter<ResponseNameTurbineAndSensor> stream, ILoadInfoTurbine infoTurbine)
+        {
+            try
+            {
+                var response = GetNameTurbineAndSensor(infoTurbine);
+                await stream.WriteAsync(response);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Failed to write message: {e.Message}");
+            }
+        }
         private async Task WriteStatusLoadInfoTurbine(IServerStreamWriter<CodeAndPeriodResponse> stream, ILoadInfoTurbine infoTurbine)
         {
             try
@@ -85,6 +118,27 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
                 _logger.LogError($"Failed to write message: {e.Message}");
             }
         }
+        private static ResponseNameTurbineAndSensor GetNameTurbineAndSensor(ILoadInfoTurbine infoTurbine) => infoTurbine switch
+        {
+            AllSensorInfo allSensor => new ResponseNameTurbineAndSensor() { Msg3 = CreateAllSensor(allSensor) },
+            AllTurbineInfo allTurbine => new ResponseNameTurbineAndSensor() { Msg4 =CreateAllTurbine(allTurbine) },
+            _ => throw new NotImplementedException()
+        };
+
+        private static AllInfoSensor CreateAllSensor(AllSensorInfo allSensorInfo)
+        {
+            var allSensor = new AllInfoSensor();
+            allSensor.Msg.AddRange(allSensorInfo.SensorInfos.Select(sensor => new InfoSensor { IdSensor=sensor.IdSensor,NameSensor=sensor.NameSensor}).ToList());
+            return allSensor;
+        }
+
+        private static AllInfoTurbine CreateAllTurbine(AllTurbineInfo allTurbineInfo)
+        {
+            var allTurbine = new AllInfoTurbine();
+            allTurbine.Msg.AddRange(allTurbineInfo.TurbineInfos.Select(turbine => new InfoTurbine { IdTurbine = turbine.IdTurbine,NameTurbine=turbine.NameTurbine }).ToList());
+            return allTurbine;
+        }
+
         private static CodeAndPeriodResponse GetCodeAndPeriodResponse(ILoadInfoTurbine infoTurbine) => infoTurbine switch
         {
             StatusEventInfoTurbine status => new CodeAndPeriodResponse() { Msg1 = new StatusLoadInfo() { Name = status.Name, Status = status.Status, Description = status.Description } },
@@ -100,8 +154,9 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
         };
         private static OnlySerieByPeriodAndCodeResponse GetByPeriodAndCodeResponse(ResponseSerieByPeriod responseSerieBy) =>
             new()
-            {
+            { 
                 NameTurbine = responseSerieBy.NameTurbine,
+                NameSensor  = responseSerieBy.NameSensor,
                 Values = ByteString.CopyFrom(Encoding.UTF8.GetBytes(responseSerieBy.Values)),
                 IsFinish = responseSerieBy.IsFinish
             };

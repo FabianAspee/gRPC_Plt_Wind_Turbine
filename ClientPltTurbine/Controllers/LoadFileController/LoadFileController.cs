@@ -27,7 +27,7 @@ namespace ClientPltTurbine.Controllers.LoadFileController
             {  
                 FileInfo fi = new(filePath);
                 SendEventLoadFile($"Init load file {fi.Name}");
-                ILoadFileModel loadFile = new LoadFileModel();
+                ILoadFileModel loadFile =  new LoadFileModel();
                 if (IsCsv(filePath))
                 {
                         

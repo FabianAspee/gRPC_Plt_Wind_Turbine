@@ -1,18 +1,28 @@
 ﻿@page "/graphics"
-@inject Chart Chart
+@inject ChartSingleton ChartSingleton
 @inject IToastService toastService
-
 <h1>Graphic Turbine</h1>
-
-<p>Current Turbines: @Chart.NumTurbine</p>
-<button class="btn btn-primary" @onclick="Chart.GraphicInfoTurbine">Graph All Turbines</button>
-
-@code {
-    protected override async Task OnInitializedAsync()
-    {
-        Chart.Service = toastService;
-        Chart.InfoChart += async (sender, args) =>
-           await Chart.WriteInfo(args);
-        await Task.Run(() => Chart.RegisterEvent());
-    }
-}
+<p>Current Turbines: @ChartSingleton.NumTurbine</p>
+<div class="row g-3">
+    <div class="col-auto">
+        <SelectComponent Values="Turbines" Text="(Choose Turbine)" @bind-Value="infoTurbine" Warning="Turbine is required" />
+    </div>
+    <div class="col-auto">
+        <SelectComponent Values="Sensors" Text="(Choose Sensor)" Warning="Sensor is required" />
+    </div>
+    <div class="col-auto">
+        <SelectComponent Values="Sensors" Text="(Choose Sensor)" Warning="Error is required" />
+    </div>
+    <div class="col-auto">
+        <InputComponent Id="error" Type="number" PlaceHolder="Enter Period"></InputComponent>
+    </div>
+    <div class="col-auto">
+        <ButtonComponent OnClick="CallChartData" Text="Creat Chart" ></ButtonComponent>
+    </div>
+</div>
+@foreach(var period in  infoChart)
+{
+    <div class="chart-container">
+        <Chart Config="GetConfig(period)"></Chart>
+    </div>
+} 

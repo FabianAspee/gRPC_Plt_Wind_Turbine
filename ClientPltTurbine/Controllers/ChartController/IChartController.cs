@@ -7,6 +7,7 @@ namespace ClientPltTurbine.Controllers.ChartController
 {
     interface IChartController
     {
-        Task GraphAllTurbines();
+        Task ChartAllTurbines();
+        Task CallAllTurbinesAndSensors();
     }
 }

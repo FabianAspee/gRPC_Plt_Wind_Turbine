@@ -1,7 +1,17 @@
 ﻿@page "/modelpredict"
 @inject ModelPrediction ModelPrediction
+@using PltTurbineShared;
 <h3>ModelPredictions</h3>
 
+<p>Current Models: @ModelPrediction.NumModel</p>
+<form class="row g-3">
+    <div class="col-auto">
+        <SelectComponent Values="Models" Text="(Choose Model)" Warning="Model is required" />
+    </div>
+    <div class="col-auto">
+        <ButtonComponent OnClick="ModelPrediction.RunModel" Text="Run Model Selected"></ButtonComponent>
+    </div>
+</form>
 @code {
-
+    List<Model> Models = new List<Model>();
 }

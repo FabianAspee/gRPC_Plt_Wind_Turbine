@@ -14,6 +14,7 @@ namespace PltWindTurbine.Database.DatabaseContract
         public abstract void SelectSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info);
         public abstract Dictionary<string, List<string>> SelectAllSerieBySensorByTurbineByError();
         public abstract List<Wind_Turbine_Info> ReadAllTurbine();
+        public abstract void SelectAllSensorAndTurbine();
         public (List<string>,bool) TurbineExistInDatabase();
 
         public void InsertInfoPlt(DataTable dt_info, string name_table);

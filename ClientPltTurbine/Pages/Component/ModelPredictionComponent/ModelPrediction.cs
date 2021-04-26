@@ -8,5 +8,10 @@ namespace ClientPltTurbine.Pages.Component.ModelPredictionComponent
 {
     public class ModelPrediction:IEventModelPrediction
     {
+        public int NumModel;
+        public async Task RunModel()
+        {
+
+        }
     }
 }

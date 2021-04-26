@@ -10,7 +10,8 @@ namespace PltWindTurbine.Subscriber.EventArgument.EventContainer
         LOAD_FILE_KEY,
         LOAD_FILE_SENSOR_KEY,
         GRAPH_KEY,
-        EVENT_KEY
+        EVENT_KEY,
+        INFO_TURBINE_SENSOR
     }
     
 }

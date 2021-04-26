@@ -20,6 +20,7 @@ package obtaininfoturbine;
 service ObtainInfoTurbines {
  
   rpc InfoFailureTurbine(stream CodeAndPeriodRequest) returns (stream CodeAndPeriodResponse);
+  rpc GetNameTurbineAndSensor(WithoutMessage) returns (stream ResponseNameTurbineAndSensor);
 }
 
 message CodeAndPeriodRequest{
@@ -27,6 +28,42 @@ message CodeAndPeriodRequest{
 		OnlySerieByPeriodAndCode msg1 =1;
 		SeriePeriodByCodeWithStandarDeviation msg2=2;
 	}
+}
+
+message CodeAndPeriodResponse{
+	oneof Action{
+		StatusLoadInfo msg1=1;
+		ResponseCodePeriod msg2=2;
+	}
+}
+
+message ResponseNameTurbineAndSensor{
+	oneof Action{
+		InfoSensor msg1 = 1;
+		InfoTurbine msg2= 2;
+		AllInfoSensor msg3 = 3;
+		AllInfoTurbine msg4= 4;
+	}
+}
+
+message WithoutMessage{}
+
+message AllInfoSensor{
+	repeated InfoSensor msg=1;
+}
+
+message AllInfoTurbine{ 
+	repeated InfoTurbine msg=1;
+}
+
+message InfoSensor{
+	int32 idSensor=1;
+	string nameSensor=2;
+}
+
+message InfoTurbine{
+	int32 idTurbine=1;
+	string nameTurbine=2;
 }
 
 message SeriePeriodByCodeWithStandarDeviation{
@@ -38,14 +75,11 @@ message OnlySerieByPeriodAndCode{
 	int32 qtaGraph=2;
 	int32 code = 3;
 	int32 idTurbine = 4;
+	string nameTurbine=5;
+	int32 idSensor=6;
+	string nameSensor=7;
 }
 
-message CodeAndPeriodResponse{
-	oneof Action{
-		StatusLoadInfo msg1=1;
-		ResponseCodePeriod msg2=2;
-	}
-}
 
 message ResponseCodePeriod{
 	oneof Action{
@@ -62,8 +96,9 @@ message StatusLoadInfo {
 
 message OnlySerieByPeriodAndCodeResponse{ 
 	string nameTurbine = 1;
-	bytes values =2;
-	bool isFinish =3;
+	string nameSensor =2;
+	bytes values =3;
+	bool isFinish =4;
 }
 
 message SeriePeriodByCodeWithStandarDeviationResponse{

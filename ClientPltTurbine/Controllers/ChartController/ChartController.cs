@@ -10,9 +10,10 @@ namespace ClientPltTurbine.Controllers.ChartController
     public class ChartController : BaseController, IChartController
     {
         private readonly IChartModel ChartModel = new ChartModel();
-        public Task GraphAllTurbines()
-        {
-           return ChartModel.GetAllInfoTurbineForGraph();
-        }
+         
+        public Task CallAllTurbinesAndSensors()=>ChartModel.GetAllNameTurbineAndSensor(); 
+
+        public Task ChartAllTurbines()=>ChartModel.GetAllInfoTurbineForChart();
+        
     }
 }

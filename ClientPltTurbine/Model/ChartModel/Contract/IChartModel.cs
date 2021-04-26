@@ -7,6 +7,7 @@ namespace ClientPltTurbine.Model.ChartModel.Contract
 {
     interface IChartModel
     {
-        Task GetAllInfoTurbineForGraph();
+        Task GetAllInfoTurbineForChart();
+        Task GetAllNameTurbineAndSensor();
     }
 }

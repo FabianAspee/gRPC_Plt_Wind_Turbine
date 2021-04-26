@@ -77,12 +77,11 @@ namespace PltWindTurbine.Database.Utils
             transaction.Commit(); 
         }
 
-        public List<Wind_Turbine_Info> ReadAllTurbine()
+        public List<Wind_Turbine_Info> ReadAllTurbine() 
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             return connectionTo.Wind_Turbine_Info.ToList();
-        }
-
+        } 
         public DataTable ReadInfoByTurbine(string path, string nameFile)
         {
             throw new NotImplementedException();
@@ -92,15 +91,23 @@ namespace PltWindTurbine.Database.Utils
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             return connectionTo.Sensor_Info.ToList();
+        } 
+ 
+        private readonly Func<Sensor_Info, SensorInfo> SelectNameAndIdSensor = sensor => new SensorInfo(sensor.Id, sensor.Sensor_Name);
+        private readonly Func<Wind_Turbine_Info, TurbineInfo> SelectNameAndIdTurbine = turbine => new TurbineInfo(turbine.Id, turbine.Turbine_Name);
+        public void SelectAllSensorAndTurbine()
+        {
+            using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
+            SendEventLoadInfoTurbine(new AllSensorInfo(connectionTo.Sensor_Info.Select(SelectNameAndIdSensor).ToList()));
+            SendEventLoadInfoTurbine(new AllTurbineInfo(connectionTo.Wind_Turbine_Info.Select(SelectNameAndIdTurbine).ToList()));
 
         }
-
         public List<Error_Sensor> SelectAllNameSensorError()
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             return connectionTo.Error_Sensor.ToList();
         }
-
+        
         public Dictionary<string, List<string>> SelectAllSerieBySensorByTurbineByError()
         {
             throw new NotImplementedException();
@@ -136,17 +143,24 @@ namespace PltWindTurbine.Database.Utils
         }
         private static async IAsyncEnumerable<ILoadInfoTurbine> GenerateSequence(OnlySerieByPeriodAndCode info)
         {
-            using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase(); 
-            foreach (var infoError in connectionTo.Value_Sensor_Error.Where(error => error.Value == Convert.ToDouble(info.Code) && error.Id_Turbine == info.IdTurbine))
+            using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
+            var values = connectionTo.Value_Sensor_Error.Where(error => error.Id_Turbine == info.IdTurbine && error.Value ==info.Code).OrderBy(value => value.Id).ToList();
+   
+    
+            var last = values.LastOrDefault();
+            foreach (var infoError in values)
             {   
                 yield return new StatusEventInfoTurbine(infoError.Id_Turbine.ToString(),Status.InProgress,"Init Search Temporary Data");
                 var resultSerie = await connectionTo.Value_Sensor_Turbine.Where(infoSensor => infoSensor.Id_Turbine == info.IdTurbine && infoSensor.Id_Sensor == 1 &&
                    string.Compare(infoSensor.Date, infoError.Date) < 0 && string.Compare(infoSensor.Date, DateTime.Parse(infoError.Date).AddMonths(info.Months).ToString("yyyy/MM/dd HH:mm:ss")) > 0)
-                    .ToListAsync();
-                yield return new ResponseSerieByPeriod(infoError.Id_Turbine.ToString(),JsonSerializer.Serialize(resultSerie),true); 
+                    .Select(values=>new SerieBySensorTurbineError(values.Id,values.Date,values.Value)).ToListAsync();
+                Console.WriteLine(infoError.Id == last.Id);
+                Console.WriteLine(infoError.Id);
+                Console.WriteLine(last.Id);
+                yield return new ResponseSerieByPeriod(info.NameTurbine,info.NameSensor,JsonSerializer.Serialize(resultSerie),infoError.Id==last.Id); 
             } 
             
-        }
+        } 
         public async void SelectSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info)
         {  
             await foreach(var values in GenerateSequence(info))
@@ -183,5 +197,6 @@ from value_sensor_error as vs,wind_turbine_info as wt where vs.id_turbine =15 an
         {
             throw new NotImplementedException();
         }
+        
     }
 }

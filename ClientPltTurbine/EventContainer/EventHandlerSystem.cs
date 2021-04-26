@@ -13,37 +13,40 @@ namespace ClientPltTurbine.EventContainer
     {
 
         private readonly IEventContainer container = Implementation.EventContainer.Container;
-        public async void SendEventLoadFile(string msg)
+        protected async void SendEventLoadFile(string msg)
         { 
             await container.SelectEvent<IEventComponent>(EventKey.LOAD_FILE_KEY).ContinueWith(evento=>evento.Result.Invoke(this,new LoadStatusRecord(1,msg)));
         }
-        public async void SendEventFinishLoadFile(string msg)
+        protected async void SendEventFinishLoadFile(string msg)
         {
             await container.SelectEvent<IEventComponent>(EventKey.LOAD_FILE_KEY).ContinueWith(evento => evento.Result.Invoke(this, new LoadStatusRecord(2, msg)));
         }
-        public async void SendEventErrorLoadFile(string msg)
+        protected async void SendEventErrorLoadFile(string msg)
         {
             await container.SelectEvent<IEventComponent>(EventKey.LOAD_FILE_KEY).ContinueWith(evento => evento.Result.Invoke(this, new LoadStatusRecord(3, msg)));
         }
 
-
-        public async void SendEventLoadInfoTurbine(string msg,string nameTurbine)
+        protected async void SendEventInfoTurbineAndSensor(IEventComponent component)
+        {
+            await container.SelectEvent<IEventComponent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, component));
+        }
+        protected async void SendEventLoadInfoTurbine(string msg,string nameTurbine)
         {
             await container.SelectEvent<IEventComponent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, new LoadStatusChart(1, msg, nameTurbine)));
         } 
-        public async void SendEventFinishLoadInfoTurbine(string msg)
+        protected async void SendEventFinishLoadInfoTurbine(string msg)
         {
             await container.SelectEvent<IEventComponent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, new LoadStatusRecord(2, msg)));
         }
-        public async void SendEventErrorLoadInfoTurbine(string msg)
+        protected async void SendEventErrorLoadInfoTurbine(string msg)
         {
             await container.SelectEvent<IEventComponent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, new LoadStatusRecord(3, msg)));
         }
-        public async void SendEventLoadInfo(ResponseSerieByPeriod info)
+        protected async void SendEventLoadInfo(ResponseSerieByPeriod info)
         {
             await container.SelectEvent<IEventComponent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, info));
         }
-        public async void SendEventLoadInfoStandardDeviation(ResponseSerieByPeriodWithStandardDeviation responseSerieByPeriod)
+        protected async void SendEventLoadInfoStandardDeviation(ResponseSerieByPeriodWithStandardDeviation responseSerieByPeriod)
         {
             await container.SelectEvent<IEventComponent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, responseSerieByPeriod));
         }

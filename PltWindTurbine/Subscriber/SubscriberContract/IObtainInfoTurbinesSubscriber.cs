@@ -7,5 +7,6 @@ namespace PltWindTurbine.Subscriber.SubscriberContract
     { 
         public Task GetInfoTurbine(OnlySerieByPeriodAndCode info);
         public Task SerieByPeriodWithStandardDeviation(SeriePeriodByCodeWithStandarDeviation info);
+        public Task GetInforTurbineAndSensor();
     }
 }

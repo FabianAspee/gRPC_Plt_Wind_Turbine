@@ -7,13 +7,11 @@
 <p>Current count: @LoadFile.status</p>
 <button class="btn btn-primary" @onclick="LoadFile.LoadInfoTurbines">Load Info Turbines</button>
 <button class="btn btn-primary" @onclick="LoadFile.LoadSensorTurbines">Load Sensor Turbines</button>
-<button class="btn btn-primary" @onclick="LoadFile.LoadEventSensorTurbines">Load Sensor Turbines</button>
-@code {
-    protected override async Task OnInitializedAsync()
+<button class="btn btn-primary" @onclick="LoadFile.LoadEventSensorTurbines">Load Event Turbines</button> 
+@code { protected override async Task OnInitializedAsync()
     {
         LoadFile.Service = toastService;
         LoadFile.LoadSatus += async (sender, args) =>
                await LoadFile.WriteInfo(args);
-        await Task.Run(()=> LoadFile.RegisterEvent());
-    }
-}
+        await Task.Run(() => LoadFile.RegisterEvent());
+    } }
