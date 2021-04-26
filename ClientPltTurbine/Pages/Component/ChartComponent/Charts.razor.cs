@@ -3,7 +3,10 @@ using ChartJs.Blazor.Common;
 using ChartJs.Blazor.Common.Enums;
 using ChartJs.Blazor.LineChart;
 using ChartJs.Blazor.PieChart;
+using ChartJs.Blazor.ScatterChart;
 using ChartJs.Blazor.Util;
+using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart;
+using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartDraw.Implementation;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
 using PltTurbineShared;
 using System;
@@ -18,11 +21,12 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
     public partial class Charts
     {
         private LineConfig Config;
-        private readonly List<ResponseSerieByPeriod> infoChart = new();
+        private readonly List<IEventComponent> infoChart = new();
         private readonly List<Sensor> Sensors = new();
         private readonly List<Turbine> Turbines = new();
         private readonly List<ErrorTurbine> ErrorByTurbine = new();
         private readonly List<ChartInfo> ChartInfo = new();
+        private readonly LineChartDraw lineChartDraw = LineChartDraw.Instance;
         private bool shouldRender = true;
         private int idTurbine; 
         private int idSensor;
@@ -74,68 +78,29 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 Turbines.Add(turbine);
             }
         }
-       
+        
+
         private async void CallChartData()
         {
             var nameTurbine = Turbines.Find(value => value.Id == idTurbine).Value;
             var nameSensor = Sensors.Find(value => value.Id == idSensor).Value;
             var valueError = ErrorByTurbine.Find(value=>value.Id==error).Value;
             var info = new InfoChartRecord(idTurbine,nameTurbine,idSensor, nameSensor, Convert.ToInt32(valueError), period);
-            await ChartSingleton.GraphicInfoTurbine(info); 
+            await ChartSingleton.ChartInfoTurbine(info, idChart);
             await foreach (var turbine in ChartSingleton.GetInfoChart())
             {
                 infoChart.Add(turbine);
             }
             StateHasChanged();
         } 
-        public Variant[] _variants = new[]
+         
+        public ConfigBase GetConfig(IEventComponent periods) => idChart switch
         {
-            new Variant
-            {
-                SteppedLine = SteppedLine.False,
-                Title = "No Step Interpolation",
-                Color = ChartColors.Red
-            }
-        };
-        
-
-        public LineConfig GetConfig(ResponseSerieByPeriod period)
-        {
-            LineConfig ConfigLine = new()
-            {
-                Options = new LineOptions
-                {
-                    Responsive = true,
-                    Title = new OptionsTitle
-                    {
-                        Display = true,
-                        Text = _variants[0].Title
-                    }
-                }
-            };
-
-            string steppedLineCamel = _variants[0].SteppedLine.ToString();
-            steppedLineCamel = char.ToUpperInvariant(steppedLineCamel[0]) + steppedLineCamel.Substring(1);
-
-            ConfigLine.Data.Labels.AddRange(period.Record.CustomInfo.Select(x=> x.Date.ToShortDateString()).ToArray());
-            ConfigLine.Data.Datasets.Add(new LineDataset<double?>(period.Record.CustomInfo.Select(x => x.Value).ToList())
-            {
-                Label = $"SteppedLine: SteppedLine.{steppedLineCamel}",
-                SteppedLine = _variants[0].SteppedLine,
-                BorderColor = ColorUtil.FromDrawingColor(_variants[0].Color),
-                Fill = FillingMode.Disabled
-            });
-
-            return ConfigLine;
-        }
-
-        public class Variant
-        {
-            public SteppedLine SteppedLine { get; set; }
-            public string Title { get; set; }
-            public System.Drawing.Color Color { get; set; }
-        }
-
+            TypeChartUtils.LinearChart => lineChartDraw.CreateLineChart(periods as ResponseSerieByPeriod),
+            TypeChartUtils.LinearChartWithWarning => lineChartDraw.CreateLineChartWarning(periods as ResponseSerieByPeriodWarning),
+            TypeChartUtils.ScatterChart => null,
+            _ => throw new NotImplementedException("This chart are not implemented"),
+        };  
         public async void CreateChart()
         {
             PieConfig ConfigPie = new()

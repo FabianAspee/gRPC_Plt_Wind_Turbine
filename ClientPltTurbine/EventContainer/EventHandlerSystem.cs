@@ -42,7 +42,7 @@ namespace ClientPltTurbine.EventContainer
         {
             await container.SelectEvent<IEventComponent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, new LoadStatusRecord(3, msg)));
         }
-        protected async void SendEventLoadInfo(ResponseSerieByPeriod info)
+        protected async void SendEventLoadInfo(IEventComponent info)
         {
             await container.SelectEvent<IEventComponent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, info));
         }

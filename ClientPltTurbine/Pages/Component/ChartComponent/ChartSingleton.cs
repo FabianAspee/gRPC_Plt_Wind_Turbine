@@ -24,7 +24,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         public int NumTurbine;
         private BufferBlock<Sensor> Sensors;
         private BufferBlock<Turbine> Turbines;
-        private BufferBlock<ResponseSerieByPeriod> InfoTurbineForChart;
+        private BufferBlock<IEventComponent> InfoTurbineForChart;
         private BufferBlock<ResponseSerieByPeriodWithStandardDeviation> InfoTurbineForChartWithSTD;
         private TaskCompletionSource<bool> isCompleteS;
         private TaskCompletionSource<bool> isCompleteT;
@@ -54,6 +54,15 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                     isCompleteChart.SetResult(true);
                 }
                 Service.ShowSuccess($"Load {status.Record.NameTurbine}");
+            }),
+            ResponseSerieByPeriodWarning status => Task.Run(() =>
+            {
+                InfoTurbineForChart.SendAsync(status);
+                if (status.IsFinish)
+                {
+                    isCompleteChart.SetResult(true);
+                }
+                Service.ShowSuccess($"Load {status.Record.RecordLinearChart.NameTurbine}");
             }),
             ResponseSerieByPeriodWithStandardDeviation status => Task.Run(() => Service.ShowError(status.StandardDeviation.ToString())),
             AllSensorInfo sensor => Task.Run(() => { 
@@ -89,7 +98,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 yield return Turbines.Receive();
             }
         }
-        public async IAsyncEnumerable<ResponseSerieByPeriod> GetInfoChart()
+        public async IAsyncEnumerable<IEventComponent> GetInfoChart()
         {
             while (!isCompleteChart.Task.IsCompleted)
             {  
@@ -103,11 +112,17 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 yield return await InfoTurbineForChartWithSTD.ReceiveAsync();
             }
         }
-        public async Task GraphicInfoTurbine(InfoChartRecord info)
+        private Task CallTypeChart(InfoChartRecord info, int idChart) => idChart switch
+        {
+            1 => Controller.ChartAllTurbines(info),
+            2 => Controller.ChartAllTurbinesWarning(info),
+            _ => throw new NotImplementedException()
+        };
+        public async Task ChartInfoTurbine(InfoChartRecord info, int type)
         {
             isCompleteChart = new();
             InfoTurbineForChart = new();
-            await Controller.ChartAllTurbines(info).ConfigureAwait(false);
+            await CallTypeChart(info, type).ConfigureAwait(false);
         }
         private void InitliazidedComponent()
         { 

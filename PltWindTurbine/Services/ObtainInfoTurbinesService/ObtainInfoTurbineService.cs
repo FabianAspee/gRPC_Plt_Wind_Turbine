@@ -105,7 +105,7 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
                     case CodeAndPeriodRequest.ActionOneofCase.Msg1:
                         await obtainInfoTurbinesSubscriber.GetInfoTurbine(action.Msg1);
                         break;
-                    case CodeAndPeriodRequest.ActionOneofCase.Msg2:
+                    case CodeAndPeriodRequest.ActionOneofCase.Msg2: 
                         await obtainInfoTurbinesSubscriber.SerieByPeriodWithStandardDeviation(action.Msg2);
                         break;
                     case CodeAndPeriodRequest.ActionOneofCase.Msg3:

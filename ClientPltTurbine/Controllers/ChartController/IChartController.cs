@@ -9,6 +9,7 @@ namespace ClientPltTurbine.Controllers.ChartController
     interface IChartController
     {
         Task ChartAllTurbines(InfoChartRecord info);
+        Task ChartAllTurbinesWarning(InfoChartRecord info);
         Task CallAllTurbinesAndSensors();
         Task<(int, List<string>)> GetErrorByTurbine(int idTurbine);
         Task<List<(int, string)>> GetAllChart();

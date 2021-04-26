@@ -16,6 +16,8 @@ namespace ClientPltTurbine.Controllers.ChartController
 
         public Task ChartAllTurbines(InfoChartRecord info) =>ChartModel.GetAllInfoTurbineForChart(info);
 
+        public Task ChartAllTurbinesWarning(InfoChartRecord info) => ChartModel.GetAllInfoTurbineForChartWithWarning(info);
+
         public Task<List<(int, string)>> GetAllChart()=> ChartModel.GetAllChart();
          
 

@@ -21,26 +21,30 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
         private readonly ObtainInfoTurbines.ObtainInfoTurbinesClient _clientChart;
         private readonly AsyncDuplexStreamingCall<CodeAndPeriodRequest, CodeAndPeriodResponse> _duplexStreamObtainInfo;
         private AsyncServerStreamingCall<ResponseNameTurbineAndSensor> _asyncStreamGetInfoTurbineSensor;
-        private readonly Dictionary<string, List<ByteString>> infoChartByTurbine = new();
+        private readonly Dictionary<string, List<IParameterToChart>> infoChartByTurbine = new();
         public ChartModel()
         {
             _clientChart = new ObtainInfoTurbines.ObtainInfoTurbinesClient(channel);
             _duplexStreamObtainInfo = _clientChart.InfoFailureTurbine();
             _ = HandleResponsesObtainInfoAsync();
         }
+
         public Task GetAllInfoTurbineForChart(InfoChartRecord info)
         {
             var SerieByPeriod = new CodeAndPeriodRequest()
             {
-                Msg1 = new OnlySerieByPeriodAndCode()
-                {
-                    Code = info.Error,
-                    IdTurbine = info.IdTurbine,
-                    NameTurbine = info.NameTurbine,
-                    IdSensor = info.IdSensor,
-                    NameSensor = info.NameSensor,
-                    Months = info.Period,
-                    QtaGraph = 5,
+                Msg1 = CreatePeriodAndCode(info)
+            };
+            return _duplexStreamObtainInfo.RequestStream.WriteAsync(SerieByPeriod);
+        }
+        
+        public Task GetAllInfoTurbineForChartWithWarning(InfoChartRecord info)
+        {
+            var SerieByPeriod = new CodeAndPeriodRequest()
+            {
+                Msg3 = new OnlySerieByPeriodAndCodeWithWarning()
+                { 
+                    Info = CreatePeriodAndCode(info)
                 }
             };
             return _duplexStreamObtainInfo.RequestStream.WriteAsync(SerieByPeriod);
@@ -54,84 +58,87 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
                 _ = HandleResponsesInfoTurbineSensorAsync();
             });
         }
+
         public Task<(int,List<string>)> GetErroByTurbine(int idTurbine)=>_clientChart.GetErrorByTurbineAsync(new ErrorByTurbineRequest { IdTurbine = idTurbine })
             .ResponseAsync.ContinueWith(response=>(response.Result.IdTurbine, response.Result.Errors.ToList()),TaskContinuationOptions.OnlyOnRanToCompletion);
+
         public Task<List<(int, string)>> GetAllChart() => _clientChart.GetChartSystemAsync(new WithoutMessage{})
             .ResponseAsync.ContinueWith(response =>response.Result.Info.Select(info=>(info.IdChart,info.NameChart)).ToList(), TaskContinuationOptions.OnlyOnRanToCompletion);
-        private static byte[] ReturnByteFromContent(ByteString table) => table.ToByteArray();
-        private void SaveInfoTurbineForChart(string nameTurbine,string nameSensor, bool isFinish, ByteString values)
+
+        private static OnlySerieByPeriodAndCode CreatePeriodAndCode(InfoChartRecord info) => new()
         {
-            if (!isFinish && !infoChartByTurbine.TryGetValue(nameTurbine, out _))
-            {
-                List<ByteString> value = new()
-                {
-                    values//refactoring
-                };
-                infoChartByTurbine[nameTurbine] = value;
-                var result = Encoding.UTF8.GetString(ReturnByteFromContent(values));
-                try
-                {
-                    var customInfos = JsonConvert.DeserializeObject<List<CustomInfoTurbine>>(result);
-                    var info = new RecordLinearChart(nameTurbine, nameSensor, customInfos);
-                    SendEventLoadInfo(new ResponseSerieByPeriod(isFinish, info));
-                }
-                catch (Exception e)
-                { 
-                    Console.WriteLine(e);
-                }
-            }
-            else if (!isFinish && infoChartByTurbine.TryGetValue(nameTurbine, out List<ByteString> valueExisting))
-            {
-                valueExisting.Add(values);
-                infoChartByTurbine[nameTurbine] = valueExisting; 
-                var result = Encoding.UTF8.GetString(ReturnByteFromContent(values));
-                try
-                {
-                    var customInfos = JsonConvert.DeserializeObject<List<CustomInfoTurbine>>(result);
-                    var info = new RecordLinearChart(nameTurbine, nameSensor, customInfos);
-                    SendEventLoadInfo(new ResponseSerieByPeriod(isFinish, info));
-                }
-                catch (Exception e)
-                {
+            Code = info.Error,
+            IdTurbine = info.IdTurbine,
+            NameTurbine = info.NameTurbine,
+            IdSensor = info.IdSensor,
+            NameSensor = info.NameSensor,
+            Months = info.Period,
+            QtaGraph = 5,
+        };
 
-                    Console.WriteLine(e);
-                }
-            }
-            else if(isFinish && !infoChartByTurbine.TryGetValue(nameTurbine, out _))
-            { 
-                var result = Encoding.UTF8.GetString(ReturnByteFromContent(values));
-                try
-                {
-                    var customInfos = JsonConvert.DeserializeObject<List<CustomInfoTurbine>>(result);
-                    var info = new RecordLinearChart(nameTurbine, nameSensor, customInfos);  
-                    SendEventLoadInfo(new ResponseSerieByPeriod(isFinish, info));
-                }
-                catch(Exception e)
-                {
-                    
-                    Console.WriteLine(e);
-                }
-                
-            }
-            else if (isFinish && infoChartByTurbine.TryGetValue(nameTurbine, out _))
-            {
-                var result = Encoding.UTF8.GetString(ReturnByteFromContent(values));
-                try
-                {
-                    var customInfos = JsonConvert.DeserializeObject<List<CustomInfoTurbine>>(result);
-                    var info = new RecordLinearChart(nameTurbine, nameSensor, customInfos);
-                    SendEventLoadInfo(new ResponseSerieByPeriod(isFinish, info));
-                }
-                catch (Exception e)
-                {
+        private static byte[] ReturnByteFromContent(ByteString values) => values.ToByteArray();
+        private static string EncodingByteToString(byte[] values) => Encoding.UTF8.GetString(values);
+        private static T DeserializeObject<T>(string values) => JsonConvert.DeserializeObject<T>(values);
 
-                    Console.WriteLine(e);
-                }
-
-            }
-            else
+        private void CreateLoadInfo(ParameterToChart parameterToChart)
+        {
+            var result = EncodingByteToString(ReturnByteFromContent(parameterToChart.Values));
+            try
             {
-                 
+                var customInfos = DeserializeObject<List<CustomInfoTurbine>>(result);
+                var info = new RecordLinearChart(parameterToChart.NameTurbine, parameterToChart.NameSensor, customInfos);
+                SendEventLoadInfo(new ResponseSerieByPeriod(parameterToChart.IsFinish, info));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+        private void CreateLoadInfoWarning(ParameterToChartWithWarning parameterToChart)
+        {
+            var result = EncodingByteToString(ReturnByteFromContent(parameterToChart.ParameterToChart.Values));
+            var warning = EncodingByteToString(ReturnByteFromContent(parameterToChart.Warning));
+            try
+            {
+                var customInfos = DeserializeObject<List<CustomInfoTurbine>>(result);
+                var customInfosWarning = DeserializeObject<List<CustomInfoTurbineWarning>>(warning);
+                var info = new RecordLinearChart(parameterToChart.ParameterToChart.NameTurbine, parameterToChart.ParameterToChart.NameSensor, customInfos);
+                var infoWarning = new RecordLinearChartWarning(info, customInfosWarning);
+                SendEventLoadInfo(new ResponseSerieByPeriodWarning(parameterToChart.ParameterToChart.IsFinish, infoWarning));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+        private void SaveInfoTurbineForChart(ParameterToChart parameterToChart)
+        {
+            if (!infoChartByTurbine.TryGetValue(parameterToChart.NameTurbine, out _))
+            {
+                List<IParameterToChart> value = new(){ parameterToChart };
+                infoChartByTurbine[parameterToChart.NameTurbine] = value;
+                CreateLoadInfo(parameterToChart);
+            }
+            else if (infoChartByTurbine.TryGetValue(parameterToChart.NameTurbine, out List<IParameterToChart> valueExisting))
+            {
+                valueExisting.Add(parameterToChart);
+                infoChartByTurbine[parameterToChart.NameTurbine] = valueExisting; 
+                CreateLoadInfo(parameterToChart); 
+            }   
+        }
+        private void SaveInfoTurbineForChartWarning(ParameterToChartWithWarning parameterToChartWithWarning)
+        {
+            if (!infoChartByTurbine.TryGetValue(parameterToChartWithWarning.ParameterToChart.NameTurbine, out _))
+            {
+                List<IParameterToChart> value = new() { parameterToChartWithWarning };
+                infoChartByTurbine[parameterToChartWithWarning.ParameterToChart.NameTurbine] = value;
+                CreateLoadInfoWarning(parameterToChartWithWarning);
+            }
+            else if (infoChartByTurbine.TryGetValue(parameterToChartWithWarning.ParameterToChart.NameTurbine, out List<IParameterToChart> valueExisting))
+            {
+                valueExisting.Add(parameterToChartWithWarning);
+                infoChartByTurbine[parameterToChartWithWarning.ParameterToChart.NameTurbine] = valueExisting;
+                CreateLoadInfoWarning(parameterToChartWithWarning);
             }
         }
         private void HandleFinalResponses(ResponseCodePeriod msg2)
@@ -142,11 +149,15 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
                     SendEventErrorLoadInfoTurbine("No Action specified.");
                     break;
                 case ResponseCodePeriod.ActionOneofCase.Msg:
-                    SaveInfoTurbineForChart(msg2.Msg.NameTurbine,msg2.Msg.NameSensor, msg2.Msg.IsFinish, msg2.Msg.Values); 
+                    SaveInfoTurbineForChart(new ParameterToChart(msg2.Msg.NameTurbine,msg2.Msg.NameSensor, msg2.Msg.IsFinish, msg2.Msg.Values)); 
                     break;
                 case ResponseCodePeriod.ActionOneofCase.Msg2:
                     SendEventLoadInfoStandardDeviation(new ResponseSerieByPeriodWithStandardDeviation(new ResponseSerieByPeriod(msg2.Msg2.Msg1.IsFinish, 
                         null),msg2.Msg2.StandardDeviation));
+                    break;
+                case ResponseCodePeriod.ActionOneofCase.Msg3:
+                    SaveInfoTurbineForChartWarning(new ParameterToChartWithWarning(
+                        new ParameterToChart(msg2.Msg3.Msg1.NameTurbine, msg2.Msg3.Msg1.NameSensor, msg2.Msg3.Msg1.IsFinish, msg2.Msg3.Msg1.Values),msg2.Msg3.Warning));
                     break;
                 default:
                     SendEventErrorLoadInfoTurbine($"Unknown Action '{msg2.ActionCase}'.");
@@ -197,7 +208,5 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
 
             }
         }
-
-       
     }
 }
