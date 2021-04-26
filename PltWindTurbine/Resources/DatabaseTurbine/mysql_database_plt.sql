@@ -52,6 +52,11 @@ CREATE TABLE IF NOT EXISTS  error_sensor  (
        data_type_turbine  VARCHAR(255)
 );
 
+CREATE TABLE IF NOT EXISTS chart_system(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    chart_name  VARCHAR(255)
+    );
+
 ALTER TABLE  value_sensor_error  ADD FOREIGN KEY ( id_error_sensor ) REFERENCES  error_sensor  ( id );
 
 ALTER TABLE  value_sensor_error  ADD FOREIGN KEY ( id_turbine ) REFERENCES  wind_turbine_info  ( id );

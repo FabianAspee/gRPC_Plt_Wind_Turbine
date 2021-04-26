@@ -40,6 +40,9 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         {
             container.AddEvent(EventKey.GRAPH_KEY, InfoChart);
         }
+
+        public Task<List<(int,string)>> GetAllChart() => Controller.GetAllChart(); 
+
         public Task WriteInfo(IEventComponent loadStatus) => loadStatus switch
         {
             LoadStatusChart { Msg: _, TypeMsg: 1 } status => Task.Run(() => Service.ShowInfo($"Turbine {status.NameTurbine} Status {status.Msg}")),
@@ -100,11 +103,11 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 yield return await InfoTurbineForChartWithSTD.ReceiveAsync();
             }
         }
-        public async Task GraphicInfoTurbine()
+        public async Task GraphicInfoTurbine(InfoChartRecord info)
         {
             isCompleteChart = new();
             InfoTurbineForChart = new();
-            await Controller.ChartAllTurbines().ConfigureAwait(false);
+            await Controller.ChartAllTurbines(info).ConfigureAwait(false);
         }
         private void InitliazidedComponent()
         { 
@@ -117,7 +120,9 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         {
             InitliazidedComponent();
             await Controller.CallAllTurbinesAndSensors().ConfigureAwait(false);
-        } 
+        }
+        public async Task<(int, List<string>)> CallErrorByTurbine(int idTurbine)=> await Controller.GetErrorByTurbine(idTurbine).ConfigureAwait(false);
+        
     }
      public static class IListExtensions
     {

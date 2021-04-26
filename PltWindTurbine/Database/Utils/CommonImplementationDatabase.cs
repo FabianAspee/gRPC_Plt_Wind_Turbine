@@ -3,6 +3,7 @@ using PltWindTurbine.Database.DatabaseConnection;
 using PltWindTurbine.Database.DatabaseContract;
 using PltWindTurbine.Database.ResultRecordDB;
 using PltWindTurbine.Database.TableDatabase;
+using PltWindTurbine.Database.Utils.EqualityComparerElement;
 using PltWindTurbine.Services.ObtainInfoTurbinesService;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer;
 using PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Contract;
@@ -141,48 +142,62 @@ namespace PltWindTurbine.Database.Utils
         {
             throw new NotImplementedException();
         }
-        private static async IAsyncEnumerable<ILoadInfoTurbine> GenerateSequence(OnlySerieByPeriodAndCode info)
+
+        private static async IAsyncEnumerable<ILoadInfoTurbine> GenerateSequence(OnlySerieByPeriodAndCode info, bool isWarning=false)
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
-            var values = connectionTo.Value_Sensor_Error.Where(error => error.Id_Turbine == info.IdTurbine && error.Value ==info.Code).OrderBy(value => value.Id).ToList();
-   
-    
+            var values = connectionTo.Value_Sensor_Error.Where(error => error.Id_Turbine == info.IdTurbine && error.Value ==info.Code).OrderBy(value => value.Id).ToList(); 
             var last = values.LastOrDefault();
             foreach (var infoError in values)
             {   
-                yield return new StatusEventInfoTurbine(infoError.Id_Turbine.ToString(),Status.InProgress,"Init Search Temporary Data");
-                var resultSerie = await connectionTo.Value_Sensor_Turbine.Where(infoSensor => infoSensor.Id_Turbine == info.IdTurbine && infoSensor.Id_Sensor == 1 &&
+                yield return new StatusEventInfoTurbine(info.NameTurbine,Status.InProgress,"Init Search Temporary Data");
+                var resultSerie = await connectionTo.Value_Sensor_Turbine.Where(infoSensor => infoSensor.Id_Turbine == info.IdTurbine && infoSensor.Id_Sensor == info.IdSensor &&
                    string.Compare(infoSensor.Date, infoError.Date) < 0 && string.Compare(infoSensor.Date, DateTime.Parse(infoError.Date).AddMonths(info.Months).ToString("yyyy/MM/dd HH:mm:ss")) > 0)
                     .Select(values=>new SerieBySensorTurbineError(values.Id,values.Date,values.Value)).ToListAsync();
-                Console.WriteLine(infoError.Id == last.Id);
-                Console.WriteLine(infoError.Id);
-                Console.WriteLine(last.Id);
-                yield return new ResponseSerieByPeriod(info.NameTurbine,info.NameSensor,JsonSerializer.Serialize(resultSerie),infoError.Id==last.Id); 
+                if (isWarning)
+                {
+                   var warning = await connectionTo.Value_Sensor_Error.Where(error => error.Id_Turbine == info.IdTurbine &&
+                   string.Compare(error.Date, infoError.Date) < 0 && string.Compare(error.Date, DateTime.Parse(infoError.Date).AddMonths(info.Months).ToString("yyyy/MM/dd HH:mm:ss")) > 0)
+                        .Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync();
+                    var serieByPeriod = new ResponseSerieByPeriod(info.NameTurbine, info.NameSensor, JsonSerializer.Serialize(resultSerie), infoError.Id == last.Id); 
+                    yield return new ResponseSerieByPeriodWithWarning(serieByPeriod, JsonSerializer.Serialize(warning));
+                }
+                else
+                { 
+                    yield return new ResponseSerieByPeriod(info.NameTurbine, info.NameSensor, JsonSerializer.Serialize(resultSerie), infoError.Id == last.Id);
+                }
             } 
             
         } 
-        public async void SelectSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info)
-        {  
-            await foreach(var values in GenerateSequence(info))
-            {
-                if (values is StatusEventInfoTurbine evento)
-                {
-
-                    SendEventLoadInfoTurbine(evento);
-                }
-                else if (values is ResponseSerieByPeriod serie)
-                { 
-                    SendEventLoadInfo(serie);
-                }
-            } 
-            /*  select* from(select wt.id, wt.turbine_name, vs.date,
-   (case when vs.value in (180, 3370, 186, 182, 181) then concat(vs.value," ", (select group_concat(war.value) from value_sensor_error as war
-   where war.id_turbine = 15 and war.value in (892.0, 891.0, 183.0, 79.0, 356.0) and war.date<vs.date and 
+        public async Task CallSelectSeries(OnlySerieByPeriodAndCode info, bool isWarning = false)
+        {
+            await foreach (var values in GenerateSequence(info))
+            { 
+                SendEventLoadInfo(values); 
+            }
+        }
+        public async void SelectSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info) => await CallSelectSeries(info);
+        /*  select* from(select wt.id, wt.turbine_name, vs.date,
+(case when vs.value in (180, 3370, 186, 182, 181) then concat(vs.value," ", (select group_concat(war.value) from value_sensor_error as war
+where war.id_turbine = 15 and war.value in (892.0, 891.0, 183.0, 79.0, 356.0) and war.date<vs.date and 
 STR_TO_DATE(war.date, '%Y/%m/%d %H:%i:%S')>DATE_SUB((DATE_SUB(STR_TO_DATE(vs.date, '%Y/%m/%d %H:%i:%S'), INTERVAL 1 MONTH)), INTERVAL 8 DAY))) else NULL end) as error
 from value_sensor_error as vs,wind_turbine_info as wt where vs.id_turbine =15 and wt.id = 15 and
-(vs.value in (180, 3370, 186, 182, 181))) as t where t.error != 'NULL'*/ 
-        }
+(vs.value in (180, 3370, 186, 182, 181))) as t where t.error != 'NULL'*/
 
+        public async void SelectSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info) => await CallSelectSeries(info, true); 
+
+        private readonly IReadOnlyList<double> errors = new List<double> { 180, 3370, 186, 182, 181 };
+        private readonly IReadOnlyList<double> warning = new List<double> { 892, 891, 183, 79, 356 };
+        public Task<List<string>> GetErrorByTurbine(int idTurbine) => Task.Run(() =>
+        {
+            using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
+            return connectionTo.Value_Sensor_Error.Where(turbine=>turbine.Id_Turbine==idTurbine && turbine.Value.HasValue &&
+            errors.Contains(turbine.Value.Value))
+            .GroupBy(value=>value.Value)
+            .Select(value =>value.Key.ToString()).ToList(); 
+            
+        });
+        
         public Dictionary<string, List<string>> SelectSerieTurbineByError()
         {
             throw new NotImplementedException();
@@ -197,6 +212,12 @@ from value_sensor_error as vs,wind_turbine_info as wt where vs.id_turbine =15 an
         {
             throw new NotImplementedException();
         }
-        
+        public Task<List<(int, string)>> GetNameChart()=>Task.Run(() =>
+        {
+            using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
+            return connectionTo.Chart_System.ToList().Select(chart=>(chart.Id,chart.Chart_Name)).ToList(); 
+        });
+
+       
     }
 }

@@ -35,7 +35,27 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
             EventKey.GRAPH_KEY => Status,
             EventKey.INFO_TURBINE_SENSOR => LoadSensorAndTurbine,
             _ => throw new NotImplementedException()
-        };
+        }; 
+        public override async Task<ErrorByTurbineResponse> GetErrorByTurbine(ErrorByTurbineRequest request, ServerCallContext context)
+        {
+            using var obtainInfoTurbines = _factoryMethod.GetObtainInfoTurbinesSubscriber();
+            var result = await obtainInfoTurbines.GetErrorByTurbine(request.IdTurbine);
+            var resultToClient = new ErrorByTurbineResponse
+            {
+                IdTurbine = request.IdTurbine
+            };
+            resultToClient.Errors.AddRange(result.ToList());
+            return resultToClient;
+        }
+        public override async Task<ChartSystemResponse> GetChartSystem(WithoutMessage request, ServerCallContext context)
+        {
+            using var obtainInfoTurbines = _factoryMethod.GetObtainInfoTurbinesSubscriber();
+            var result = await obtainInfoTurbines.GetInfoChart();
+            var resultToClient = new ChartSystemResponse();
+            resultToClient.Info.AddRange(result.Select(value=>new InfoChart { IdChart=value.Item1,NameChart=value.Item2}).ToList());
+            return resultToClient;
+        }
+        
         private void RegisterEvent(EventKey key)
         {
             container.AddEvent(key, SelectEvent(key));
@@ -87,7 +107,10 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
                         break;
                     case CodeAndPeriodRequest.ActionOneofCase.Msg2:
                         await obtainInfoTurbinesSubscriber.SerieByPeriodWithStandardDeviation(action.Msg2);
-                        break; 
+                        break;
+                    case CodeAndPeriodRequest.ActionOneofCase.Msg3:
+                        await obtainInfoTurbinesSubscriber.GetInfoTurbineWithWarning(action.Msg3);
+                        break;
                     default:
                         _logger.LogWarning($"Unknown Action '{action.ActionCase}'.");
                         break;
@@ -150,14 +173,22 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
                     Msg2 = new SeriePeriodByCodeWithStandarDeviationResponse() { Msg1 = GetByPeriodAndCodeResponse(responseSerieByPeriod.InfoSerie), StandardDeviation = responseSerieByPeriod.StandardDeviation }
                 }
             },
+            ResponseSerieByPeriodWithWarning responseSerieByPeriodWithWarning => new CodeAndPeriodResponse()
+            {
+                Msg2 = new ResponseCodePeriod()
+                {
+                    Msg3 = new OnlySerieByPeriodAndCodeResponseWithWarning() { Msg1 = GetByPeriodAndCodeResponse(responseSerieByPeriodWithWarning.SerieByPeriod), Warning = GetBytes(responseSerieByPeriodWithWarning.Warning)}
+                }
+            },
             _ => throw new NotImplementedException()
         };
+        private static ByteString GetBytes(string values) => ByteString.CopyFrom(Encoding.UTF8.GetBytes(values));
         private static OnlySerieByPeriodAndCodeResponse GetByPeriodAndCodeResponse(ResponseSerieByPeriod responseSerieBy) =>
             new()
             { 
                 NameTurbine = responseSerieBy.NameTurbine,
                 NameSensor  = responseSerieBy.NameSensor,
-                Values = ByteString.CopyFrom(Encoding.UTF8.GetBytes(responseSerieBy.Values)),
+                Values = GetBytes(responseSerieBy.Values),
                 IsFinish = responseSerieBy.IsFinish
             };
 

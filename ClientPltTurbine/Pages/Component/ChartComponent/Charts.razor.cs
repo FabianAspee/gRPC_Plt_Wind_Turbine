@@ -20,9 +20,15 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         private LineConfig Config;
         private readonly List<ResponseSerieByPeriod> infoChart = new();
         private readonly List<Sensor> Sensors = new();
-        private readonly List<Turbine> Turbines = new(); 
+        private readonly List<Turbine> Turbines = new();
+        private readonly List<ErrorTurbine> ErrorByTurbine = new();
+        private readonly List<ChartInfo> ChartInfo = new();
         private bool shouldRender = true;
-        private int infoTurbine;
+        private int idTurbine; 
+        private int idSensor;
+        private int period;
+        private int error;
+        private int idChart;
         private Chart _chart;
         protected override bool ShouldRender() => shouldRender;
         protected override async Task OnInitializedAsync()
@@ -35,8 +41,28 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                    await ChartSingleton.WriteInfo(args);
                 await Task.Run(() => ChartSingleton.RegisterEvent());
                 await AwaitSensorAndTurbine();
+                var allChart = await ChartSingleton.GetAllChart();
+                ChartInfo.AddRange(allChart.Select(info => new ChartInfo(info.Item1, info.Item2)).ToList());
             } 
         }
+        private async void ChangeInfoTurbine(int idTurbine)
+        {
+            ErrorByTurbine.Clear();
+            infoChart.Clear();
+            this.idTurbine = idTurbine;
+            var result = await ChartSingleton.CallErrorByTurbine(idTurbine);
+            ErrorByTurbine.AddRange(result.Item2.Zip(Enumerable.Range(0,result.Item2.Count))
+                .Select(values=>new ErrorTurbine(values.Second,values.First)).ToList());
+            StateHasChanged();
+        }
+        private void ChangeInfoSensor(int idSensor) => this.idSensor = idSensor;
+
+        private void ChangeInfoError(int error) => this.error = error;
+
+
+        private void ChangeInfoPeriod(int period) => this.period = period;
+        private void ChangeInfoChart(int idChart) => this.idChart = idChart;
+
         private async Task AwaitSensorAndTurbine()
         {
             await foreach (var sensor in ChartSingleton.GetSensor())
@@ -51,12 +77,16 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
        
         private async void CallChartData()
         {
-            await ChartSingleton.GraphicInfoTurbine(); 
+            var nameTurbine = Turbines.Find(value => value.Id == idTurbine).Value;
+            var nameSensor = Sensors.Find(value => value.Id == idSensor).Value;
+            var valueError = ErrorByTurbine.Find(value=>value.Id==error).Value;
+            var info = new InfoChartRecord(idTurbine,nameTurbine,idSensor, nameSensor, Convert.ToInt32(valueError), period);
+            await ChartSingleton.GraphicInfoTurbine(info); 
             await foreach (var turbine in ChartSingleton.GetInfoChart())
             {
                 infoChart.Add(turbine);
             }
-            base.StateHasChanged();
+            StateHasChanged();
         } 
         public Variant[] _variants = new[]
         {
@@ -66,9 +96,10 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 Title = "No Step Interpolation",
                 Color = ChartColors.Red
             }
-        }; 
-       
-        public LineConfig GetConfig( ResponseSerieByPeriod period)
+        };
+        
+
+        public LineConfig GetConfig(ResponseSerieByPeriod period)
         {
             LineConfig ConfigLine = new()
             {

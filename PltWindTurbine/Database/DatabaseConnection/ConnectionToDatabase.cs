@@ -54,5 +54,6 @@ namespace PltWindTurbine.Database.DatabaseConnection
         public DbSet<Value_Sensor_Error> Value_Sensor_Error { get; set; }
         public DbSet<Value_Sensor_Turbine> Value_Sensor_Turbine { get; set; }
         public DbSet<Wind_Turbine_Info> Wind_Turbine_Info { get; set; }
+        public DbSet<Chart_System> Chart_System { get; set; }
     }
 } 

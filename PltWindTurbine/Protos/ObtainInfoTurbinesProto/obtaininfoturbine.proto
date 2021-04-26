@@ -21,12 +21,33 @@ service ObtainInfoTurbines {
  
   rpc InfoFailureTurbine(stream CodeAndPeriodRequest) returns (stream CodeAndPeriodResponse);
   rpc GetNameTurbineAndSensor(WithoutMessage) returns (stream ResponseNameTurbineAndSensor);
+  rpc GetChartSystem(WithoutMessage) returns (ChartSystemResponse);
+  rpc GetErrorByTurbine(ErrorByTurbineRequest) returns (ErrorByTurbineResponse);
+}
+
+message ErrorByTurbineRequest{
+	int32 idTurbine=1;
+}
+
+message InfoChart{
+	int32 idChart=1;
+	string nameChart=2;
+}
+message ChartSystemResponse{ 
+
+	repeated InfoChart info=1;
+}
+
+message ErrorByTurbineResponse{
+	int32 idTurbine=1;
+	repeated string errors=2;
 }
 
 message CodeAndPeriodRequest{
 	oneof Action{
 		OnlySerieByPeriodAndCode msg1 =1;
 		SeriePeriodByCodeWithStandarDeviation msg2=2;
+		OnlySerieByPeriodAndCodeWithWarning msg3 = 3;
 	}
 }
 
@@ -69,6 +90,11 @@ message InfoTurbine{
 message SeriePeriodByCodeWithStandarDeviation{
 	OnlySerieByPeriodAndCode periodAndCode = 1;
 }
+ 
+
+message OnlySerieByPeriodAndCodeWithWarning{
+	OnlySerieByPeriodAndCode info=1;
+}
 
 message OnlySerieByPeriodAndCode{
 	int32 months =1;
@@ -85,6 +111,7 @@ message ResponseCodePeriod{
 	oneof Action{
 		OnlySerieByPeriodAndCodeResponse msg = 1;
 		SeriePeriodByCodeWithStandarDeviationResponse msg2 = 2;
+		OnlySerieByPeriodAndCodeResponseWithWarning msg3 = 3;
 	}
 }
 
@@ -99,6 +126,11 @@ message OnlySerieByPeriodAndCodeResponse{
 	string nameSensor =2;
 	bytes values =3;
 	bool isFinish =4;
+}
+
+message OnlySerieByPeriodAndCodeResponseWithWarning{
+	OnlySerieByPeriodAndCodeResponse msg1=1;
+	bytes warning = 2;
 }
 
 message SeriePeriodByCodeWithStandarDeviationResponse{

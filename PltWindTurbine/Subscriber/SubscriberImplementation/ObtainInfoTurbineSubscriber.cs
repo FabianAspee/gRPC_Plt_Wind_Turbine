@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using PltWindTurbine.Database.DatabaseConnection;
 using PltWindTurbine.Database.DatabaseContract;
+using PltWindTurbine.Database.ResultRecordDB;
 using PltWindTurbine.Database.Utils;
 using PltWindTurbine.Services.ObtainInfoTurbinesService;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer;
@@ -24,22 +25,27 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
             Console.WriteLine("Dispose");
         }
 
-        public Task GetInforTurbineAndSensor()
-        {
-            return Task.Run(() =>
+        public Task<List<string>> GetErrorByTurbine(int id)=> database.GetErrorByTurbine(id);
+
+        public Task<List<(int, string)>> GetInfoChart() => Task.Run(() =>database.GetNameChart());
+
+        public Task GetInforTurbineAndSensor()=> Task.Run(() =>
             { 
                 database.SelectAllSensorAndTurbine();
             });
-        }
+        
 
-        public Task GetInfoTurbine(OnlySerieByPeriodAndCode info)
-        {
-           return Task.Run(() =>
+        public Task GetInfoTurbine(OnlySerieByPeriodAndCode info)=>Task.Run(() =>
            {
-               SendEventLoadInfoTurbine(new StatusEventInfoTurbine("Lo ABRUZZO", Status.InProgress, "ES UNA TURBINA")); 
+               SendEventLoadInfoTurbine(new StatusEventInfoTurbine(info.NameTurbine, Status.InProgress, "Init process search series")); 
                 database.SelectSerieBySensorByTurbineByError(info); 
            });
-        }
+
+        public Task GetInfoTurbineWithWarning(OnlySerieByPeriodAndCodeWithWarning info) => Task.Run(() =>
+        {
+            SendEventLoadInfoTurbine(new StatusEventInfoTurbine(info.Info.NameTurbine, Status.InProgress, "Init process search series with warning"));
+            database.SelectSerieBySensorByTurbineByErrorWithWarning(info.Info);
+        });
 
         public Task SerieByPeriodWithStandardDeviation(SeriePeriodByCodeWithStandarDeviation info)
         {

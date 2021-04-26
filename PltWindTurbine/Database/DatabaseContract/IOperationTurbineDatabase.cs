@@ -13,7 +13,10 @@ namespace PltWindTurbine.Database.DatabaseContract
         public abstract Dictionary<string, List<string>> SelectSerieTurbineByError();
         public abstract void SelectSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info);
         public abstract Dictionary<string, List<string>> SelectAllSerieBySensorByTurbineByError();
+        public abstract void SelectSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info);
         public abstract List<Wind_Turbine_Info> ReadAllTurbine();
+        public abstract Task<List<string>> GetErrorByTurbine(int idTurbine);
+        public abstract Task<List<(int,string)>> GetNameChart();
         public abstract void SelectAllSensorAndTurbine();
         public (List<string>,bool) TurbineExistInDatabase();
 

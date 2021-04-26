@@ -1,6 +1,7 @@
 ﻿
 using ClientPltTurbine.Model.ChartModel.Contract;
 using ClientPltTurbine.Model.ChartModel.RecordChart;
+using ClientPltTurbine.Pages.Component.ChartComponent;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
 using Google.Protobuf;
 using Grpc.Core;
@@ -27,15 +28,18 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
             _duplexStreamObtainInfo = _clientChart.InfoFailureTurbine();
             _ = HandleResponsesObtainInfoAsync();
         }
-        public Task GetAllInfoTurbineForChart()
+        public Task GetAllInfoTurbineForChart(InfoChartRecord info)
         {
             var SerieByPeriod = new CodeAndPeriodRequest()
             {
                 Msg1 = new OnlySerieByPeriodAndCode()
                 {
-                    Code = 181,
-                    IdTurbine = 28,
-                    Months = -3,
+                    Code = info.Error,
+                    IdTurbine = info.IdTurbine,
+                    NameTurbine = info.NameTurbine,
+                    IdSensor = info.IdSensor,
+                    NameSensor = info.NameSensor,
+                    Months = info.Period,
                     QtaGraph = 5,
                 }
             };
@@ -50,6 +54,10 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
                 _ = HandleResponsesInfoTurbineSensorAsync();
             });
         }
+        public Task<(int,List<string>)> GetErroByTurbine(int idTurbine)=>_clientChart.GetErrorByTurbineAsync(new ErrorByTurbineRequest { IdTurbine = idTurbine })
+            .ResponseAsync.ContinueWith(response=>(response.Result.IdTurbine, response.Result.Errors.ToList()),TaskContinuationOptions.OnlyOnRanToCompletion);
+        public Task<List<(int, string)>> GetAllChart() => _clientChart.GetChartSystemAsync(new WithoutMessage{})
+            .ResponseAsync.ContinueWith(response =>response.Result.Info.Select(info=>(info.IdChart,info.NameChart)).ToList(), TaskContinuationOptions.OnlyOnRanToCompletion);
         private static byte[] ReturnByteFromContent(ByteString table) => table.ToByteArray();
         private void SaveInfoTurbineForChart(string nameTurbine,string nameSensor, bool isFinish, ByteString values)
         {
@@ -190,5 +198,6 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
             }
         }
 
+       
     }
 }

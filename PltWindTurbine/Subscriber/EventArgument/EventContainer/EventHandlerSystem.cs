@@ -28,11 +28,6 @@ namespace PltWindTurbine.Subscriber.EventArgument.EventContainer
         public async void SendEventLoadInfoTurbine(ILoadInfoTurbine loadInfo)
         {
             await container.SelectEvent<IBaseEvent>(EventKey.INFO_TURBINE_SENSOR).ContinueWith(evento => evento.Result.Invoke(this, loadInfo));
-        }
-       
-        public async void SendEventLoadInfoTurbine(StatusEventInfoTurbine statusEvent)
-        {
-            await container.SelectEvent<IBaseEvent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, statusEvent));
         } 
         public async void SendEventFinishLoadInfoTurbine(string name, string description)
         {
@@ -42,7 +37,7 @@ namespace PltWindTurbine.Subscriber.EventArgument.EventContainer
         {
             await container.SelectEvent<IBaseEvent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, new StatusEventInfoTurbine(name, Status.Failed, description)));
         } 
-        public async void SendEventLoadInfo(ResponseSerieByPeriod serie)
+        public async void SendEventLoadInfo(ILoadInfoTurbine serie)
         {
             await container.SelectEvent<IBaseEvent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, serie));
         }

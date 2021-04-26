@@ -1,5 +1,6 @@
 ﻿using ClientPltTurbine.Model.ChartModel.Contract;
 using ClientPltTurbine.Model.ChartModel.Implementation;
+using ClientPltTurbine.Pages.Component.ChartComponent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,11 @@ namespace ClientPltTurbine.Controllers.ChartController
          
         public Task CallAllTurbinesAndSensors()=>ChartModel.GetAllNameTurbineAndSensor(); 
 
-        public Task ChartAllTurbines()=>ChartModel.GetAllInfoTurbineForChart();
-        
+        public Task ChartAllTurbines(InfoChartRecord info) =>ChartModel.GetAllInfoTurbineForChart(info);
+
+        public Task<List<(int, string)>> GetAllChart()=> ChartModel.GetAllChart();
+         
+
+        public Task<(int, List<string>)> GetErrorByTurbine(int idTurbine) => ChartModel.GetErroByTurbine(idTurbine);
     }
 }

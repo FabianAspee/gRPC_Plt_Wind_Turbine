@@ -16,5 +16,13 @@ namespace ClientPltTurbine.Shared.InputComponent
         public string PlaceHolder { get; set; }
         [Parameter]
         public string Description { get; set; }
+        private int Value { get; set; }
+        [Parameter]
+        public EventCallback<int> ValueChanged { get; set; }
+        private Task OnValueChanged(ChangeEventArgs e)
+        {
+            Value = Convert.ToInt32(e.Value);
+            return ValueChanged.InvokeAsync(Value);
+        }
     }
 }

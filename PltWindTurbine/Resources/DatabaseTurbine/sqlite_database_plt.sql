@@ -52,3 +52,8 @@ CREATE TABLE IF NOT EXISTS error_sensor(
     id INTEGER PRIMARY KEY,
     sensor_name TEXT,
     data_type_turbine TEXT);
+
+CREATE TABLE IF NOT EXISTS chart_system(
+    id INTEGER PRIMARY KEY,
+    chart_name TEXT
+    );

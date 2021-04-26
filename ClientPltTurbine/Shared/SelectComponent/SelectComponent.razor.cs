@@ -15,15 +15,14 @@ namespace ClientPltTurbine.Shared.SelectComponent
         public string Text { get; set; } 
         [Parameter]
         public IReadOnlyList<IInformationDropDrownComponent> Values { get; set; } 
-        public IReadOnlyList<IInformationDropDrownComponent> ValuesView { get; set; } 
-        [Parameter]
-        public int Value { get; set; }
+        public IReadOnlyList<IInformationDropDrownComponent> ValuesView { get; set; }  
+        private int Value { get; set; }
         [Parameter]
         public EventCallback<int> ValueChanged { get; set; } 
         private Task OnValueChanged(ChangeEventArgs e)
         {
-            var t = e.Value; 
-            return ValueChanged.InvokeAsync(Convert.ToInt32(Value));
+            Value = Convert.ToInt32(e.Value); 
+            return ValueChanged.InvokeAsync(Value);
         } 
         
         protected override async Task OnParametersSetAsync()
