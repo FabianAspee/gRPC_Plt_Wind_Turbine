@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Model.ChartModel.Implementation
 {
-    public class ChartModel : BaseModel, IChartModel
+    public class ChartModel : BaseModel, IChartModel, IDisposable
     {
         private readonly ObtainInfoTurbines.ObtainInfoTurbinesClient _clientChart;
         private readonly AsyncDuplexStreamingCall<CodeAndPeriodRequest, CodeAndPeriodResponse> _duplexStreamObtainInfo;
@@ -208,5 +208,19 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
 
             }
         }
+        async void IDisposable.Dispose()
+        {
+            try
+            {
+                GC.SuppressFinalize(this);
+                await _duplexStreamObtainInfo.RequestStream.CompleteAsync(); 
+            }
+            finally
+            {
+                _asyncStreamGetInfoTurbineSensor.Dispose();
+                _duplexStreamObtainInfo.Dispose(); 
+            }
+        }
+
     }
 }

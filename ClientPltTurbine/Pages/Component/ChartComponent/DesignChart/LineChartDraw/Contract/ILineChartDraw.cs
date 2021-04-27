@@ -1,5 +1,6 @@
 ﻿using ChartJs.Blazor.Common;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
+using ClientPltTurbine.Shared.ChartComponent.ConfigGeneral;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
 {
     public interface ILineChartDraw
     {
-        ConfigBase CreateLineChart(ResponseSerieByPeriod responseSerieBy);
-        ConfigBase CreateLineChartWarning(ResponseSerieByPeriodWarning serieByPeriodWarning);
+        ConfigChart CreateLineChart(ResponseSerieByPeriod responseSerieBy);
+        ConfigChart CreateLineChartWarning(ResponseSerieByPeriodWarning serieByPeriodWarning);
     }
 }

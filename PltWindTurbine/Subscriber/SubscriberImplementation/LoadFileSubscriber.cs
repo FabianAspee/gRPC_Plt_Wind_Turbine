@@ -14,19 +14,18 @@ using PltWindTurbine.Database.DatabaseConnection;
 using PltWindTurbine.Database.TableDatabase;
 using System.Text.RegularExpressions;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer;
+using System.Threading;
 
 namespace PltWindTurbine.Subscriber.SubscriberImplementation
 {
-    public class LoadFileSubscriber :EventHandlerSystem, ILoadFileSubscriber
+    public class LoadFileSubscriber : AbstractSubscriber, ILoadFileSubscriber
     { 
         private readonly Dictionary<string, List<CreateDataTable>> infoTurbines = new();
         private readonly CommonImplementationDatabase database = RetreiveImplementationDatabase.Instance.ImplementationDatabase;
         private readonly List<string> Turbines = new(){"Active_Power", "Nacelle_Dir", "Rotor_RPM", "Wind_Dir", "Wind_Speed", "Collarmele_K100","Collarmele_K101"};
-        public void Dispose()
-        {
-            Console.WriteLine("Dispose");
-        }
          
+
+     
         public async Task LoadFilesInfoTurbine(FileUploadRequest file) =>
             await LoadFile(new CreateDataTable<InfoTurbine>(file.Msg1.File.Metadata.Name, file.Block, file.Msg1, file.TotalDimension, file.IsUpload, file.Msg1.NameTable));
         public async Task LoadFilesNameSensor(FileUploadRequest file) =>

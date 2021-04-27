@@ -35,6 +35,8 @@
   <ItemGroup>
     <Folder Include="Pages\Component\TurbineComponent\" />
     <Folder Include="Resources\CsvFile\EventFile\" />
+    <Folder Include="Shared\ChartComponent\DrawAreaChart\Implementation\" />
+    <Folder Include="Shared\ChartComponent\DrawPieChart\Implementation\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

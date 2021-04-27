@@ -10,9 +10,10 @@ using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Model
 {
-    public abstract class BaseModel:EventHandlerSystem
+    public abstract class BaseModel:EventHandlerSystem, IDisposable
     {
         protected GrpcChannel channel = CreatedGrpcChannel();
+        
         private static GrpcChannel CreatedGrpcChannel()
         {
             return GrpcChannel.ForAddress(ConfigurationManager.ConnectionStrings["serverPath"].ConnectionString, new GrpcChannelOptions
@@ -28,6 +29,20 @@ namespace ClientPltTurbine.Model
                     EnableMultipleHttp2Connections = true
                 }
             });
+        } 
+
+        void IDisposable.Dispose()
+        {
+            try
+            {
+                GC.SuppressFinalize(this);
+                channel.ShutdownAsync();
+                channel.Dispose();
+            }
+            catch
+            {
+                channel.Dispose();
+            }
         }
     }
 }

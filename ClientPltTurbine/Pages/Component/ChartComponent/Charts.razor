@@ -1,5 +1,4 @@
-﻿@page "/charts-turbines"
-@inject ChartSingleton ChartSingleton
+﻿@page "/charts-turbines" 
 @inject IToastService toastService
 <h1>Graphic Turbine</h1>
 <p>Current Turbines: @ChartSingleton.NumTurbine</p>
@@ -23,9 +22,11 @@
         <ButtonComponent OnClick="CallChartData" Text="Creat Chart"></ButtonComponent>
     </div>
 </div>
+
 @foreach(var period in  infoChart)
 {
     <div class="chart-container">
-        <Chart Config="GetConfig(period)"></Chart>
-    </div>
-} 
+        <ChartComponent Config="GetConfig(period)"></ChartComponent>
+    </div> 
+}
+ 

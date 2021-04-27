@@ -6,6 +6,8 @@ using ChartJs.Blazor.Util;
 using ClientPltTurbine.Model.ChartModel.RecordChart;
 using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
+using ClientPltTurbine.Shared.ChartComponent.ConfigGeneral;
+using ClientPltTurbine.Shared.ChartComponent.DrawScatterChart.Implementation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,18 +16,28 @@ using static ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineCha
 
 namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterChartDraw.Implementation
 {
+    public record ScatterData(string X, double? Y);
     public class ScatterChartDraw:BaseChart,  IScatterChartDraw
     {
         private static readonly Lazy<IScatterChartDraw> instance = new(() => new ScatterChartDraw());
         private ScatterChartDraw() { }
         public static IScatterChartDraw Instance => instance.Value; 
         
-        public ConfigBase CreateScatterChart(ResponseSerieByPeriod responseSerieByPeriod)
+        public ConfigChart CreateScatterChart(ResponseSerieByPeriod responseSerieByPeriod)
         {
             var variant = _variants($"Scatter Turbine {responseSerieByPeriod.Record.NameTurbine} " +
                 $"Sensor {responseSerieByPeriod.Record.NameSensor}");
-            var lineConfigBase = CreateBaseScatterConfig(variant, responseSerieByPeriod);
-            return CreateScatterChart(lineConfigBase, responseSerieByPeriod, variant);
+            var data = responseSerieByPeriod.Record.CustomInfo.Select(value =>new ScatterData(value.Date.ToShortDateString(), value.Value)).ToArray();
+
+            return new ScatterChart()
+            {
+                Type = Shared.ChartComponent.ChartType.Scatter.ToString().ToLower(),
+                Options = new OptionChart(true, false, new Interaction { Intersect = false }, 0),
+                Data = new DataChart(responseSerieByPeriod.Record.CustomInfo.Select(value => value.Date.ToShortDateString()).ToList(), new[]{new DataSetChart("rgb(192,75,75)",
+                data, variant.Title,  new[]{ "red" })}.ToArray())
+            };
+            // var lineConfigBase = CreateBaseScatterConfig(variant, responseSerieByPeriod);
+            // return CreateScatterChart(lineConfigBase, responseSerieByPeriod, variant);
         }
         private static ScatterConfig CreateBaseScatterConfig(Variant variant, IEventComponent period)
         {
@@ -70,7 +82,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterCha
             ResponseSerieByPeriodWarning value => value.Record.RecordLinearChart.CustomInfo.Select(x => x.Date.ToShortDateString()).ToArray(),
             _ => throw new NotImplementedException(),
         };
-        public ConfigBase CreateScatterChartWithWarning(ResponseSerieByPeriodWarning responseSerieByPeriodWarning)
+        public ConfigChart CreateScatterChartWithWarning(ResponseSerieByPeriodWarning responseSerieByPeriodWarning)
         {
             throw new NotImplementedException();
         }

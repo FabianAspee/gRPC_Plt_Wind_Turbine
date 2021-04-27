@@ -4,6 +4,8 @@ using ChartJs.Blazor.LineChart;
 using ChartJs.Blazor.Util;
 using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
+using ClientPltTurbine.Shared.ChartComponent.ConfigGeneral;
+using ClientPltTurbine.Shared.ChartComponent.DrawLineChart.Implementation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,17 +20,39 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
         private LineChartDraw() { }
         public static ILineChartDraw Instance => instance.Value;
 
-        public ConfigBase CreateLineChart(ResponseSerieByPeriod responseSerieBy)
+        public ConfigChart CreateLineChart(ResponseSerieByPeriod responseSerieBy)
         {
             var variant = _variants($"Serie Turbine {responseSerieBy.Record.NameTurbine} Sensor {responseSerieBy.Record.NameSensor}");
-            var lineConfigBase = CreateBaseLineConfig(variant, responseSerieBy);
-            return CreateLineChart(lineConfigBase, responseSerieBy, variant);
+            var data = responseSerieBy.Record.CustomInfo.Select(value => value.Value.HasValue?value.Value.ToString():null).ToArray();
+
+            return new LineChart()
+            {
+                Type = Shared.ChartComponent.ChartType.Line.ToString().ToLower(),
+                Options = new OptionChart(true, false, new Interaction { Intersect = false }, 0),
+                Data = new DataChart(responseSerieBy.Record.CustomInfo.Select(value=>value.Date.ToShortDateString()).ToList(), new[]{new DataSetChart("rgb(192,75,75)",
+                data, variant.Title,  new[]{ "red" })}.ToArray())
+            }; 
+
+           // var lineConfigBase = CreateBaseLineConfig(variant, responseSerieBy);
+           // return CreateLineChart(lineConfigBase, responseSerieBy, variant);
         }
-        public ConfigBase CreateLineChartWarning(ResponseSerieByPeriodWarning serieByPeriodWarning)
+        public ConfigChart CreateLineChartWarning(ResponseSerieByPeriodWarning serieByPeriodWarning)
         {
             var variant = _variants($"Serie Turbine {serieByPeriodWarning.Record.RecordLinearChart.NameTurbine} Sensor {serieByPeriodWarning.Record.RecordLinearChart.NameSensor} with warnings");
-            var lineConfigBase = CreateBaseLineConfig(variant, serieByPeriodWarning);
-            return CreateLineChartWarning(lineConfigBase, serieByPeriodWarning, variant);
+
+            var data = serieByPeriodWarning.Record.RecordLinearChart.CustomInfo.Select(value => value.Value.HasValue ? value.Value.ToString() : null).ToArray();
+            var warning = serieByPeriodWarning.Record.InfoTurbineWarnings.Select(value => value.Value.HasValue ? value.Value.ToString() : null).ToArray();
+
+            return new LineChart()
+            {
+                Type = Shared.ChartComponent.ChartType.Line.ToString().ToLower(),
+                Options = new OptionChart(true, false, new Interaction { Intersect = false }, 0),
+                Data = new DataChart(serieByPeriodWarning.Record.RecordLinearChart.CustomInfo.Select(value => value.Date.ToShortDateString()).ToList(), new[]{new DataSetChart("rgb(192,75,75)",
+                data, variant.Title,  new[]{ "red" }),new DataSetChart("blue",
+                warning, variant.Title,  new[]{ "blue" })}.ToArray())
+            };
+            //var lineConfigBase = CreateBaseLineConfig(variant, serieByPeriodWarning);
+            //return CreateLineChartWarning(lineConfigBase, serieByPeriodWarning, variant);
              
         }
         private static LineConfig CreateBaseLineConfig(Variant variant,IEventComponent period)
@@ -83,9 +107,8 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
                 BorderColor = ColorUtil.FromDrawingColor(variant.Color),
                 Fill = FillingMode.Disabled
             });
-          
 
-            configLine.Data.Datasets.Add( new LineDataset<double?>(periods.Record.InfoTurbineWarnings.Select(x => x.Value).ToList())
+             configLine.Data.Datasets.Add( new LineDataset<double?>(periods.Record.InfoTurbineWarnings.Select(x => x.Value).ToList())
             { 
                 Label = $"Value sensor: {steppedLineCamel}", 
                 SteppedLine = variant.SteppedLine,

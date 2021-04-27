@@ -1,5 +1,6 @@
 ﻿using ChartJs.Blazor.Common;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
+using ClientPltTurbine.Shared.ChartComponent.ConfigGeneral;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterCha
 {
     public interface IScatterChartDraw
     {
-        ConfigBase CreateScatterChart(ResponseSerieByPeriod responseSerieByPeriod);
-        ConfigBase CreateScatterChartWithWarning(ResponseSerieByPeriodWarning responseSerieByPeriodWarning);
+        ConfigChart CreateScatterChart(ResponseSerieByPeriod responseSerieByPeriod);
+        ConfigChart CreateScatterChartWithWarning(ResponseSerieByPeriodWarning responseSerieByPeriodWarning);
     }
 }
