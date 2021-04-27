@@ -6,7 +6,10 @@ using ChartJs.Blazor.PieChart;
 using ChartJs.Blazor.ScatterChart;
 using ChartJs.Blazor.Util;
 using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart;
+using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartDraw.Implementation;
+using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterChartDraw.Contract;
+using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterChartDraw.Implementation;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
 using PltTurbineShared;
 using System;
@@ -26,7 +29,8 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         private readonly List<Turbine> Turbines = new();
         private readonly List<ErrorTurbine> ErrorByTurbine = new();
         private readonly List<ChartInfo> ChartInfo = new();
-        private readonly LineChartDraw lineChartDraw = LineChartDraw.Instance;
+        private readonly ILineChartDraw lineChartDraw = LineChartDraw.Instance;
+        private readonly IScatterChartDraw scatterChartDraw = ScatterChartDraw.Instance;
         private bool shouldRender = true;
         private int idTurbine; 
         private int idSensor;
@@ -77,9 +81,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
             {
                 Turbines.Add(turbine);
             }
-        }
-        
-
+        } 
         private async void CallChartData()
         {
             var nameTurbine = Turbines.Find(value => value.Id == idTurbine).Value;
@@ -98,7 +100,8 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         {
             TypeChartUtils.LinearChart => lineChartDraw.CreateLineChart(periods as ResponseSerieByPeriod),
             TypeChartUtils.LinearChartWithWarning => lineChartDraw.CreateLineChartWarning(periods as ResponseSerieByPeriodWarning),
-            TypeChartUtils.ScatterChart => null,
+            TypeChartUtils.ScatterChart => scatterChartDraw.CreateScatterChart(periods as ResponseSerieByPeriod),
+            TypeChartUtils.ScatterChartWithWarning => scatterChartDraw.CreateScatterChartWithWarning(periods as ResponseSerieByPeriodWarning),
             _ => throw new NotImplementedException("This chart are not implemented"),
         };  
         public async void CreateChart()

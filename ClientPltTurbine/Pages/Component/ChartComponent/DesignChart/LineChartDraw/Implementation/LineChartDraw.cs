@@ -2,6 +2,7 @@
 using ChartJs.Blazor.Common.Enums;
 using ChartJs.Blazor.LineChart;
 using ChartJs.Blazor.Util;
+using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,11 @@ using static ClientPltTurbine.Pages.Component.ChartComponent.Charts;
 
 namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartDraw.Implementation
 {
-    public class LineChartDraw
+    public class LineChartDraw:BaseChart, ILineChartDraw
     {
-        private static readonly Lazy<LineChartDraw> instance = new(() => new LineChartDraw());
+        private static readonly Lazy<ILineChartDraw> instance = new(() => new LineChartDraw());
         private LineChartDraw() { }
-        public static LineChartDraw Instance => instance.Value;
+        public static ILineChartDraw Instance => instance.Value;
 
         public ConfigBase CreateLineChart(ResponseSerieByPeriod responseSerieBy)
         {
@@ -95,19 +96,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
             return configLine;
         }
 
-        public class Variant
-        {
-            public SteppedLine SteppedLine { get; set; }
-            public string Title { get; set; }
-            public System.Drawing.Color Color { get; set; }
-        }
-        private readonly Func<string,Variant> _variants = title => 
-            new()
-            {
-                SteppedLine = SteppedLine.False,
-                Title = title,
-                Color = ChartColors.Red
-            };
+       
          
     }
 }

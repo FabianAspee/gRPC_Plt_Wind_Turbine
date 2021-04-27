@@ -116,6 +116,8 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         {
             1 => Controller.ChartAllTurbines(info),
             2 => Controller.ChartAllTurbinesWarning(info),
+            3 => Controller.ChartAllTurbines(info),
+            4 => Controller.ChartAllTurbinesWarning(info),
             _ => throw new NotImplementedException()
         };
         public async Task ChartInfoTurbine(InfoChartRecord info, int type)
