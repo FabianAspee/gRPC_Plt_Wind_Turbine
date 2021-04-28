@@ -7,5 +7,6 @@ namespace ClientPltTurbine.Shared.ChartComponent.DrawAreaChart.Contract
 {
     interface IAreaChart
     {
+        string GetNameSetup();
     }
 }

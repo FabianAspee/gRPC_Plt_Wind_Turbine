@@ -9,10 +9,7 @@ namespace ClientPltTurbine.Shared.ChartComponent.DrawScatterChart.Implementation
 {
     public class ScatterChart:ConfigChart,IScatterChart
     { 
-        public ScatterChart() { } 
-        public Task CreateChart(ScatterChart scatter, string Id)
-        {
-            return null;
-        }
+        public ScatterChart() { }
+        public override string GetNameSetup() => "setupScatterChart"; 
     }
 }

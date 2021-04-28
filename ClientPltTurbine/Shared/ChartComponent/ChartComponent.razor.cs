@@ -20,8 +20,9 @@ namespace ClientPltTurbine.Shared.ChartComponent
         public ConfigChart Config { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstShouldRender)
-        { 
-            await JSRuntime.InvokeVoidAsync("setup", Id, Config); 
+        {
+            var nameSetup = Config.GetNameSetup();
+            await JSRuntime.InvokeVoidAsync(nameSetup, Id, Config); 
         }
             
     }

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace ClientPltTurbine.Shared.ChartComponent.DrawLineChart.Contract
 {
     interface ILineChart
-    {
-        Task CreateChart(LineChart lineChart, string Id);
+    { 
     }
 }

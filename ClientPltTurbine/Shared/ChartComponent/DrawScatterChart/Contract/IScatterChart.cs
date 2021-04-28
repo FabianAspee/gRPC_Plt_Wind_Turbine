@@ -8,6 +8,6 @@ namespace ClientPltTurbine.Shared.ChartComponent.DrawScatterChart.Contract
 {
     interface IScatterChart
     {
-        Task CreateChart(ScatterChart scatter, string Id);
+        string GetNameSetup();
     }
 }

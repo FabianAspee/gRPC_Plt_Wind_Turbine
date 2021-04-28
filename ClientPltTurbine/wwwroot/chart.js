@@ -1,9 +1,46 @@
-﻿window.setup = (id, config) => {
-    console.log(config)
-    console.log(id)
+﻿window.setup = (id, config) => { 
     var ctx = document.getElementById(id).getContext('2d');
     new Chart(ctx, config);
 }
+window.setupAreaChart = (id, config) => {
+    var ctx = document.getElementById(id).getContext('2d');
+    new Chart(ctx, config);
+}
+window.setupLineChart = (id, config) => {
+    var ctx = document.getElementById(id).getContext('2d');
+    new Chart(ctx, config);
+}
+window.setupScatterChart = (id, config) => {
+    var ctx = document.getElementById(id).getContext('2d');
+    config.options.scales = {
+        xAxes: [{
+            ticks: {
+                userCallback: function (label, index, labels) {
+                    return moment(label).format("DD/MM/YY");
+                }
+            }
+        }]
+    }
+
+    new Chart(ctx, config);
+}
+
+window.setupscatter = (id, config) => {
+
+    var ctx = document.getElementById(id).getContext('2d');
+    config.options.scales =  {
+        xAxes: [{
+            ticks: {
+                userCallback: function (label, index, labels) {
+                    return moment(label).format("DD/MM/YY");
+                }
+            }
+        }]
+    }
+
+    new Chart(ctx, config);
+}
+ 
 
 window.setupspecialline = (id, config) => {
     console.log(config)
