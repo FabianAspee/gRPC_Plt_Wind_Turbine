@@ -4,6 +4,9 @@
 <p>Current Turbines: @ChartSingleton.NumTurbine</p>
 <div class="row g-3">
     <div class="col-auto">
+        <SelectComponent Values="TypeChart" Text="(Choose Type Chart)" ValueChanged="@ChangeTypeChart" Warning="Type Chart is required" />
+    </div>
+    <div class="col-auto">
         <SelectComponent Values="Turbines" Text="(Choose Turbine)" ValueChanged="@ChangeInfoTurbine" Warning="Turbine is required" />
     </div>
     <div class="col-auto">

@@ -12,6 +12,6 @@ namespace ClientPltTurbine.Shared.ChartComponent.ConfigGeneral
         public OptionChart Options { get; set; }
         public DataChart Data { get; set; } 
         public bool SteppedLine { get; set; }
-        public abstract string GetNameSetup();
+        public abstract string GetNameSetup(); 
     }
 }

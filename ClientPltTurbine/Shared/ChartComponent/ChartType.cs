@@ -11,7 +11,8 @@ namespace ClientPltTurbine.Shared.ChartComponent
         Bar,
         Line,
         Scatter,
-        Special
+        Special,
+        Radar
 
     }
 }

@@ -6,14 +6,9 @@ using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using ChartJs.Blazor.LineChart;
+using System.Drawing; 
 using System.Linq;
-using System.Threading.Tasks;
-using ChartJs.Blazor.PieChart; 
-using ChartJs.Blazor.Common;
-using ChartJs.Blazor.Util;
-using ChartJs.Blazor.Common.Enums;
+using System.Threading.Tasks; 
 using PltTurbineShared;
 using System.Threading.Tasks.Dataflow;
 
@@ -114,10 +109,8 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         }
         private Task CallTypeChart(InfoChartRecord info, int idChart) => idChart switch
         {
-            1 => Controller.ChartAllTurbines(info),
-            2 => Controller.ChartAllTurbinesWarning(info),
-            3 => Controller.ChartAllTurbines(info),
-            4 => Controller.ChartAllTurbinesWarning(info),
+            1 or 3 => Controller.ChartAllTurbines(info),
+            2 or 4 or 5=> Controller.ChartAllTurbinesWarning(info),
             _ => throw new NotImplementedException()
         };
         public async Task ChartInfoTurbine(InfoChartRecord info, int type)

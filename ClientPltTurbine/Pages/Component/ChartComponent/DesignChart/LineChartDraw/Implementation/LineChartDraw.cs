@@ -1,8 +1,4 @@
-﻿using ChartJs.Blazor.Common;
-using ChartJs.Blazor.Common.Enums;
-using ChartJs.Blazor.LineChart;
-using ChartJs.Blazor.Util;
-using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartDraw.Contract;
+﻿using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
 using ClientPltTurbine.Shared.ChartComponent.ConfigGeneral;
 using ClientPltTurbine.Shared.ChartComponent.DrawLineChart.Implementation;
@@ -28,13 +24,11 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
             return new LineChart()
             {
                 Type = Shared.ChartComponent.ChartType.Line.ToString().ToLower(),
-                Options = new OptionChart(true, false, new Interaction { Intersect = false }, 0),
-                Data = new DataChart(responseSerieBy.Record.CustomInfo.Select(value=>value.Date.ToShortDateString()).ToList(), new[]{new DataSetChart("rgb(192,75,75)",
-                data, variant.Title,  new[]{ "red" })}.ToArray())
+                Options = new OptionChart(true, false, new Interaction(false), 0),
+                Data = new DataChart(SelectRecords(responseSerieBy).ToList(), new[]{new DataSetChart(
+                    data, variant.Title,"rgb(192,75,75)")}.ToArray())
             }; 
-
-           // var lineConfigBase = CreateBaseLineConfig(variant, responseSerieBy);
-           // return CreateLineChart(lineConfigBase, responseSerieBy, variant);
+             
         }
         public ConfigChart CreateLineChartWarning(ResponseSerieByPeriodWarning serieByPeriodWarning)
         {
@@ -42,84 +36,15 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
 
             var data = serieByPeriodWarning.Record.RecordLinearChart.CustomInfo.Select(value => value.Value.HasValue ? value.Value.ToString() : null).ToArray();
             var warning = serieByPeriodWarning.Record.InfoTurbineWarnings.Select(value => value.Value.HasValue ? value.Value.ToString() : null).ToArray();
-
+            var colors = GetWarningColor(warning);
             return new LineChart()
             {
                 Type = Shared.ChartComponent.ChartType.Line.ToString().ToLower(),
-                Options = new OptionChart(true, false, new Interaction { Intersect = false }, 0),
-                Data = new DataChart(serieByPeriodWarning.Record.RecordLinearChart.CustomInfo.Select(value => value.Date.ToShortDateString()).ToList(), new[]{new DataSetChart("rgb(192,75,75)",
-                data, variant.Title,  new[]{ "red" }),new DataSetChart("blue",
-                warning, variant.Title,  new[]{ "blue" })}.ToArray())
-            };
-            //var lineConfigBase = CreateBaseLineConfig(variant, serieByPeriodWarning);
-            //return CreateLineChartWarning(lineConfigBase, serieByPeriodWarning, variant);
-             
-        }
-        private static LineConfig CreateBaseLineConfig(Variant variant,IEventComponent period)
-        {
-            LineConfig ConfigLine = new()
-            {
-                Options = new LineOptions
-                {
-                    Responsive = true,
-                    Title = new OptionsTitle
-                    {
-                        Display = true,
-                        Text = variant.Title
-                    }
-                }
+                Options = new OptionChart(true, false, new Interaction(false), 0),
+                Data = new DataChart(SelectRecords(serieByPeriodWarning).ToList(), new[]{new DataSetChart(data, variant.Title, "rgb(192,75,75)" ),
+                    new DataSetChart(warning, variant.Title, colors,colors)}.ToArray())
             }; 
-            ConfigLine.Data.Labels.AddRange(SelectRecords(period));
-            return ConfigLine;
-        }
-
-        private static IEnumerable<string> SelectRecords(IEventComponent period) => period switch
-        {
-            ResponseSerieByPeriod value => value.Record.CustomInfo.Select(x => x.Date.ToShortDateString()).ToArray(),
-            ResponseSerieByPeriodWarning value => value.Record.RecordLinearChart.CustomInfo.Select(x => x.Date.ToShortDateString()).ToArray(),
-            _ => throw new NotImplementedException(),
-        };
-
-        private static ConfigBase CreateLineChart(LineConfig configLine, ResponseSerieByPeriod periods, Variant variant)
-        { 
-            string steppedLineCamel = variant.SteppedLine.ToString();
-            steppedLineCamel = char.ToUpperInvariant(steppedLineCamel[0]) + steppedLineCamel[1..];
-            configLine.Data.Datasets.Add(new LineDataset<double?>(periods.Record.CustomInfo.Select(x => x.Value).ToList())
-            {
-                
-                Label = $"Value sensor: {steppedLineCamel}",
-                SteppedLine = variant.SteppedLine,
-                BorderColor = ColorUtil.FromDrawingColor(variant.Color),
-                Fill = FillingMode.Disabled
-            });
-
-            return configLine; 
-        }
-        private static ConfigBase CreateLineChartWarning(LineConfig configLine, ResponseSerieByPeriodWarning periods, Variant variant)
-        {
-            string steppedLineCamel = variant.SteppedLine.ToString();
-            steppedLineCamel = char.ToUpperInvariant(steppedLineCamel[0]) + steppedLineCamel[1..];
-            configLine.Data.Datasets.Add(new LineDataset<double?>(periods.Record.RecordLinearChart.CustomInfo.Select(x => x.Value).ToList())
-            {
-
-                Label = $"Value sensor: {steppedLineCamel}",
-                SteppedLine = variant.SteppedLine,
-                BorderColor = ColorUtil.FromDrawingColor(variant.Color),
-                Fill = FillingMode.Disabled
-            });
-
-             configLine.Data.Datasets.Add( new LineDataset<double?>(periods.Record.InfoTurbineWarnings.Select(x => x.Value).ToList())
-            { 
-                Label = $"Value sensor: {steppedLineCamel}", 
-                SteppedLine = variant.SteppedLine,
-                BorderColor = ColorUtil.FromDrawingColor(ChartColors.Blue),
-                Fill = FillingMode.Disabled
-
-            });
-            return configLine;
-        }
-
-       
+        } 
          
     }
 }

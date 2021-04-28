@@ -8,9 +8,9 @@ namespace ClientPltTurbine.Shared.ChartComponent.ConfigGeneral
 { 
     public interface IDataSetChart
     {
-        public string BorderColor { get; init; }
+        public object BorderColor { get; init; }
         public string Label { get; init; }
-        public string[] BackGroundColor { get; init; }
+        public object BackgroundColor { get; init; }
     }
-    public record DataSetChart(string BorderColor, object[] Data, string Label, string[] BackGroundColor):IDataSetChart; 
+    public record DataSetChart(object[] Data, string Label, object BorderColor, object BackgroundColor = null) : IDataSetChart;
 }

@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Shared.ChartComponent.ConfigGeneral
 {
-    public class Interaction
-    {
-        public bool Intersect { get; set; }
-    }
+    public record Interaction(bool Intersect, string Mode="index");
+     
 }
