@@ -11,6 +11,7 @@ using PltWindTurbine.Subscriber.EventArgument.LoadFileTurbine.Implementation;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer.Contract;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer.Implementation;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer;
+using PltWindTurbine.Subscriber.EventArgument.LoadFileTurbine.Contract;
 
 namespace PltWindTurbine.Services.LoadFilesService
 {
@@ -41,7 +42,7 @@ namespace PltWindTurbine.Services.LoadFilesService
 
             using var subscriberLoadFilesInfoTurbine = _factoryMethod.GetLoadFileSubscriber();
             StatusLoad += async (sender, args) =>
-               await WriteStatusLoadFileResponse(response, args as StatusLoadFile);
+               await WriteStatusLoadFileResponse(response, args as IStatusLoadFile);
             RegisterEvent(EventKey.LOAD_FILE_KEY);
             try
             {
@@ -53,16 +54,11 @@ namespace PltWindTurbine.Services.LoadFilesService
             }
             _logger.LogInformation("Subscription finished.");
         }
-        private async Task WriteStatusLoadFileResponse(IServerStreamWriter<FileUploadResponse> stream, StatusLoadFile loadFileService)
+        private async Task WriteStatusLoadFileResponse(IServerStreamWriter<FileUploadResponse> stream, IStatusLoadFile loadFileService)
         {
             try
             {
-                var response = new FileUploadResponse
-                {
-                    Name = loadFileService.NameFile,
-                    Status = loadFileService.Percent != 100 ? Status.InProgress : Status.Success,
-                    Description = $"{loadFileService.Description} {loadFileService.Percent}%"
-                };  
+                var response = GetUploadResponse(loadFileService);
                 await stream.WriteAsync(response);
             }
             catch (Exception e)
@@ -70,6 +66,19 @@ namespace PltWindTurbine.Services.LoadFilesService
                 _logger.LogError($"Failed to write message: {e.Message}");
             }
         }
+        private static FileUploadResponse GetUploadResponse(IStatusLoadFile loadFileService) => loadFileService switch
+        {
+            StatusLoadFile statusLoadFile => CreateFileUploadResponse(statusLoadFile.StatusFile.NameFile, statusLoadFile.StatusFile.Status, 
+                $"{statusLoadFile.StatusFile.Description} {statusLoadFile.Percent}%"),
+            StatusFile statusFile => CreateFileUploadResponse(statusFile.NameFile,statusFile.Status,statusFile.Description),
+            _ => throw new NotImplementedException()
+        };
+        private static FileUploadResponse CreateFileUploadResponse(string nameFile, Status status, string description) => new FileUploadResponse
+        {
+            Name = nameFile,
+            Status = status,
+            Description = description
+        };
         private async Task HandleActionsLoadFilesInfoTurbine(IAsyncStreamReader<FileUploadRequest> request, ILoadFileSubscriber subscriberLoadFilesInfoTurbine)
         {
 

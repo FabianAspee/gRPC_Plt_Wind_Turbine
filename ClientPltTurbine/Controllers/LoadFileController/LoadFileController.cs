@@ -1,17 +1,10 @@
-﻿using ClientPltTurbine.EventContainer;
-using ClientPltTurbine.Model.LoadFile.Contract;
+﻿using ClientPltTurbine.Model.LoadFile.Contract;
 using ClientPltTurbine.Model.LoadFile.Implementation;
-using Google.Protobuf;
-using Grpc.Core;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq; 
-using System;
+using Microsoft.AspNetCore.Components.Forms;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Controllers.LoadFileController
@@ -22,21 +15,21 @@ namespace ClientPltTurbine.Controllers.LoadFileController
         private static readonly List<string> sensors = new() { "Active_Power", "Nacelle_Dir", "Rotor_RPM", "Wind_Dir", "Wind_Speed", "Collarmele_K100", "Collarmele_K101" };
         private static readonly string eventsensor = "WTG_Event";
         private static bool IsCsv(string file)=> file.EndsWith(".csv"); 
-        public Task[] ReadBasicFiles()=>
-            GetFileDirectory().Select((filePath) =>
+        public Task[] ReadBasicFiles(Dictionary<string, IBrowserFile> files) =>
+            files.Select(fileInfo =>
             {  
-                FileInfo fi = new(filePath);
+                FileInfo fi = new(fileInfo.Key);
                 SendEventLoadFile($"Init load file {fi.Name}");
                 ILoadFileModel loadFile =  new LoadFileModel();
-                if (IsCsv(filePath))
+                if (IsCsv(fileInfo.Key))
                 {
                         
-                    return (loadFile.LoadCsvFileBasic(filePath), loadFile);
+                    return (loadFile.LoadCsvFileBasic(fileInfo), loadFile);
                         
                 }
                 else
                 {
-                    return (loadFile.LoadExcelFileBasic(filePath), loadFile);
+                    return (loadFile.LoadExcelFileBasic(fileInfo), loadFile);
 
                 } 
             }).Where(x => x.Item1 != null && x.loadFile!=null).Select(task=> 
@@ -49,17 +42,19 @@ namespace ClientPltTurbine.Controllers.LoadFileController
 
        
 
-        public Task[] ReadSensorTurbine()=>
-            ReadFile().Where(x => x.Item1 != null && x.Item2!=null).Select(task =>
-                    task.Item1.ContinueWith(result => {
-                        var dt = result.Result;
-                        FileInfo fi = new(dt.Item1);
-                        SendEventLoadFile($"Send file {fi.Name} to server system");
-                        return task.Item2.ProcessSensorFile(dt.Item2, fi.Name, fi.Extension, "", false);
-                    }, TaskContinuationOptions.OnlyOnRanToCompletion)).ToArray();
+        public Task[] ReadSensorTurbine(Dictionary<string, IBrowserFile> files) =>
+            ReadFile(files).Where(x => x.Item1 != null && x.Item2!=null).Select(task => {
+                return task.Item1.ContinueWith(result =>
+                {
+                    var dt = result.Result;
+                    FileInfo fi = new(dt.Item1);
+                    SendEventLoadFile($"Send file {fi.Name} to server system");
+                    return task.Item2.ProcessSensorFile(dt.Item2, fi.Name, fi.Extension, "", false);
+                }, TaskContinuationOptions.OnlyOnRanToCompletion);
+            }).ToArray();
 
-        public Task[] ReadEventSensorTurbine() =>
-             ReadFile(true).Where(x => x.Item1 != null && x.Item2 != null).Select(task =>
+        public Task[] ReadEventSensorTurbine(Dictionary<string, IBrowserFile> files) =>
+             ReadFile(files,true).Where(x => x.Item1 != null && x.Item2 != null).Select(task =>
                       task.Item1.ContinueWith(result => {
                          var dt = result.Result;
                          FileInfo fi = new(dt.Item1);
@@ -67,17 +62,10 @@ namespace ClientPltTurbine.Controllers.LoadFileController
                          return task.Item2.ProcessSensorFile(dt.Item2, fi.Name, fi.Extension, "", false);
                      }, TaskContinuationOptions.OnlyOnRanToCompletion)).ToArray();
 
-        private static IEnumerable<string> GetFileDirectoryFileSensor(bool isEvent = false)
+        private static IEnumerable<KeyValuePair<string,IBrowserFile>> GetFileDirectoryFileSensor(Dictionary<string, IBrowserFile> files,bool isEvent = false)
         {
-            foreach (var file in Directory.GetFiles("Resources/files/"))
-                if ((file.EndsWith(".xlsx") || file.EndsWith(".csv") || file.EndsWith(".XLS")) && SelectFileSensor(file, isEvent))
-                    yield return file;
-        }
-
-        private static IEnumerable<string> GetFileDirectory()//far async
-        {
-            foreach (var file in Directory.GetFiles("Resources/files/"))
-                if ((file.EndsWith(".xlsx") || file.EndsWith(".csv") || file.EndsWith(".XLS")) && myList.Exists(element => file.Contains(element.Item1)))
+            foreach (var file in files)
+                if ((file.Key.EndsWith(".xlsx") || file.Key.EndsWith(".csv") || file.Key.EndsWith(".XLS")) && SelectFileSensor(file.Key, isEvent))
                     yield return file;
         }
 
@@ -88,21 +76,21 @@ namespace ClientPltTurbine.Controllers.LoadFileController
         private static bool SelectFileSensor(string nameFile, bool isEvent) =>
             isEvent ? ConditionFilterFile(eventsensor, nameFile) : sensors.Exists(sensor => ConditionFilterFile(sensor, nameFile));
 
-        private IEnumerable<(Task<(string, DataTable)>, ILoadFileModel)> ReadFile(bool isEvent = false) =>
-            GetFileDirectoryFileSensor(isEvent).Select((filePath) =>
+        private IEnumerable<(Task<(string, DataTable)>, ILoadFileModel)> ReadFile(Dictionary<string, IBrowserFile> files, bool isEvent = false) =>
+            GetFileDirectoryFileSensor(files,isEvent).Select(infoFile =>
             {
-                if (!myList.Exists(element => filePath.Contains(element.Item1)))
+                if (!myList.Exists(element => infoFile.Key.Contains(element.Item1)))
                 {
-                    FileInfo fi = new(filePath);
+                    FileInfo fi = new(infoFile.Key);
                     SendEventLoadFile($"Init load file {fi.Name}");
                     ILoadFileModel loadFile = new LoadFileModel();
-                    if (IsCsv(filePath))
+                    if (IsCsv(infoFile.Key))
                     {
-                        return (loadFile.LoadCsvFileSensor(filePath), loadFile);
+                        return (loadFile.LoadCsvFileSensor(infoFile), loadFile);
                     }
                     else
                     {
-                        return (loadFile.LoadExcelFileSensor(filePath), loadFile);
+                        return (loadFile.LoadExcelFileSensor(infoFile), loadFile);
                     }
                 }
                 return default;

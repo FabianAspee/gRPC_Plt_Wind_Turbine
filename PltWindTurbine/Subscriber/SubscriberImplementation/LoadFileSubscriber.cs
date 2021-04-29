@@ -134,15 +134,18 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
             }
             else if (infoTurbines.ContainsKey(table.Name))
             {
+
+                SendEventFile(table.Name, "Init process file in server");
                 await CreateDataTableInfoF(table).ContinueWith(result =>
                 {
                     var data = result.Result;
                     var tableName = ReturnNameTable(table, table.Name);
-                    var columnReplace = database.SelectColumnFrom(tableName);
+                    var columnReplace = database.SelectColumnFrom(tableName); 
+                    SendEventFile(table.Name, "Init insert data into database");
                     return (ChangeColumnsNameError(data, columnReplace), tableName);
                 }, TaskContinuationOptions.OnlyOnRanToCompletion).ContinueWith(result =>
-                {
-                    var (data,tableName) = result.Result;
+                { 
+                    var (data,tableName) = result.Result; 
                     database.InsertInfoPlt(data, tableName);
                 });
 

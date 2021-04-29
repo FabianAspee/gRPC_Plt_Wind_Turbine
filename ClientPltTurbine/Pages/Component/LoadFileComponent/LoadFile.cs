@@ -6,6 +6,9 @@ using ClientPltTurbine.Pages.Component.LoadFileComponent.EventLoadFile;
 using System;
 using ClientPltTurbine.EventContainer;
 using Blazored.Toast.Services;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Components.Forms;
+using System.Linq;
 
 namespace ClientPltTurbine.Pages.Component.LoadFileComponent
 {
@@ -30,12 +33,12 @@ namespace ClientPltTurbine.Pages.Component.LoadFileComponent
         };
            
         
-        public async Task LoadInfoTurbines()
+        public async Task LoadInfoTurbines(Dictionary<string, IBrowserFile> files)
         {
             SendEventLoadFile("Start load basic file");
             try {
 
-                var allTask = Controller.ReadBasicFiles();
+                var allTask = Controller.ReadBasicFiles(files);
                 await Task.WhenAll(allTask);
             }
             catch(Exception e)
@@ -44,19 +47,17 @@ namespace ClientPltTurbine.Pages.Component.LoadFileComponent
             }
              
         }
-        public async Task LoadSensorTurbines()
+        public async Task LoadSensorTurbines(Dictionary<string, IBrowserFile> files)
         {
             status = "Load Sensor Turbine!"; 
             SendEventLoadFile("Start load sensor file");
-            var allTask = Controller.ReadSensorTurbine();
-            await Task.WhenAll(allTask);
-            SendEventLoadFile("Start sssload sensor file"); 
-            status = "Finish Load Sensor Turbine!";
+            var allTask = Controller.ReadSensorTurbine(files); 
+            await Task.WhenAll(allTask); 
         }
-        public async Task LoadEventSensorTurbines()
+        public async Task LoadEventSensorTurbines(Dictionary<string, IBrowserFile> files)
         {
             SendEventLoadFile("Start load event file");
-            var allTask = Controller.ReadEventSensorTurbine();
+            var allTask = Controller.ReadEventSensorTurbine(files);
             await Task.WhenAll(allTask).ConfigureAwait(false);
 
         }

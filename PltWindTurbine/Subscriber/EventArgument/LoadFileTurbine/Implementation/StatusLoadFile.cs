@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PltWindTurbine.Subscriber.EventArgument.LoadFileTurbine.Implementation
 {
-    public record StatusLoadFile(string NameFile, string Description, int Percent, Status Status) : IStatusLoadFile; 
+    public record StatusLoadFile(StatusFile StatusFile, int Percent) : IStatusLoadFile;
+    public record StatusFile(string NameFile, string Description, Status Status) : IStatusLoadFile;
 
 }

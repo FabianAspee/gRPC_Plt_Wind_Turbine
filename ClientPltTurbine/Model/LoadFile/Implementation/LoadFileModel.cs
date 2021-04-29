@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ExcelDataReader.Exceptions;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace ClientPltTurbine.Model.LoadFile.Implementation
 {
@@ -34,27 +35,26 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
             _ = HandleResponsesReadSensorFileAsync();
         }  
 
-        public Task<(string,DataTable,int)> LoadCsvFileBasic(string filePath)=>
+        public Task<(string,DataTable,int)> LoadCsvFileBasic(KeyValuePair<string, IBrowserFile> infoFile) =>
             Task.Run(() => {
-                var myitem = myList.First(name => filePath.Contains(name.Item1)); 
-                Console.WriteLine("Task {0} running on thread {1}", Task.CurrentId, Thread.CurrentThread.ManagedThreadId);
-                DataTable data = GetDataTableFromFile(filePath, myitem.Item2);                 
-                return (filePath, data, myitem.Item3);
+                var myitem = myList.First(name => infoFile.Key.Contains(name.Item1));  
+                DataTable data = GetDataTableFromFile(infoFile, myitem.Item2);                 
+                return (infoFile.Key, data, myitem.Item3);
             }); 
 
-        public Task<(string, DataTable, int)> LoadExcelFileBasic(string filePath)
+        public Task<(string, DataTable, int)> LoadExcelFileBasic(KeyValuePair<string,IBrowserFile> infoFile)
         {
-            if (ExistInCsv(filePath))
+            if (ExistInCsv(infoFile.Key))
             {
-                return LoadCsvFileBasic(filePath); 
+                return LoadCsvFileBasic(infoFile); 
             }
             else
             {
-                return Task.Run(() =>
+                return Task.Run(async () =>
                 {
-                    var myitem = myList.First(name => filePath.Contains(name.Item1));
-                    DataTable data = ReadExcel(filePath); 
-                    return (filePath, data, myitem.Item3);
+                    var myitem = myList.First(name => infoFile.Key.Contains(name.Item1));
+                    DataTable data = await ReadExcel(infoFile); 
+                    return (infoFile.Key, data, myitem.Item3);
                 }); 
             } 
         }
@@ -85,34 +85,32 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
                 return _duplexStreamReadBasicFiles.RequestStream.WriteAsync(fileUpload2);
             }); 
 
-        public Task<(string, DataTable)> LoadCsvFileSensor(string filePath) =>
-            Task.Run(() => { 
-                Console.WriteLine("Task {0} running on thread {1}", Task.CurrentId, Thread.CurrentThread.ManagedThreadId);
-                DataTable data = GetDataTableFromFile(filePath, ",");
-                return (filePath, data);
+        public Task<(string, DataTable)> LoadCsvFileSensor(KeyValuePair<string, IBrowserFile> infoFile) =>
+            Task.Run(() => {  
+                DataTable data = GetDataTableFromFile(infoFile, ",");
+                return (infoFile.Key, data);
             });   
         
-        public Task<(string, DataTable)> LoadExcelFileSensor(string filePath)
+        public Task<(string, DataTable)> LoadExcelFileSensor(KeyValuePair<string, IBrowserFile> infoFile)
         { 
-            if (!ExistInCsv(filePath))
+            if (ExistInCsv(infoFile.Key))
             {
-                return null;
-                return LoadCsvFileSensor(filePath);
+                
+                return LoadCsvFileSensor(infoFile);
             }
             else
             {
-                return Task.Run(() =>
+                return Task.Run(async () =>
                 {
-                    DataTable data = ReadExcel(filePath);
-                    return (filePath, data);
+                    DataTable data =await ReadExcel(infoFile);
+                    return (infoFile.Key, data);
                 }); 
             }
         }
 
         public Task ProcessSensorFile(DataTable file, string name, string type, string sep, bool isEvent) => 
             Task.Run(() =>
-            {
-                Console.WriteLine(name);
+            { 
                 var allColumn = file.Columns.OfType<DataColumn>().Select(x => x.ColumnName).ToList();
                 var count = 0;
                 var dimension = file.Rows.Count;
@@ -139,43 +137,72 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
         private static List<string> CreateListWithValues(IExcelDataReader reader) =>
             Enumerable.Range(0, reader.FieldCount).Select(index => reader.GetValue(index)?.ToString()).ToList();
 
-        private static IEnumerable<(List<string>, bool)> ReadFileExcel(string filePath, string sep = "\t" ,int skip=2)
+        private static List<string> ReadStreamReader(IBrowserFile file, int skip = 2)
         {
-            if (filePath.EndsWith(".XLS"))
+            List<string> rows = new();
+            string line;
+            StreamReader streamReader = new(file.OpenReadStream(file.Size));
+            while ((line = streamReader.ReadLine()) != null)
             {
-                List<string> rows = System.IO.File.ReadAllLines(filePath).Skip(skip).ToList(); 
+                if (skip == 0)
+                {
+                    rows.Add(line);
+                }
+                else
+                {
+                    skip--;
+                }
+            }
+            return rows;
+            
+        }
+        private static async IAsyncEnumerable<(List<string>, bool)> ReadFileExcel(string name, IBrowserFile file, string sep = "\t", int skip=2)
+        {
+            if (name.EndsWith(".XLS"))
+            {
+                List<string> rows = ReadStreamReader(file, skip);
                 if (rows.Count > 1)
-                { 
+                {
                     yield return (rows.First().Split(sep).ToList(), true);
-                    foreach(var row in rows.Skip(1))
-                    { 
+                    foreach (var row in rows.Skip(1))
+                    {
                         yield return (row.Split(sep).ToList(), false);
-                    } 
-                } 
+                    }
+                }
             }
             else
             {
-                using var stream = System.IO.File.Open(filePath, FileMode.Open, FileAccess.Read);
-                using var reader = ExcelReaderFactory.CreateReader(stream);
-                if (reader.Read())
+                await foreach(var read in ReadExcelFileWithReader(name, file))
                 {
-                    yield return (CreateListWithValues(reader), true);
-                    do
-                    {
-                        while (reader.Read())
-                        {
-                            yield return (CreateListWithValues(reader), false);
-                        }
-                    } while (reader.NextResult());
+                    yield return read;
                 }
+                
             }
             
         }
-
-        private static DataTable ReadExcel(string filePath)
+        private static async IAsyncEnumerable<(List<string>, bool)> ReadExcelFileWithReader(string name ,IBrowserFile file)
+        {
+            using Stream stream = file.OpenReadStream(file.Size);
+            var path = $"Resources\\TempFiles\\{name}";
+            using FileStream fileStream = System.IO.File.Create(path);
+            await stream.CopyToAsync(fileStream);
+            using var reader = ExcelReaderFactory.CreateReader(fileStream);
+            if (reader.Read())
+            {
+                yield return (CreateListWithValues(reader), true);
+                do
+                {
+                    while (reader.Read())
+                    {
+                        yield return (CreateListWithValues(reader), false);
+                    }
+                } while (reader.NextResult());
+            }
+        }
+        private static async Task<DataTable> ReadExcel(KeyValuePair<string,IBrowserFile> infoFile)
         {
             DataTable data = new();
-            foreach (var values in ReadFileExcel(filePath))
+            await foreach (var values in ReadFileExcel(infoFile.Key,infoFile.Value))
             {
                 if (values.Item2)
                 {
@@ -211,13 +238,13 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
             {
                 SendEventLoadFile($"name {update.Name} percent {update.Description} status {update.Status}");
             }
-        }
+        } 
 
-        private static DataTable GetDataTableFromFile(string filePath, string sep)
+        private static DataTable GetDataTableFromFile(KeyValuePair<string, IBrowserFile> infoFile, string sep)
         {
-            string[] rows = System.IO.File.ReadAllLines(filePath);
+            List<string> rows = ReadStreamReader(infoFile.Value,0);
             DataTable data = new();
-            if (rows.Length > 1)
+            if (rows.Count > 1)
             {
                 rows[0].Split(sep).ToList().ForEach(columnName => data.Columns.Add(columnName));
                 rows.Skip(1)?.ToList().ForEach(row => {

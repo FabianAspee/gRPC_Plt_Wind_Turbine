@@ -1,13 +1,29 @@
 version: '3.4'
 
 services:
-  pltwindturbine:
-    image: ${DOCKER_REGISTRY-}pltwindturbine
-    build:
-      context: .
-      dockerfile: PltWindTurbine/Dockerfile
   clientplt:
     image: ${DOCKER_REGISTRY-}clientplt
+    hostname: clientplt 
+    ports:
+      - 5002:443
     build:
       context: .
-      dockerfile: ClientPltTurbine/Dockerfile
+      dockerfile: ClientPltTurbine/Dockerfile   
+
+  pltwindturbine:
+    image: ${DOCKER_REGISTRY-}pltwindturbine
+    hostname: pltwindturbine
+    ports:
+      - 5001:443
+    build:
+      context: .
+      dockerfile: PltWindTurbine/Dockerfile 
+
+  nginx:
+    image: ${DOCKER_REGISTRY-}nginx
+    ports:
+      - 8080:443
+    build:
+      context: .
+      dockerfile: PltWindTurbine/nginx/DockerFile
+

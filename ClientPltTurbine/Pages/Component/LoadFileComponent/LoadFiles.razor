@@ -2,11 +2,11 @@
 
 @inject LoadFile LoadFile
 @inject IToastService toastService
-<h1>Load Files</h1>
-
+<h1>Load Files</h1> 
 <p>Current count: @LoadFile.status</p>
-    <InputFileComponent Id="loadInfoTurbine"></InputFileComponent>
-   
-<ButtonComponent OnClick="LoadFile.LoadInfoTurbines" Text="Load Info Turbines"></ButtonComponent>
-<button class="btn btn-primary" @onclick="LoadFile.LoadSensorTurbines">Load Sensor Turbines</button>
-<button class="btn btn-primary" @onclick="LoadFile.LoadEventSensorTurbines">Load Event Turbines</button>
+<InputFileComponent Id="loadInfoTurbine" ValueChanged="@LoadInputFile" Accept=".csv,.xlsx"></InputFileComponent>
+<div class="container"> 
+    <ButtonComponent OnClick="LoadInfoTurbines" Text="Load Info Turbines"></ButtonComponent>
+    <ButtonComponent OnClick="LoadSensorTurbines" Text="Load Sensor Turbines"></ButtonComponent>
+    <ButtonComponent OnClick="LoadEventSensorTurbines" Text="Load Event Turbines"></ButtonComponent>
+</div>

@@ -6,8 +6,13 @@
     <UserSecretsId>75bb9984-982e-40f4-bbf1-627d1e6ba7ec</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
-    <Content Remove="App.config" />
-    <Content Remove="C:\Users\Admin\.nuget\packages\chartjs.blazor.fork\2.0.2\contentFiles\any\netstandard2.1\wwwroot\ChartJsBlazorInterop.js" />
+    <Compile Remove="Resources\CsvFile\**" />
+    <Content Remove="Resources\CsvFile\**" />
+    <EmbeddedResource Remove="Resources\CsvFile\**" />
+    <None Remove="Resources\CsvFile\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="App.config" /> 
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Blazored.Toast" Version="3.1.2" />
@@ -33,7 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Pages\Component\TurbineComponent\" />
-    <Folder Include="Resources\CsvFile\EventFile\" />
+    <Folder Include="Resources\TempFiles\" />
     <Folder Include="Shared\ChartComponent\DrawAreaChart\Implementation\" />
     <Folder Include="Shared\ChartComponent\DrawPieChart\Implementation\" />
   </ItemGroup>
