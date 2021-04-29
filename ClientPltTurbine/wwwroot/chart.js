@@ -62,3 +62,9 @@ window.setupRadarChart = (id, config) => {
     var ctx = document.getElementById(id).getContext('2d'); 
     new Chart(ctx, config);
 } 
+
+window.setupBoxPlotChart = (id, config) => {
+    console.log(config)
+    var ctx = document.getElementById(id).getContext('2d');
+    new Chart(ctx, config);
+} 

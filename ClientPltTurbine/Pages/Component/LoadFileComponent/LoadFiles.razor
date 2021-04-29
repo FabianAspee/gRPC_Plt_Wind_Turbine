@@ -5,13 +5,8 @@
 <h1>Load Files</h1>
 
 <p>Current count: @LoadFile.status</p>
-<button class="btn btn-primary" @onclick="LoadFile.LoadInfoTurbines">Load Info Turbines</button>
+    <InputFileComponent Id="loadInfoTurbine"></InputFileComponent>
+   
+<ButtonComponent OnClick="LoadFile.LoadInfoTurbines" Text="Load Info Turbines"></ButtonComponent>
 <button class="btn btn-primary" @onclick="LoadFile.LoadSensorTurbines">Load Sensor Turbines</button>
-<button class="btn btn-primary" @onclick="LoadFile.LoadEventSensorTurbines">Load Event Turbines</button> 
-@code { protected override async Task OnInitializedAsync()
-    {
-        LoadFile.Service = toastService;
-        LoadFile.LoadSatus += async (sender, args) =>
-               await LoadFile.WriteInfo(args);
-        await Task.Run(() => LoadFile.RegisterEvent());
-    } }
+<button class="btn btn-primary" @onclick="LoadFile.LoadEventSensorTurbines">Load Event Turbines</button>

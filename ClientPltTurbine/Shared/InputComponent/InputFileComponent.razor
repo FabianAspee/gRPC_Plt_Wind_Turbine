@@ -1,0 +1,30 @@
+﻿
+<div class="file-input-zone">
+    <InputFile OnChange="OnValueChanged" />
+    Get me a file!
+</div>
+<style>
+    .file-input-zone {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: blue;
+        color: white;
+        cursor: pointer;
+        position: relative;
+        width: 120px;
+        height: 30px;
+    }
+
+        .file-input-zone:hover {
+            background-color: lightblue;
+        }
+
+        .file-input-zone input[type=file] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+</style>
