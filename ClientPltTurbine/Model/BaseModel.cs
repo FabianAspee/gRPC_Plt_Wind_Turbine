@@ -16,6 +16,7 @@ namespace ClientPltTurbine.Model
         
         private static GrpcChannel CreatedGrpcChannel()
         {
+            Console.WriteLine(ConfigurationManager.ConnectionStrings["serverPath"].ConnectionString);
             return GrpcChannel.ForAddress(ConfigurationManager.ConnectionStrings["serverPath"].ConnectionString, new GrpcChannelOptions
             {
                 MaxSendMessageSize = 512 * 1024 * 1024,

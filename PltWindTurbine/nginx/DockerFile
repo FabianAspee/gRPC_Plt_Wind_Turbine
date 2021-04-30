@@ -1,4 +1,4 @@
 ﻿FROM nginx:latest
 COPY PltWindTurbine/nginx/nginx.conf /etc/nginx/nginx.conf
-COPY PltWindTurbine/nginx/zyzzyva.tld.chained.crt /etc/ssl/private/zyzzyva.tld.chained.crt
-COPY PltWindTurbine/nginx/zyzzyva.tld.key /etc/ssl/private/zyzzyva.tld.key
+COPY PltWindTurbine/nginx/fullchain1.pem /etc/ssl/private/fullchain1.pem
+COPY PltWindTurbine/nginx/privkey1.pem /etc/ssl/private/privkey1.pem

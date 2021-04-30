@@ -1,13 +1,16 @@
 {
   "profiles": {
+    
     "PltWindTurbine": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development", 
       },
       "dotnetRunMessages": "true",
-      "applicationUrl": "http://localhost:9999;https://localhost:9998"
+      "launchUrl": "https://localhost:9998"
+      
     },
+
     "Docker": {
       "commandName": "Docker",
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",

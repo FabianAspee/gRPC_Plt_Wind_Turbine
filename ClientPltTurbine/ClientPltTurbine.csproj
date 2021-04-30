@@ -31,7 +31,7 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup> 
     <Content Update="electron.manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -49,7 +49,7 @@
     <ProjectReference Include="..\PltTurbineShared\PltTurbineShared.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Protobuf Include="..\PltWindTurbine\Protos\Loadfilesproto\loadfile.proto" GrpcServices="Client">
+    <Protobuf Include="..\PltWindTurbine\Protos\LoadFilesProto\loadfile.proto" GrpcServices="Client">
       <Link>Protos\loadfile.proto</Link>
     </Protobuf>
     <Protobuf Include="..\PltWindTurbine\Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" GrpcServices="Client">
