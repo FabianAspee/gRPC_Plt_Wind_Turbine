@@ -3,21 +3,12 @@ version: '3.4'
 services:
   clientplt:
     image: ${DOCKER_REGISTRY-}clientplt
-    hostname: clientplt 
+    hostname: https://astarte.csr.unibo.it/ 
     ports:
       - 5002:443
     build:
       context: .
       dockerfile: ClientPltTurbine/Dockerfile   
-
-  pltwindturbine:
-    image: ${DOCKER_REGISTRY-}pltwindturbine
-    hostname: pltwindturbine
-    ports:
-      - 5001:443
-    build:
-      context: .
-      dockerfile: PltWindTurbine/Dockerfile 
 
   nginx:
     image: ${DOCKER_REGISTRY-}nginx
@@ -27,3 +18,12 @@ services:
       context: .
       dockerfile: PltWindTurbine/nginx/DockerFile
 
+  pltwindturbine:
+    image: ${DOCKER_REGISTRY-}pltwindturbine
+    hostname: https://astarte.csr.unibo.it/ 
+    ports:
+      - 5001:443
+    build:
+      context: .
+      dockerfile: PltWindTurbine/Dockerfile  
+  

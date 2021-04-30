@@ -18,12 +18,13 @@ RUN dotnet publish "ClientPltTurbine.csproj" -c Release -o /app/publish
 FROM base AS final
 ENV ASPNETCORE_URLS="https://+;http://+"
 ENV ASPNETCORE_HTTPS_PORT=443 
-ENV ASPNETCORE_Kestrel__Certificates__Default__Password="8620rib53" 
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password="" 
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/pltcertificate.pfx 
 WORKDIR /
 
 COPY ["ClientPltTurbine/pltcertificate.pfx", "/https/pltcertificate.pfx"]
-
+ADD ClientPltTurbine/pltcertificate.pfx :/container/cert/path
+RUN update-ca-certificates
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY ["ClientPltTurbine/App.config", "/app/config/App.config"] 
