@@ -24,6 +24,7 @@ window.setupLineChart = (id, config) => {
     }
     new Chart(ctx, config);
 }
+
 window.setupScatterChart = (id, config) => { 
     var ctx = document.getElementById(id).getContext('2d');
     config.options.scales = {
