@@ -85,10 +85,12 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
             RegisterEvent(EventKey.INFO_TURBINE_SENSOR);
             try
             {
+                Console.WriteLine("init call");
                 await obtainInfoTurbinesSubscriber.GetInforTurbineAndSensor();
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
                 _logger.LogInformation(e.ToString());
             }
             _logger.LogInformation("Subscription finished.");
@@ -122,10 +124,12 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
             try
             {
                 var response = GetNameTurbineAndSensor(infoTurbine);
+                Console.WriteLine("send "+response);
                 await stream.WriteAsync(response);
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
                 _logger.LogError($"Failed to write message: {e.Message}");
             }
         }

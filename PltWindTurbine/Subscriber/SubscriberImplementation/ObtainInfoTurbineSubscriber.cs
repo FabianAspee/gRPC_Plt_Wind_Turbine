@@ -28,6 +28,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
 
         public Task GetInforTurbineAndSensor()=> Task.Run(() =>
             { 
+                Console.WriteLine("start task");
                 database.SelectAllSensorAndTurbine();
             });
         
