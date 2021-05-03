@@ -18,16 +18,19 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
 {
     public class ChartModel : BaseModel, IChartModel, IDisposable
     {
-        private readonly ObtainInfoTurbines.ObtainInfoTurbinesClient _clientChart;
+        private ObtainInfoTurbines.ObtainInfoTurbinesClient _clientChart;
         private readonly AsyncDuplexStreamingCall<CodeAndPeriodRequest, CodeAndPeriodResponse> _duplexStreamObtainInfo;
         private readonly Dictionary<string, List<IParameterToChart>> infoChartByTurbine = new();
         public ChartModel()
         {
-            _clientChart = new ObtainInfoTurbines.ObtainInfoTurbinesClient(channel);
+            RecreateClientChart();
             _duplexStreamObtainInfo = _clientChart.InfoFailureTurbine();
             _ = HandleResponsesObtainInfoAsync();
         }
-
+        private void RecreateClientChart()
+        {
+            _clientChart = new ObtainInfoTurbines.ObtainInfoTurbinesClient(channel);
+        }
         public Task GetAllInfoTurbineForChart(InfoChartRecord info)
         {
             var SerieByPeriod = new CodeAndPeriodRequest()
@@ -53,13 +56,14 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
         {
             return Task.Run(async () =>
             {
+                channel = CreatedGrpcChannel();
+                RecreateClientChart();
                 using var call = _clientChart.GetNameTurbineAndSensor(new WithoutMessage());
                 while (await call.ResponseStream.MoveNext())
                 {
                     ResponseNameTurbineAndSensor response = call.ResponseStream.Current;
                     HandleResponsesInfoTurbineSensorAsync(response);
                 }
-
             });
         }
 

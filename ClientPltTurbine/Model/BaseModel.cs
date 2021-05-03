@@ -14,7 +14,7 @@ namespace ClientPltTurbine.Model
     {
         protected GrpcChannel channel = CreatedGrpcChannel();
         
-        private static GrpcChannel CreatedGrpcChannel()
+        protected static GrpcChannel CreatedGrpcChannel()
         {
             Console.WriteLine(ConfigurationManager.ConnectionStrings["serverPath"].ConnectionString);
             return GrpcChannel.ForAddress(ConfigurationManager.ConnectionStrings["serverPath"].ConnectionString, new GrpcChannelOptions
