@@ -202,7 +202,12 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
             var current = start;
             while(current < end)
             {
-                if(oldDate.First().Value.Count > 0 && Math.Abs((current - ParserDateSpecificFormat(ValidationFormatData(oldDate.First().Value.First()))).TotalSeconds / 60) <= 5)
+                var t = oldDate.First().Value.Count > 0;
+                var parse = ParserDateSpecificFormat(ValidationFormatData(oldDate.First().Value.First()));
+                var ews = (current - parse);
+                var ab = Math.Abs((current - ParserDateSpecificFormat(ValidationFormatData(oldDate.First().Value.First()))).TotalSeconds / 60);
+                var tt =  ab<= 5;
+                if (oldDate.First().Value.Count > 0 && Math.Abs((current - ParserDateSpecificFormat(ValidationFormatData(oldDate.First().Value.First()))).TotalSeconds / 60) <= 5)
                 {
                     var result = oldDate.Select(keyValue=>(keyValue.Key,keyValue.Value.First())).ToList();
                     oldDate = oldDate.ToDictionary(key=>key.Key, value=>value.Value.Skip(1).ToList());
