@@ -59,7 +59,7 @@ namespace ClientPltTurbine.Controllers.LoadFileController
                          var dt = result.Result;
                          FileInfo fi = new(dt.Item1);
                          SendEventLoadFile($"Send file {fi.Name} to server system");
-                         return task.Item2.ProcessSensorFile(dt.Item2, fi.Name, fi.Extension, "", false);
+                         return task.Item2.ProcessSensorFile(dt.Item2, fi.Name, fi.Extension, "", true);
                      }, TaskContinuationOptions.OnlyOnRanToCompletion)).ToArray();
 
         private static IEnumerable<KeyValuePair<string,IBrowserFile>> GetFileDirectoryFileSensor(Dictionary<string, IBrowserFile> files,bool isEvent = false)

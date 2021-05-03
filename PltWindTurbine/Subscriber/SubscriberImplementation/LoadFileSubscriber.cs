@@ -22,10 +22,8 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
     { 
         private readonly Dictionary<string, List<CreateDataTable>> infoTurbines = new();
         private readonly CommonImplementationDatabase database = RetreiveImplementationDatabase.Instance.ImplementationDatabase;
-        private readonly List<string> Turbines = new(){"Active_Power", "Nacelle_Dir", "Rotor_RPM", "Wind_Dir", "Wind_Speed", "Collarmele_K100","Collarmele_K101"};
-         
-
-     
+        private readonly List<string> Turbines = new() { "Active_Power", "Nacelle_Dir", "Rotor_RPM", "Wind_Dir", "Wind_Speed", "Collarmele_K100", "Collarmele_K101" }; 
+        private readonly List<string> Event = new() { "WTG_Event" };  
         public async Task LoadFilesInfoTurbine(FileUploadRequest file) =>
             await LoadFile(new CreateDataTable<InfoTurbine>(file.Msg1.File.Metadata.Name, file.Block, file.Msg1, file.TotalDimension, file.IsUpload, file.Msg1.NameTable));
         public async Task LoadFilesNameSensor(FileUploadRequest file) =>
@@ -133,8 +131,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
 
             }
             else if (infoTurbines.ContainsKey(table.Name))
-            {
-
+            { 
                 SendEventFile(table.Name, "Init process file in server");
                 await CreateDataTableInfoF(table).ContinueWith(result =>
                 {
@@ -159,7 +156,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                 var normalizedData = result.Result; 
                 var nameTurbine = database.SelectAllTurbineInfo();
                 var nameSensors = isEvent? ConvertToNormalSensor(database.SelectAllNameSensorError()): ConvertToNormalSensor(database.SelectAllNameSensor()); 
-                var groupDt = !isEvent ? AddNameSensor(normalizedData, nameSensors) : AddNameSensor(ChangeNameColumn(normalizedData, nameTurbine), nameSensors); 
+                var groupDt = !isEvent ? AddNameSensor(normalizedData, nameSensors) : AddNameSensor(ChangeNameColumn(normalizedData, nameTurbine), nameSensors, isEvent); 
                 return CreateDataFrameTurbine(groupDt, nameTurbine, nameSensors, isEvent);
             }, TaskContinuationOptions.OnlyOnRanToCompletion).ContinueWith(finalResult=> { 
                 finalResult.Result.ForEach(task =>task.ContinueWith(res => database.InsertInfoWindTurbine(res.Result), TaskContinuationOptions.ExecuteSynchronously));
@@ -177,26 +174,25 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
         private static Dictionary<string, List<string>> ReconstructSeries(Dictionary<string, List<string>> finalFrame)
         {
             var indexDelete = finalFrame.Last().Value.Zip(Enumerable.Range(0, finalFrame.Last().Value.Count))
-                .Where(val => val.First == "NV" && val.First == "-" && val.First == null).Select(val=>val.Second);
+                .Where(val => val.First == "NV" || val.First == "-" || val.First == null || val.First.Equals(string.Empty)).Select(val=>val.Second).ToList();
 
-            var finalDt= ClearFinalValue(finalFrame.Select(values => {
-                indexDelete.ToList().ForEach(index => values.Value.RemoveAt(index));
-                return values;
-            }).ToDictionary(key=>key.Key,value=>value.Value.ToList()));
+            var finalDt= ClearFinalValue(finalFrame.Select(values => 
+                (values.Key,values.Value.Where((value, index) => !indexDelete.Exists(val => val == index)))).ToDictionary(key=>key.Key,value=>value.Item2.ToList()));
             var maxDate = finalDt.Values.First().Max(dateStr => ParserDateSpecificFormat(dateStr));
             var dictionary = new Dictionary<string,List<string>>();
             return DateTimeRange(new DateTime(2018, 6, 22, 00, 10, 00), maxDate, 10, finalDt).Aggregate(dictionary,(actual,next)=> {
-                if (actual.TryGetValue(next.Item1.Item1, out List<string> value))
+                if (actual.TryGetValue(next.Item1.Item1, out List<string> value) && actual.TryGetValue(next.Item2.Item1, out List<string> value2))
                 {
                     dictionary[next.Item1.Item1] = value.Append(next.Item1.Item2).ToList();
-                    dictionary[next.Item2.Item1] = value.Append(next.Item2.Item2).ToList();
+                    dictionary[next.Item2.Item1] = value2.Append(next.Item2.Item2).ToList();
                     return dictionary;
                 }
                 else
                 {
                     var element = new List<string>(); 
-                    return actual.Append(new KeyValuePair<string, List<string>>(next.Item1.Item1, element.Append(next.Item1.Item2).ToList()))
-                    .Append(new KeyValuePair<string, List<string>>(next.Item2.Item1, element.Append(next.Item2.Item2).ToList())).ToDictionary(key=>key.Key, value=>value.Value);
+                    var e = actual.Append(new KeyValuePair<string, List<string>>(next.Item1.Item1, element.Append(next.Item1.Item2).ToList()))
+                    .Append(new KeyValuePair<string, List<string>>(next.Item2.Item1, element.Append(next.Item2.Item2).ToList())).ToDictionary(key => key.Key, value => value.Value);
+                    return e;
                 }
             }).ToDictionary(key=>key.Key, value=>value.Value);
               
@@ -213,9 +209,11 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                     yield return (result.First(), result.Skip(1).First());
                 } 
                 else
-                {   
-                    yield return (("date",current.ToString("yyyy/MM/dd HH:mm:ss")), ("value",(-1).ToString()));
-                    current = current.AddMinutes(delta);
+                {
+                    var currentAux = current;
+                    current = currentAux.AddMinutes(delta);
+                    yield return (("date", currentAux.ToString("yyyy/MM/dd HH:mm:ss")), ("value",(-1).ToString()));
+                    
                 }
             }
                
@@ -234,7 +232,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                 }
                 else if (nameTurbine is not null && isEvent)
                 { 
-                    return (Task.Run(() => ReconstructSeries(date.ToDictionary(key=>key.Key,value=>value.Value).Concat(new Dictionary<string, List<string>>() { { "value", keyAndValue.Value} }).ToDictionary(values => values.Key, values => values.Value.ToList()))), nameTurbine);
+                    return (Task.Run(() => ReconstructSeries(date.Concat(new Dictionary<string, List<string>>() { { "value", keyAndValue.Value} }).ToDictionary(values => values.Key, values => values.Value.ToList()))), nameTurbine);
                 }
                 else
                 {
@@ -291,19 +289,25 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                     {
                         if (key != "Date" && key != "PCTimeStamp" && key != "Data")
                         {
-                            var nameTurbine = RegexString(key);
-                            var finalName = nameTurbines.FirstOrDefault(name => name.ToString().ToLower() == nameTurbine)?? nameTurbines.FirstOrDefault(name => name.ToStringAux().ToLower() == nameTurbine);
+                            var nameTurbine = RegexString(key).ToLower();
+                            var finalName = nameTurbines.FirstOrDefault(name =>nameTurbine.Contains(name.ToString().ToLower()))?? nameTurbines.FirstOrDefault(name => nameTurbine.Contains(name.ToStringAux().ToLower()));
                             if(finalName is not null)
                             {
                                 return (finalName.ToString(), normalizedData.Item1[key]);
                             }
                         }
+                        else if (key == "Date" || key == "PCTimeStamp" || key == "Data")
+                        {
+
+                            return (key,normalizedData.Item1[key]);
+                        }
                         return default;
                     }).Where(x=>x.Item2 is not null).ToDictionary(x=>x.Item1, x=>x.Item2),normalizedData.Item2);   
         
 
-        private (Dictionary<string, List<string>>, string) AddNameSensor((Dictionary<string, List<string>>,string) normalizedDataByColumn, List<NormalSensor> nameSensors)=>
-            (normalizedDataByColumn.Item1, this.Turbines.First(nameSensor => ConditionFilterFile(nameSensor, normalizedDataByColumn.Item2))); //pensar en el caso tenga solo un porcentaje de la string
+        private (Dictionary<string, List<string>>, string) AddNameSensor((Dictionary<string, List<string>>,string) normalizedDataByColumn, List<NormalSensor> nameSensors, bool isEvent=false)=>
+            (normalizedDataByColumn.Item1, !isEvent?Turbines.First(nameSensor => ConditionFilterFile(nameSensor, normalizedDataByColumn.Item2)):
+            Event.First(nameSensor => ConditionFilterFile(nameSensor, normalizedDataByColumn.Item2))); //pensar en el caso tenga solo un porcentaje de la string
             
         
 
@@ -338,9 +342,27 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                 }); 
              } 
         }
-        public Task LoadEventSensor(ReadInfoSensor files)
+        public async Task LoadEventSensor(ReadInfoSensor file)
         {
-            throw new NotImplementedException();
+            if (file.IsUpload)
+            {
+                var table = new CreateDataTable<ReadEventSensor>(file.Msg2.Files.Metadata.Name, file.Block, file.Msg2, file.TotalDimension, file.IsUpload);
+                infoTurbines[file.Msg2.Files.Metadata.Name] = await AddToDictionary(infoTurbines, table);
+            }
+            else if (infoTurbines.ContainsKey(file.Msg2.Files.Metadata.Name))
+            {
+                var table = new CreateDataTable<ReadEventSensor>(file.Msg2.Files.Metadata.Name, file.Block, file.Msg2, file.TotalDimension, file.IsUpload);
+                await CreateDataTableInfoF(table).ContinueWith(result =>
+                {
+                    var data = result.Result;
+                    data.Columns.OfType<DataColumn>().Select(x => x.ColumnName).Where(x => x.Contains("Flag")).ToList().ForEach(x => data.Columns.Remove(x));
+                    return data;
+                }, TaskContinuationOptions.OnlyOnRanToCompletion).ContinueWith(async result =>
+                {
+                    var data = result.Result;
+                    await StartProcess(data, file.Msg2.Files.Metadata.Name,true);
+                });
+            }
         }
         private static Task<(Dictionary<string,List<string>>, string)> NormalizationData(DataTable dataTurbine, string nameFile)
         { 
