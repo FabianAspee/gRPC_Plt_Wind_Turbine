@@ -23,14 +23,11 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
         private readonly Dictionary<string, List<IParameterToChart>> infoChartByTurbine = new();
         public ChartModel()
         {
-            RecreateClientChart();
-            _duplexStreamObtainInfo = _clientChart.InfoFailureTurbine();
+            RecreateClient();
+             _duplexStreamObtainInfo = _clientChart.InfoFailureTurbine();
             _ = HandleResponsesObtainInfoAsync();
-        }
-        private void RecreateClientChart()
-        {
-            _clientChart = new ObtainInfoTurbines.ObtainInfoTurbinesClient(channel);
-        }
+        } 
+        private void RecreateClient() =>_clientChart = new ObtainInfoTurbines.ObtainInfoTurbinesClient(channel); 
         public Task GetAllInfoTurbineForChart(InfoChartRecord info)
         {
             var SerieByPeriod = new CodeAndPeriodRequest()
@@ -56,8 +53,7 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
         {
             return Task.Run(async () =>
             {
-                channel = CreatedGrpcChannel();
-                RecreateClientChart();
+                RecreateClient();
                 using var call = _clientChart.GetNameTurbineAndSensor(new WithoutMessage());
                 while (await call.ResponseStream.MoveNext())
                 {

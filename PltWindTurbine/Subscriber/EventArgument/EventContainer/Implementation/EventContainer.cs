@@ -12,7 +12,17 @@ namespace PltWindTurbine.Subscriber.EventArgument.EventContainer.Implementation
         
         public static EventContainer Container => container.Value;
 
-        public async void AddEvent(EventKey key, EventHandler<IBaseEvent> handler) => await Task.Run(() => Events.TryAdd(key.ToString(), handler)); 
+        public async void AddEvent(EventKey key, EventHandler<IBaseEvent> handler) => await Task.Run(() => {
+            if(Events.TryGetValue(key.ToString(), out _))
+            {
+                Events[key.ToString()] = handler;
+            }
+            else
+            {
+
+                Events.TryAdd(key.ToString(), handler);
+            } 
+        }); 
 
         public async Task<EventHandler<T>> SelectEvent<T>(EventKey key)=> await Task.FromResult(Events[key.ToString()] as EventHandler<T>); 
         
