@@ -36,8 +36,8 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
             async Task Initialized(){
                 if (!Sensors.Any() && !Turbines.Any())
                 {
-                    await ChartSingleton.CallTurbinesAndSensor();
                     InitializedComponent();
+                    await ChartSingleton.CallTurbinesAndSensor();
                     await AwaitSensorAndTurbine();
                     var allChart = await ChartSingleton.GetAllChart();
                     ChartInfo.AddRange(allChart.Select(info => new ChartInfo(info.Item1, info.Item2)).ToList());

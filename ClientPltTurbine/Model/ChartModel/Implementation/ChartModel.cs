@@ -20,7 +20,6 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
     {
         private readonly ObtainInfoTurbines.ObtainInfoTurbinesClient _clientChart;
         private readonly AsyncDuplexStreamingCall<CodeAndPeriodRequest, CodeAndPeriodResponse> _duplexStreamObtainInfo;
-        private AsyncServerStreamingCall<ResponseNameTurbineAndSensor> _asyncStreamGetInfoTurbineSensor;
         private readonly Dictionary<string, List<IParameterToChart>> infoChartByTurbine = new();
         public ChartModel()
         {
@@ -53,15 +52,14 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
         public Task GetAllNameTurbineAndSensor()
         {
             return Task.Run(async () =>
-            {  using (var call = _clientChart.GetNameTurbineAndSensor(new WithoutMessage()))
+            {
+                using var call = _clientChart.GetNameTurbineAndSensor(new WithoutMessage());
+                while (await call.ResponseStream.MoveNext())
                 {
-                    while (await call.ResponseStream.MoveNext())
-                    {
-                        ResponseNameTurbineAndSensor response = call.ResponseStream.Current;
-                        HandleResponsesInfoTurbineSensorAsync(response);
-                    }
-                } 
-                
+                    ResponseNameTurbineAndSensor response = call.ResponseStream.Current;
+                    HandleResponsesInfoTurbineSensorAsync(response);
+                }
+
             });
         }
 
@@ -219,8 +217,7 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
                 await _duplexStreamObtainInfo.RequestStream.CompleteAsync(); 
             }
             finally
-            {
-                _asyncStreamGetInfoTurbineSensor.Dispose();
+            { 
                 _duplexStreamObtainInfo.Dispose(); 
             }
         }
