@@ -50,6 +50,7 @@ namespace PltWindTurbine.Services.LoadFilesService
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
                 _logger.LogInformation(e.ToString());
             }
             _logger.LogInformation("Subscription finished.");
@@ -63,6 +64,7 @@ namespace PltWindTurbine.Services.LoadFilesService
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
                 _logger.LogError($"Failed to write message: {e.Message}");
             }
         }
@@ -121,6 +123,7 @@ namespace PltWindTurbine.Services.LoadFilesService
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
                 _logger.LogInformation(e.ToString());
             }
             _logger.LogInformation("Subscription finished.");

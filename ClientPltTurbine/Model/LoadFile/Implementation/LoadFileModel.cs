@@ -37,9 +37,9 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
         }  
 
         public Task<(string,DataTable,int)> LoadCsvFileBasic(KeyValuePair<string, IBrowserFile> infoFile) =>
-            Task.Run(() => {
+            Task.Run(async () => {
                 var myitem = myList.First(name => infoFile.Key.Contains(name.Item1));  
-                DataTable data = GetDataTableFromFile(infoFile, myitem.Item2);                 
+                DataTable data = await GetDataTableFromFile(infoFile, myitem.Item2);                 
                 return (infoFile.Key, data, myitem.Item3);
             }); 
 
@@ -88,8 +88,8 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
             }); 
 
         public Task<(string, DataTable)> LoadCsvFileSensor(KeyValuePair<string, IBrowserFile> infoFile) =>
-            Task.Run(() => {  
-                DataTable data = GetDataTableFromFile(infoFile, ",");
+            Task.Run(async () => {  
+                DataTable data = await GetDataTableFromFile(infoFile, ",");
                 return (infoFile.Key, data);
             });   
         
@@ -139,12 +139,12 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
         private static List<string> CreateListWithValues(IExcelDataReader reader) =>
             Enumerable.Range(0, reader.FieldCount).Select(index => reader.GetValue(index)?.ToString()).ToList();
 
-        private static List<string> ReadStreamReader(IBrowserFile file, int skip = 2)
+        private async static Task<List<string>> ReadStreamReader(IBrowserFile file, int skip = 2)
         {
             List<string> rows = new();
             string line;
             StreamReader streamReader = new(file.OpenReadStream(file.Size));
-            while ((line = streamReader.ReadLine()) != null)
+            while ((line = await streamReader.ReadLineAsync()) != null)
             {
                 if (skip == 0)
                 {
@@ -162,7 +162,7 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
         {
             if (name.EndsWith(".XLS"))
             {
-                List<string> rows = ReadStreamReader(file, skip);
+                List<string> rows = await ReadStreamReader(file, skip);
                 if (rows.Count > 1)
                 {
                     yield return (rows.First().Split(sep).ToList(), true);
@@ -242,9 +242,9 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
             }
         } 
 
-        private static DataTable GetDataTableFromFile(KeyValuePair<string, IBrowserFile> infoFile, string sep)
+        private async static Task<DataTable> GetDataTableFromFile(KeyValuePair<string, IBrowserFile> infoFile, string sep)
         {
-            List<string> rows = ReadStreamReader(infoFile.Value,0);
+            List<string> rows = await ReadStreamReader(infoFile.Value,0);
             DataTable data = new();
             if (rows.Count > 1)
             {
