@@ -12,6 +12,7 @@ using PltWindTurbine.Subscriber.SubscriberImplementation;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -44,40 +45,46 @@ namespace PltWindTurbine.Database.Utils
         } 
          
         public virtual void InsertInfoWindTurbine(InfoByTurbineToTable infoByTurbine)
-        {  
-            Console.WriteLine($"Inserendo {infoByTurbine.IdTurbine}"); 
+        {
+            SendEventFile(infoByTurbine.IdTurbine.ToString(),$"Insert sensor info {infoByTurbine.IdSensor}"); 
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             using var transaction = connection.Database.BeginTransaction();
-            using var command = connection.Database.GetDbConnection().CreateCommand();
-
-
+            using var command = connection.Database.GetDbConnection().CreateCommand(); 
+            GetDbCommand(command, infoByTurbine, "value_sensor_turbine");
+            transaction.Commit(); 
+        }
+        private static void GetDbCommand(DbCommand command, InfoByTurbineToTable infoByTurbine, string nameTable)
+        {
             var columnsWithoutUnion = infoByTurbine.BaseInfoTurbine.Select(keyValue => keyValue.Key);
             var columns = columnsWithoutUnion.Union(
                 new List<string>() { infoByTurbine.IdTurbine.nameColumnT, infoByTurbine.IdSensor.nameColumnS }).ToArray();
             var columnsValues = columns.Select(name => $"${name}");
-            command.CommandText = $@"INSERT INTO value_sensor_turbine({string.Join(",", columns)})  VALUES ({string.Join(",", columnsValues)})";
+            command.CommandText = $@"INSERT INTO {nameTable}({string.Join(",", columns)})  VALUES ({string.Join(",", columnsValues)})";
             command.Parameters.AddRange(columnsValues.Select(column =>
             {
                 var parameter = command.CreateParameter();
                 parameter.ParameterName = column;
                 return parameter;
             }).ToArray());
-            var idTurbine = infoByTurbine.IdTurbine.idTurbine.ToString();
-            var idSensor = infoByTurbine.IdSensor.idSensor.ToString();
+            (string idTurbine, string idSensor) = GetIdTurbineAndSensor(infoByTurbine);
             Enumerable.Range(0, infoByTurbine.BaseInfoTurbine.Values.First().Count).ToList().ForEach(index =>
             {
                 var row = columnsWithoutUnion.Select(key => infoByTurbine.BaseInfoTurbine[key][index]).Append(idTurbine).Append(idSensor);
                 row.Zip(columnsValues).ToList().ForEach(valueWithColumn =>
-                {
-                    object t = valueWithColumn.Second is not "$value" ? valueWithColumn.First : (valueWithColumn.First is null ? DBNull.Value : valueWithColumn.First);
-                    object t2 = valueWithColumn.First is null ? DBNull.Value : valueWithColumn.First;
-                    command.Parameters[valueWithColumn.Second].Value = valueWithColumn.Second is not "$value" ? valueWithColumn.First : (valueWithColumn.First is null ? DBNull.Value : valueWithColumn.First);
-                });
+                command.Parameters[valueWithColumn.Second].Value = valueWithColumn.Second is not "$value" ? valueWithColumn.First : (valueWithColumn.First is null ? DBNull.Value : valueWithColumn.First));
                 command.ExecuteNonQuery();
             });
-            transaction.Commit(); 
         }
-
+        private static (string, string) GetIdTurbineAndSensor(InfoByTurbineToTable infoByTurbine) => (infoByTurbine.IdTurbine.idTurbine.ToString(), infoByTurbine.IdSensor.idSensor.ToString());
+        public virtual void InsertInfoEventWindTurbine(InfoByTurbineToTable infoByTurbine)
+        {
+            SendEventFile(infoByTurbine.IdTurbine.ToString(), $"Insert Event sensor info {infoByTurbine.IdSensor}"); 
+            using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
+            using var transaction = connection.Database.BeginTransaction();
+            using var command = connection.Database.GetDbConnection().CreateCommand();
+            GetDbCommand(command, infoByTurbine, "value_sensor_error"); 
+            transaction.Commit();
+        }
         public List<Wind_Turbine_Info> ReadAllTurbine() 
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();

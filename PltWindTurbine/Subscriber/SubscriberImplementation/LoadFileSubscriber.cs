@@ -159,7 +159,17 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                 var groupDt = !isEvent ? AddNameSensor(normalizedData, nameSensors) : AddNameSensor(ChangeNameColumn(normalizedData, nameTurbine), nameSensors, isEvent); 
                 return CreateDataFrameTurbine(groupDt, nameTurbine, nameSensors, isEvent);
             }, TaskContinuationOptions.OnlyOnRanToCompletion).ContinueWith(finalResult=> { 
-                finalResult.Result.ForEach(task =>task.ContinueWith(res => database.InsertInfoWindTurbine(res.Result), TaskContinuationOptions.ExecuteSynchronously));
+                finalResult.Result.ForEach(task =>task.ContinueWith(res =>
+                {
+                    if (isEvent)
+                    { 
+                        database.InsertInfoEventWindTurbine(res.Result);
+                    }
+                    else
+                    { 
+                        database.InsertInfoWindTurbine(res.Result);
+                    }
+                }, TaskContinuationOptions.ExecuteSynchronously));
                   
             }, TaskContinuationOptions.OnlyOnRanToCompletion); 
         }
@@ -180,44 +190,27 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                 (values.Key,values.Value.Where((value, index) => !indexDelete.Exists(val => val == index)))).ToDictionary(key=>key.Key,value=>value.Item2.ToList()));
             var maxDate = finalDt.Values.First().Max(dateStr => ParserDateSpecificFormat(dateStr));
             var dictionary = new Dictionary<string,List<string>>();
-            return DateTimeRange(new DateTime(2018, 6, 22, 00, 10, 00), maxDate, 10, finalDt).Aggregate(dictionary,(actual,next)=> {
-                if (actual.TryGetValue(next.Item1.Item1, out List<string> value) && actual.TryGetValue(next.Item2.Item1, out List<string> value2))
-                {
-                    dictionary[next.Item1.Item1] = value.Append(next.Item1.Item2).ToList();
-                    dictionary[next.Item2.Item1] = value2.Append(next.Item2.Item2).ToList();
-                    return dictionary;
-                }
-                else
-                {
-                    var element = new List<string>(); 
-                    var e = actual.Append(new KeyValuePair<string, List<string>>(next.Item1.Item1, element.Append(next.Item1.Item2).ToList()))
-                    .Append(new KeyValuePair<string, List<string>>(next.Item2.Item1, element.Append(next.Item2.Item2).ToList())).ToDictionary(key => key.Key, value => value.Value);
-                    return e;
-                }
-            }).ToDictionary(key=>key.Key, value=>value.Value);
+            return DateTimeRange(new DateTime(2018, 6, 22, 00, 10, 00), maxDate, 10, finalDt).SelectMany(value=>value).GroupBy(val=>val.Item1)
+                .ToDictionary(key=>key.Key, value=>value.Select(val=>val.Item2).ToList());
               
         }
-        private static IEnumerable<((string, string), (string, string))> DateTimeRange(DateTime start, DateTime end,int delta, Dictionary<string,List<string>> oldDate)
+        private static IEnumerable<List<(string, string)>> DateTimeRange(DateTime start, DateTime end,int delta, Dictionary<string,List<string>> oldDate)
         {
             var current = start;
             while(current < end)
             {
-                var t = oldDate.First().Value.Count > 0;
-                var parse = ParserDateSpecificFormat(ValidationFormatData(oldDate.First().Value.First()));
-                var ews = (current - parse);
-                var ab = Math.Abs((current - ParserDateSpecificFormat(ValidationFormatData(oldDate.First().Value.First()))).TotalSeconds / 60);
-                var tt =  ab<= 5;
+                
                 if (oldDate.First().Value.Count > 0 && Math.Abs((current - ParserDateSpecificFormat(ValidationFormatData(oldDate.First().Value.First()))).TotalSeconds / 60) <= 5)
                 {
                     var result = oldDate.Select(keyValue=>(keyValue.Key,keyValue.Value.First())).ToList();
                     oldDate = oldDate.ToDictionary(key=>key.Key, value=>value.Value.Skip(1).ToList());
-                    yield return (result.First(), result.Skip(1).First());
+                    yield return  new List<(string, string)>() { result.First(), result.Skip(1).First() };
                 } 
                 else
                 {
                     var currentAux = current;
                     current = currentAux.AddMinutes(delta);
-                    yield return (("date", currentAux.ToString("yyyy/MM/dd HH:mm:ss")), ("value",(-1).ToString()));
+                    yield return new List<(string, string)>() { ("date", currentAux.ToString("yyyy/MM/dd HH:mm:ss")), ("value", (-1).ToString())};
                     
                 }
             }
@@ -244,7 +237,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                     return default;
                 }
             }).Where(x => x.Item1 is not null && x.nameTurbine is not null)
-            .Select(clearDictionaryByTurbine =>clearDictionaryByTurbine.Item1.ContinueWith(result=> SearchInTurbineAndSensor(clearDictionaryByTurbine.nameTurbine, dtWithName.Item2, nameSensors, result.Result)))
+            .Select(clearDictionaryByTurbine =>clearDictionaryByTurbine.Item1.ContinueWith(result=> SearchInTurbineAndSensor(clearDictionaryByTurbine.nameTurbine, dtWithName.Item2, nameSensors, result.Result, isEvent)))
             .Where(result => result != null).ToList();
              
              
