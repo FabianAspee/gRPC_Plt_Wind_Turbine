@@ -27,8 +27,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
         public Task<List<(int, string)>> GetInfoChart() => Task.Run(() =>database.GetNameChart());
 
         public Task GetInforTurbineAndSensor()=> Task.Run(() =>
-            { 
-                Console.WriteLine("start task");
+            {  
                 database.SelectAllSensorAndTurbine();
             });
         

@@ -76,23 +76,25 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
                 _logger.LogInformation(e.ToString());
             }
             _logger.LogInformation("Subscription finished.");
-        }
+        } 
         public override async Task GetNameTurbineAndSensor(WithoutMessage request, IServerStreamWriter<ResponseNameTurbineAndSensor> responseStream, ServerCallContext context)
         {
             using var obtainInfoTurbinesSubscriber = _factoryMethod.GetObtainInfoTurbinesSubscriber();
+            var task = new TaskCompletionSource();
             LoadSensorAndTurbine += async (sender, args) =>
-               await SendInfoTurbineAndSensor(responseStream, args as ILoadInfoTurbine);
+               await SendInfoTurbineAndSensor(responseStream, args as ILoadInfoTurbine, task);
             RegisterEvent(EventKey.INFO_TURBINE_SENSOR);
             try
             {
                 Console.WriteLine("init call");
                 await obtainInfoTurbinesSubscriber.GetInforTurbineAndSensor();
+                await task.Task;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
                 _logger.LogInformation(e.ToString());
-            }
+            } 
             _logger.LogInformation("Subscription finished.");
         }
         private async Task HandleActionsInfoFailureTurbine(IAsyncStreamReader<CodeAndPeriodRequest> request, IObtainInfoTurbinesSubscriber obtainInfoTurbinesSubscriber)
@@ -119,13 +121,19 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
                 }
             }
         }
-        private async Task SendInfoTurbineAndSensor(IServerStreamWriter<ResponseNameTurbineAndSensor> stream, ILoadInfoTurbine infoTurbine)
+        private async Task SendInfoTurbineAndSensor(IServerStreamWriter<ResponseNameTurbineAndSensor> stream, ILoadInfoTurbine infoTurbine, TaskCompletionSource task)
         {
             try
             {
-                var response = GetNameTurbineAndSensor(infoTurbine);
-                Console.WriteLine("send "+response);
-                await stream.WriteAsync(response);
+                if(infoTurbine is FinishMessage)
+                {
+                    task.SetResult();
+                }
+                else
+                { 
+                    var response = GetNameTurbineAndSensor(infoTurbine);
+                    await stream.WriteAsync(response);
+                }
             }
             catch (Exception e)
             {

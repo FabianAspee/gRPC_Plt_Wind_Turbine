@@ -13,4 +13,5 @@ namespace PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Implementation
     public record AllSensorInfo(List<SensorInfo> SensorInfos ) : ILoadInfoTurbine;
     public record TurbineInfo(int IdTurbine, string NameTurbine) : ILoadInfoTurbine;
     public record AllTurbineInfo(List<TurbineInfo> TurbineInfos) : ILoadInfoTurbine;
+    public record FinishMessage() : ILoadInfoTurbine;
 }

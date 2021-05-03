@@ -101,7 +101,7 @@ namespace PltWindTurbine.Database.Utils
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             SendEventLoadInfoTurbine(new AllSensorInfo(connectionTo.Sensor_Info.Select(SelectNameAndIdSensor).ToList()));
             SendEventLoadInfoTurbine(new AllTurbineInfo(connectionTo.Wind_Turbine_Info.Select(SelectNameAndIdTurbine).ToList()));
-
+            SendEventLoadInfoTurbine(new FinishMessage());
         }
         public List<Error_Sensor> SelectAllNameSensorError()
         {
