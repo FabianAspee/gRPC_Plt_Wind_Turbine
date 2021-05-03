@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 5001 
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0.102-ca-patch-buster-slim AS build 
 WORKDIR /src
 COPY ["PltWindTurbine/PltWindTurbine.csproj", "PltWindTurbine/"]
 RUN dotnet restore "PltWindTurbine/PltWindTurbine.csproj"
@@ -26,5 +26,5 @@ COPY ["PltWindTurbine/pltcertificate.pfx", "/https/pltcertificate.pfx"]
 WORKDIR /app
 COPY --from=publish /app/publish . 
 COPY ["PltWindTurbine/App.config", "/app/config/App.config"] 
-COPY ["PltWindTurbine/Resources/*", "/app/Resources/*"] 
+COPY ["PltWindTurbine/Resources/", "/app/Resources/"] 
 ENTRYPOINT ["dotnet", "PltWindTurbine.dll"]

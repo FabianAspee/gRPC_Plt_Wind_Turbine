@@ -43,7 +43,7 @@ namespace PltWindTurbine.Database.DatabaseConnection
             lock (lockObject)
             {
                 if (!File.Exists(ReadFiles.CombinePath(PathDb)))
-                {
+                { 
                     File.Create(ReadFiles.CombinePath(PathDb)).Close();
                 }
             } 

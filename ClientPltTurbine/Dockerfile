@@ -4,7 +4,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
 WORKDIR /app
 EXPOSE 5001 
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0.102-ca-patch-buster-slim AS build 
 WORKDIR /src
 COPY ["ClientPltTurbine/ClientPltTurbine.csproj", "ClientPltTurbine/"]
 RUN dotnet restore "ClientPltTurbine/ClientPltTurbine.csproj"

@@ -52,10 +52,17 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
 
         public Task GetAllNameTurbineAndSensor()
         {
-            return Task.Run(() =>
-            { 
-                _asyncStreamGetInfoTurbineSensor = _clientChart.GetNameTurbineAndSensor(new WithoutMessage());
-                _ = HandleResponsesInfoTurbineSensorAsync();
+            return Task.Run(async () =>
+            {  using (var call = _clientChart.GetNameTurbineAndSensor(new WithoutMessage()))
+                {
+                    while (await call.ResponseStream.MoveNext())
+                    {
+                        _ = HandleResponsesInfoTurbineSensorAsync();
+                        Feature feature = call.ResponseStream.Current;
+                        Console.WriteLine("Received " + feature.ToString());
+                    }
+                } 
+                
             });
         }
 
