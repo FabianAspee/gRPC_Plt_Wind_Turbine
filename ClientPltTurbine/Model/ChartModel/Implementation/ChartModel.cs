@@ -57,9 +57,8 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
                 {
                     while (await call.ResponseStream.MoveNext())
                     {
-                        _ = HandleResponsesInfoTurbineSensorAsync();
-                        Feature feature = call.ResponseStream.Current;
-                        Console.WriteLine("Received " + feature.ToString());
+                        ResponseNameTurbineAndSensor response = call.ResponseStream.Current;
+                        HandleResponsesInfoTurbineSensorAsync(response);
                     }
                 } 
                 
@@ -193,10 +192,8 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
                
             }
         }
-        private async Task HandleResponsesInfoTurbineSensorAsync()
-        {
-            await foreach (var turbineSensor in _asyncStreamGetInfoTurbineSensor.ResponseStream.ReadAllAsync())
-            {
+        private void HandleResponsesInfoTurbineSensorAsync(ResponseNameTurbineAndSensor turbineSensor)
+        { 
                 switch (turbineSensor.ActionCase)
                 {
                     case ResponseNameTurbineAndSensor.ActionOneofCase.None:
@@ -212,8 +209,7 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
                         SendEventErrorLoadInfoTurbine($"Unknown Action '{turbineSensor.ActionCase}'.");
                         break;
                 }
-
-            }
+             
         }
         async void IDisposable.Dispose()
         {
