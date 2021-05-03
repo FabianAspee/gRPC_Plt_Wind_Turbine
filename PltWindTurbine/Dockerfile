@@ -18,7 +18,7 @@ RUN dotnet publish "PltWindTurbine.csproj" -c Release -o /app/publish
 FROM base AS final 
 ENV ASPNETCORE_URLS="https://+;http://+"
 ENV ASPNETCORE_HTTPS_PORT=443 
-ENV ASPNETCORE_Kestrel__Certificates__Default__Password="8620rib53" 
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password="" 
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/pltcertificate.pfx 
 WORKDIR /
 COPY ["PltWindTurbine/pltcertificate.pfx", "/https/pltcertificate.pfx"]
