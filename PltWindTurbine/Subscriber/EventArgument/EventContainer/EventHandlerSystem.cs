@@ -33,9 +33,9 @@ namespace PltWindTurbine.Subscriber.EventArgument.EventContainer
             await container.SelectEvent<IBaseEvent>(EventKey.LOAD_FILE_KEY).ContinueWith(evento => evento.Result.Invoke(this, new StatusFile(name, description, status)));
         
 
-        public async void SendEventLoadInfoTurbine(ILoadInfoTurbine loadInfo)
+        public Task SendEventLoadInfoTurbine(ILoadInfoTurbine loadInfo)
         {
-            await container.SelectEvent<IBaseEvent>(EventKey.INFO_TURBINE_SENSOR).ContinueWith(evento => evento.Result.Invoke(this, loadInfo));
+            return Task.Run(async()=>await container.SelectEvent<IBaseEvent>(EventKey.INFO_TURBINE_SENSOR).ContinueWith(evento => evento.Result.Invoke(this, loadInfo)));
         } 
         public async void SendEventFinishLoadInfoTurbine(string name, string description)
         {

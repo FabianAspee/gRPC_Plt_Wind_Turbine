@@ -96,12 +96,12 @@ namespace PltWindTurbine.Database.Utils
  
         private readonly Func<Sensor_Info, SensorInfo> SelectNameAndIdSensor = sensor => new SensorInfo(sensor.Id, sensor.Sensor_Name);
         private readonly Func<Wind_Turbine_Info, TurbineInfo> SelectNameAndIdTurbine = turbine => new TurbineInfo(turbine.Id, turbine.Turbine_Name);
-        public void SelectAllSensorAndTurbine()
+        public async void SelectAllSensorAndTurbine()
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
-            SendEventLoadInfoTurbine(new AllSensorInfo(connectionTo.Sensor_Info.Select(SelectNameAndIdSensor).ToList()));
-            SendEventLoadInfoTurbine(new AllTurbineInfo(connectionTo.Wind_Turbine_Info.Select(SelectNameAndIdTurbine).ToList()));
-            SendEventLoadInfoTurbine(new FinishMessage());
+            await SendEventLoadInfoTurbine(new AllSensorInfo(connectionTo.Sensor_Info.Select(SelectNameAndIdSensor).ToList()));
+            await SendEventLoadInfoTurbine(new AllTurbineInfo(connectionTo.Wind_Turbine_Info.Select(SelectNameAndIdTurbine).ToList()));
+            await SendEventLoadInfoTurbine(new FinishMessage());
         }
         public List<Error_Sensor> SelectAllNameSensorError()
         {
