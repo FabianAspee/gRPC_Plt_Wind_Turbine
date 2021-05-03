@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ExcelDataReader.Exceptions;
 using Microsoft.AspNetCore.Components.Forms;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ClientPltTurbine.Model.LoadFile.Implementation
 {
@@ -58,6 +59,7 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
                 }); 
             } 
         }
+        
 
         public Task ProcessFileBasic(DataTable file, string name, string type, string sep, int id)=>
             Task.Run(() =>

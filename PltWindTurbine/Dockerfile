@@ -26,4 +26,5 @@ COPY ["PltWindTurbine/pltcertificate.pfx", "/https/pltcertificate.pfx"]
 WORKDIR /app
 COPY --from=publish /app/publish . 
 COPY ["PltWindTurbine/App.config", "/app/config/App.config"] 
+COPY ["PltWindTurbine/Resources/*", "/app/Resources/*"] 
 ENTRYPOINT ["dotnet", "PltWindTurbine.dll"]
