@@ -99,8 +99,9 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                     data.Columns.AddRange(column.Select(x => new DataColumn(x)).ToArray());
                     CreateColumn = false;
                 }
-                var row = JsonConvert.DeserializeObject<List<string>>(json["Row"].ToString());
-                data = AddNewRow(data, row);
+                var row = JsonConvert.DeserializeObject<List<string>>(json["Row"].ToString()); 
+                if(row.First() is not null)
+                    data = AddNewRow(data, row);
 
             });
             return data;
@@ -362,21 +363,45 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                 });
             }
         }
+        private static (List<DataColumn>,string) SearchColumn(DataTable dataTurbine)
+        {
+            static (List<DataColumn>, string) SearchColumn(DataTable dataTurbine)
+            {
+                var all_column = dataTurbine.AsEnumerable().ToList(); 
+                var column_date = all_column.First().ItemArray.FirstOrDefault(x => ("Date" == x.ToString() ? x.ToString() :
+                    ("PCTimeStamp" == x.ToString() ? x.ToString() : ("Data" == x.ToString() ? x.ToString() : string.Empty))) != string.Empty)?.ToString();
+                var newDt = new DataTable();
+                foreach (DataRow row in all_column.Skip(1))
+                {
+                    newDt.ImportRow(row);
+                } 
+                return column_date is null ? SearchColumn(newDt) : (all_column.First().ItemArray.Select(col=>new DataColumn(col.ToString())).ToList(), column_date);
+            }
+            var all_column = dataTurbine.Columns.OfType<DataColumn>().ToList();
+            var column_date = all_column.FirstOrDefault(x => ("Date" == x.ColumnName ? x.ColumnName :
+                ("PCTimeStamp" == x.ColumnName ? x.ColumnName : ("Data" == x.ColumnName ? x.ColumnName : string.Empty))) != string.Empty)?.ColumnName;
+            return column_date is null?SearchColumn(dataTurbine):(all_column,column_date);
+        }
         private static Task<(Dictionary<string,List<string>>, string)> NormalizationData(DataTable dataTurbine, string nameFile)
         { 
            return Task.Run(() =>
             {
-                var all_column = dataTurbine.Columns.OfType<DataColumn>().ToList();
-                var column_date = all_column.First(x => ("Date" == x.ColumnName ? x.ColumnName :
-                    ("PCTimeStamp" == x.ColumnName ? x.ColumnName : ("Data" == x.ColumnName ? x.ColumnName : string.Empty))) != string.Empty).ColumnName;
-                var rowCollection = dataTurbine.AsEnumerable().ToList();
-                var info_all_columns = all_column.Select(x =>
+                (List<DataColumn> all_column, string column_date) = SearchColumn(dataTurbine); 
+                if(column_date is not null)
                 {
-                    return (x.ColumnName, rowCollection.Select(xx => xx.Field<string>(x.ColumnName)).ToList());
-                }).ToDictionary(x => x.ColumnName, x => x.Item2);
+                    var rowCollection = dataTurbine.AsEnumerable().ToList();
+                    var info_all_columns = all_column.Select(x =>
+                    {
+                        return (x.ColumnName, rowCollection.Select(xx => xx.Field<string>(x.ColumnName)).ToList());
+                    }).ToDictionary(x => x.ColumnName, x => x.Item2);
 
 
-                return (rowCollection, all_column, info_all_columns, column_date);
+                    return (rowCollection, all_column, info_all_columns, column_date);
+                }
+                else
+                { 
+                    return default;
+                }
             }).ContinueWith(antecedent =>
                   {
 
@@ -404,7 +429,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
             
         }
 
-        private static List<string> ChangeFormatValue(List<string> values)=> values.Select(value => value != "-" && value != "NV"? value.Replace(",","."):null).ToList();
+        private static List<string> ChangeFormatValue(List<string> values)=> values.Select(value => value != "-" && value != "NV" && value!=null ? value.Replace(",","."):null).ToList();
 
 
         private static List<string> ChangeFormatDate(List<string> dates) => dates.Select(date => ValidationFormatData(date.Replace(".", ":"))).ToList();

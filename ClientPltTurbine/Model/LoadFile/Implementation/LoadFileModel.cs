@@ -245,18 +245,28 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
         private async static Task<DataTable> GetDataTableFromFile(KeyValuePair<string, IBrowserFile> infoFile, string sep)
         {
             List<string> rows = await ReadStreamReader(infoFile.Value,0);
+            var semiColonSep = rows.First().Split(sep);
+            sep = rows.First().Equals(semiColonSep.First())?";":sep; 
             DataTable data = new();
             if (rows.Count > 1)
             {
-                rows[0].Split(sep).ToList().ForEach(columnName => data.Columns.Add(columnName));
-                rows.Skip(1)?.ToList().ForEach(row => {
-                    string[] rowValues = row.Split(sep);
-                    DataRow dr = data.NewRow();
-                    dr.ItemArray = rowValues;
-                    data.Rows.Add(dr);
+                (string[] column, int skip) = SelectColumn(rows, sep);
+                column.ToList().ForEach(columnName => data.Columns.Add(columnName));
+                rows.Skip(skip)?.ToList().ForEach(row => { 
+                        string[] rowValues = row.Split(sep).Where(value=>!value.Equals("")).ToArray();
+                        DataRow dr = data.NewRow();
+                        dr.ItemArray = rowValues;
+                        data.Rows.Add(dr); 
                 });
             }
             return data;
+        }
+
+        private static (string[], int) SelectColumn(List<string> rows, string sep)
+        {
+            var firstRow = rows[0].Split(sep);
+            var secondRow =  rows[1].Split(sep);
+            return firstRow.Length < secondRow.Length ? (secondRow,2) : (firstRow,1);
         }
 
         private static FileUploadRequest ConstructInfoTurbine(int dimension, int count, string name, string type, string sep, JObject rowAndColumn) => new()
