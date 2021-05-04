@@ -66,3 +66,10 @@ ALTER TABLE  error_code  ADD FOREIGN KEY ( id_error_sensor ) REFERENCES  error_s
 ALTER TABLE  value_sensor_turbine  ADD FOREIGN KEY ( id_turbine ) REFERENCES  wind_turbine_info  ( id );
 
 ALTER TABLE  value_sensor_turbine  ADD FOREIGN KEY ( id_sensor ) REFERENCES  sensor_info  ( id );
+
+
+INSERT INTO chart_system(chart_name) VALUES("Line Chart");
+INSERT INTO chart_system(chart_name) VALUES("Line Chart with Warning");
+INSERT INTO chart_system(chart_name) VALUES("Scatter Chart");
+INSERT INTO chart_system(chart_name) VALUES("Scatter Chart with Warning");
+INSERT INTO chart_system(chart_name) VALUES("Radar Chart");

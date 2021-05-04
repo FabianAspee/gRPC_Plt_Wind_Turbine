@@ -21,6 +21,12 @@ namespace PltWindTurbine.Database.Sqlite
                 base.InsertInfoWindTurbine(infoTurbine);
             }
         }
-        
+        public override void InsertInfoEventWindTurbine(InfoByTurbineToTable infoTurbine)
+        {
+            lock (this)
+            {
+                base.InsertInfoEventWindTurbine(infoTurbine);
+            }
+        }
     }
 }

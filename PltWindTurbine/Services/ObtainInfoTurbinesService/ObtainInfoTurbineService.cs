@@ -87,8 +87,7 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
             try
             {
                 await obtainInfoTurbinesSubscriber.GetInforTurbineAndSensor();
-                await task.Task;
-                Console.WriteLine("init call2");
+                await task.Task; 
             }
             catch (Exception e)
             {
@@ -125,14 +124,12 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
             try
             {
                 if(infoTurbine is FinishMessage)
-                {
-                    Console.WriteLine("init call4");
+                { 
                     task.SetResult();
                 }
                 else
                 { 
-                    var response = GetNameTurbineAndSensor(infoTurbine);
-                    Console.WriteLine("init call3");
+                    var response = GetNameTurbineAndSensor(infoTurbine); 
                     await stream.WriteAsync(response);
 
                 }

@@ -24,6 +24,7 @@ namespace PltWindTurbine.Database.DatabaseContract
         public DataTable ReadInfoByTurbine(string path, string nameFile);
 
         public void InsertInfoWindTurbine(InfoByTurbineToTable infoTurbine);
+        public void InsertInfoEventWindTurbine(InfoByTurbineToTable infoTurbine);
         public List<string> SelectColumnFrom(string nameTable);
         public List<Wind_Turbine_Info> SelectAllTurbineInfo();
         public List<Sensor_Info> SelectAllNameSensor();
