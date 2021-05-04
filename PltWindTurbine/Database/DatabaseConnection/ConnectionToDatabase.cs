@@ -14,7 +14,6 @@ namespace PltWindTurbine.Database.DatabaseConnection
         private static readonly DbContextOptionsBuilder<ConnectionToDatabase> Options = new(); 
         private static readonly string PathDb = ConfigurationManager.AppSettings["configpath"];
         private static readonly string PathConfigMysql = ConfigurationManager.AppSettings["mysqlinfo"];  
-        private static readonly object lockObject = new();
         private ConnectionToDatabase() { }
         private ConnectionToDatabase(DbContextOptions<ConnectionToDatabase> options) : base(options) { }
        
@@ -40,13 +39,10 @@ namespace PltWindTurbine.Database.DatabaseConnection
         }
         private static void CreateDbSqlite()
         {
-            lock (lockObject)
-            {
-                if (!File.Exists(ReadFiles.CombinePath(PathDb)))
-                { 
-                    File.Create(ReadFiles.CombinePath(PathDb)).Close();
-                }
-            } 
+            if (!File.Exists(ReadFiles.CombinePath(PathDb)))
+            {  
+                File.Create(ReadFiles.CombinePath(PathDb)).Close();
+            }
         }
         public DbSet<Error_Code> Error_Code { get; set; }
         public DbSet<Error_Sensor> Error_Sensor { get; set; }
