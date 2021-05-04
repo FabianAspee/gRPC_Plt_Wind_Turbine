@@ -183,7 +183,7 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
             
         }
         private static async IAsyncEnumerable<(List<string>, bool)> ReadExcelFileWithReader(string name ,IBrowserFile file)
-        {
+        {  
             using Stream stream = file.OpenReadStream(file.Size);
             var path = $"Resources\\TempFiles\\{name}";
             using FileStream fileStream = System.IO.File.Create(path);
