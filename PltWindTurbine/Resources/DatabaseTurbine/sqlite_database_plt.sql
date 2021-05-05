@@ -63,3 +63,4 @@ INSERT INTO chart_system(chart_name) VALUES("Line Chart with Warning");
 INSERT INTO chart_system(chart_name) VALUES("Scatter Chart");
 INSERT INTO chart_system(chart_name) VALUES("Scatter Chart with Warning");
 INSERT INTO chart_system(chart_name) VALUES("Radar Chart");
+INSERT INTO chart_system(chart_name) VALUES("Line Chart Draw Warning");
