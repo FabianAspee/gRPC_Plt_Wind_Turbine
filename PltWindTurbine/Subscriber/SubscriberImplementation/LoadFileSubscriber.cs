@@ -185,37 +185,11 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
         private static Dictionary<string, List<string>> ReconstructSeries(Dictionary<string, List<string>> finalFrame)
         {
             var indexDelete = finalFrame.Last().Value.Zip(Enumerable.Range(0, finalFrame.Last().Value.Count))
-                .Where(val => val.First == "NV" || val.First == "-" || val.First == null || val.First.Equals(string.Empty)).Select(val=>val.Second).ToList();
+                .Where(val => val.First == "NV" || val.First == "-" || val.First == null || val.First.Equals(string.Empty)).Select(val => val.Second).ToList();
 
-            var finalDt= ClearFinalValue(finalFrame.Select(values => 
-                (values.Key,values.Value.Where((value, index) => !indexDelete.Exists(val => val == index)))).ToDictionary(key=>key.Key,value=>value.Item2.ToList()));
-            var maxDate = finalDt.Values.First().Max(dateStr => ParserDateSpecificFormat(dateStr));
-            var dictionary = new Dictionary<string,List<string>>();
-            return DateTimeRange(new DateTime(2018, 6, 22, 00, 10, 00), maxDate, 10, finalDt).SelectMany(value=>value).GroupBy(val=>val.Item1)
-                .ToDictionary(key=>key.Key, value=>value.Select(val=>val.Item2).ToList());
-              
-        }
-        private static IEnumerable<List<(string, string)>> DateTimeRange(DateTime start, DateTime end,int delta, Dictionary<string,List<string>> oldDate)
-        {
-            var current = start;
-            while(current < end)
-            {
-                
-                if (oldDate.First().Value.Count > 0 && Math.Abs((current - ParserDateSpecificFormat(ValidationFormatData(oldDate.First().Value.First()))).TotalSeconds / 60) <= 5)
-                {
-                    var result = oldDate.Select(keyValue=>(keyValue.Key,keyValue.Value.First())).ToList();
-                    oldDate = oldDate.ToDictionary(key=>key.Key, value=>value.Value.Skip(1).ToList());
-                    yield return  new List<(string, string)>() { result.First(), result.Skip(1).First() };
-                } 
-                else
-                {
-                    var currentAux = current;
-                    current = currentAux.AddMinutes(delta);
-                    yield return new List<(string, string)>() { ("date", currentAux.ToString("yyyy/MM/dd HH:mm:ss")), ("value", (-1).ToString())};
-                    
-                }
-            }
-               
+            var finalDt = ClearFinalValue(finalFrame.Select(values =>
+                 (values.Key, values.Value.Where((value, index) => !indexDelete.Exists(val => val == index)))).ToDictionary(key => key.Key, value => value.Item2.ToList())); 
+            return finalDt;
         }
         private static List<Task<InfoByTurbineToTable>> CreateDataFrameTurbine((Dictionary<string, List<string>>, string) dtWithName, List<Wind_Turbine_Info> nameTurbines, List<NormalSensor> nameSensors, bool isEvent)
         {

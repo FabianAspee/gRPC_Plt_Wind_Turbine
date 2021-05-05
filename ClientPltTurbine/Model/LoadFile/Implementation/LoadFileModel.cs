@@ -252,11 +252,14 @@ namespace ClientPltTurbine.Model.LoadFile.Implementation
             {
                 (string[] column, int skip) = SelectColumn(rows, sep);
                 column.ToList().ForEach(columnName => data.Columns.Add(columnName));
-                rows.Skip(skip)?.ToList().ForEach(row => { 
-                        string[] rowValues = row.Split(sep).Where(value=>!value.Equals("")).ToArray();
+                rows.Skip(skip)?.ToList().ForEach(row => {
+                    string[] rowValues = row.Split(sep);
+                    if (!rowValues.All(val=>val.Equals("")))
+                    { 
                         DataRow dr = data.NewRow();
                         dr.ItemArray = rowValues;
-                        data.Rows.Add(dr); 
+                        data.Rows.Add(dr);
+                    } 
                 });
             }
             return data;

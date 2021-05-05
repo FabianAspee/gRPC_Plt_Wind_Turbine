@@ -155,9 +155,9 @@ namespace PltWindTurbine.Database.Utils
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             var values = connectionTo.Value_Sensor_Error.Where(error => error.Id_Turbine == info.IdTurbine && error.Value ==info.Code).OrderBy(value => value.Id).ToList(); 
             var last = values.LastOrDefault();
+            yield return new StatusEventInfoTurbine(info.NameTurbine, Status.InProgress, $"Init Search Temporary Data with {values.Count} precence of error {info.Code}");
             foreach (var infoError in values)
             {   
-                yield return new StatusEventInfoTurbine(info.NameTurbine,Status.InProgress,"Init Search Temporary Data");
                 var resultSerie = await connectionTo.Value_Sensor_Turbine.Where(infoSensor => infoSensor.Id_Turbine == info.IdTurbine && infoSensor.Id_Sensor == info.IdSensor &&
                    string.Compare(infoSensor.Date, infoError.Date) < 0 && string.Compare(infoSensor.Date, DateTime.Parse(infoError.Date).AddMonths(info.Months).ToString("yyyy/MM/dd HH:mm:ss")) > 0)
                     .Select(values=>new SerieBySensorTurbineError(values.Id,values.Date,values.Value)).ToListAsync();
@@ -166,6 +166,8 @@ namespace PltWindTurbine.Database.Utils
                    var warning = await connectionTo.Value_Sensor_Error.Where(error =>error.Value.HasValue && error.Id_Turbine == info.IdTurbine &&
                    string.Compare(error.Date, infoError.Date) < 0 && string.Compare(error.Date, DateTime.Parse(infoError.Date).AddMonths(info.Months).ToString("yyyy/MM/dd HH:mm:ss")) > 0 
                    ).Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync();
+                    var maxDate = warning.Max(dateStr => ParserDateSpecificFormat(dateStr.Date));
+                    warning= DateTimeRange(new DateTime(2018, 6, 22, 00, 10, 00), maxDate, 10, warning).ToList();
                     var serieByPeriod = new ResponseSerieByPeriod(info.NameTurbine, info.NameSensor, JsonSerializer.Serialize(resultSerie), infoError.Id == last.Id); 
                     yield return new ResponseSerieByPeriodWithWarning(serieByPeriod, JsonSerializer.Serialize(warning));
                 }
@@ -175,7 +177,35 @@ namespace PltWindTurbine.Database.Utils
                 }
             } 
             
-        } 
+        }
+        //return DateTimeRange(new DateTime(2018, 6, 22, 00, 10, 00), maxDate, 10, finalDt).SelectMany(value=>value).GroupBy(val=>val.Item1)
+        //  .ToDictionary(key=>key.Key, value=>value.Select(val=>val.Item2).ToList());
+
+        private static string ValidationFormatData(string date) => DateTime.Parse(date).ToString("yyyy/MM/dd HH:mm:ss");
+        private static DateTime ParserDateSpecificFormat(string date) => DateTime.Parse(DateTime.Parse(date).ToString("yyyy/MM/dd HH:mm:ss"));
+        private static IEnumerable<SerieBySensorTurbineWarning> DateTimeRange(DateTime start, DateTime end, int delta, List<SerieBySensorTurbineWarning> serieBySensors)
+        {
+            var current = start;
+            var id = 0;
+            while (current < end)
+            {
+
+                if (serieBySensors.Count > 0 && Math.Abs((current - ParserDateSpecificFormat(ValidationFormatData(serieBySensors.First().Date))).TotalSeconds / 60) <= 5)
+                {
+                    var result = serieBySensors.First();
+                    serieBySensors = serieBySensors.Skip(1).ToList();
+                    yield return result;
+                }
+                else
+                {
+                    var currentAux = current;
+                    current = currentAux.AddMinutes(delta);
+                    yield return new SerieBySensorTurbineWarning(id++,currentAux.ToString("yyyy/MM/dd HH:mm:ss"), double.Parse("0"));
+
+                }
+            }
+
+        }
         public async Task CallSelectSeries(OnlySerieByPeriodAndCode info, bool isWarning = false)
         {
             await foreach (var values in GenerateSequence(info, isWarning))
