@@ -165,8 +165,10 @@ namespace PltWindTurbine.Database.Utils
                 {
                    var warning = await connectionTo.Value_Sensor_Error.Where(error =>error.Value.HasValue && error.Id_Turbine == info.IdTurbine &&
                    string.Compare(error.Date, infoError.Date) < 0 && string.Compare(error.Date, DateTime.Parse(infoError.Date).AddMonths(info.Months).ToString("yyyy/MM/dd HH:mm:ss")) > 0 
-                   ).Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync(); 
-                    warning= DateTimeRange(DateTime.Parse(infoError.Date).AddMonths(info.Months), ParserDateSpecificFormat(infoError.Date), 10, warning).ToList();
+                   ).Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync();
+                    warning = warning.OrderBy(val => val.Date).ToList();
+                    warning = DateTimeRange(DateTime.Parse(infoError.Date).AddMonths(info.Months), ParserDateSpecificFormat(infoError.Date), 10, warning).ToList();
+                   
                     var serieByPeriod = new ResponseSerieByPeriod(info.NameTurbine, info.NameSensor, JsonSerializer.Serialize(resultSerie), infoError.Id == last.Id); 
                     yield return new ResponseSerieByPeriodWithWarning(serieByPeriod, JsonSerializer.Serialize(warning), JsonSerializer.Serialize(warnings));
                 }
@@ -181,7 +183,8 @@ namespace PltWindTurbine.Database.Utils
         private static DateTime ParserDateSpecificFormat(string date) => DateTime.Parse(DateTime.Parse(date).ToString("yyyy/MM/dd HH:mm:ss"));
         private static IEnumerable<SerieBySensorTurbineWarning> DateTimeRange(DateTime start, DateTime end, int delta, List<SerieBySensorTurbineWarning> serieBySensors)
         {
-            var current = start;
+            var current = start.Minute%10==0?start: start.AddMinutes(-(start.Minute % 10));
+            current =  current.AddSeconds(-(current.Second));
             var id = 0;
             while (current < end)
             {
@@ -201,7 +204,8 @@ namespace PltWindTurbine.Database.Utils
                 }
             }
 
-        }
+        } 
+
         public async Task CallSelectSeries(OnlySerieByPeriodAndCode info, bool isWarning = false)
         {
             await foreach (var values in GenerateSequence(info, isWarning))

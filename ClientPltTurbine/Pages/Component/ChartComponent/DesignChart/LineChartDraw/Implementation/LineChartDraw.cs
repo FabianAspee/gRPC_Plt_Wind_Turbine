@@ -31,15 +31,18 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
         public ConfigChart CreateLineChartWarning(ResponseSerieByPeriodWarning serieByPeriodWarning)
         {
             var variant = _variants($"Serie Turbine {serieByPeriodWarning.Record.RecordLinearChart.NameTurbine} Sensor {serieByPeriodWarning.Record.RecordLinearChart.NameSensor} with warnings");
-
-            var data = serieByPeriodWarning.Record.RecordLinearChart.CustomInfo.Select(value => value.Value.HasValue ? value.Value.ToString() : null).ToArray();
+             
+            var data = serieByPeriodWarning.Record.RecordLinearChart.CustomInfo.Select(value => value.Value.HasValue ? value.Value.ToString() : null).ToList();
             var warning = serieByPeriodWarning.Record.InfoTurbineWarnings.Select(value => value.Value.HasValue ? value.Value.ToString() : null).ToArray();
+            var result = serieByPeriodWarning.Record.InfoTurbineWarnings.Zip(Enumerable.Range(0, serieByPeriodWarning.Record.InfoTurbineWarnings.Count)).ToList()
+                .FindAll(val => !serieByPeriodWarning.Record.RecordLinearChart.CustomInfo.Exists(date => date.Date.Equals(val.First.Date))).Select(res=>res.Second).ToList();
+            result.ForEach(index => data.Insert(index, null)); 
             var colors = GetWarningColor(warning);
             return new LineChart()
             {
                 Type = Shared.ChartComponent.ChartType.Line.ToString().ToLower(),
                 Options = new OptionChart(true, false, new Interaction(false), 0),
-                Data = new DataChart(SelectRecords(serieByPeriodWarning).ToList(), new[]{new DataSetChart(data, variant.Title, "rgb(192,75,75)" ),
+                Data = new DataChart(SelectRecords(serieByPeriodWarning).ToList(), new[]{new DataSetChart(data.ToArray(), variant.Title, "rgb(192,75,75)" ),
                     new DataSetChart(warning, variant.Title, colors, BackgroundColor:colors)}.ToArray())
             }; 
         }
@@ -50,8 +53,8 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
 
             var firstFilter = serieByPeriodWarning.Record.InfoTurbineWarnings.Where(value =>value.Value.HasValue && value.Value != -1 && value.Value != 0);
             var warning = firstFilter.GroupBy(info => info.Value).Select(info => info.Select(val=>(val.Date,val.Value)).ToList()).ToList();
-            var initSerie = serieByPeriodWarning.Record.RecordLinearChart.CustomInfo.First().Date;
-            var finalSerie = serieByPeriodWarning.Record.RecordLinearChart.CustomInfo.Last().Date;
+            var initSerie = serieByPeriodWarning.Record.RecordLinearChart.CustomInfo.Min(val=>val.Date).Date;
+            var finalSerie = serieByPeriodWarning.Record.RecordLinearChart.CustomInfo.Max(val => val.Date).Date;
             (int week, List<(DateTime, DateTime)> initFinishWeek) = CalculusWeekAndInitFinishWeek(finalSerie,initSerie);
             var weekList = Enumerable.Range(0, week).Select(val => val.ToString()).ToList();
             var colors = GetWarningColor(warning.Select(warning => warning.First().Value.ToString()).ToArray()); 

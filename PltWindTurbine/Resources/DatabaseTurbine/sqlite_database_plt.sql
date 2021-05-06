@@ -57,7 +57,12 @@ CREATE TABLE IF NOT EXISTS chart_system(
     id INTEGER PRIMARY KEY,
     chart_name TEXT
     );
-    
+   
+CREATE TABLE IF NOT EXISTS model_system(
+    id INTEGER PRIMARY KEY,
+    model_name TEXT
+    );
+
 INSERT INTO chart_system(chart_name) VALUES("Line Chart");
 INSERT INTO chart_system(chart_name) VALUES("Line Chart with Warning");
 INSERT INTO chart_system(chart_name) VALUES("Scatter Chart");

@@ -33,7 +33,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart
         protected static IEnumerable<string> SelectRecords(IEventComponent period) => period switch
         {
             ResponseSerieByPeriod value => value.Record.CustomInfo.Select(x => x.Date.ToString("yyyy/MM/dd HH:mm:ss")),
-            ResponseSerieByPeriodWarning value => value.Record.RecordLinearChart.CustomInfo.Select(x => x.Date.ToString("yyyy/MM/dd HH:mm:ss")),
+            ResponseSerieByPeriodWarning value => value.Record.InfoTurbineWarnings.Select(x => x.Date.ToString("yyyy/MM/dd HH:mm:ss")),
             _ => throw new NotImplementedException(),
         };
     }
