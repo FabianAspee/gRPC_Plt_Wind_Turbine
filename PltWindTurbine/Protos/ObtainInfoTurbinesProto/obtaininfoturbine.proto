@@ -131,6 +131,7 @@ message OnlySerieByPeriodAndCodeResponse{
 message OnlySerieByPeriodAndCodeResponseWithWarning{
 	OnlySerieByPeriodAndCodeResponse msg1=1;
 	bytes warning = 2;
+	bytes originalWarning=3;
 }
 
 message SeriePeriodByCodeWithStandarDeviationResponse{

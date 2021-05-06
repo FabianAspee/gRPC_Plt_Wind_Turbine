@@ -110,7 +110,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         private Task CallTypeChart(InfoChartRecord info, int idChart) => idChart switch
         {
             1 or 3 => Controller.ChartAllTurbines(info),
-            2 or 4 or 5=> Controller.ChartAllTurbinesWarning(info),
+            2 or 4 or 5 or 6 or 7=> Controller.ChartAllTurbinesWarning(info),
             _ => throw new NotImplementedException()
         };
         public async Task ChartInfoTurbine(InfoChartRecord info, int type)

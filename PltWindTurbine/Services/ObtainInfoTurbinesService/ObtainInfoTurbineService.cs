@@ -187,7 +187,12 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
             {
                 Msg2 = new ResponseCodePeriod()
                 {
-                    Msg3 = new OnlySerieByPeriodAndCodeResponseWithWarning() { Msg1 = GetByPeriodAndCodeResponse(responseSerieByPeriodWithWarning.SerieByPeriod), Warning = GetBytes(responseSerieByPeriodWithWarning.Warning)}
+                    Msg3 = new OnlySerieByPeriodAndCodeResponseWithWarning() 
+                    { 
+                        Msg1 = GetByPeriodAndCodeResponse(responseSerieByPeriodWithWarning.SerieByPeriod),
+                        Warning = GetBytes(responseSerieByPeriodWithWarning.Warning),
+                        OriginalWarning= GetBytes(responseSerieByPeriodWithWarning.OriginalWarning)
+                    }
                 }
             },
             _ => throw new NotImplementedException()

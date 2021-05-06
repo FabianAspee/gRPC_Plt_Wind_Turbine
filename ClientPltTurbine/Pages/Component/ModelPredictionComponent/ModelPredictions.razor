@@ -30,8 +30,8 @@
         {
             Type = Shared.ChartComponent.ChartType.Line.ToString().ToLower(),
             Options = new OptionChart(true, false, new Interaction(false), 0),
-            Data = new DataChart(new[] { "J", "F", "A", "M", "J", "J", "A" }.ToList(), new[]{new DataSetChart(t, "data1",  new[]{ "red" },"rgb(192,75,75)" ),
-                new DataSetChart(t2, "data2",  new[]{ "red" },"rgb(192,75,75)")}.ToArray())
+            Data = new DataChart(new[] { "J", "F", "A", "M", "J", "J", "A" }.ToList(), new[]{new DataSetChart(t, "data1",  new[]{ "red" }, BackgroundColor:"rgb(192,75,75)" ),
+                new DataSetChart(t2, "data2",  new[]{ "red" }, BackgroundColor:"rgb(192,75,75)")}.ToArray())
         };
         return e;
 

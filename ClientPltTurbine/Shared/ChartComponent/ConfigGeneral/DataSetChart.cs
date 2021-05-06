@@ -12,5 +12,5 @@ namespace ClientPltTurbine.Shared.ChartComponent.ConfigGeneral
         public string Label { get; init; }
         public object BackgroundColor { get; init; }
     }
-    public record DataSetChart(object[] Data, string Label, object BorderColor, object BackgroundColor = null) : IDataSetChart;
+    public record DataSetChart(object[] Data, string Label, object BorderColor,bool Fill=false, object BackgroundColor = null) : IDataSetChart;
 }

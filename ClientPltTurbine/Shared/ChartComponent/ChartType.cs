@@ -14,5 +14,6 @@ namespace ClientPltTurbine.Shared.ChartComponent
         Special,
         Radar
 
+
     }
 }

@@ -148,9 +148,8 @@ namespace PltWindTurbine.Database.Utils
         public DataTable SelectPivotValueSensorByTurbine()
         {
             throw new NotImplementedException();
-        }
-
-        private static async IAsyncEnumerable<ILoadInfoTurbine> GenerateSequence(OnlySerieByPeriodAndCode info, bool isWarning=false)
+        }  
+        private async IAsyncEnumerable<ILoadInfoTurbine> GenerateSequence(OnlySerieByPeriodAndCode info, bool isWarning=false)
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             var values = connectionTo.Value_Sensor_Error.Where(error => error.Id_Turbine == info.IdTurbine && error.Value ==info.Code).OrderBy(value => value.Id).ToList(); 
@@ -161,15 +160,15 @@ namespace PltWindTurbine.Database.Utils
                 var resultSerie = await connectionTo.Value_Sensor_Turbine.Where(infoSensor => infoSensor.Id_Turbine == info.IdTurbine && infoSensor.Id_Sensor == info.IdSensor &&
                    string.Compare(infoSensor.Date, infoError.Date) < 0 && string.Compare(infoSensor.Date, DateTime.Parse(infoError.Date).AddMonths(info.Months).ToString("yyyy/MM/dd HH:mm:ss")) > 0)
                     .Select(values=>new SerieBySensorTurbineError(values.Id,values.Date,values.Value)).ToListAsync();
+               
                 if (isWarning)
                 {
                    var warning = await connectionTo.Value_Sensor_Error.Where(error =>error.Value.HasValue && error.Id_Turbine == info.IdTurbine &&
                    string.Compare(error.Date, infoError.Date) < 0 && string.Compare(error.Date, DateTime.Parse(infoError.Date).AddMonths(info.Months).ToString("yyyy/MM/dd HH:mm:ss")) > 0 
-                   ).Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync();
-                    var maxDate = warning.Max(dateStr => ParserDateSpecificFormat(dateStr.Date));
-                    warning= DateTimeRange(new DateTime(2018, 6, 22, 00, 10, 00), maxDate, 10, warning).ToList();
+                   ).Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync(); 
+                    warning= DateTimeRange(DateTime.Parse(infoError.Date).AddMonths(info.Months), ParserDateSpecificFormat(infoError.Date), 10, warning).ToList();
                     var serieByPeriod = new ResponseSerieByPeriod(info.NameTurbine, info.NameSensor, JsonSerializer.Serialize(resultSerie), infoError.Id == last.Id); 
-                    yield return new ResponseSerieByPeriodWithWarning(serieByPeriod, JsonSerializer.Serialize(warning));
+                    yield return new ResponseSerieByPeriodWithWarning(serieByPeriod, JsonSerializer.Serialize(warning), JsonSerializer.Serialize(warnings));
                 }
                 else
                 { 
@@ -177,10 +176,7 @@ namespace PltWindTurbine.Database.Utils
                 }
             } 
             
-        }
-        //return DateTimeRange(new DateTime(2018, 6, 22, 00, 10, 00), maxDate, 10, finalDt).SelectMany(value=>value).GroupBy(val=>val.Item1)
-        //  .ToDictionary(key=>key.Key, value=>value.Select(val=>val.Item2).ToList());
-
+        } 
         private static string ValidationFormatData(string date) => DateTime.Parse(date).ToString("yyyy/MM/dd HH:mm:ss");
         private static DateTime ParserDateSpecificFormat(string date) => DateTime.Parse(DateTime.Parse(date).ToString("yyyy/MM/dd HH:mm:ss"));
         private static IEnumerable<SerieBySensorTurbineWarning> DateTimeRange(DateTime start, DateTime end, int delta, List<SerieBySensorTurbineWarning> serieBySensors)
@@ -214,12 +210,7 @@ namespace PltWindTurbine.Database.Utils
             }
         }
         public async void SelectSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info) => await CallSelectSeries(info);
-        /*  select* from(select wt.id, wt.turbine_name, vs.date,
-(case when vs.value in (180, 3370, 186, 182, 181) then concat(vs.value," ", (select group_concat(war.value) from value_sensor_error as war
-where war.id_turbine = 15 and war.value in (892.0, 891.0, 183.0, 79.0, 356.0) and war.date<vs.date and 
-STR_TO_DATE(war.date, '%Y/%m/%d %H:%i:%S')>DATE_SUB((DATE_SUB(STR_TO_DATE(vs.date, '%Y/%m/%d %H:%i:%S'), INTERVAL 1 MONTH)), INTERVAL 8 DAY))) else NULL end) as error
-from value_sensor_error as vs,wind_turbine_info as wt where vs.id_turbine =15 and wt.id = 15 and
-(vs.value in (180, 3370, 186, 182, 181))) as t where t.error != 'NULL'*/
+       
 
         public async void SelectSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info) => await CallSelectSeries(info, true); 
 

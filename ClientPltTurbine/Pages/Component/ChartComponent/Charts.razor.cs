@@ -1,4 +1,6 @@
 ﻿using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart;
+using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.BarChartDraw.Contract;
+using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.BarChartDraw.Implementation;
 using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartDraw.Implementation;
 using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.RadarChartDraw.Contract;
@@ -22,6 +24,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         private readonly ILineChartDraw lineChartDraw = LineChartDraw.Instance;
         private readonly IScatterChartDraw scatterChartDraw = ScatterChartDraw.Instance;
         private readonly IRadarChartDraw radarCharttDraw = RadarChartDraw.Instance;
+        private readonly IBarChartDraw barrCharttDraw = BarChartDraw.Instance;
         private bool shouldRender = true;
         protected override bool ShouldRender() => shouldRender;
         private async void InitializedComponent()
@@ -95,6 +98,8 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
             TypeChartUtils.ScatterChart => scatterChartDraw.CreateScatterChart(periods as ResponseSerieByPeriod),
             TypeChartUtils.ScatterChartWithWarning => scatterChartDraw.CreateScatterChartWithWarning(periods as ResponseSerieByPeriodWarning),
             TypeChartUtils.RadarChartWithWarning => radarCharttDraw.CreateRadarChartWithWarning(periods as ResponseSerieByPeriodWarning),
+            TypeChartUtils.LineAreaChartWithWarning => lineChartDraw.CreateLineChartWarningInPeriod(periods as ResponseSerieByPeriodWarning),
+            TypeChartUtils.BarChartWithWarning => barrCharttDraw.CreateBarChartWarning(periods as ResponseSerieByPeriodWarning),
             _ => throw new NotImplementedException("This chart are not implemented"),
         };  
          

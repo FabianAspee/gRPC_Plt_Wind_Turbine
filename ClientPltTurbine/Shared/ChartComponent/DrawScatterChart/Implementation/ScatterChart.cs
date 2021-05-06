@@ -15,7 +15,7 @@ namespace ClientPltTurbine.Shared.ChartComponent.DrawScatterChart.Implementation
         {
             Type = value.Type,
             Options = value.Options,
-            Data =    new DataChart(value.Data.Labels, value.Data.Datasets.Select(dataSet=>new DataSetChart(CreateNewData(value.Data.Labels.Zip(dataSet.Data).ToList()), dataSet.Label,dataSet.BackgroundColor, dataSet.BorderColor)).ToArray())
+            Data =    new DataChart(value.Data.Labels, value.Data.Datasets.Select(dataSet=>new DataSetChart(CreateNewData(value.Data.Labels.Zip(dataSet.Data).ToList()), dataSet.Label,dataSet.BackgroundColor, BackgroundColor: dataSet.BorderColor)).ToArray())
         };  
 
         private static object[] CreateNewData(List<(string Data, object Value)> enumerable)

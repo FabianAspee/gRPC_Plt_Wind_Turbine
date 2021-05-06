@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ClientPltTurbine.Shared.ChartComponent.DrawAreaChart.Contract
+namespace ClientPltTurbine.Shared.ChartComponent.DrawBarChart.Contract
 {
-    interface IAreaChart
+    interface IBarChart
     {
         string GetNameSetup();
     }

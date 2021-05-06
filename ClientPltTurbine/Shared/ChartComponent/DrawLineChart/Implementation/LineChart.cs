@@ -14,7 +14,7 @@ namespace ClientPltTurbine.Shared.ChartComponent.DrawLineChart.Implementation
             Type = value.Type,
             Options = value.Options,
             Data = new DataChart(value.Data.Labels, value.Data.Datasets.Select(dataSet => 
-            new DataSetChart(dataSet.Data, dataSet.Label, dataSet.BorderColor, dataSet.BackgroundColor ?? dataSet.BorderColor)).ToArray())
+            new DataSetChart(dataSet.Data, dataSet.Label, dataSet.BorderColor, BackgroundColor: dataSet.BackgroundColor ?? dataSet.BorderColor)).ToArray())
         };
 
         public override string GetNameSetup() => "setupLineChart";

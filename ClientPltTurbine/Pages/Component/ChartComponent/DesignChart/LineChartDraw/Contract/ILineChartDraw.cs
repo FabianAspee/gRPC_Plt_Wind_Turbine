@@ -8,5 +8,6 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
     {
         ConfigChart CreateLineChart(ResponseSerieByPeriod responseSerieBy);
         ConfigChart CreateLineChartWarning(ResponseSerieByPeriodWarning serieByPeriodWarning);
+        ConfigChart CreateLineChartWarningInPeriod(ResponseSerieByPeriodWarning serieByPeriodWarning);
     }
 }

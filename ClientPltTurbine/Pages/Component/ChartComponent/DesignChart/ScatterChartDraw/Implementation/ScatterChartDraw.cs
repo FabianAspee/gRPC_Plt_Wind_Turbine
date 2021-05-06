@@ -25,7 +25,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterCha
             {
                 Type = Shared.ChartComponent.ChartType.Scatter.ToString().ToLower(),
                 Options = new OptionChart(true, false, new Interaction(false), 0),
-                Data = new DataChart(SelectRecords(responseSerieByPeriod).ToList(), new[]{new DataSetChart(data, variant.Title, "red", "red") }.ToArray())
+                Data = new DataChart(SelectRecords(responseSerieByPeriod).ToList(), new[]{new DataSetChart(data, variant.Title, "red", BackgroundColor: "red") }.ToArray())
             };
             
         } 
@@ -40,8 +40,8 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterCha
             {
                 Type = Shared.ChartComponent.ChartType.Scatter.ToString().ToLower(),
                 Options = new OptionChart(true, false, new Interaction(false), 0),
-                Data = new DataChart(SelectRecords(responseSerieByPeriodWarning).ToList(), new[]{new DataSetChart(data, variant.Title, "red", "red"),
-                    new DataSetChart(warning, variant.Title, colors,colors)}.ToArray())
+                Data = new DataChart(SelectRecords(responseSerieByPeriodWarning).ToList(), new[]{new DataSetChart(data, variant.Title, "red", BackgroundColor: "red"),
+                    new DataSetChart(warning, variant.Title, colors, BackgroundColor:colors)}.ToArray())
             };
         }
        

@@ -69,3 +69,9 @@ window.setupBoxPlotChart = (id, config) => {
     var ctx = document.getElementById(id).getContext('2d');
     new Chart(ctx, config);
 } 
+
+window.setupBarChart = (id, config) => {
+    console.log(config)
+    var ctx = document.getElementById(id).getContext('2d');
+    new Chart(ctx, config);
+} 

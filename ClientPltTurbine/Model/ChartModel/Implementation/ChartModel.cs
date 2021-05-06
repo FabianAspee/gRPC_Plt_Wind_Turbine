@@ -102,12 +102,14 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
         {
             var result = EncodingByteToString(ReturnByteFromContent(parameterToChart.ParameterToChart.Values));
             var warning = EncodingByteToString(ReturnByteFromContent(parameterToChart.Warning));
+            var originalWarning = EncodingByteToString(ReturnByteFromContent(parameterToChart.OriginalWarning));
             try
             {
                 var customInfos = DeserializeObject<List<CustomInfoTurbine>>(result);
                 var customInfosWarning = DeserializeObject<List<CustomInfoTurbineWarning>>(warning);
+                var customInfosOriginalWarning = DeserializeObject<List<string>>(originalWarning);
                 var info = new RecordLinearChart(parameterToChart.ParameterToChart.NameTurbine, parameterToChart.ParameterToChart.NameSensor, customInfos);
-                var infoWarning = new RecordLinearChartWarning(info, customInfosWarning);
+                var infoWarning = new RecordLinearChartWarning(info, customInfosWarning, customInfosOriginalWarning);
                 SendEventLoadInfo(new ResponseSerieByPeriodWarning(parameterToChart.ParameterToChart.IsFinish, infoWarning));
             }
             catch (Exception e)
@@ -161,7 +163,7 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
                     break;
                 case ResponseCodePeriod.ActionOneofCase.Msg3:
                     SaveInfoTurbineForChartWarning(new ParameterToChartWithWarning(
-                        new ParameterToChart(msg2.Msg3.Msg1.NameTurbine, msg2.Msg3.Msg1.NameSensor, msg2.Msg3.Msg1.IsFinish, msg2.Msg3.Msg1.Values),msg2.Msg3.Warning));
+                        new ParameterToChart(msg2.Msg3.Msg1.NameTurbine, msg2.Msg3.Msg1.NameSensor, msg2.Msg3.Msg1.IsFinish, msg2.Msg3.Msg1.Values),msg2.Msg3.Warning, msg2.Msg3.OriginalWarning));
                     break;
                 default:
                     SendEventErrorLoadInfoTurbine($"Unknown Action '{msg2.ActionCase}'.");
