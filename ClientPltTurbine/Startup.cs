@@ -31,8 +31,7 @@ namespace ClientPltTurbine
             services.AddServerSideBlazor();
             services.AddBlazoredToast();
             services.AddSingleton<WeatherForecastService>();
-            services.AddSingleton<LoadFile>();
-            services.AddSingleton<ModelPrediction>(); 
+            services.AddSingleton<LoadFile>(); 
             services.AddSingleton<EventContainer.Implementation.EventContainer>();
         }
 

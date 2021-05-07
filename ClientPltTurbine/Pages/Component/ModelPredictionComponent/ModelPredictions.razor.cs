@@ -2,14 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-
+using System.Threading.Tasks; 
 namespace ClientPltTurbine.Pages.Component.ModelPredictionComponent
 {
-    public class ModelPrediction:IEventModelPrediction
+    public partial class ModelPredictions:IEventModelPrediction
     {
-        public int NumModel;
-        public async Task RunModel()
+        private readonly List<PltTurbineShared.Model> Models = new List<PltTurbineShared.Model>();
+        private int NumModel;
+        private async Task RunModel()
         {
 
         }
