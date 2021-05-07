@@ -80,10 +80,6 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
             var newWeek = initSerie.AddDays(8 - Convert.ToInt32(initSerie.DayOfWeek));
             return (week, _CalculusWeekAndInitfinishWeek(newWeek, weekDate));
         }
-        private static DataSetChart GetInfoWarningByWeek(List<(DateTime, DateTime)> weekList, List<(DateTime Date, double? Value)> warningVal, string color)
-        {
-            var count= weekList.Select(week =>warningVal.FindAll(warning => warning.Date >= week.Item1 && warning.Date <= week.Item2).Count.ToString()).Reverse().ToArray();
-            return new DataSetChart(count, warningVal.First().Value.ToString(), color);
-        }
+       
     }
 }

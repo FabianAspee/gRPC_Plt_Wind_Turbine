@@ -20,7 +20,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
     public partial class Charts
     { 
         private ChartSingleton ChartSingleton = new(); 
-        private readonly List<IEventComponent> infoChart = new(); 
+        private readonly IList<IEventComponent> infoChart = new List<IEventComponent>(); 
         private readonly ILineChartDraw lineChartDraw = LineChartDraw.Instance;
         private readonly IScatterChartDraw scatterChartDraw = ScatterChartDraw.Instance;
         private readonly IRadarChartDraw radarCharttDraw = RadarChartDraw.Instance;
@@ -82,26 +82,44 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 var valueError = ErrorByTurbine.Find(value => value.Id == error).Value;
                 var info = new InfoChartRecord(idTurbine, nameTurbine, idSensor, nameSensor, Convert.ToInt32(valueError), period);
                 await ChartSingleton.ChartInfoTurbine(info, idChart);
+                infoChart.Clear();
                 await foreach (var turbine in ChartSingleton.GetInfoChart())
                 {
                     infoChart.Add(turbine);
                 }
+                recallChartInfo = true;
+
                 StateHasChanged();
             } 
             await Call(ChartData);
         } 
          
-        public ConfigChart GetConfig(IEventComponent periods) => idChart switch
+        private ConfigChart GetConfig(IEventComponent periods) => idChart switch//attenzione con chart with warning e quelli senza
         {
-            TypeChartUtils.LinearChart => lineChartDraw.CreateLineChart(periods as ResponseSerieByPeriod),
-            TypeChartUtils.LinearChartWithWarning => lineChartDraw.CreateLineChartWarning(periods as ResponseSerieByPeriodWarning),
-            TypeChartUtils.ScatterChart => scatterChartDraw.CreateScatterChart(periods as ResponseSerieByPeriod),
-            TypeChartUtils.ScatterChartWithWarning => scatterChartDraw.CreateScatterChartWithWarning(periods as ResponseSerieByPeriodWarning),
-            TypeChartUtils.RadarChartWithWarning => radarCharttDraw.CreateRadarChartWithWarning(periods as ResponseSerieByPeriodWarning),
-            TypeChartUtils.LineAreaChartWithWarning => lineChartDraw.CreateLineChartWarningInPeriod(periods as ResponseSerieByPeriodWarning),
-            TypeChartUtils.BarChartWithWarning => barrCharttDraw.CreateBarChartWarning(periods as ResponseSerieByPeriodWarning),
+            TypeChartUtils.LinearChart => lineChartDraw.CreateLineChart(GetResponseSerieByPeriod(periods)),
+            TypeChartUtils.LinearChartWithWarning when periods is ResponseSerieByPeriodWarning periodWarning=> lineChartDraw.CreateLineChartWarning(periodWarning),
+            TypeChartUtils.ScatterChart => scatterChartDraw.CreateScatterChart(GetResponseSerieByPeriod(periods)),
+            TypeChartUtils.ScatterChartWithWarning when periods is ResponseSerieByPeriodWarning periodWarning => scatterChartDraw.CreateScatterChartWithWarning(periodWarning),
+            TypeChartUtils.RadarChartWithWarning when periods is ResponseSerieByPeriodWarning periodWarning => radarCharttDraw.CreateRadarChartWithWarning(periodWarning),
+            TypeChartUtils.LineAreaChartWithWarning when periods is ResponseSerieByPeriodWarning periodWarning => lineChartDraw.CreateLineChartWarningInPeriod(periodWarning),
+            TypeChartUtils.BarChartWithWarning when periods is ResponseSerieByPeriodWarning periodWarning => barrCharttDraw.CreateBarChartWarning(periodWarning),
+            TypeChartUtils.LinearChartWithWarning or TypeChartUtils.LineAreaChartWithWarning 
+            or TypeChartUtils.RadarChartWithWarning or TypeChartUtils.BarChartWithWarning or TypeChartUtils.ScatterChartWithWarning=>RecallChartData(),
             _ => throw new NotImplementedException("This chart are not implemented"),
-        };  
-         
+        };
+
+        private ConfigChart RecallChartData()
+        {
+            recallChartInfo = false;
+            CallChartData();
+            return default;
+        }
+
+        private static ResponseSerieByPeriod GetResponseSerieByPeriod(IEventComponent periods) => periods switch
+        {
+            ResponseSerieByPeriod response => response,
+            ResponseSerieByPeriodWarning periodWarning => new ResponseSerieByPeriod(periodWarning.IsFinish, periodWarning.Record.RecordLinearChart),
+            _ => throw new NotImplementedException()
+        };
     }
 }

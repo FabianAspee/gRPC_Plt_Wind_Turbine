@@ -8,8 +8,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
 {
     public partial class Charts
     {
-        private readonly List<Sensor> Sensors = new();
-        private readonly List<TypeChart> TypeChart = new();
+        private readonly List<Sensor> Sensors = new(); 
         private readonly List<Turbine> Turbines = new();
         private readonly List<ErrorTurbine> ErrorByTurbine = new();
         private readonly List<ChartInfo> ChartInfo = new(); 
@@ -18,12 +17,11 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         private int period;
         private int error;
         private int idChart;
-        private int idTypeChart;
-        private void ChangeInfoSensor(int idSensor) => this.idSensor = idSensor;
-        private void ChangeTypeChart(int idTypeChart) => this.idTypeChart = idTypeChart; 
+        private bool recallChartInfo = false;
+        private void ChangeInfoSensor(int idSensor) => this.idSensor = idSensor; 
         private void ChangeInfoError(int error) => this.error = error;  
         private void ChangeInfoPeriod(int period) => this.period = period;
-        private void ChangeInfoChart(int idChart) => this.idChart = idChart;
+        private void ChangeInfoChart(int idChart) => (this.idChart,recallChartInfo) = (idChart,true);
         private async void ChangeInfoTurbine(int idTurbine)
         {
             async Task InfoTurbine()

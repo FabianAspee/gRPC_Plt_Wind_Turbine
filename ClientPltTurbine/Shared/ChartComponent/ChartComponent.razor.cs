@@ -17,15 +17,19 @@ namespace ClientPltTurbine.Shared.ChartComponent
         private static string GetNameSetup(ConfigChart config) => config.GetNameSetup();
         protected override async Task OnAfterRenderAsync(bool firstShouldRender)
         {
-            var (nameSetup,newConfig) = Config switch { 
-                LineChart line => (GetNameSetup(line),new LineChart().GetConfigChart(line)),
-                ScatterChart scatter => (GetNameSetup(scatter),new ScatterChart().GetConfigChart(scatter)),
-                ConfigChart conf when conf is not null =>(GetNameSetup(conf),conf),
-                _ => throw new NotImplementedException()
+            if(Config is not null)
+            {
+                var (nameSetup, newConfig) = Config switch
+                {
+                    LineChart line => (GetNameSetup(line), new LineChart().GetConfigChart(line)),
+                    ScatterChart scatter => (GetNameSetup(scatter), new ScatterChart().GetConfigChart(scatter)),
+                    ConfigChart conf when conf is not null => (GetNameSetup(conf), conf),
+                    _ => throw new NotImplementedException()
 
-            }; 
-           await JSRuntime.InvokeVoidAsync(nameSetup, Id, newConfig);
-           
+                };
+                await JSRuntime.InvokeVoidAsync(nameSetup, Id, newConfig);
+            }
+                   
         }
             
     }

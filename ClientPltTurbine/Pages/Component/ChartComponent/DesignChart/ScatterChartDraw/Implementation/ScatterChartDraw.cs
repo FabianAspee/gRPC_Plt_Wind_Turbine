@@ -31,18 +31,23 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterCha
         } 
         public ConfigChart CreateScatterChartWithWarning(ResponseSerieByPeriodWarning responseSerieByPeriodWarning)
         {
+             
             var variant = _variants($"Scatter Turbine {responseSerieByPeriodWarning.Record.RecordLinearChart.NameTurbine} " +
                $"Sensor {responseSerieByPeriodWarning.Record.RecordLinearChart.NameSensor}");
-            var data = responseSerieByPeriodWarning.Record.RecordLinearChart.CustomInfo.Select(value => value.Value.ToString()).ToArray();
-            var warning = responseSerieByPeriodWarning.Record.InfoTurbineWarnings.Select(value => value.Value.ToString()).ToArray();
+            var data = responseSerieByPeriodWarning.Record.RecordLinearChart.CustomInfo.Select(value => value.Value.HasValue ? value.Value.ToString() : null).ToList();
+            var warning = responseSerieByPeriodWarning.Record.InfoTurbineWarnings.Select(value => value.Value.HasValue ? value.Value.ToString() : null).ToArray();
+            var result = responseSerieByPeriodWarning.Record.InfoTurbineWarnings.Zip(Enumerable.Range(0, responseSerieByPeriodWarning.Record.InfoTurbineWarnings.Count)).ToList()
+                .FindAll(val => !responseSerieByPeriodWarning.Record.RecordLinearChart.CustomInfo.Exists(date => date.Date.Equals(val.First.Date))).Select(res => res.Second).ToList();
+            result.ForEach(index => data.Insert(index, null));
             var colors = GetWarningColor(warning);
             return new ScatterChart()
             {
-                Type = Shared.ChartComponent.ChartType.Scatter.ToString().ToLower(),
+                Type = Shared.ChartComponent.ChartType.Line.ToString().ToLower(),
                 Options = new OptionChart(true, false, new Interaction(false), 0),
-                Data = new DataChart(SelectRecords(responseSerieByPeriodWarning).ToList(), new[]{new DataSetChart(data, variant.Title, "red", BackgroundColor: "red"),
+                Data = new DataChart(SelectRecords(responseSerieByPeriodWarning).ToList(), new[]{new DataSetChart(data.ToArray(), variant.Title, "rgb(192,75,75)" ),
                     new DataSetChart(warning, variant.Title, colors, BackgroundColor:colors)}.ToArray())
             };
+            
         }
        
     }

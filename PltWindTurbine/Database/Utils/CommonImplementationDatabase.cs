@@ -148,27 +148,39 @@ namespace PltWindTurbine.Database.Utils
         public DataTable SelectPivotValueSensorByTurbine()
         {
             throw new NotImplementedException();
-        }  
+        }
+        private List<(Value_Sensor_Error values, DateTime dates)> GetDateBetweenValues(List<Value_Sensor_Error> values, int period)
+        {
+            List<(Value_Sensor_Error values, DateTime dates)> _GetDateBetweenValues(List<Value_Sensor_Error> valuesRemaining, List<(Value_Sensor_Error values, DateTime dates)> valueAndDates) => valuesRemaining switch
+            {
+                (Value_Sensor_Error head, Value_Sensor_Error head2, List<Value_Sensor_Error> tail) =>_GetDateBetweenValues(tail.Prepend(head2).ToList(), valueAndDates.Append((head,DateTime.Parse(head2.Date).AddSeconds(5))).ToList()),
+                (Value_Sensor_Error head, Value_Sensor_Error head2, _)=> _GetDateBetweenValues(new List<Value_Sensor_Error>() { head2}, valueAndDates.Append((head, DateTime.Parse(head2.Date).AddSeconds(5))).ToList()),
+                (Value_Sensor_Error head, _) => valueAndDates.Append((head, DateTime.Parse(head.Date).AddMonths(period))).ToList()
+            };
+
+            return _GetDateBetweenValues(values, new List<(Value_Sensor_Error, DateTime)>());
+        }
+
         private async IAsyncEnumerable<ILoadInfoTurbine> GenerateSequence(OnlySerieByPeriodAndCode info, bool isWarning=false)
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
-            var values = connectionTo.Value_Sensor_Error.Where(error => error.Id_Turbine == info.IdTurbine && error.Value ==info.Code).OrderBy(value => value.Id).ToList(); 
+            var values = connectionTo.Value_Sensor_Error.Where(error => error.Id_Turbine == info.IdTurbine && error.Value ==info.Code).OrderByDescending(value =>value.Date).ToList(); 
             var last = values.LastOrDefault();
             yield return new StatusEventInfoTurbine(info.NameTurbine, Status.InProgress, $"Init Search Temporary Data with {values.Count} precence of error {info.Code}");
-            foreach (var infoError in values)
+            var newValuesWithDate = values.Count>1?GetDateBetweenValues(values, info.Months):values.Select(val=>(val, DateTime.Parse(values.First().Date).AddMonths(info.Months))).ToList();
+            foreach (var (infoError, dates) in newValuesWithDate)
             {   
                 var resultSerie = await connectionTo.Value_Sensor_Turbine.Where(infoSensor => infoSensor.Id_Turbine == info.IdTurbine && infoSensor.Id_Sensor == info.IdSensor &&
-                   string.Compare(infoSensor.Date, infoError.Date) < 0 && string.Compare(infoSensor.Date, DateTime.Parse(infoError.Date).AddMonths(info.Months).ToString("yyyy/MM/dd HH:mm:ss")) > 0)
+                   string.Compare(infoSensor.Date, infoError.Date) < 0 && string.Compare(infoSensor.Date, dates.ToString("yyyy/MM/dd HH:mm:ss")) > 0)
                     .Select(values=>new SerieBySensorTurbineError(values.Id,values.Date,values.Value)).ToListAsync();
                
                 if (isWarning)
                 {
                    var warning = await connectionTo.Value_Sensor_Error.Where(error =>error.Value.HasValue && error.Id_Turbine == info.IdTurbine &&
-                   string.Compare(error.Date, infoError.Date) < 0 && string.Compare(error.Date, DateTime.Parse(infoError.Date).AddMonths(info.Months).ToString("yyyy/MM/dd HH:mm:ss")) > 0 
-                   ).Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync();
+                   string.Compare(error.Date, infoError.Date) < 0 && string.Compare(error.Date, dates.ToString("yyyy/MM/dd HH:mm:ss")) > 0 )
+                        .Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync();
                     warning = warning.OrderBy(val => val.Date).ToList();
-                    warning = DateTimeRange(DateTime.Parse(infoError.Date).AddMonths(info.Months), ParserDateSpecificFormat(infoError.Date), 10, warning).ToList();
-                   
+                    warning = DateTimeRange(dates, ParserDateSpecificFormat(infoError.Date), 10, warning).ToList();  
                     var serieByPeriod = new ResponseSerieByPeriod(info.NameTurbine, info.NameSensor, JsonSerializer.Serialize(resultSerie), infoError.Id == last.Id); 
                     yield return new ResponseSerieByPeriodWithWarning(serieByPeriod, JsonSerializer.Serialize(warning), JsonSerializer.Serialize(warnings));
                 }
@@ -178,7 +190,9 @@ namespace PltWindTurbine.Database.Utils
                 }
             } 
             
-        } 
+        }
+
+      
         private static string ValidationFormatData(string date) => DateTime.Parse(date).ToString("yyyy/MM/dd HH:mm:ss");
         private static DateTime ParserDateSpecificFormat(string date) => DateTime.Parse(DateTime.Parse(date).ToString("yyyy/MM/dd HH:mm:ss"));
         private static IEnumerable<SerieBySensorTurbineWarning> DateTimeRange(DateTime start, DateTime end, int delta, List<SerieBySensorTurbineWarning> serieBySensors)

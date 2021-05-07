@@ -1,10 +1,10 @@
-﻿@page "/charts-turbines" 
+﻿@page "/charts-turbines"
 @inject IToastService toastService
 <h1>Graphic Turbine</h1>
 <p>Current Turbines: @ChartSingleton.NumTurbine</p>
 <div class="row g-3">
     <div class="col-auto">
-        <SelectComponent Values="TypeChart" Text="(Choose Type Chart)" ValueChanged="@ChangeTypeChart" Warning="Type Chart is required" />
+        <SelectComponent Values="ChartInfo" Text="(Choose Chart)" ValueChanged="@ChangeInfoChart" Warning="Chart is required" />
     </div>
     <div class="col-auto">
         <SelectComponent Values="Turbines" Text="(Choose Turbine)" ValueChanged="@ChangeInfoTurbine" Warning="Turbine is required" />
@@ -19,17 +19,17 @@
         <InputComponent Id="error" Type="number" ValueChanged="@ChangeInfoPeriod" PlaceHolder="Enter Period"></InputComponent>
     </div>
     <div class="col-auto">
-        <SelectComponent Values="ChartInfo" Text="(Choose Chart)" ValueChanged="@ChangeInfoChart" Warning="Chart is required" />
-    </div>
-    <div class="col-auto">
         <ButtonComponent OnClick="CallChartData" Text="Creat Chart"></ButtonComponent>
     </div>
 </div>
 
-@foreach(var period in  infoChart)
+@foreach (var period in infoChart)
 {
-    <div class="chart-container">
-        <ChartComponent Config="GetConfig(period)"></ChartComponent>
-    </div> 
+    if (recallChartInfo)
+    {
+        <div class="chart-container">
+            <ChartComponent Config="GetConfig(period)"></ChartComponent>
+        </div>
+    }
+
 }
- 
