@@ -30,7 +30,10 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         private readonly IEventContainer container = EventContainer.Implementation.EventContainer.Container; 
         public const int InitalCount = 7;
         public bool initSensor = true;
-        public event EventHandler<IEventComponent> InfoChart; 
+        public event EventHandler<IEventComponent> InfoChart;
+        private readonly static Lazy<ChartSingleton> instance = new(() => new ChartSingleton());
+        private ChartSingleton() { }
+        public static ChartSingleton Instace => instance.Value;
         public void RegisterEvent()
         {
             container.AddEvent(EventKey.GRAPH_KEY, InfoChart);

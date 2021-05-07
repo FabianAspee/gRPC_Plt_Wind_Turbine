@@ -19,7 +19,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
 {
     public partial class Charts
     { 
-        private ChartSingleton ChartSingleton = new(); 
+        private ChartSingleton ChartSingleton = ChartSingleton.Instace; 
         private readonly IList<IEventComponent> infoChart = new List<IEventComponent>(); 
         private readonly ILineChartDraw lineChartDraw = LineChartDraw.Instance;
         private readonly IScatterChartDraw scatterChartDraw = ScatterChartDraw.Instance;
@@ -55,8 +55,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 await call();
             }
             catch (Exception e)
-            {
-                ChartSingleton = new();
+            { 
                 InitializedComponent();
                 toastService.ShowError(e.ToString());
 
