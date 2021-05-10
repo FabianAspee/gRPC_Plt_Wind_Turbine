@@ -11,27 +11,29 @@ using System.Threading.Tasks;
 
 namespace ClientPltTurbine.EventContainer.Implementation
 {
-    public class EventContainer : IEventContainer
+    public static class EventContainer
     {
-        public ConcurrentDictionary<string, EventHandler<IEventComponent>> Events= new();
-        private static readonly Lazy<EventContainer> container = new(() => new());
-        
-        public static EventContainer Container => container.Value;
-
-        public async void AddEvent(EventKey key, EventHandler<IEventComponent> handler) => await Task.Run(() =>
+        private static IEventContainer container= new EventContainerImp() ;
+        public static IEventContainer Container { get=>container; }
+        private class EventContainerImp : IEventContainer
         {
-            if (Events.TryGetValue(key.ToString(), out _))
-            {
-                Events[key.ToString()] = handler;
-            }
-            else
-            {
+            private ConcurrentDictionary<string, EventHandler<IEventComponent>> Events = new();
 
-                Events.TryAdd(key.ToString(), handler);
-            }
-        }); 
+            public async void AddEvent(EventKey key, EventHandler<IEventComponent> handler) => await Task.Run(() =>
+            {
+                if (Events.TryGetValue(key.ToString(), out _))
+                {
+                    Events[key.ToString()] = handler;
+                }
+                else
+                {
 
-        public async Task<EventHandler<T>> SelectEvent<T>(EventKey key)=> await Task.FromResult(Events[key.ToString()] as EventHandler<T>); 
-        
+                    Events.TryAdd(key.ToString(), handler);
+                }
+            });
+
+            public async Task<EventHandler<T>> SelectEvent<T>(EventKey key) => await Task.FromResult(Events[key.ToString()] as EventHandler<T>);
+
+        }
     } 
 }

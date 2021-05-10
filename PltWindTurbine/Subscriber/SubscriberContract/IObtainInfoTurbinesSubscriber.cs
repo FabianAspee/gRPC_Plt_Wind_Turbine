@@ -12,6 +12,7 @@ namespace PltWindTurbine.Subscriber.SubscriberContract
         public Task SerieByPeriodWithStandardDeviation(SeriePeriodByCodeWithStandarDeviation info);
         public Task GetInforTurbineAndSensor();
         public Task<List<string>> GetErrorByTurbine(int id);
-        public Task<List<(int,string)>> GetInfoChart();
+        public Task<List<(int, string)>> GetInfoChart();
+        public Task GetInfoTurbineByPeriod(int period);
     }
 }

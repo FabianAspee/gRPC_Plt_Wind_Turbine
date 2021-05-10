@@ -149,7 +149,7 @@ namespace PltWindTurbine.Database.Utils
         {
             throw new NotImplementedException();
         }
-        private List<(Value_Sensor_Error values, DateTime dates)> GetDateBetweenValues(List<Value_Sensor_Error> values, int period)
+        private static List<(Value_Sensor_Error values, DateTime dates)> GetDateBetweenValues(List<Value_Sensor_Error> values, int period)
         {
             List<(Value_Sensor_Error values, DateTime dates)> _GetDateBetweenValues(List<Value_Sensor_Error> valuesRemaining, List<(Value_Sensor_Error values, DateTime dates)> valueAndDates) => valuesRemaining switch
             {
@@ -167,7 +167,7 @@ namespace PltWindTurbine.Database.Utils
             var values = connectionTo.Value_Sensor_Error.Where(error => error.Id_Turbine == info.IdTurbine && error.Value ==info.Code).OrderByDescending(value =>value.Date).ToList(); 
             var last = values.LastOrDefault();
             yield return new StatusEventInfoTurbine(info.NameTurbine, Status.InProgress, $"Init Search Temporary Data with {values.Count} precence of error {info.Code}");
-            var newValuesWithDate = values.Count>1?GetDateBetweenValues(values, info.Months):values.Select(val=>(val, DateTime.Parse(values.First().Date).AddMonths(info.Months))).ToList();
+            var newValuesWithDate = values.Count>1? GetDateBetweenValues(values, info.Months):values.Select(val=>(val, DateTime.Parse(values.First().Date).AddMonths(info.Months))).ToList();
             foreach (var (infoError, dates) in newValuesWithDate)
             {   
                 var resultSerie = await connectionTo.Value_Sensor_Turbine.Where(infoSensor => infoSensor.Id_Turbine == info.IdTurbine && infoSensor.Id_Sensor == info.IdSensor &&
@@ -264,6 +264,19 @@ namespace PltWindTurbine.Database.Utils
             return connectionTo.Chart_System.ToList().Select(chart=>(chart.Id,chart.Chart_Name)).ToList(); 
         });
 
-       
+        public virtual async Task SelectWarningAllTurbines(int period)
+        {
+            using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
+            var allTurbines = await connectionTo.Wind_Turbine_Info.Select(turbine=> new TurbineInfo(turbine.Id,turbine.Turbine_Name)).ToListAsync();
+            await foreach(var infoTurbine in SelectWarningAllTurbineByPeriod(allTurbines))
+            {
+
+            }
+        }
+
+        private IAsyncEnumerable<object> SelectWarningAllTurbineByPeriod(List<TurbineInfo> allTurbines)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

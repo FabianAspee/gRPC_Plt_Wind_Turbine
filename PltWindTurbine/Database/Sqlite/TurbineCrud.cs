@@ -28,5 +28,12 @@ namespace PltWindTurbine.Database.Sqlite
                 base.InsertInfoEventWindTurbine(infoTurbine);
             }
         }
+        public override Task SelectWarningAllTurbines(int period)
+        {
+            lock (this)
+            {
+                return base.SelectWarningAllTurbines(period);
+            }
+        }
     }
 }

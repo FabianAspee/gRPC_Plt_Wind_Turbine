@@ -7,7 +7,7 @@ namespace ClientPltTurbine.Pages.Component.ModelPredictionComponent
 {
     public partial class ModelPredictions:IEventModelPrediction
     {
-        private readonly List<PltTurbineShared.Model> Models = new List<PltTurbineShared.Model>();
+        private readonly List<PltTurbineShared.Model> Models = new();
         private int NumModel;
         private async Task RunModel()
         {

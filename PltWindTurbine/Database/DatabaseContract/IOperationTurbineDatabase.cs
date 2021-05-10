@@ -32,6 +32,8 @@ namespace PltWindTurbine.Database.DatabaseContract
         public DataTable SelectValueSensorByTurbine();
         public DataTable SelectPivotValueSensorByTurbine();
         public DataTable SelectErrorTableByTurbine();
-        public DataTable SelectErrorTurbineByCondition(); 
+        public DataTable SelectErrorTurbineByCondition();
+
+        public Task SelectWarningAllTurbines(int period);
     }
 }

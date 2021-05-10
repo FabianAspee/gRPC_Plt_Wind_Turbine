@@ -38,6 +38,12 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                 database.SelectSerieBySensorByTurbineByError(info); 
            });
 
+        public Task GetInfoTurbineByPeriod(int period) => Task.Run(() =>
+        {
+            SendEventLoadInfo(new StatusEventInfoTurbine("All turbines", Status.InProgress, "Init process search status in period defined"));
+            return database.SelectWarningAllTurbines(period);
+        });
+
         public Task GetInfoTurbineWithWarning(OnlySerieByPeriodAndCodeWithWarning info) => Task.Run(() =>
         {
             SendEventLoadInfo(new StatusEventInfoTurbine(info.Info.NameTurbine, Status.InProgress, "Init process search series with warning"));
