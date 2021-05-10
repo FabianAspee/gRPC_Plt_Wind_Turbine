@@ -16,7 +16,7 @@ namespace ClientPltTurbine
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseElectron(args);
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>(); 
                 });
     }
 }

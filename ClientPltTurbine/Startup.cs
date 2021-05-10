@@ -32,8 +32,7 @@ namespace ClientPltTurbine
             services.AddBlazoredToast();
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<LoadFile>();
-            services.AddSingleton<ModelPrediction>(); 
-            services.AddSingleton<EventContainer.Implementation.EventContainer>();
+            services.AddSingleton<ModelPrediction>();  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
