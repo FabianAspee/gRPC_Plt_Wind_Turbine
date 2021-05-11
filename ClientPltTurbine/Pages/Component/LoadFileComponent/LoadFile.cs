@@ -18,8 +18,7 @@ namespace ClientPltTurbine.Pages.Component.LoadFileComponent
         public IToastService Service;
         public string status = string.Empty;
         public event EventHandler<IEventComponent> LoadSatus;
-        private readonly ILoadFileController Controller = new LoadFileController();
-        private readonly IEventContainer container = EventContainer.Implementation.EventContainer.Container;
+        private readonly ILoadFileController Controller = new LoadFileController(); 
         public void RegisterEvent()
         {
             container.AddEvent(EventKey.LOAD_FILE_KEY, LoadSatus);

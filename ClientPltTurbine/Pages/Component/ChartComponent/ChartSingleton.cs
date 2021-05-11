@@ -26,8 +26,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         private TaskCompletionSource<bool> isCompleteStd;
         private TaskCompletionSource<bool> isCompleteChart;
         public IToastService Service;
-        private readonly IChartController Controller = new ChartController();
-        private readonly IEventContainer container = EventContainer.Implementation.EventContainer.Container; 
+        private readonly IChartController Controller = new ChartController(); 
         public const int InitalCount = 7;
         public bool initSensor = true;
         public event EventHandler<IEventComponent> InfoChart;

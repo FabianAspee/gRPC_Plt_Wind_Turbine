@@ -12,7 +12,7 @@ namespace ClientPltTurbine.EventContainer
     public abstract class EventHandlerSystem
     {
 
-        private readonly IEventContainer container = Implementation.EventContainer.Container;
+        protected readonly IEventContainer container = Implementation.EventContainer.Container;
         protected async void SendEventLoadFile(string msg)
         { 
             await container.SelectEvent<IEventComponent>(EventKey.LOAD_FILE_KEY).ContinueWith(evento=>evento.Result.Invoke(this,new LoadStatusRecord(1,msg)));

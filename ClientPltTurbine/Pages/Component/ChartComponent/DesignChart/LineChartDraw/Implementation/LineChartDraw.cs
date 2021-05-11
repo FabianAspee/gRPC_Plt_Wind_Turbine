@@ -1,7 +1,7 @@
 ﻿using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
-using ClientPltTurbine.Shared.ChartComponent.ConfigGeneral;
-using ClientPltTurbine.Shared.ChartComponent.DrawLineChart.Implementation;
+using ClientPltTurbine.Shared.ChartJsComponent.ConfigGeneral;
+using ClientPltTurbine.Shared.ChartJsComponent.DrawLineChart.Implementation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
 
             return new LineChart()
             {
-                Type = Shared.ChartComponent.ChartType.Line.ToString().ToLower(),
+                Type = Shared.ChartJsComponent.ChartType.Line.ToString().ToLower(),
                 Options = new OptionChart(true, false, new Interaction(false), 0),
                 Data = new DataChart(SelectRecords(responseSerieBy).ToList(), new[]{new DataSetChart(
                     data, variant.Title,"rgb(192,75,75)")}.ToArray())
@@ -40,7 +40,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
             var colors = GetWarningColor(warning);
             return new LineChart()
             {
-                Type = Shared.ChartComponent.ChartType.Line.ToString().ToLower(),
+                Type = Shared.ChartJsComponent.ChartType.Line.ToString().ToLower(),
                 Options = new OptionChart(true, false, new Interaction(false), 0),
                 Data = new DataChart(SelectRecords(serieByPeriodWarning).ToList(), new[]{new DataSetChart(data.ToArray(), variant.Title, "rgb(192,75,75)" ),
                     new DataSetChart(warning, variant.Title, colors, BackgroundColor:colors)}.ToArray())
@@ -60,7 +60,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
             var colors = GetWarningColor(warning.Select(warning => warning.First().Value.ToString()).ToArray()); 
             return new LineChart()
             {
-                Type = Shared.ChartComponent.ChartType.Line.ToString().ToLower(),
+                Type = Shared.ChartJsComponent.ChartType.Line.ToString().ToLower(),
                 Options = new OptionChart(true, false, new Interaction(false), 0),
                 Data = new DataChart(weekList,warning.Zip(colors).Select(warningVal=> GetInfoWarningByWeek(initFinishWeek, warningVal.First, warningVal.Second)).ToArray())
             };

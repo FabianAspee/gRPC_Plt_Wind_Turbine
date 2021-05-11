@@ -1,10 +1,8 @@
-﻿@page "/modelpredict" 
-@using Newtonsoft.Json;
-@using PltTurbineShared;
-@using Newtonsoft.Json.Linq; 
-<h3>Model Predictions</h3>
+@page "/modelpredict"
+@inject ModelPrediction ModelPrediction 
+<h3>ModelPredictions</h3>
 
-<p>Current Models: @NumModel</p>
+<p>Current Models:@NumModel</p>
 <div class="row g-3">
     <div class="col-auto">
         <SelectComponent Values="Models" Text="(Choose Model)" Warning="Model is required" />
@@ -12,5 +10,7 @@
     <div class="col-auto">
         <ButtonComponent OnClick="RunModel" Text="Run Model Selected"></ButtonComponent>
     </div> 
-
+     <div class="container">
+         <Chart3DComponent  Config="GetConfig()"></Chart3DComponent>
+     </div>
 </div> 

@@ -1,10 +1,8 @@
 ﻿using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
-using ClientPltTurbine.Shared.ChartComponent.ConfigGeneral;
-using ClientPltTurbine.Shared.ChartComponent.DrawScatterChart.Implementation;
+using ClientPltTurbine.Shared.ChartJsComponent.ConfigGeneral;
+using ClientPltTurbine.Shared.ChartJsComponent.DrawScatterChart.Implementation;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterChartDraw.Implementation
@@ -23,7 +21,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterCha
 
             return new ScatterChart()
             {
-                Type = Shared.ChartComponent.ChartType.Scatter.ToString().ToLower(),
+                Type = Shared.ChartJsComponent.ChartType.Scatter.ToString().ToLower(),
                 Options = new OptionChart(true, false, new Interaction(false), 0),
                 Data = new DataChart(SelectRecords(responseSerieByPeriod).ToList(), new[]{new DataSetChart(data, variant.Title, "red", BackgroundColor: "red") }.ToArray())
             };
@@ -42,7 +40,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterCha
             var colors = GetWarningColor(warning);
             return new ScatterChart()
             {
-                Type = Shared.ChartComponent.ChartType.Line.ToString().ToLower(),
+                Type = Shared.ChartJsComponent.ChartType.Line.ToString().ToLower(),
                 Options = new OptionChart(true, false, new Interaction(false), 0),
                 Data = new DataChart(SelectRecords(responseSerieByPeriodWarning).ToList(), new[]{new DataSetChart(data.ToArray(), variant.Title, "rgb(192,75,75)" ),
                     new DataSetChart(warning, variant.Title, colors, BackgroundColor:colors)}.ToArray())

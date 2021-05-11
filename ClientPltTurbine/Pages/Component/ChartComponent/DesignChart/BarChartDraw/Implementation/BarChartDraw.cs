@@ -1,7 +1,7 @@
 ﻿using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.BarChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
-using ClientPltTurbine.Shared.ChartComponent.ConfigGeneral;
-using ClientPltTurbine.Shared.ChartComponent.DrawBarChart.Implementation;
+using ClientPltTurbine.Shared.ChartJsComponent.ConfigGeneral;
+using ClientPltTurbine.Shared.ChartJsComponent.DrawBarChart.Implementation;
 using System;
 using System.Linq;
 
@@ -23,7 +23,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.BarChartDr
              
             return new BarChart()
             {
-                Type = Shared.ChartComponent.ChartType.Bar.ToString().ToLower(),
+                Type = Shared.ChartJsComponent.ChartType.Bar.ToString().ToLower(),
                 Options = new OptionChart(true, false, new Interaction(false), 0),
                 Data = new DataChart(finalWarning, new[] { new DataSetChart(warning.Select(val=>val.Item2.ToString()).ToArray(), variant.Title, "rgba(255, 99, 132, 1)") })
             };
