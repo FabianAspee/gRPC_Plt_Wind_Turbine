@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ClientPltTurbine
@@ -51,6 +53,12 @@ namespace ClientPltTurbine
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images")),
+                RequestPath = "/images"
+            });
 
             app.UseRouting();
 
