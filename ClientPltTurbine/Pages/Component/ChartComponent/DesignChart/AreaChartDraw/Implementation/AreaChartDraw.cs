@@ -1,11 +1,8 @@
-﻿using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.AreaChartDraw.Contract;
+﻿using ClientPltTurbine.Pages.Component.ChartJsComponent.DesignChart.AreaChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
-using ClientPltTurbine.Shared.ChartComponent.ConfigGeneral;
-using ClientPltTurbine.Shared.ChartComponent.DrawAreaChart.Implementation;
+using ClientPltTurbine.Shared.ChartJsComponent.ConfigGeneral;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.AreaChartDraw.Implementation
 {

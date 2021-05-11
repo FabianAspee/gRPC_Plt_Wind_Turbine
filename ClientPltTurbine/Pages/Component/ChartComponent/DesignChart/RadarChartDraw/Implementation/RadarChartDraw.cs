@@ -1,7 +1,7 @@
 ﻿using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.RadarChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
-using ClientPltTurbine.Shared.ChartComponent.ConfigGeneral;
-using ClientPltTurbine.Shared.ChartComponent.DrawRadarChart.Implementation;
+using ClientPltTurbine.Shared.ChartJsComponent.ConfigGeneral;
+using ClientPltTurbine.Shared.ChartJsComponent.DrawRadarChart.Implementation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.RadarChart
             responseSerieByPeriodWarning.Record.OriginalWarning.ForEach(val => finalWarning.Add(val));
             return new RadarChart()
             {
-                Type = Shared.ChartComponent.ChartType.Radar.ToString().ToLower(),
+                Type = Shared.ChartJsComponent.ChartType.Radar.ToString().ToLower(),
                 Options = new OptionChart(true, false, new Interaction(false), 0),
                 Data = new DataChart(finalWarning, new[] { new DataSetChart(warning.Select(value => value.Item2.ToString()).ToArray(), variant.Title, "red", BackgroundColor: "red") })
             };

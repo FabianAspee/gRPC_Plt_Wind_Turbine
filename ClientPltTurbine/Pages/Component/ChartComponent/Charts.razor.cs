@@ -8,7 +8,7 @@ using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.RadarChartDraw
 using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterChartDraw.Implementation;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
-using ClientPltTurbine.Shared.ChartComponent.ConfigGeneral;
+using ClientPltTurbine.Shared.ChartJsComponent.ConfigGeneral;
 using PltTurbineShared;
 using System;
 using System.Collections.Generic;

@@ -1,66 +1,16 @@
 ﻿@page "/modelpredict"
-@inject ModelPrediction ModelPrediction
-@using Newtonsoft.Json;
-@using PltTurbineShared;
-@using Newtonsoft.Json.Linq; 
+@inject ModelPrediction ModelPrediction 
 <h3>ModelPredictions</h3>
 
-<p>Current Models: @ModelPrediction.NumModel</p>
+<p>Current Models:@NumModel</p>
 <div class="row g-3">
     <div class="col-auto">
         <SelectComponent Values="Models" Text="(Choose Model)" Warning="Model is required" />
     </div>
     <div class="col-auto">
-        <ButtonComponent OnClick="ModelPrediction.RunModel" Text="Run Model Selected"></ButtonComponent>
-    </div>
-
-    <ChartComponent Config="GetConfig()"></ChartComponent>
-    <ChartComponent Config="GetConfig2()"></ChartComponent>
-    <ChartComponent Config="GetConfig3()"></ChartComponent>
-
-</div>
-@code {
-    List<Model> Models = new List<Model>();
-    public ConfigChart GetConfig()
-    {
-        var t = new int?[] { (int?)65, (int?)59, (int?)null, (int?)48, (int?)56, (int?)57, (int?)40 }.Select(x=>x.HasValue?x.ToString():null).ToArray();
-        var t2 = new int?[] { (int?)5, (int?)69, (int?)null, (int?)28, (int?)56, (int?)77, (int?)4 }.Select(x => x.HasValue ? x.ToString() : null).ToArray();
-
-        var e = new LineChart()
-        {
-            Type = Shared.ChartComponent.ChartType.Line.ToString().ToLower(),
-            Options = new OptionChart(true, false, new Interaction(false), 0),
-            Data = new DataChart(new[] { "J", "F", "A", "M", "J", "J", "A" }.ToList(), new[]{new DataSetChart(t, "data1",  new[]{ "red" }, BackgroundColor:"rgb(192,75,75)" ),
-                new DataSetChart(t2, "data2",  new[]{ "red" }, BackgroundColor:"rgb(192,75,75)")}.ToArray())
-        };
-        return e;
-
-
-    }
-    public ConfigChart GetConfig2()
-    {
-
-        var t = new[] { new Record(  1961.78,"2/24/2019"), new Record(  1872.54,"2/24/2019"),
-                    new Record(  987.51,"2/12/2019"), new Record(  648.15,"2/12/2019" ),
-                new Record(-2.51,"2/19/2019"), new Record( -2.69,"2/19/2019"),
-                new Record(  -2.74,"2/20/2019"), new Record(  179.58,"2/22/2019")}.ToArray();
-
-        var e = new ScatterChart()
-        {
-
-        };
-        return e;
-
-
-    }
-    public ConfigChart GetConfig3()
-    {
-
-        return null;
-
-
-    }
-
-    public record Record(double? X, string Y);
-}
-
+        <ButtonComponent OnClick="RunModel" Text="Run Model Selected"></ButtonComponent>
+    </div> 
+     <div class="container">
+         <Chart3DComponent  Config="GetConfig()"></Chart3DComponent>
+     </div>
+</div> 

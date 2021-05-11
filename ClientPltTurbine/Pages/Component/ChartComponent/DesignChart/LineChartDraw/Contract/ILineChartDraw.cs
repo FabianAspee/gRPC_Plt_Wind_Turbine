@@ -1,6 +1,6 @@
 ﻿
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
-using ClientPltTurbine.Shared.ChartComponent.ConfigGeneral;
+using ClientPltTurbine.Shared.ChartJsComponent.ConfigGeneral;
 
 namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartDraw.Contract
 {

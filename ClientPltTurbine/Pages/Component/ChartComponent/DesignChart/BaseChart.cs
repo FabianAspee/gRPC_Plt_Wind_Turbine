@@ -1,5 +1,5 @@
 ﻿using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
-using ClientPltTurbine.Shared.ChartComponent.ConfigGeneral;
+using ClientPltTurbine.Shared.ChartJsComponent.ConfigGeneral;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

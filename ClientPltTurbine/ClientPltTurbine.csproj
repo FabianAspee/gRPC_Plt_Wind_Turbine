@@ -37,10 +37,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Pages\Component\TurbineComponent\" />
     <Folder Include="Resources\TempFiles\" />
-    <Folder Include="Shared\ChartComponent\DrawAreaChart\Implementation\" />
-    <Folder Include="Shared\ChartComponent\DrawPieChart\Implementation\" />
+    <Folder Include="Shared\ChartJsComponent\DrawPieChart\Implementation\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
