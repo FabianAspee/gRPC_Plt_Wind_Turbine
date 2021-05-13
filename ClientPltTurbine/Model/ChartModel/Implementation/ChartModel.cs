@@ -96,7 +96,7 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
             NameTurbine = info.NameTurbine,
             IdSensor = info.IdSensor,
             NameSensor = info.NameSensor,
-            Months = info.Period,
+            Days = info.Period,
             QtaGraph = 5,
         };
 

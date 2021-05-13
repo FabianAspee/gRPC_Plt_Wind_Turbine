@@ -211,7 +211,7 @@ namespace PltWindTurbine.Database.Utils
         new ResponseSerieByPeriod(info.NameTurbine, info.NameSensor, JsonSerializer.Serialize(resultSerie), isFinal);
 
         private readonly GetNewValuewWithDate callFunction= (errors, info)=>
-            errors.Count > 1 ? GetDateBetweenValues(errors, info.Months) : errors.Select(val => (val, DateTime.Parse(errors.First().Date).AddMonths(info.Months))).ToList();
+            errors.Count > 1 ? GetDateBetweenValues(errors, info.Days) : errors.Select(val => (val, DateTime.Parse(errors.First().Date).AddDays(info.Days))).ToList();
 
         private delegate IAsyncEnumerable<ILoadInfoTurbine> Sequence(); 
 
@@ -326,29 +326,28 @@ namespace PltWindTurbine.Database.Utils
         {
             return series.first.Value.HasValue && series.second.Value.HasValue ? (Math.Abs(series.first.Value.Value - series.second.Value.Value) > 180? 
                 new AngleSerieTurbine(IdAngleSensor, series.first.Id_Turbine, series.first.Date, TotalGrade- Math.Abs(series.first.Value.Value - series.second.Value.Value)) :
-                new AngleSerieTurbine(IdAngleSensor, series.first.Id_Turbine, series.first.Date, series.first.Value.Value - series.second.Value.Value)) :
+                new AngleSerieTurbine(IdAngleSensor, series.first.Id_Turbine, series.first.Date, Math.Abs(series.first.Value.Value - series.second.Value.Value))) :
                   new AngleSerieTurbine(IdAngleSensor, series.first.Id_Turbine, series.first.Date, double.NaN);
         }
         private List<AngleSerieTurbine> SelectAndCalculateAngleSerie(int idTurbine)
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
-            var (first, second) = connectionTo.Value_Sensor_Turbine.Where(value => value.Id_Sensor == 2 && value.Id_Sensor == 4 && value.Id_Turbine == idTurbine).ToList()
+            var (first, second) = connectionTo.Value_Sensor_Turbine.Where(value => (value.Id_Sensor == 2 || value.Id_Sensor == 4) && value.Id_Turbine == idTurbine).ToList()
                 .Partition(values=>values.Id_Sensor==2);
             return first.OrderBy(x => x.Date).Zip(second.OrderBy(x => x.Date)).Select(CalculateAngleserie).ToList();
         }
-        private Task CalculateAngleSerieAllTurbines() => Task.Run(() =>
+        private Task CalculateAngleSerieAllTurbines() => Task.Run(async () =>
         { 
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase(); 
             if (connectionTo.Own_Serie_Turbine.Where(idTurbine=>idTurbine.Id==IdAngleSensor && !idTurbine.Is_Ok).Any())
             {
                 using var transaction = connectionTo.Database.BeginTransaction();
-                using var command = connectionTo.Database.GetDbConnection().CreateCommand();
                
                 var tasks = connectionTo.Wind_Turbine_Info.Select(turbine => turbine.Id).ToList().Select(idTurbine =>
                     Task.Run(() => SelectAndCalculateAngleSerie(idTurbine))
                 ).ToArray();
-                Task.WhenAll(tasks).ContinueWith(result =>result.Result.ToList().ForEach(resultToInsert=> {
-                    GetDbCommandOwnSeries(command, resultToInsert, "value_own_serie_turbine");
+                await Task.WhenAll(tasks).ContinueWith(result =>result.Result.ToList().ForEach(resultToInsert=> {
+                    GetDbCommandOwnSeries(connectionTo, resultToInsert, "value_own_serie_turbine");
                 }), TaskContinuationOptions.OnlyOnRanToCompletion);
                 var sensor = connectionTo.Own_Serie_Turbine.Where(idTurbine => idTurbine.Id == IdAngleSensor).First();
                 sensor.Is_Ok = true;
@@ -356,8 +355,9 @@ namespace PltWindTurbine.Database.Utils
             } 
         });
 
-        private static void GetDbCommandOwnSeries(DbCommand command,List<AngleSerieTurbine> angleSerieTurbine, string nameTable)
-        {  
+        private static void GetDbCommandOwnSeries(ConnectionToDatabase connectionTo, List<AngleSerieTurbine> angleSerieTurbine, string nameTable)
+        {
+            using var command = connectionTo.Database.GetDbConnection().CreateCommand();
             var columns = new List<string>() { "id_turbine","id_own_serie","value","date" };
             var columnsValues = columns.Select(name => $"${name}");
             command.CommandText = $@"INSERT INTO {nameTable}({string.Join(",", columns)})  VALUES ({string.Join(",", columnsValues)})";
@@ -376,9 +376,7 @@ namespace PltWindTurbine.Database.Utils
                 command.ExecuteNonQuery();
             });
              
-        }
-
-        });
+        } 
 
         public virtual async Task SelectWarningAllTurbines(int period)
         {

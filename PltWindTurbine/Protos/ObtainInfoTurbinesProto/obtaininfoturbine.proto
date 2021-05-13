@@ -108,7 +108,7 @@ message OnlySerieByOwnSeriesWithWarning{
 }
 
 message OnlySerieByPeriodAndCode{
-	int32 months =1;
+	int32 days =1;
 	int32 qtaGraph=2;
 	int32 code = 3;
 	int32 idTurbine = 4;
