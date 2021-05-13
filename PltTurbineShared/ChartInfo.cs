@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 namespace PltTurbineShared
 {
     [Table("ChartInfos")]
-    public record ChartInfo(int Id, string Value) : IInformationDropDrownComponent;
+    public record ChartInfo(int Id, string Value, string CustomId) : IInformationDropDrownComponent;
     
 }

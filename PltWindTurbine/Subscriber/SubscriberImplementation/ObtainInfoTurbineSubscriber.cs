@@ -27,16 +27,28 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
         public Task<List<(int, string)>> GetInfoChart() => Task.Run(() =>database.GetNameChart());
 
         public Task GetInforTurbineAndSensor()=> Task.Run(() =>
-            {  
-                database.SelectAllSensorAndTurbine();
-            });
+        {  
+            database.SelectAllSensorAndTurbine();
+        });
         
 
         public Task GetInfoTurbine(OnlySerieByPeriodAndCode info)=>Task.Run(() =>
-           {
-               SendEventLoadInfo(new StatusEventInfoTurbine(info.NameTurbine, Status.InProgress, "Init process search series")); 
-                database.SelectSerieBySensorByTurbineByError(info); 
-           });
+        {
+            SendEventLoadInfo(new StatusEventInfoTurbine(info.NameTurbine, Status.InProgress, "Init process search series")); 
+            database.SelectSerieBySensorByTurbineByError(info); 
+        });
+
+        public Task GetInfoTurbineOwnSerie(OnlySerieByOwnSeries info) => Task.Run(() =>
+        {
+            SendEventLoadInfo(new StatusEventInfoTurbine(info.Info.NameTurbine, Status.InProgress, "Init process search series"));
+            database.SelectOwnSerieBySensorByTurbineByError(info.Info);
+        });
+        
+        public Task GetInfoTurbineOwnSerieWithWarning(OnlySerieByOwnSeriesWithWarning info) => Task.Run(() =>
+        {
+            SendEventLoadInfo(new StatusEventInfoTurbine(info.Info.NameTurbine, Status.InProgress, "Init process search series"));
+            database.SelectOwnSerieBySensorByTurbineByErrorWithWarning(info.Info);
+        });
 
         public Task GetInfoTurbineWithWarning(OnlySerieByPeriodAndCodeWithWarning info) => Task.Run(() =>
         {

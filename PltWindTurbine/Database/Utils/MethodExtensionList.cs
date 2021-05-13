@@ -13,13 +13,16 @@ namespace PltWindTurbine.Database.Utils
             {
                 yield return items[i];
             }
-        } 
-        public static void Deconstruct<T>(this List<T> list, out T head, out List<T> tail)
+        }
+        public static (IList<T> first, IList<T> second) Partition<T>(this IList<T> items, Func<T,bool> func)=> (items.Where(func).ToList(),items.Where(x=>!func(x)).ToList());
+             
+        
+        public static void Deconstruct<T>(this IList<T> list, out T head, out IList<T> tail)
         {
             head = list.FirstOrDefault();
             tail = new List<T>(list.Skip(1));
         }
-        public static void Deconstruct<T>(this List<T> list, out T head, out T head2, out List<T> tail)
+        public static void Deconstruct<T>(this IList<T> list, out T head, out T head2, out IList<T> tail)
         {
             head = list.FirstOrDefault();
             head2 = list.Skip(1).FirstOrDefault();

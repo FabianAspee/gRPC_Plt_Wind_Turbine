@@ -113,6 +113,12 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
                     case CodeAndPeriodRequest.ActionOneofCase.Msg3:
                         await obtainInfoTurbinesSubscriber.GetInfoTurbineWithWarning(action.Msg3);
                         break;
+                    case CodeAndPeriodRequest.ActionOneofCase.Msg4:
+                        await obtainInfoTurbinesSubscriber.GetInfoTurbineOwnSerie(action.Msg4);
+                        break;
+                    case CodeAndPeriodRequest.ActionOneofCase.Msg5:
+                        await obtainInfoTurbinesSubscriber.GetInfoTurbineOwnSerieWithWarning(action.Msg5);
+                        break;
                     default:
                         _logger.LogWarning($"Unknown Action '{action.ActionCase}'.");
                         break;
@@ -130,8 +136,7 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
                 else
                 { 
                     var response = GetNameTurbineAndSensor(infoTurbine); 
-                    await stream.WriteAsync(response);
-
+                    await stream.WriteAsync(response); 
                 }
             }
             catch (Exception e)
@@ -161,7 +166,7 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
         private static AllInfoSensor CreateAllSensor(AllSensorInfo allSensorInfo)
         {
             var allSensor = new AllInfoSensor();
-            allSensor.Msg.AddRange(allSensorInfo.SensorInfos.Select(sensor => new InfoSensor { IdSensor=sensor.IdSensor,NameSensor=sensor.NameSensor}).ToList());
+            allSensor.Msg.AddRange(allSensorInfo.SensorInfos.Select(sensor => new InfoSensor { IdSensor=sensor.IdSensor,NameSensor=sensor.NameSensor, IsOwn=sensor.IsOwnSensor}).ToList());
             return allSensor;
         }
 

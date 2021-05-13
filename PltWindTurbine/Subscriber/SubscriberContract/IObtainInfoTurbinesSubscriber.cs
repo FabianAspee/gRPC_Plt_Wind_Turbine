@@ -7,11 +7,13 @@ namespace PltWindTurbine.Subscriber.SubscriberContract
 {
     public interface IObtainInfoTurbinesSubscriber : ISubscriber
     {
-        public Task GetInfoTurbine(OnlySerieByPeriodAndCode info);
-        public Task GetInfoTurbineWithWarning(OnlySerieByPeriodAndCodeWithWarning info);
-        public Task SerieByPeriodWithStandardDeviation(SeriePeriodByCodeWithStandarDeviation info);
-        public Task GetInforTurbineAndSensor();
-        public Task<List<string>> GetErrorByTurbine(int id);
-        public Task<List<(int,string)>> GetInfoChart();
+        Task GetInfoTurbine(OnlySerieByPeriodAndCode info);
+        Task GetInfoTurbineWithWarning(OnlySerieByPeriodAndCodeWithWarning info);
+        Task SerieByPeriodWithStandardDeviation(SeriePeriodByCodeWithStandarDeviation info);
+        Task GetInforTurbineAndSensor();
+        Task<List<string>> GetErrorByTurbine(int id);
+        Task<List<(int,string)>> GetInfoChart();
+        Task GetInfoTurbineOwnSerie(OnlySerieByOwnSeries info);
+        Task GetInfoTurbineOwnSerieWithWarning(OnlySerieByOwnSeriesWithWarning info);
     }
 }

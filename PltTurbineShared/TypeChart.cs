@@ -3,6 +3,6 @@
 namespace PltTurbineShared
 {
     [Table("TypeCharts")]
-    public record TypeChart(int Id, string Value) : IInformationDropDrownComponent;
+    public record TypeChart(int Id, string Value, string CustomId) : IInformationDropDrownComponent;
     
 }

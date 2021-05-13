@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace PltWindTurbine.Database.DatabaseContract
 { 
     interface IOperationTurbineDatabase
-    {
+    { 
         public abstract Dictionary<string, List<string>> SelectSerieTurbineByError();
         public abstract void SelectSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info);
         public abstract Dictionary<string, List<string>> SelectAllSerieBySensorByTurbineByError();
@@ -32,6 +32,8 @@ namespace PltWindTurbine.Database.DatabaseContract
         public DataTable SelectValueSensorByTurbine();
         public DataTable SelectPivotValueSensorByTurbine();
         public DataTable SelectErrorTableByTurbine();
-        public DataTable SelectErrorTurbineByCondition(); 
+        public DataTable SelectErrorTurbineByCondition();
+        void SelectOwnSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info);
+        void SelectOwnSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info);
     }
 }

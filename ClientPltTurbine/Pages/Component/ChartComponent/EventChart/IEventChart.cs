@@ -14,7 +14,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.EventChart
     public record ResponseSerieByPeriodWithStandardDeviation(ResponseSerieByPeriod InfoSerie, double StandardDeviation) : IEventComponent;
     public record TurbineInfo(int IdTurbine, string NameTurbine) : IEventComponent;
     public record AllTurbineInfo(List<TurbineInfo> TurbineInfos) : IEventComponent;
-    public record SensorInfo(int IdSensor, string NameSensor) : IEventComponent;
+    public record SensorInfo(int IdSensor, string NameSensor, bool IsOwnSensor) : IEventComponent;
     public record AllSensorInfo(List<SensorInfo> SensorInfos) : IEventComponent;
 
 }

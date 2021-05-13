@@ -1,22 +1,26 @@
-﻿@page "/charts-turbines"
+﻿   @page "/charts-turbines"
 @inject IToastService toastService
 <h1>Graphic Turbine</h1>
 <p>Current Turbines: @ChartSingleton.NumTurbine</p>
 <div class="row g-3">
-    <div class="col-auto">
+    <div class="col-auto"> 
         <SelectComponent Values="ChartInfo" Text="(Choose Chart)" ValueChanged="@ChangeInfoChart" Warning="Chart is required" />
     </div>
-    <div class="col-auto">
+    <div class="col-auto"> 
         <SelectComponent Values="Turbines" Text="(Choose Turbine)" ValueChanged="@ChangeInfoTurbine" Warning="Turbine is required" />
     </div>
-    <div class="col-auto">
-        <SelectComponent Values="Sensors" Text="(Choose Sensor)" ValueChanged="@ChangeInfoSensor" Warning="Sensor is required" />
-    </div>
-    <div class="col-auto">
+    @if (IsWarningChart)
+    {
+        <div class="col-auto"> 
+            <SelectComponent Values="Sensors" Text="(Choose Sensor)" ValueChanged="@ChangeInfoSensor" Warning="Sensor is required" />
+        </div>
+    } 
+    <div class="col-auto"> 
         <SelectComponent Values="ErrorByTurbine" Text="(Choose Error)" ValueChanged="@ChangeInfoError" Warning="Error is required" />
     </div>
     <div class="col-auto">
-        <InputComponent Id="error" Type="number" ValueChanged="@ChangeInfoPeriod" PlaceHolder="Enter Period"></InputComponent>
+        <label >@text</label>
+        <InputComponent Id="error" Type="number" ValueChanged="@ChangeInfoPeriod"  PlaceHolder="Enter Period"></InputComponent>
     </div>
     <div class="col-auto">
         <ButtonComponent OnClick="CallChartData" Text="Creat Chart"></ButtonComponent>

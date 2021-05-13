@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 namespace PltTurbineShared
 {
     [Table("Errors")]
-    public record ErrorTurbine(int Id, string Value) : IInformationDropDrownComponent;
+    public record ErrorTurbine(int Id, string Value, string CustomId) : IInformationDropDrownComponent;
     
 }

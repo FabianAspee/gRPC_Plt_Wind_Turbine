@@ -36,7 +36,17 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
             };
             return _duplexStreamObtainInfo.RequestStream.WriteAsync(SerieByPeriod);
         }
-        
+        public Task GetAllInfoTurbineForChartOwnSeries(InfoChartRecord info)
+        {
+            var SerieByPeriod = new CodeAndPeriodRequest()
+            {
+                Msg4 = new OnlySerieByOwnSeries()
+                {
+                    Info = CreatePeriodAndCode(info)
+                }
+            };
+            return _duplexStreamObtainInfo.RequestStream.WriteAsync(SerieByPeriod);
+        }
         public Task GetAllInfoTurbineForChartWithWarning(InfoChartRecord info)
         {
             var SerieByPeriod = new CodeAndPeriodRequest()
@@ -48,7 +58,17 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
             };
             return _duplexStreamObtainInfo.RequestStream.WriteAsync(SerieByPeriod);
         }
-
+        public Task GetAllInfoTurbineForChartWithWarningOwnSeries(InfoChartRecord info)
+        {
+            var SerieByPeriod = new CodeAndPeriodRequest()
+            {
+                Msg5 = new OnlySerieByOwnSeriesWithWarning()
+                {
+                    Info = CreatePeriodAndCode(info)
+                }
+            };
+            return _duplexStreamObtainInfo.RequestStream.WriteAsync(SerieByPeriod);
+        }
         public Task GetAllNameTurbineAndSensor()
         {
             return Task.Run(async () =>
@@ -203,7 +223,7 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
                         SendEventInfoTurbineAndSensor(new AllTurbineInfo(turbineSensor.Msg4.Msg.Select(turbine => new TurbineInfo(turbine.IdTurbine,turbine.NameTurbine)).ToList()));
                         break;
                     case ResponseNameTurbineAndSensor.ActionOneofCase.Msg3:
-                        SendEventInfoTurbineAndSensor(new AllSensorInfo(turbineSensor.Msg3.Msg.Select(sensor=>new SensorInfo(sensor.IdSensor, sensor.NameSensor)).ToList()));
+                        SendEventInfoTurbineAndSensor(new AllSensorInfo(turbineSensor.Msg3.Msg.Select(sensor=>new SensorInfo(sensor.IdSensor, sensor.NameSensor,sensor.IsOwn)).ToList()));
                         break;
                     default:
                         SendEventErrorLoadInfoTurbine($"Unknown Action '{turbineSensor.ActionCase}'.");

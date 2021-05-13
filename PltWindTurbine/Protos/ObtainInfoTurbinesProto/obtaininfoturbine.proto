@@ -48,6 +48,8 @@ message CodeAndPeriodRequest{
 		OnlySerieByPeriodAndCode msg1 =1;
 		SeriePeriodByCodeWithStandarDeviation msg2=2;
 		OnlySerieByPeriodAndCodeWithWarning msg3 = 3;
+		OnlySerieByOwnSeries msg4 = 4;
+		OnlySerieByOwnSeriesWithWarning msg5 = 5;
 	}
 }
 
@@ -80,6 +82,7 @@ message AllInfoTurbine{
 message InfoSensor{
 	int32 idSensor=1;
 	string nameSensor=2;
+	bool isOwn=3;
 }
 
 message InfoTurbine{
@@ -93,6 +96,14 @@ message SeriePeriodByCodeWithStandarDeviation{
  
 
 message OnlySerieByPeriodAndCodeWithWarning{
+	OnlySerieByPeriodAndCode info=1;
+}
+
+message OnlySerieByOwnSeries{
+	OnlySerieByPeriodAndCode info=1;
+}
+
+message OnlySerieByOwnSeriesWithWarning{
 	OnlySerieByPeriodAndCode info=1;
 }
 

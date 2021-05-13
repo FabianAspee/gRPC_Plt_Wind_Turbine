@@ -16,12 +16,12 @@ namespace ClientPltTurbine.Shared.SelectComponent
         [Parameter]
         public IReadOnlyList<IInformationDropDrownComponent> Values { get; set; } 
         public IReadOnlyList<IInformationDropDrownComponent> ValuesView { get; set; }  
-        private int Value { get; set; }
+        private string Value { get; set; }
         [Parameter]
-        public EventCallback<int> ValueChanged { get; set; } 
+        public EventCallback<string> ValueChanged { get; set; } 
         private Task OnValueChanged(ChangeEventArgs e)
         {
-            Value = Convert.ToInt32(e.Value); 
+            Value = e.Value.ToString();
             return ValueChanged.InvokeAsync(Value);
         } 
         

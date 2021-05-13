@@ -60,14 +60,14 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
             }),
             ResponseSerieByPeriodWithStandardDeviation status => Task.Run(() => Service.ShowError(status.StandardDeviation.ToString())),
             AllSensorInfo sensor => Task.Run(() => { 
-                foreach (var mySensor in sensor.SensorInfos.Select(sensor => new Sensor(sensor.IdSensor, sensor.NameSensor))){
+                foreach (var mySensor in sensor.SensorInfos.Select(sensor => new Sensor(sensor.IdSensor, sensor.NameSensor,$"{sensor.IdSensor},{sensor.IsOwnSensor}", sensor.IsOwnSensor))){
                     Sensors.SendAsync(mySensor);
                 }
                 isCompleteS.SetResult(true);
             }),
             AllTurbineInfo turbine => Task.Run(() =>
             { 
-                foreach (var myTurbine in turbine.TurbineInfos.Select(turbine => new Turbine(turbine.IdTurbine, turbine.NameTurbine)))
+                foreach (var myTurbine in turbine.TurbineInfos.Select(turbine => new Turbine(turbine.IdTurbine, turbine.NameTurbine, turbine.IdTurbine.ToString())))
                 {
                     Turbines.SendAsync(myTurbine);
                 }

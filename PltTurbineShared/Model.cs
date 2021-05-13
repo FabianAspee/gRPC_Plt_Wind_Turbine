@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace PltTurbineShared
 {
-    public record Model(int Id, string Value):IInformationDropDrownComponent;
+    public record Model(int Id, string Value, string CustomId) :IInformationDropDrownComponent;
 }
