@@ -378,5 +378,21 @@ namespace PltWindTurbine.Database.Utils
              
         }
 
+        });
+
+        public virtual async Task SelectWarningAllTurbines(int period)
+        {
+            using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
+            var allTurbines = await connectionTo.Wind_Turbine_Info.Select(turbine=> new TurbineInfo(turbine.Id,turbine.Turbine_Name)).ToListAsync();
+            await foreach(var infoTurbine in SelectWarningAllTurbineByPeriod(allTurbines))
+            {
+
+            }
+        }
+
+        private IAsyncEnumerable<object> SelectWarningAllTurbineByPeriod(List<TurbineInfo> allTurbines)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

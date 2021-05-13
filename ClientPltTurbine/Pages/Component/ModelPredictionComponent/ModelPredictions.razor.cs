@@ -1,4 +1,4 @@
-﻿using ClientPltTurbine.Shared.Chart3DComponent.ConfigGeneral;
+using ClientPltTurbine.Shared.Chart3DComponent.ConfigGeneral;
 using ClientPltTurbine.Shared.Chart3DComponent.DrawCalendarChart.Implementation;
 using System;
 using System.Collections.Generic;
@@ -21,4 +21,4 @@ namespace ClientPltTurbine.Pages.Component.ModelPredictionComponent
             return new CalendarChart();
         } 
     }
-}
+} 

@@ -1,4 +1,4 @@
-﻿@page "/modelpredict"
+@page "/modelpredict"
 @inject ModelPrediction ModelPrediction 
 <h3>ModelPredictions</h3>
 
@@ -10,7 +10,8 @@
     <div class="col-auto">
         <ButtonComponent OnClick="RunModel" Text="Run Model Selected"></ButtonComponent>
     </div> 
-     <div class="container">
-         <Chart3DComponent  Config="GetConfig()"></Chart3DComponent>
-     </div>
+     
 </div> 
+<div class="container" id="status">
+    <Chart3DComponent Config="GetConfig()"></Chart3DComponent>
+</div>

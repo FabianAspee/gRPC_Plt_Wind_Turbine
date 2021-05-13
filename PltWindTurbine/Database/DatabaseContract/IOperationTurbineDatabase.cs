@@ -35,5 +35,7 @@ namespace PltWindTurbine.Database.DatabaseContract
         public DataTable SelectErrorTurbineByCondition();
         void SelectOwnSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info);
         void SelectOwnSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info);
+
+        public Task SelectWarningAllTurbines(int period);
     }
 }

@@ -16,7 +16,7 @@ namespace ClientPltTurbine.Pages.Component.LoadFileComponent
     public partial class LoadFiles
     {
         private int totalFile = 0;
-        private Dictionary<string, IBrowserFile> myfiles = new Dictionary<string, IBrowserFile>();
+        private readonly Dictionary<string, IBrowserFile> myfiles = new();
         [Inject]
         protected IToastService Service { get; set; }
         protected override async Task OnInitializedAsync()

@@ -1,4 +1,4 @@
-﻿using ClientPltTurbine.Pages.Component.ModelPredictionComponent.EventModelPrediction;
+using ClientPltTurbine.Pages.Component.ModelPredictionComponent.EventModelPrediction;
 using System.Collections.Generic;
 using System.Threading.Tasks; 
 
