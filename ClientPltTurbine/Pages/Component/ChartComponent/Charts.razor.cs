@@ -18,8 +18,8 @@ using System.Threading.Tasks;
 namespace ClientPltTurbine.Pages.Component.ChartComponent
 {
     public partial class Charts
-    { 
-        private ChartSingleton ChartSingleton = ChartSingleton.Instace; 
+    {
+        private readonly ChartSingleton ChartSingleton = new();
         private readonly IList<IEventComponent> infoChart = new List<IEventComponent>(); 
         private readonly ILineChartDraw lineChartDraw = LineChartDraw.Instance;
         private readonly IScatterChartDraw scatterChartDraw = ScatterChartDraw.Instance;

@@ -164,7 +164,7 @@ namespace PltWindTurbine.Database.Utils
             {
                 (Value_Sensor_Error head, Value_Sensor_Error head2, IList<Value_Sensor_Error> tail) =>_GetDateBetweenValues(tail.Prepend(head2).ToList(), valueAndDates.Append((head,DateTime.Parse(head2.Date).AddSeconds(5))).ToList()),
                 (Value_Sensor_Error head, Value_Sensor_Error head2, _)=> _GetDateBetweenValues(new List<Value_Sensor_Error>() { head2}, valueAndDates.Append((head, DateTime.Parse(head2.Date).AddSeconds(5))).ToList()),
-                (Value_Sensor_Error head, _) => valueAndDates.Append((head, DateTime.Parse(head.Date).AddMonths(period))).ToList()
+                (Value_Sensor_Error head, _) => valueAndDates.Append((head, DateTime.Parse(head.Date).AddDays(period))).ToList()
             };
 
             return _GetDateBetweenValues(values, new List<(Value_Sensor_Error, DateTime)>());
@@ -351,6 +351,7 @@ namespace PltWindTurbine.Database.Utils
                 }), TaskContinuationOptions.OnlyOnRanToCompletion);
                 var sensor = connectionTo.Own_Serie_Turbine.Where(idTurbine => idTurbine.Id == IdAngleSensor).First();
                 sensor.Is_Ok = true;
+                connectionTo.SaveChanges();
                 transaction.Commit();
             } 
         });
