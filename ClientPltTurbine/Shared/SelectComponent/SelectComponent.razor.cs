@@ -10,6 +10,8 @@ namespace ClientPltTurbine.Shared.SelectComponent
     public partial class SelectComponent : ComponentBase
     {
         [Parameter]
+        public string Id { get; set;} = string.Empty;
+        [Parameter]
         public string Warning { get; set; }
         [Parameter]
         public string Text { get; set; } 
@@ -21,7 +23,7 @@ namespace ClientPltTurbine.Shared.SelectComponent
         public EventCallback<string> ValueChanged { get; set; } 
         private Task OnValueChanged(ChangeEventArgs e)
         {
-            Value = e.Value.ToString();
+            Value = Id==string.Empty? e.Value.ToString():string.Concat(Id,",",e.Value.ToString());
             return ValueChanged.InvokeAsync(Value);
         } 
         

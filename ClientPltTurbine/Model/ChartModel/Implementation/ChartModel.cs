@@ -16,18 +16,16 @@ using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Model.ChartModel.Implementation
 {
-    public class ChartModel : BaseModel, IChartModel, IDisposable
+    public class ChartModel : CommonMethodModel, IChartModel, IDisposable
     {
         private ObtainInfoTurbines.ObtainInfoTurbinesClient _clientChart;
         private readonly AsyncDuplexStreamingCall<CodeAndPeriodRequest, CodeAndPeriodResponse> _duplexStreamObtainInfo;
         private readonly Dictionary<string, List<IParameterToChart>> infoChartByTurbine = new();
         public ChartModel()
-        {
-            RecreateClient();
+        { 
              _duplexStreamObtainInfo = _clientChart.InfoFailureTurbine();
             _ = HandleResponsesObtainInfoAsync();
         } 
-        private void RecreateClient() =>_clientChart = new ObtainInfoTurbines.ObtainInfoTurbinesClient(channel); 
         public Task GetAllInfoTurbineForChart(InfoChartRecord info)
         {
             var SerieByPeriod = new CodeAndPeriodRequest()
@@ -68,21 +66,7 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
                 }
             };
             return _duplexStreamObtainInfo.RequestStream.WriteAsync(SerieByPeriod);
-        }
-        public Task GetAllNameTurbineAndSensor()
-        {
-            return Task.Run(async () =>
-            {
-                RecreateClient();
-                using var call = _clientChart.GetNameTurbineAndSensor(new WithoutMessage());
-                while (await call.ResponseStream.MoveNext())
-                {
-                    ResponseNameTurbineAndSensor response = call.ResponseStream.Current;
-                    HandleResponsesInfoTurbineSensorAsync(response);
-                }
-            });
-        }
-
+        } 
         public Task<(int,List<string>)> GetErroByTurbine(int idTurbine)=>_clientChart.GetErrorByTurbineAsync(new ErrorByTurbineRequest { IdTurbine = idTurbine })
             .ResponseAsync.ContinueWith(response=>(response.Result.IdTurbine, response.Result.Errors.ToList()),TaskContinuationOptions.OnlyOnRanToCompletion);
 

@@ -1,28 +1,20 @@
 ﻿using Blazored.Toast.Services;
 using ClientPltTurbine.Controllers.ChartController;
 using ClientPltTurbine.EventContainer;
-using ClientPltTurbine.EventContainer.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing; 
-using System.Linq;
-using System.Threading.Tasks; 
-using PltTurbineShared;
+using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using ClientPltTurbine.Pages.Component.UtilComponent;
+using PltTurbineShared;
 
 namespace ClientPltTurbine.Pages.Component.ChartComponent
 {
-    class ChartSingleton:EventHandlerSystem, IEventChart
+    class ChartSingleton: CommonMethod, IEventChart
     {
-        public int NumTurbine;
-        private BufferBlock<Sensor> Sensors;
-        private BufferBlock<Turbine> Turbines;
         private BufferBlock<IEventComponent> InfoTurbineForChart;
         private BufferBlock<ResponseSerieByPeriodWithStandardDeviation> InfoTurbineForChartWithSTD;
-        private TaskCompletionSource<bool> isCompleteS;
-        private TaskCompletionSource<bool> isCompleteT;
         private TaskCompletionSource<bool> isCompleteStd;
         private TaskCompletionSource<bool> isCompleteChart;
         public IToastService Service;
@@ -58,38 +50,19 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 Service.ShowSuccess($"Load {status.Record.RecordLinearChart.NameTurbine}");
             }),
             ResponseSerieByPeriodWithStandardDeviation status => Task.Run(() => Service.ShowError(status.StandardDeviation.ToString())),
-            AllSensorInfo sensor => Task.Run(() => { 
-                foreach (var mySensor in sensor.SensorInfos.Select(sensor => new Sensor(sensor.IdSensor, sensor.NameSensor,$"{sensor.IdSensor},{sensor.IsOwnSensor}", sensor.IsOwnSensor))){
-                    Sensors.SendAsync(mySensor);
-                }
-                isCompleteS.SetResult(true);
-            }),
-            AllTurbineInfo turbine => Task.Run(() =>
-            { 
-                foreach (var myTurbine in turbine.TurbineInfos.Select(turbine => new Turbine(turbine.IdTurbine, turbine.NameTurbine, turbine.IdTurbine.ToString())))
-                {
-                    Turbines.SendAsync(myTurbine);
-                }
-                isCompleteT.SetResult(true);
-                NumTurbine = turbine.TurbineInfos.Count;
-            }),
+            AllSensorInfo sensor =>AllSensorInfo(sensor),
+            AllTurbineInfo turbine => AllTurbineInfo(turbine),
             _ => Task.Run(() => Service.ShowError("ERROR"))
         };
-        public async IAsyncEnumerable<Sensor> GetSensor()
+        public new async IAsyncEnumerable<Sensor> GetSensor()
         {
-            await isCompleteS.Task;
-            while(Sensors.Count>0)
-            { 
-                yield return Sensors.Receive();
-            } 
+            await foreach (var value in base.GetSensor())
+                yield return value;
         }
-        public async IAsyncEnumerable<Turbine> GetTurbine()
+        public new async IAsyncEnumerable<Turbine> GetTurbine()
         {
-            await isCompleteT.Task;
-            while (Turbines.Count > 0)
-            {
-                yield return Turbines.Receive();
-            }
+            await foreach (var value in base.GetTurbine())
+                yield return value;
         }
         public async IAsyncEnumerable<IEventComponent> GetInfoChart()
         {
@@ -117,44 +90,14 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
             InfoTurbineForChart = new();
             await CallTypeChart(info, type).ConfigureAwait(false);
         }
-        private void InitliazidedComponent()
-        { 
-            isCompleteS = new();
-            isCompleteT = new();
-            Sensors = new();
-            Turbines = new();
-        }
         public async Task CallTurbinesAndSensor()
         {
             InitliazidedComponent();
             await Controller.CallAllTurbinesAndSensors().ConfigureAwait(false);
         }
+        
         public async Task<(int, List<string>)> CallErrorByTurbine(int idTurbine)=> await Controller.GetErrorByTurbine(idTurbine).ConfigureAwait(false);
         
-    }
-     public static class IListExtensions
-    {
-        // Basically a Polyfill since we now expose IList instead of List
-        // which is better but IList doesn't have AddRange
-        public static void AddRange<T>(this IList<T> list, IEnumerable<T> items)
-        {
-            if (list == null)
-                throw new ArgumentNullException(nameof(list));
-
-            if (items == null)
-                throw new ArgumentNullException(nameof(items));
-
-            if (list is List<T> asList)
-            {
-                asList.AddRange(items);
-            }
-            else
-            {
-                foreach (T item in items)
-                {
-                    list.Add(item);
-                }
-            }
-        }
-    }
+    } 
+      
 }

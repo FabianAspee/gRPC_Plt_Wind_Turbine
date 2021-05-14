@@ -1,0 +1,20 @@
+﻿@page "/maintenance-turbines"
+@inject IToastService toastService
+<h3>Maintenance Turbine</h3>
+
+@foreach (var id in Ids)
+{
+    <div class="row g-3"> 
+        <div class="col-auto">
+            <SelectComponent Id=id Values="Turbines" Text="(Choose Turbine)" ValueChanged="@ChangeInfoTurbine" Warning="Turbine is required" />
+        </div>
+        <div class="col-auto">
+            <InputDateComponent Id=id ValueChanged="@ChangeInfoPeriod" Value=@DateTime.Now.ToString("yyyy-MM-dd")></InputDateComponent>
+        </div>
+    </div>
+}
+
+<div class="col-auto">
+    <ButtonComponent OnClick="AddRow" Text="Add Row"></ButtonComponent>
+    <ButtonComponent OnClick="SaveMaintenanceDate" Text="Save Maintenance Date"></ButtonComponent>
+</div>

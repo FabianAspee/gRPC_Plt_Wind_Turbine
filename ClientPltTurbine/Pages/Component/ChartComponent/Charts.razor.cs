@@ -8,6 +8,7 @@ using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.RadarChartDraw
 using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterChartDraw.Implementation;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
+using ClientPltTurbine.Pages.Component.UtilComponent;
 using ClientPltTurbine.Shared.ChartJsComponent.ConfigGeneral;
 using PltTurbineShared;
 using System;
@@ -17,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Pages.Component.ChartComponent
 {
-    public partial class Charts
+    public partial class Charts 
     {
         private readonly ChartSingleton ChartSingleton = new();
         private readonly IList<IEventComponent> infoChart = new List<IEventComponent>(); 

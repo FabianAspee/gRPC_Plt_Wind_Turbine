@@ -10,7 +10,7 @@ namespace ClientPltTurbine.Controllers.ChartController
     {
         private readonly IChartModel ChartModel = new ChartModel();
          
-        public Task CallAllTurbinesAndSensors()=>ChartModel.GetAllNameTurbineAndSensor(); 
+        public Task CallAllTurbinesAndSensors()=>GetAllNameTurbineAndSensor(); 
 
         public Task ChartAllTurbines(InfoChartRecord info) =>
             info.IsOwn? ChartModel.GetAllInfoTurbineForChartOwnSeries(info) :ChartModel.GetAllInfoTurbineForChart(info);
