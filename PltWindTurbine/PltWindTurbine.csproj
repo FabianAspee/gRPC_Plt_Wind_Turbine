@@ -25,6 +25,7 @@
 		<Protobuf Include="Protos\MetricCalculusProto\metriccalculus.proto" GrpcServices="Server" />
 		<Protobuf Include="Protos\ViewFailuresProto\viewfailure.proto" GrpcServices="Server" />
 		<Protobuf Include="Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\MaintenanceProto\maintenance.proto" GrpcServices="Server" />
     </ItemGroup>
 
 </Project>

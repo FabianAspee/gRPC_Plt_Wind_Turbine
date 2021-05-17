@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option csharp_namespace = "PltWindTurbine.Protos.MaintenanceProto";
+package maintenance;
+
+service Maintenances {
+
+  rpc SaveMaintenanceTurbines(stream MaintenanceTurbinesRequest) returns (stream MaintenanceTurbinesResponse); 
+}
+
+message MaintenanceTurbinesRequest{
+  TurbineInfoMaintenance msg1=1;
+} 
+message MaintenanceTurbinesResponse {
+  string name = 1;
+  Status status = 2;
+  string description = 3;
+}
+
+message TurbineInfoMaintenance{
+	int32 idTurbine = 1;
+	string date = 2;
+}
+enum Status {
+  PENDING = 0;
+  IN_PROGRESS = 1;
+  SUCCESS = 2;
+  FAILED = 3;
+}

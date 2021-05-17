@@ -20,7 +20,7 @@ package obtaininfoturbine;
 service ObtainInfoTurbines {
  
   rpc InfoFailureTurbine(stream CodeAndPeriodRequest) returns (stream CodeAndPeriodResponse);
-  rpc GetNameTurbineAndSensor(WithoutMessage) returns (stream ResponseNameTurbineAndSensor);
+  rpc GetNameTurbineAndSensor(stream TurbineOrSensor) returns (stream ResponseNameTurbineAndSensor);
   rpc GetChartSystem(WithoutMessage) returns (ChartSystemResponse);
   rpc GetErrorByTurbine(ErrorByTurbineRequest) returns (ErrorByTurbineResponse);
 }
@@ -68,6 +68,17 @@ message ResponseNameTurbineAndSensor{
 		AllInfoTurbine msg4= 4;
 	}
 }
+
+message TurbineOrSensor{
+	oneof Action{
+		Turbine msg1=1;
+		Sensor msg2=2;
+	}
+}
+
+message Turbine{}
+
+message Sensor{}
 
 message WithoutMessage{}
 

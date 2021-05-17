@@ -21,13 +21,14 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         private readonly IChartController Controller = new ChartController();
         public const int InitalCount = 7;
         public bool initSensor = true;
-        public event EventHandler<IEventComponent> InfoChart;
-        public void RegisterEvent()
+        public event EventHandler<IEventComponent> InfoChart; 
+        public new void RegisterEvent()
         {
             container.AddEvent(EventKey.GRAPH_KEY, InfoChart);
+            base.RegisterEvent();
         }
-        public Task<List<(int,string)>> GetAllChart() => Controller.GetAllChart(); 
-
+        public Task<List<(int,string)>> GetAllChart() => Controller.GetAllChart();
+        public new Task CommonInfo(IEventComponent turbineAndSensor) => base.CommonInfo(turbineAndSensor);
         public Task WriteInfo(IEventComponent loadStatus) => loadStatus switch
         {
             LoadStatusChart { Msg: _, TypeMsg: 1 } status => Task.Run(() => Service.ShowInfo($"Turbine {status.NameTurbine} Status {status.Msg}")),
@@ -50,8 +51,6 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 Service.ShowSuccess($"Load {status.Record.RecordLinearChart.NameTurbine}");
             }),
             ResponseSerieByPeriodWithStandardDeviation status => Task.Run(() => Service.ShowError(status.StandardDeviation.ToString())),
-            AllSensorInfo sensor =>AllSensorInfo(sensor),
-            AllTurbineInfo turbine => AllTurbineInfo(turbine),
             _ => Task.Run(() => Service.ShowError("ERROR"))
         };
         public new async IAsyncEnumerable<Sensor> GetSensor()

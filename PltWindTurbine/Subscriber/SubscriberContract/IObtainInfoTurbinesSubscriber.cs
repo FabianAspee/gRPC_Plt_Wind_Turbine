@@ -10,7 +10,8 @@ namespace PltWindTurbine.Subscriber.SubscriberContract
         Task GetInfoTurbine(OnlySerieByPeriodAndCode info);
         Task GetInfoTurbineWithWarning(OnlySerieByPeriodAndCodeWithWarning info);
         Task SerieByPeriodWithStandardDeviation(SeriePeriodByCodeWithStandarDeviation info);
-        Task GetInforTurbineAndSensor();
+        Task GetInfoTurbines();
+        Task GetInfoSensors();
         Task<List<string>> GetErrorByTurbine(int id);
         Task<List<(int,string)>> GetInfoChart();
         Task GetInfoTurbineOwnSerie(OnlySerieByOwnSeries info);

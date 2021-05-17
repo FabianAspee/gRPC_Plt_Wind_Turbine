@@ -4,6 +4,7 @@ using PltWindTurbine.Database.DatabaseContract;
 using PltWindTurbine.Database.ResultRecordDB;
 using PltWindTurbine.Database.TableDatabase;
 using PltWindTurbine.Database.Utils.EqualityComparerElement;
+using maintenance = PltWindTurbine.Protos.MaintenanceProto;
 using PltWindTurbine.Services.ObtainInfoTurbinesService;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer;
 using PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Contract;
@@ -110,14 +111,17 @@ namespace PltWindTurbine.Database.Utils
         private readonly Func<Own_Serie_Turbine, SensorInfo> SelectOwnNameAndIdSensor = sensor => new SensorInfo(sensor.Id, sensor.Name,true);
         private readonly Func<Sensor_Info, SensorInfo> SelectNameAndIdSensor = sensor => new SensorInfo(sensor.Id, sensor.Sensor_Name,false);
         private readonly Func<Wind_Turbine_Info, TurbineInfo> SelectNameAndIdTurbine = turbine => new TurbineInfo(turbine.Id, turbine.Turbine_Name);
-        public async void SelectAllSensorAndTurbine()
+        public async void SelectAllSensors()
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             var allSensor = connectionTo.Sensor_Info.Select(SelectNameAndIdSensor).ToList();
             connectionTo.Own_Serie_Turbine.Select(SelectOwnNameAndIdSensor).ToList().ForEach(val=>allSensor.Add(val)); 
-            await SendEventLoadInfoTurbine(new AllSensorInfo(allSensor));
-            await SendEventLoadInfoTurbine(new AllTurbineInfo(connectionTo.Wind_Turbine_Info.Select(SelectNameAndIdTurbine).ToList()));
-            await SendEventLoadInfoTurbine(new FinishMessage());
+            await SendEventLoadInfoTurbine(new AllSensorInfo(allSensor));  
+        }
+        public async void SelectAllTurbines()
+        {
+            using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();  
+            await SendEventLoadInfoTurbine(new AllTurbineInfo(connectionTo.Wind_Turbine_Info.Select(SelectNameAndIdTurbine).ToList())); 
         }
         public List<Error_Sensor> SelectAllNameSensorError()
         {
@@ -390,6 +394,11 @@ namespace PltWindTurbine.Database.Utils
         }
 
         private IAsyncEnumerable<object> SelectWarningAllTurbineByPeriod(List<TurbineInfo> allTurbines)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SaveMaintenanceTurbines(maintenance.TurbineInfoMaintenance infoMaintenance)
         {
             throw new NotImplementedException();
         }

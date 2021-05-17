@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ClientPltTurbine.Controllers.MaintenanceController
+namespace ClientPltTurbine.Model.MaintenanceModel.Contract
 {
-    interface IMaintenanceController
+    interface IMaintenanceModel
     {
-        Task CallAllTurbines();
         Task SaveMaintenanceTurbines(Dictionary<string, (int id, string date)> infoTurbineMaintenance);
     }
 }

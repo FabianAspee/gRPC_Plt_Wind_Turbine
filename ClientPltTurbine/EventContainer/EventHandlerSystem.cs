@@ -25,10 +25,10 @@ namespace ClientPltTurbine.EventContainer
         {
             await container.SelectEvent<IEventComponent>(EventKey.LOAD_FILE_KEY).ContinueWith(evento => evento.Result.Invoke(this, new LoadStatusRecord(3, msg)));
         }
-
+         
         protected async void SendEventInfoTurbineAndSensor(IEventComponent component)
         {
-            await container.SelectEvent<IEventComponent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, component));
+            await container.SelectEvent<IEventComponent>(EventKey.COMMON_KEY).ContinueWith(evento => evento.Result.Invoke(this, component));
         }
         protected async void SendEventLoadInfoTurbine(string msg,string nameTurbine)
         {

@@ -77,17 +77,15 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
             }
             _logger.LogInformation("Subscription finished.");
         } 
-        public override async Task GetNameTurbineAndSensor(WithoutMessage request, IServerStreamWriter<ResponseNameTurbineAndSensor> responseStream, ServerCallContext context)
+        public override async Task GetNameTurbineAndSensor(IAsyncStreamReader<TurbineOrSensor> request, IServerStreamWriter<ResponseNameTurbineAndSensor> responseStream, ServerCallContext context)
         {
-            using var obtainInfoTurbinesSubscriber = _factoryMethod.GetObtainInfoTurbinesSubscriber();
-            var task = new TaskCompletionSource();
+            using var obtainInfoTurbinesSubscriber = _factoryMethod.GetObtainInfoTurbinesSubscriber(); 
             LoadSensorAndTurbine += async (sender, args) =>
-               await SendInfoTurbineAndSensor(responseStream, args as ILoadInfoTurbine, task);
+               await SendInfoTurbineAndSensor(responseStream, args as ILoadInfoTurbine);
             RegisterEvent(EventKey.INFO_TURBINE_SENSOR);
             try
             {
-                await obtainInfoTurbinesSubscriber.GetInforTurbineAndSensor();
-                await task.Task; 
+                await HandleActionsInfoTurbineAndSensor(request, obtainInfoTurbinesSubscriber); 
             }
             catch (Exception e)
             {
@@ -95,6 +93,28 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
             } 
             _logger.LogInformation("Subscription finished.");
         }
+        private async Task HandleActionsInfoTurbineAndSensor(IAsyncStreamReader<TurbineOrSensor> request, IObtainInfoTurbinesSubscriber obtainInfoTurbinesSubscriber)
+        {
+            await foreach (var action in request.ReadAllAsync())
+            {
+                switch (action.ActionCase)
+                {
+                    case TurbineOrSensor.ActionOneofCase.None:
+                        _logger.LogWarning("No Action specified.");
+                        break;
+                    case TurbineOrSensor.ActionOneofCase.Msg1:
+                        await obtainInfoTurbinesSubscriber.GetInfoTurbines();
+                        break;
+                    case TurbineOrSensor.ActionOneofCase.Msg2:
+                        await obtainInfoTurbinesSubscriber.GetInfoSensors();
+                        break; 
+                    default:
+                        _logger.LogWarning($"Unknown Action '{action.ActionCase}'.");
+                        break;
+                }
+            }
+        }
+
         private async Task HandleActionsInfoFailureTurbine(IAsyncStreamReader<CodeAndPeriodRequest> request, IObtainInfoTurbinesSubscriber obtainInfoTurbinesSubscriber)
         {
             await foreach (var action in request.ReadAllAsync())
@@ -125,19 +145,13 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
                 }
             }
         }
-        private async Task SendInfoTurbineAndSensor(IServerStreamWriter<ResponseNameTurbineAndSensor> stream, ILoadInfoTurbine infoTurbine, TaskCompletionSource task)
+
+        private async Task SendInfoTurbineAndSensor(IServerStreamWriter<ResponseNameTurbineAndSensor> stream, ILoadInfoTurbine infoTurbine)
         {
             try
-            {
-                if(infoTurbine is FinishMessage)
-                { 
-                    task.SetResult();
-                }
-                else
-                { 
-                    var response = GetNameTurbineAndSensor(infoTurbine); 
-                    await stream.WriteAsync(response); 
-                }
+            { 
+                var response = GetNameTurbineAndSensor(infoTurbine); 
+                await stream.WriteAsync(response);  
             }
             catch (Exception e)
             { 
@@ -159,7 +173,7 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
         private static ResponseNameTurbineAndSensor GetNameTurbineAndSensor(ILoadInfoTurbine infoTurbine) => infoTurbine switch
         {
             AllSensorInfo allSensor => new ResponseNameTurbineAndSensor() { Msg3 = CreateAllSensor(allSensor) },
-            AllTurbineInfo allTurbine => new ResponseNameTurbineAndSensor() { Msg4 =CreateAllTurbine(allTurbine) },
+            AllTurbineInfo allTurbine => new ResponseNameTurbineAndSensor() { Msg4 =CreateAllTurbine(allTurbine) }, 
             _ => throw new NotImplementedException()
         };
 

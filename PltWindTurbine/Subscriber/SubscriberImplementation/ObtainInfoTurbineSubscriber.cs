@@ -24,13 +24,16 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
  
         public Task<List<string>> GetErrorByTurbine(int id)=> database.GetErrorByTurbine(id);
 
-        public Task<List<(int, string)>> GetInfoChart() => Task.Run(() =>database.GetNameChart());
-
-        public Task GetInforTurbineAndSensor()=> Task.Run(() =>
-        {  
-            database.SelectAllSensorAndTurbine();
+        public Task<List<(int, string)>> GetInfoChart() => Task.Run(() =>database.GetNameChart()); 
+       
+        public Task GetInfoSensors() => Task.Run(() =>
+        {
+            database.SelectAllSensors();
         });
-        
+        public Task GetInfoTurbines() => Task.Run(() =>
+        {
+            database.SelectAllTurbines();
+        });
 
         public Task GetInfoTurbine(OnlySerieByPeriodAndCode info)=>Task.Run(() =>
         {
@@ -48,7 +51,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
         {
             SendEventLoadInfo(new StatusEventInfoTurbine(info.Info.NameTurbine, Status.InProgress, "Init process search series"));
             database.SelectOwnSerieBySensorByTurbineByErrorWithWarning(info.Info);
-        });
+        }); 
 
         public Task GetInfoTurbineWithWarning(OnlySerieByPeriodAndCodeWithWarning info) => Task.Run(() =>
         {
