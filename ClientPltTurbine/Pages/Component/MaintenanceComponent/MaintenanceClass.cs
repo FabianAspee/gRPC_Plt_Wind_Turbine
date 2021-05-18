@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ClientPltTurbine.Pages.Component.MaintenanceComponent
 {
     public class MaintenanceClass: CommonMethod
-    {
+    { 
 
         private readonly IMaintenanceController Controller = new MaintenanceController();
         public new async IAsyncEnumerable<Turbine> GetTurbine()
