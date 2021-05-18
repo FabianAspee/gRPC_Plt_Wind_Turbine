@@ -1,6 +1,6 @@
 ﻿using PltWindTurbine.Database.ResultRecordDB;
 using PltWindTurbine.Database.TableDatabase;
-using PltWindTurbine.Protos.MaintenanceProto;
+using PltWindTurbine.Services.MaintenanceService;
 using PltWindTurbine.Services.ObtainInfoTurbinesService;
 using PltWindTurbine.Subscriber.SubscriberImplementation;
 using System.Collections.Generic;
@@ -39,6 +39,6 @@ namespace PltWindTurbine.Database.DatabaseContract
         void SelectOwnSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info);
 
         public Task SelectWarningAllTurbines(int period);
-        public Task SaveMaintenanceTurbines(TurbineInfoMaintenance infoMaintenance);
+        public Task SaveMaintenanceTurbines(SaveTurbineInfoMaintenance infoMaintenance, bool isFinish);
     }
 }

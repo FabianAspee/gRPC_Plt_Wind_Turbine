@@ -1,26 +1,18 @@
-﻿using Newtonsoft.Json.Linq;
-using PltWindTurbine.Database.DatabaseConnection;
+﻿using PltWindTurbine.Database.DatabaseConnection;
 using PltWindTurbine.Database.DatabaseContract;
-using PltWindTurbine.Database.ResultRecordDB;
-using PltWindTurbine.Database.Utils;
+using PltWindTurbine.Protos.UtilProto;
 using PltWindTurbine.Services.ObtainInfoTurbinesService;
-using PltWindTurbine.Subscriber.EventArgument.EventContainer;
-using PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Contract;
 using PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Implementation;
 using PltWindTurbine.Subscriber.SubscriberContract;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace PltWindTurbine.Subscriber.SubscriberImplementation
 {
     public class ObtainInfoTurbineSubscriber : AbstractSubscriber, IObtainInfoTurbinesSubscriber
     {
-        private readonly IOperationTurbineDatabase database = RetreiveImplementationDatabase.Instance.ImplementationDatabase;
-         
+        private readonly IOperationTurbineDatabase database = RetreiveImplementationDatabase.Instance.ImplementationDatabase; 
  
         public Task<List<string>> GetErrorByTurbine(int id)=> database.GetErrorByTurbine(id);
 
@@ -37,25 +29,25 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
 
         public Task GetInfoTurbine(OnlySerieByPeriodAndCode info)=>Task.Run(() =>
         {
-            SendEventLoadInfo(new StatusEventInfoTurbine(info.NameTurbine, Status.InProgress, "Init process search series")); 
+            SendEventLoadInfo(info.NameTurbine, Status.InProgress, "Init process search series"); 
             database.SelectSerieBySensorByTurbineByError(info); 
         });
 
         public Task GetInfoTurbineOwnSerie(OnlySerieByOwnSeries info) => Task.Run(() =>
         {
-            SendEventLoadInfo(new StatusEventInfoTurbine(info.Info.NameTurbine, Status.InProgress, "Init process search series"));
+            SendEventLoadInfo(info.Info.NameTurbine, Status.InProgress, "Init process search series");
             database.SelectOwnSerieBySensorByTurbineByError(info.Info);
         });
         
         public Task GetInfoTurbineOwnSerieWithWarning(OnlySerieByOwnSeriesWithWarning info) => Task.Run(() =>
         {
-            SendEventLoadInfo(new StatusEventInfoTurbine(info.Info.NameTurbine, Status.InProgress, "Init process search series"));
+            SendEventLoadInfo(info.Info.NameTurbine, Status.InProgress, "Init process search series");
             database.SelectOwnSerieBySensorByTurbineByErrorWithWarning(info.Info);
         }); 
 
         public Task GetInfoTurbineWithWarning(OnlySerieByPeriodAndCodeWithWarning info) => Task.Run(() =>
         {
-            SendEventLoadInfo(new StatusEventInfoTurbine(info.Info.NameTurbine, Status.InProgress, "Init process search series with warning"));
+            SendEventLoadInfo(info.Info.NameTurbine, Status.InProgress, "Init process search series with warning");
             database.SelectSerieBySensorByTurbineByErrorWithWarning(info.Info);
         });
 

@@ -18,11 +18,11 @@
     <PackageReference Include="Blazored.Toast" Version="3.1.2" />
     <PackageReference Include="ElectronNET.API" Version="11.5.1" />
     <PackageReference Include="ExcelDataReader" Version="3.6.0" />
-    <PackageReference Include="Google.Protobuf" Version="3.15.8" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.32.0" />
-    <PackageReference Include="Grpc.Core" Version="2.37.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.17.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.37.0" />
+    <PackageReference Include="Grpc.Core" Version="2.37.1" />
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.37.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.37.0">
+    <PackageReference Include="Grpc.Tools" Version="2.37.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -44,14 +44,23 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PltTurbineShared\PltTurbineShared.csproj" />
+    <ProjectReference Include="..\PltTurbineShared\PltTurbineShared.csproj" /> 
   </ItemGroup>
   <ItemGroup>
-    <Protobuf Include="..\PltWindTurbine\Protos\LoadFilesProto\loadfile.proto" GrpcServices="Client">
-      <Link>Protos\loadfile.proto</Link>
+
+	<PackageReference Include="Google.Api.CommonProtos" Version="2.0.0" />
+    <Protobuf Include="..\PltWindTurbine\Protos\LoadFilesProto\loadfile.proto" ProtoRoot="..\PltWindTurbine\" OutputDir="Protos/LocalProto" GrpcServices="Client" CompileOutputs="false">
+      <Link>Protos\LoadFilesProto\loadfile.proto</Link>
+    </Protobuf> 
+    <Protobuf Include="..\PltWindTurbine\Protos\MaintenanceProto\maintenance.proto" ProtoRoot="..\PltWindTurbine\" OutputDir="Protos/LocalProto" GrpcServices="Client" CompileOutputs="false">
+      <Link>Protos\MaintenanceProto\maintenance.proto</Link>
+    </Protobuf> 
+    <Protobuf Include="..\PltWindTurbine\Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" ProtoRoot="..\PltWindTurbine\" OutputDir="Protos/LocalProto" GrpcServices="Client" CompileOutputs="false">
+      <Link>Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto</Link>
+    </Protobuf> 
+    <Protobuf Include="..\PltWindTurbine\Protos\UtilProto\utility.proto" GrpcServices="None">
+      <Link>Protos\UtilProto\utility.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\PltWindTurbine\Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" GrpcServices="Client">
-      <Link>Protos\obtaininfoturbine.proto</Link>
-    </Protobuf>
+      
   </ItemGroup>
-</Project>
+</Project> 

@@ -13,9 +13,10 @@
 // limitations under the License.
 
 syntax = "proto3";
-
+ 
 option csharp_namespace = "PltWindTurbine.Services.ObtainInfoTurbinesService";
 package obtaininfoturbine;
+import "Protos/UtilProto/utility.proto"; 
 
 service ObtainInfoTurbines {
  
@@ -139,7 +140,7 @@ message ResponseCodePeriod{
 
 message StatusLoadInfo {
   string name = 1;
-  Status status = 2;
+  utility.Status status = 2;
   string description = 3;
 }
 
@@ -159,11 +160,4 @@ message OnlySerieByPeriodAndCodeResponseWithWarning{
 message SeriePeriodByCodeWithStandarDeviationResponse{
 	OnlySerieByPeriodAndCodeResponse msg1=1;
 	double standardDeviation = 2;
-}
-
-enum Status {
-  PENDING = 0;
-  IN_PROGRESS = 1;
-  SUCCESS = 2;
-  FAILED = 3;
-}
+} 

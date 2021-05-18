@@ -53,5 +53,6 @@ namespace PltWindTurbine.Database.DatabaseConnection
         public DbSet<Chart_System> Chart_System { get; set; }
         public DbSet<Own_Serie_Turbine> Own_Serie_Turbine { get; set; }
         public DbSet<Value_Own_Serie_Turbine> Value_Own_Serie_Turbine { get; set; }
+        public DbSet<Maintenance_Turbine> Maintenance_Turbine { get; set; }
     }
 } 

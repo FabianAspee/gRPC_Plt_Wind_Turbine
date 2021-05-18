@@ -1,0 +1,11 @@
+syntax = "proto3";
+ 
+option csharp_namespace = "PltWindTurbine.Protos.UtilProto";
+package utility;
+
+enum Status {
+  PENDING = 0;
+  IN_PROGRESS = 1;
+  SUCCESS = 2;
+  FAILED = 3;
+}

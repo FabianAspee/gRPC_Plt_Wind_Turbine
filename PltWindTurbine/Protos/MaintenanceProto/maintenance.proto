@@ -1,7 +1,9 @@
 syntax = "proto3";
-
-option csharp_namespace = "PltWindTurbine.Protos.MaintenanceProto";
+ 
+option csharp_namespace = "PltWindTurbine.Services.MaintenanceService";
 package maintenance;
+
+import "Protos/UtilProto/utility.proto"; 
 
 service Maintenances {
 
@@ -9,21 +11,18 @@ service Maintenances {
 }
 
 message MaintenanceTurbinesRequest{
-  TurbineInfoMaintenance msg1=1;
+	oneof Action{ 
+	  SaveTurbineInfoMaintenance msg1=1;
+	}
+	bool isFinish=2;
 } 
 message MaintenanceTurbinesResponse {
   string name = 1;
-  Status status = 2;
+  utility.Status status = 2;
   string description = 3;
 }
 
-message TurbineInfoMaintenance{
+message SaveTurbineInfoMaintenance{
 	int32 idTurbine = 1;
 	string date = 2;
-}
-enum Status {
-  PENDING = 0;
-  IN_PROGRESS = 1;
-  SUCCESS = 2;
-  FAILED = 3;
-}
+} 

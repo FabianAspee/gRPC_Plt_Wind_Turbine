@@ -193,7 +193,7 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
 
         private static CodeAndPeriodResponse GetCodeAndPeriodResponse(ILoadInfoTurbine infoTurbine) => infoTurbine switch
         {
-            StatusEventInfoTurbine status => new CodeAndPeriodResponse() { Msg1 = new StatusLoadInfo() { Name = status.Name, Status = status.Status, Description = status.Description } },
+            StatusEventInfoTurbine status => new CodeAndPeriodResponse() { Msg1 = new StatusLoadInfo() { Name = status.Status.Name, Status = status.Status.Status, Description = status.Status.Description } },
             ResponseSerieByPeriod responseSerie => new CodeAndPeriodResponse() { Msg2 = new ResponseCodePeriod() { Msg = GetByPeriodAndCodeResponse(responseSerie) } },
             ResponseSerieByPeriodWithStandardDeviation responseSerieByPeriod => new CodeAndPeriodResponse()
             {
