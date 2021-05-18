@@ -13,14 +13,15 @@
 // limitations under the License.
 
 syntax = "proto3";
-
+ 
 option csharp_namespace = "PltWindTurbine.Services.ObtainInfoTurbinesService";
 package obtaininfoturbine;
+import "Protos/UtilProto/utility.proto"; 
 
 service ObtainInfoTurbines {
  
   rpc InfoFailureTurbine(stream CodeAndPeriodRequest) returns (stream CodeAndPeriodResponse);
-  rpc GetNameTurbineAndSensor(WithoutMessage) returns (stream ResponseNameTurbineAndSensor);
+  rpc GetNameTurbineAndSensor(stream TurbineOrSensor) returns (stream ResponseNameTurbineAndSensor);
   rpc GetChartSystem(WithoutMessage) returns (ChartSystemResponse);
   rpc GetErrorByTurbine(ErrorByTurbineRequest) returns (ErrorByTurbineResponse);
 }
@@ -68,6 +69,17 @@ message ResponseNameTurbineAndSensor{
 		AllInfoTurbine msg4= 4;
 	}
 }
+
+message TurbineOrSensor{
+	oneof Action{
+		Turbine msg1=1;
+		Sensor msg2=2;
+	}
+}
+
+message Turbine{}
+
+message Sensor{}
 
 message WithoutMessage{}
 
@@ -128,7 +140,7 @@ message ResponseCodePeriod{
 
 message StatusLoadInfo {
   string name = 1;
-  Status status = 2;
+  utility.Status status = 2;
   string description = 3;
 }
 
@@ -148,11 +160,4 @@ message OnlySerieByPeriodAndCodeResponseWithWarning{
 message SeriePeriodByCodeWithStandarDeviationResponse{
 	OnlySerieByPeriodAndCodeResponse msg1=1;
 	double standardDeviation = 2;
-}
-
-enum Status {
-  PENDING = 0;
-  IN_PROGRESS = 1;
-  SUCCESS = 2;
-  FAILED = 3;
-}
+} 

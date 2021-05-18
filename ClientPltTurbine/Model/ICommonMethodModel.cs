@@ -7,7 +7,7 @@ namespace ClientPltTurbine.Model
 {
     interface ICommonMethodModel
     {
-        Task GetAllNameSensor();
-        Task GetAllNameTurbine();
+        Task GetAllNameSensors();
+        Task GetAllNameTurbines();
     }
 }

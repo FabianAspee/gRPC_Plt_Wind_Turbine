@@ -33,6 +33,8 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
             ChartSingleton.Service = toastService;
             ChartSingleton.InfoChart += async (sender, args) =>
                await ChartSingleton.WriteInfo(args);
+            ChartSingleton.CommonInfoEvent += async (sender, args) =>
+               await ChartSingleton.CommonInfo(args);
             await Task.Run(() => ChartSingleton.RegisterEvent());
         }
         protected override async Task OnInitializedAsync()

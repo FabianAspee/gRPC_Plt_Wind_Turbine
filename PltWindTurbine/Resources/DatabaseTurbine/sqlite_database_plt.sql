@@ -79,7 +79,11 @@ CREATE TABLE IF NOT EXISTS value_own_serie_turbine(
     ); 
 
     
-
+CREATE TABLE IF NOT EXISTS maintenance_turbine(
+    id INTEGER PRIMARY KEY,
+    id_turbine INTEGER,
+    date TEXT,
+    FOREIGN KEY(id_turbine) REFERENCES wind_turbine_info(id));
 
 INSERT INTO chart_system(chart_name) 
 SELECT 'Line Chart' 

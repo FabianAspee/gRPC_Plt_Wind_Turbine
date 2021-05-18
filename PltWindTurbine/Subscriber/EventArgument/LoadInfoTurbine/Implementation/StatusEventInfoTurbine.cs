@@ -1,11 +1,11 @@
-﻿using PltWindTurbine.Database.ResultRecordDB;
-using PltWindTurbine.Services.ObtainInfoTurbinesService;
-using PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Contract;
+﻿using PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Contract;
+using PltWindTurbine.Protos.UtilProto;
 using System.Collections.Generic;
+using PltWindTurbine.Subscriber.EventArgument.UtilEventTurbine.Implementation;
 
 namespace PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Implementation
 {
-    public record StatusEventInfoTurbine(string Name, Status Status, string Description) : ILoadInfoTurbine;
+    public record StatusEventInfoTurbine(StatusEvent Status) : ILoadInfoTurbine; 
     public record ResponseSerieByPeriod(string NameTurbine,string NameSensor, string Values, bool IsFinish) : ILoadInfoTurbine;
     public record ResponseSerieByPeriodWithWarning(ResponseSerieByPeriod SerieByPeriod, string Warning, string OriginalWarning):  ILoadInfoTurbine;
     public record ResponseSerieByPeriodWithStandardDeviation(ResponseSerieByPeriod InfoSerie, double StandardDeviation) : ILoadInfoTurbine;

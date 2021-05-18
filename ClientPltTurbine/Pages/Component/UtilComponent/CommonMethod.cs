@@ -1,5 +1,6 @@
 ﻿using ClientPltTurbine.EventContainer;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
+using ClientPltTurbine.Pages.Component.UtilComponent.EventCommonMethod;
 using PltTurbineShared;
 using System;
 using System.Collections.Generic;
@@ -9,14 +10,25 @@ using System.Threading.Tasks.Dataflow;
 
 namespace ClientPltTurbine.Pages.Component.UtilComponent
 {
-    public abstract class CommonMethod:EventHandlerSystem
-    {
+    public abstract class CommonMethod:EventHandlerSystem, IEventCommonMethod
+    { 
         public int NumTurbine;
         protected TaskCompletionSource<bool> isCompleteS;
         protected TaskCompletionSource<bool> isCompleteT;
         protected BufferBlock<Sensor> Sensors;
-        protected BufferBlock<Turbine> Turbines;
-        protected Task AllSensorInfo(AllSensorInfo sensor) => Task.Run(() => {
+        protected BufferBlock<Turbine> Turbines; 
+        public event EventHandler<IEventComponent> CommonInfoEvent;
+        public void RegisterEvent()
+        { 
+            container.AddEvent(EventKey.COMMON_KEY, CommonInfoEvent);
+        }
+        protected Task CommonInfo(IEventComponent eventComponent) => eventComponent switch
+        { 
+            AllSensorInfo sensor => AllSensorInfo(sensor),
+            AllTurbineInfo turbine => AllTurbineInfo(turbine),
+            _ => Task.Run(() => throw new NotImplementedException())
+        };
+        protected Task AllSensorInfo(AllSensorInfo sensor) => Task.Run(() => { 
             foreach (var mySensor in sensor.SensorInfos.Select(sensor => new Sensor(sensor.IdSensor, sensor.NameSensor, $"{sensor.IdSensor},{sensor.IsOwnSensor}", sensor.IsOwnSensor)))
             {
                 Sensors.SendAsync(mySensor);

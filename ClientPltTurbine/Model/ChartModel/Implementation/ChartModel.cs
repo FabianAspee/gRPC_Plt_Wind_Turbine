@@ -18,13 +18,14 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
 {
     public class ChartModel : CommonMethodModel, IChartModel, IDisposable
     {
-        private ObtainInfoTurbines.ObtainInfoTurbinesClient _clientChart;
+        private new readonly ObtainInfoTurbines.ObtainInfoTurbinesClient _clientChart;
         private readonly AsyncDuplexStreamingCall<CodeAndPeriodRequest, CodeAndPeriodResponse> _duplexStreamObtainInfo;
         private readonly Dictionary<string, List<IParameterToChart>> infoChartByTurbine = new();
         public ChartModel()
-        { 
-             _duplexStreamObtainInfo = _clientChart.InfoFailureTurbine();
-            _ = HandleResponsesObtainInfoAsync();
+        {
+            _clientChart = new ObtainInfoTurbines.ObtainInfoTurbinesClient(channel);
+            _duplexStreamObtainInfo = _clientChart.InfoFailureTurbine();
+            _ = HandleResponsesObtainInfoAsync(); 
         } 
         public Task GetAllInfoTurbineForChart(InfoChartRecord info)
         {
@@ -195,26 +196,7 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
                 }
                
             }
-        }
-        private void HandleResponsesInfoTurbineSensorAsync(ResponseNameTurbineAndSensor turbineSensor)
-        { 
-                switch (turbineSensor.ActionCase)
-                {
-                    case ResponseNameTurbineAndSensor.ActionOneofCase.None:
-                        SendEventErrorLoadInfoTurbine("No Action specified.");
-                        break;
-                    case ResponseNameTurbineAndSensor.ActionOneofCase.Msg4:
-                        SendEventInfoTurbineAndSensor(new AllTurbineInfo(turbineSensor.Msg4.Msg.Select(turbine => new TurbineInfo(turbine.IdTurbine,turbine.NameTurbine)).ToList()));
-                        break;
-                    case ResponseNameTurbineAndSensor.ActionOneofCase.Msg3:
-                        SendEventInfoTurbineAndSensor(new AllSensorInfo(turbineSensor.Msg3.Msg.Select(sensor=>new SensorInfo(sensor.IdSensor, sensor.NameSensor,sensor.IsOwn)).ToList()));
-                        break;
-                    default:
-                        SendEventErrorLoadInfoTurbine($"Unknown Action '{turbineSensor.ActionCase}'.");
-                        break;
-                }
-             
-        }
+        } 
         async void IDisposable.Dispose()
         {
             try

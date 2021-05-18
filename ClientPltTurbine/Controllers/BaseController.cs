@@ -15,12 +15,11 @@ namespace ClientPltTurbine.Controllers
         private readonly CommonMethodModel model = new();
         protected Task GetAllNameTurbineAndSensor() => Task.Run(async () =>
         {
-            var turbine = model.GetAllNameTurbine();
-            var sensor = model.GetAllNameSensor();
-            await Task.WhenAll(new Task[]{ turbine, sensor });
+            await model.GetAllNameTurbines();
+            await model.GetAllNameSensors(); 
         });
-        protected Task GetAllNameTurbine() => Task.Run(async () =>await model.GetAllNameTurbine());
-        protected Task GetAllNameSensor() => Task.Run(async () =>  await model.GetAllNameSensor());
+        protected Task GetAllNameTurbines() => Task.Run(async () =>await model.GetAllNameTurbines());
+        protected Task GetAllNameSensors() => Task.Run(async () =>  await model.GetAllNameSensors());
     }
 }
 

@@ -1,9 +1,6 @@
-﻿using Grpc.Core;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using PltWindTurbine.Subscriber.SubscriberFactory;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using PltWindTurbine.Subscriber.SubscriberContract;
 using PltWindTurbine.Subscriber.EventArgument;
@@ -12,6 +9,8 @@ using PltWindTurbine.Subscriber.EventArgument.EventContainer.Contract;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer.Implementation;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer;
 using PltWindTurbine.Subscriber.EventArgument.LoadFileTurbine.Contract;
+using utility = PltWindTurbine.Protos.UtilProto;
+using Grpc.Core;
 
 namespace PltWindTurbine.Services.LoadFilesService
 {
@@ -49,8 +48,7 @@ namespace PltWindTurbine.Services.LoadFilesService
                 await HandleActionsLoadFilesInfoTurbine(request, subscriberLoadFilesInfoTurbine);
             }
             catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
+            { 
                 _logger.LogInformation(e.ToString());
             }
             _logger.LogInformation("Subscription finished.");
@@ -70,12 +68,12 @@ namespace PltWindTurbine.Services.LoadFilesService
         }
         private static FileUploadResponse GetUploadResponse(IStatusLoadFile loadFileService) => loadFileService switch
         {
-            StatusLoadFile statusLoadFile => CreateFileUploadResponse(statusLoadFile.StatusFile.NameFile, statusLoadFile.StatusFile.Status, 
-                $"{statusLoadFile.StatusFile.Description} {statusLoadFile.Percent}%"),
-            StatusFile statusFile => CreateFileUploadResponse(statusFile.NameFile,statusFile.Status,statusFile.Description),
+            StatusLoadFile statusLoadFile => CreateFileUploadResponse(statusLoadFile.StatusFile.Status.Name, statusLoadFile.StatusFile.Status.Status, 
+                $"{statusLoadFile.StatusFile.Status.Description} {statusLoadFile.Percent}%"),
+            StatusFile statusFile => CreateFileUploadResponse(statusFile.Status.Name, statusFile.Status.Status,statusFile.Status.Description),
             _ => throw new NotImplementedException()
         };
-        private static FileUploadResponse CreateFileUploadResponse(string nameFile, Status status, string description) => new FileUploadResponse
+        private static FileUploadResponse CreateFileUploadResponse(string nameFile, utility.Status status, string description) => new()
         {
             Name = nameFile,
             Status = status,

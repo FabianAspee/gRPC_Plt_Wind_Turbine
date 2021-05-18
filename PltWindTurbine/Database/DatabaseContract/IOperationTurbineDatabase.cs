@@ -1,5 +1,6 @@
 ﻿using PltWindTurbine.Database.ResultRecordDB;
 using PltWindTurbine.Database.TableDatabase;
+using PltWindTurbine.Services.MaintenanceService;
 using PltWindTurbine.Services.ObtainInfoTurbinesService;
 using PltWindTurbine.Subscriber.SubscriberImplementation;
 using System.Collections.Generic;
@@ -17,7 +18,8 @@ namespace PltWindTurbine.Database.DatabaseContract
         public abstract List<Wind_Turbine_Info> ReadAllTurbine();
         public abstract Task<List<string>> GetErrorByTurbine(int idTurbine);
         public abstract Task<List<(int,string)>> GetNameChart();
-        public abstract void SelectAllSensorAndTurbine();
+        public abstract void SelectAllSensors();
+        public abstract void SelectAllTurbines();
         public (List<string>,bool) TurbineExistInDatabase();
 
         public void InsertInfoPlt(DataTable dt_info, string name_table);
@@ -37,5 +39,6 @@ namespace PltWindTurbine.Database.DatabaseContract
         void SelectOwnSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info);
 
         public Task SelectWarningAllTurbines(int period);
+        public Task SaveMaintenanceTurbines(SaveTurbineInfoMaintenance infoMaintenance, bool isFinish);
     }
 }

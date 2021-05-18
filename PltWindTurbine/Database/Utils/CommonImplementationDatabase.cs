@@ -3,7 +3,7 @@ using PltWindTurbine.Database.DatabaseConnection;
 using PltWindTurbine.Database.DatabaseContract;
 using PltWindTurbine.Database.ResultRecordDB;
 using PltWindTurbine.Database.TableDatabase;
-using PltWindTurbine.Database.Utils.EqualityComparerElement;
+using PltWindTurbine.Services.MaintenanceService;
 using PltWindTurbine.Services.ObtainInfoTurbinesService;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer;
 using PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Contract;
@@ -16,6 +16,8 @@ using System.Data.Common;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using PltWindTurbine.Protos.UtilProto;
+using PltWindTurbine.Subscriber.EventArgument.UtilEventTurbine.Implementation;
 
 namespace PltWindTurbine.Database.Utils
 {
@@ -23,9 +25,14 @@ namespace PltWindTurbine.Database.Utils
     {
         private static readonly int IdAngleSensor = 1;
         private static readonly int TotalGrade = 360;
-
-        public void InsertInfoPlt(DataTable dt_info, string name_table)
+        private static IReadOnlyList<TurbineInfo> NameTurbine { get;}
+        static CommonImplementationDatabase()
         {
+            using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
+            NameTurbine = connection.Wind_Turbine_Info.Select(turbine => new TurbineInfo(turbine.Id, turbine.Turbine_Name)).ToList();
+        }
+        public void InsertInfoPlt(DataTable dt_info, string name_table)
+        { 
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             using var transaction = connection.Database.BeginTransaction();
             using var command = connection.Database.GetDbConnection().CreateCommand();
@@ -110,14 +117,17 @@ namespace PltWindTurbine.Database.Utils
         private readonly Func<Own_Serie_Turbine, SensorInfo> SelectOwnNameAndIdSensor = sensor => new SensorInfo(sensor.Id, sensor.Name,true);
         private readonly Func<Sensor_Info, SensorInfo> SelectNameAndIdSensor = sensor => new SensorInfo(sensor.Id, sensor.Sensor_Name,false);
         private readonly Func<Wind_Turbine_Info, TurbineInfo> SelectNameAndIdTurbine = turbine => new TurbineInfo(turbine.Id, turbine.Turbine_Name);
-        public async void SelectAllSensorAndTurbine()
+        public async void SelectAllSensors()
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             var allSensor = connectionTo.Sensor_Info.Select(SelectNameAndIdSensor).ToList();
             connectionTo.Own_Serie_Turbine.Select(SelectOwnNameAndIdSensor).ToList().ForEach(val=>allSensor.Add(val)); 
-            await SendEventLoadInfoTurbine(new AllSensorInfo(allSensor));
-            await SendEventLoadInfoTurbine(new AllTurbineInfo(connectionTo.Wind_Turbine_Info.Select(SelectNameAndIdTurbine).ToList()));
-            await SendEventLoadInfoTurbine(new FinishMessage());
+            await SendEventLoadInfoTurbine(new AllSensorInfo(allSensor));  
+        }
+        public async void SelectAllTurbines()
+        {
+            using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();  
+            await SendEventLoadInfoTurbine(new AllTurbineInfo(connectionTo.Wind_Turbine_Info.Select(SelectNameAndIdTurbine).ToList())); 
         }
         public List<Error_Sensor> SelectAllNameSensorError()
         {
@@ -201,7 +211,7 @@ namespace PltWindTurbine.Database.Utils
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             var values = await connectionTo.Value_Sensor_Error.Where(error => error.Id_Turbine == info.IdTurbine && error.Value == info.Code).OrderByDescending(value => value.Date).ToListAsync();
             var last = values.LastOrDefault();
-            return (new StatusEventInfoTurbine(info.NameTurbine, Status.InProgress, $"Init Search Temporary Data with {values.Count} precence of error {info.Code}"),values,last);
+            return (new StatusEventInfoTurbine(new StatusEvent(info.NameTurbine, Status.InProgress, $"Init Search Temporary Data with {values.Count} precence of error {info.Code}")),values,last);
         }
         private delegate IList<(Value_Sensor_Error value, DateTime date)> GetNewValuewWithDate(IList<Value_Sensor_Error> errors, OnlySerieByPeriodAndCode info);
 
@@ -393,5 +403,26 @@ namespace PltWindTurbine.Database.Utils
         {
             throw new NotImplementedException();
         }
+
+        public Task SaveMaintenanceTurbines(SaveTurbineInfoMaintenance infoMaintenance, bool isFinish) => Task.Run(() =>
+        {
+            using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
+            var query = connectionTo.Maintenance_Turbine.Where(info => info.Id_Turbine == infoMaintenance.IdTurbine && info.Date == infoMaintenance.Date);
+            if (!query.Any())
+            {
+                var maintenance = new Maintenance_Turbine() { Id_Turbine = infoMaintenance.IdTurbine, Date = infoMaintenance.Date };
+                connectionTo.Maintenance_Turbine.Add(maintenance);
+                connectionTo.SaveChanges();
+                if (isFinish)
+                {
+                    SendEventFinishLoadMaintenanceInfo("", "Finish Save Maintenance");
+                }
+                else
+                { 
+                    SendEventLoadMaintenanceInfo(NameTurbine.FirstOrDefault(x => x.IdTurbine == infoMaintenance.IdTurbine)?.NameTurbine, "Save Turbine");
+                }
+            }
+        });
+         
     }
 }
