@@ -6,10 +6,10 @@
 {
     <div class="row g-3"> 
         <div class="col-auto">
-            <SelectComponent Id=@Id Values="Turbines" Text="(Choose Turbine)" ValueChanged="@ChangeInfoTurbine" Warning="Turbine is required" />
+            <SelectComponent Id=@id Values="Turbines" Text="(Choose Turbine)" ValueChanged="@ChangeInfoTurbine" Warning="Turbine is required" />
         </div>
         <div class="col-auto">
-            <InputDateComponent Id=@Id ValueChanged="@ChangeInfoPeriod" Value=@DateTime.Now.ToString("yyyy-MM-dd")></InputDateComponent>
+            <InputDateComponent Id=@id ValueChanged="@ChangeInfoPeriod" Value=@DateTime.Now.ToString("yyyy-MM-dd")></InputDateComponent>
         </div>
     </div>
 }

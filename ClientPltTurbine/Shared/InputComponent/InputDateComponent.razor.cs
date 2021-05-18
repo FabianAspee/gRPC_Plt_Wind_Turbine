@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace ClientPltTurbine.Shared.InputComponent
 {
     public partial class InputDateComponent
-    { 
+    {
         [Parameter]
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
         [Parameter]
         public string Value { get; set; }
         [Parameter]
@@ -20,8 +20,10 @@ namespace ClientPltTurbine.Shared.InputComponent
         private Task OnValueChanged(ChangeEventArgs e) => Cast(e.Value);
         private Task Cast(object value) => value switch
         {
-            string val => ValueChanged.InvokeAsync(val),
+            string val when ContainsId => ValueChanged.InvokeAsync(string.Concat(Id, ",", val)),
             _ => ValueChanged.InvokeAsync(default),
         };
+        private bool ContainsId =>!(Id == string.Empty);
+         
     }
 }

@@ -9,14 +9,14 @@ namespace ClientPltTurbine.Pages.Component.ModelPredictionComponent
 {
     public partial class ModelPredictions
     {
-        private List<PltTurbineShared.Model> Models = new();
+        private readonly List<PltTurbineShared.Model> Models = new();
         public int NumModel;
-        private ModelPrediction Prediction = new();
+        private readonly ModelPrediction Prediction = new();
         public async Task RunModel()
         {
             await Prediction.RunModel();
         }
-        private ConfigChart3D GetConfig()
+        private static ConfigChart3D GetConfig()
         {
             return new CalendarChart();
         } 

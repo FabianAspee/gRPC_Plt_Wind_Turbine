@@ -8,8 +8,7 @@ namespace ClientPltTurbine.Pages.Component.MaintenanceComponent
 {
     public partial class Maintenance
     {
-        private readonly List<string> Ids = new();
-        private string Id = string.Empty;
+        private readonly List<string> Ids = new(); 
         private readonly MaintenanceClass maintenance = new();
         private readonly Dictionary<string, (int id, string date)> InfoTurbineMaintenance = new(); 
         private readonly List<Turbine> Turbines = new();
@@ -18,6 +17,8 @@ namespace ClientPltTurbine.Pages.Component.MaintenanceComponent
             maintenance.Service = toastService;
             maintenance.CommonInfoEvent += async (sender, args) =>
                await maintenance.CommonInfo(args);
+            maintenance.StatusMaintenance += async (sender, args) =>
+               await maintenance.StatusSaveMaintenance(args);
             await Task.Run(() => maintenance.RegisterEvent());
             CreateAndSaveId();
         }
@@ -67,7 +68,7 @@ namespace ClientPltTurbine.Pages.Component.MaintenanceComponent
         }
         private void CreateAndSaveId()
         {
-            Id = string.Concat(Guid.NewGuid().ToString("N").Select(c => (char)(c + 17)));
+            var Id = string.Concat(Guid.NewGuid().ToString("N").Select(c => (char)(c + 17)));
             Ids.Add(Id);
         }
         private void AddRow() => CreateAndSaveId(); 

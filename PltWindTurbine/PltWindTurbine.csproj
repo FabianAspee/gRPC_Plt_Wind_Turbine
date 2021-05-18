@@ -19,13 +19,17 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PltTurbineShared\PltTurbineShared.csproj" />
+  </ItemGroup>
 	
     <ItemGroup>
-		<Protobuf Include="Protos\LoadFilesProto\loadfile.proto" Link="Protos\LoadFilesProto\loadfile.proto"  GrpcServices="Server" />
-		<Protobuf Include="Protos\MetricCalculusProto\metriccalculus.proto" Link="Protos\MetricCalculusProto\metriccalculus.proto"  GrpcServices="Server" />
-		<Protobuf Include="Protos\ViewFailuresProto\viewfailure.proto" Link="Protos\ViewFailuresProto\viewfailure.proto"  GrpcServices="Server" />
-		<Protobuf Include="Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" Link="Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto"  GrpcServices="Server" />
-		<Protobuf Include="Protos\MaintenanceProto\maintenance.proto" Link="Protos\MaintenanceProto\maintenance.proto"  GrpcServices="Server" />
+		<Protobuf Include="Protos\LoadFilesProto\loadfile.proto" Link="Protos\LoadFilesProto\loadfile.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\MetricCalculusProto\metriccalculus.proto" Link="Protos\MetricCalculusProto\metriccalculus.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\ViewFailuresProto\viewfailure.proto" Link="Protos\ViewFailuresProto\viewfailure.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" Link="Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\MaintenanceProto\maintenance.proto" Link="Protos\MaintenanceProto\maintenance.proto" GrpcServices="Server" />
 		<Protobuf Include="Protos\UtilProto\utility.proto" Link="Protos\UtilProto\utility.proto" GrpcServices="Server" />
     
 	</ItemGroup> 

@@ -12,7 +12,7 @@ namespace ClientPltTurbine.Shared.InputComponent
         [Parameter]
         public string Type { get; set; }
         [Parameter]
-        public string Id { get; set; }
+        public string Id { get; set; } 
         [Parameter]
         public string PlaceHolder { get; set; }
         [Parameter]

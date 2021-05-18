@@ -18,7 +18,7 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
 {
     public class ChartModel : CommonMethodModel, IChartModel, IDisposable
     {
-        private new readonly ObtainInfoTurbines.ObtainInfoTurbinesClient _clientChart;
+        private readonly ObtainInfoTurbines.ObtainInfoTurbinesClient _clientChart;
         private readonly AsyncDuplexStreamingCall<CodeAndPeriodRequest, CodeAndPeriodResponse> _duplexStreamObtainInfo;
         private readonly Dictionary<string, List<IParameterToChart>> infoChartByTurbine = new();
         public ChartModel()

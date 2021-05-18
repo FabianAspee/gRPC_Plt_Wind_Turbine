@@ -49,13 +49,13 @@
   <ItemGroup>
 
 	<PackageReference Include="Google.Api.CommonProtos" Version="2.0.0" />
-    <Protobuf Include="..\PltWindTurbine\Protos\LoadFilesProto\loadfile.proto" ProtoRoot="..\PltWindTurbine\" OutputDir="Protos/LocalProto" GrpcServices="Client" CompileOutputs="false">
+    <Protobuf Include="..\PltWindTurbine\Protos\LoadFilesProto\loadfile.proto" ProtoRoot="..\PltWindTurbine\" OutputDir="Protos\LocalProto" GrpcServices="Client" CompileOutputs="false">
       <Link>Protos\LoadFilesProto\loadfile.proto</Link>
     </Protobuf> 
-    <Protobuf Include="..\PltWindTurbine\Protos\MaintenanceProto\maintenance.proto" ProtoRoot="..\PltWindTurbine\" OutputDir="Protos/LocalProto" GrpcServices="Client" CompileOutputs="false">
+    <Protobuf Include="..\PltWindTurbine\Protos\MaintenanceProto\maintenance.proto" ProtoRoot="..\PltWindTurbine\" OutputDir="Protos\LocalProto" GrpcServices="Client" CompileOutputs="false">
       <Link>Protos\MaintenanceProto\maintenance.proto</Link>
     </Protobuf> 
-    <Protobuf Include="..\PltWindTurbine\Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" ProtoRoot="..\PltWindTurbine\" OutputDir="Protos/LocalProto" GrpcServices="Client" CompileOutputs="false">
+    <Protobuf Include="..\PltWindTurbine\Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" ProtoRoot="..\PltWindTurbine\" OutputDir="Protos\LocalProto" GrpcServices="Client" CompileOutputs="false">
       <Link>Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto</Link>
     </Protobuf> 
     <Protobuf Include="..\PltWindTurbine\Protos\UtilProto\utility.proto" GrpcServices="None">
