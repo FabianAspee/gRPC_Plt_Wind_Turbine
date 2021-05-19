@@ -10,6 +10,7 @@ namespace ClientPltTurbine.Model
 {
     public class CommonMethodModel:BaseModel,ICommonMethodModel
     {
+        //realizar TF entre direccion nacelle e direccion viento para ver que sucede
         private readonly AsyncDuplexStreamingCall<TurbineOrSensor, ResponseNameTurbineAndSensor> _duplexStreamTurbineSensor;
         protected ObtainInfoTurbines.ObtainInfoTurbinesClient _clientCommonInfo;
         public CommonMethodModel()

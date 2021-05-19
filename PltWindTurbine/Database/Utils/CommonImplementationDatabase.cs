@@ -33,6 +33,41 @@ namespace PltWindTurbine.Database.Utils
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             NameTurbine = connection.Wind_Turbine_Info.Select(turbine => new TurbineInfo(turbine.Id, turbine.Turbine_Name)).ToList();
         }
+        public void CalculateFourierInAngleSerie(int idTurbine, int periodInDays)
+        {
+            using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
+
+        }
+        private static IList<(DateTime datesInit, DateTime datesFinish)> GetDateBetweenValues(IList<Maintenance_Turbine> values)
+        {
+            IList<(DateTime datesInit, DateTime datesFinish)> _GetDateBetweenValues(IList<Maintenance_Turbine> maintenance_Turbines, IList<(DateTime datesInit, DateTime datesFinish)> valueAndDates) => maintenance_Turbines switch
+            {
+                (Maintenance_Turbine head, Maintenance_Turbine head2, IList<Maintenance_Turbine> tail) => _GetDateBetweenValues(tail.Prepend(head2).ToList(), valueAndDates.Append((DateTime.Parse(head.Date), DateTime.Parse(head2.Date))).ToList()),
+                (Maintenance_Turbine head, Maintenance_Turbine head2, _) => _GetDateBetweenValues(new List<Maintenance_Turbine>() { head2 }, valueAndDates.Append((DateTime.Parse(head.Date), DateTime.Parse(head2.Date))).ToList()),
+                (Maintenance_Turbine head, _) => valueAndDates.Append((DateTime.Parse(head.Date), DateTime.Now)).ToList()
+            };
+
+            return _GetDateBetweenValues(values, new List<(DateTime, DateTime)>());
+        }
+        public async void ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine)
+        {
+            using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
+            var totalPeriodMaintenance = connection.Maintenance_Turbine.Where(info=>info.Id_Turbine==idTurbine).ToList();
+            var intervalTime = GetDateBetweenValues(totalPeriodMaintenance); 
+            IAsyncEnumerable<ILoadInfoTurbine> sequence() => ObtainsAllWarningAndErrorInPeriodMaintenance(idTurbine, connection, intervalTime);
+            await CallSelectSeriesFinal(sequence); 
+        }
+        public async IAsyncEnumerable<ILoadInfoTurbine> ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine, ConnectionToDatabase connectionTo, IList<(DateTime init, DateTime finish)> dates)
+        { 
+            foreach (var (init, finish) in dates)
+            {
+                var warning = await connectionTo.Value_Sensor_Error.Where(error => error.Value.HasValue && error.Id_Turbine == idTurbine &&
+                    string.Compare(error.Date, finish.ToString("yyyy/MM/dd HH:mm:ss")) < 0 && string.Compare(error.Date, init.ToString("yyyy/MM/dd HH:mm:ss")) > 0)
+                         .Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync();
+                warning = warning.OrderBy(val => val.Date).ToList(); 
+                yield return new ResponseSerieOnlyWarning(JsonSerializer.Serialize(warning), JsonSerializer.Serialize(warnings));
+            }
+        }
         public void InsertInfoPlt(DataTable dt_info, string name_table)
         { 
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
