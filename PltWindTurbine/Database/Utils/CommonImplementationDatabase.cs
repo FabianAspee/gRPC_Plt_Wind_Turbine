@@ -38,6 +38,34 @@ namespace PltWindTurbine.Database.Utils
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
 
         }
+        public async void CalculateCorrelationAllSeriesAllTurbines(int periodDays)
+        {
+            using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
+            var allIdTurbine = connection.Wind_Turbine_Info.Select(info => info.Id).ToList();
+            var allSensor = connection.Sensor_Info.Select(info => info.Id).ToList();
+            var allOwnSensor = connection.Own_Serie_Turbine.Select(info => info.Id).ToList();
+            allIdTurbine.ForEach(async idTurbine=>
+            { 
+            });
+
+        }
+        private double ComputeCoeff(double[] values1, double[] values2)
+        {
+            if (values1.Length != values2.Length)
+                throw new ArgumentException("values must be the same length");
+
+            var avg1 = values1.Average();
+            var avg2 = values2.Average();
+
+            var sum1 = values1.Zip(values2, (x1, y1) => (x1 - avg1) * (y1 - avg2)).Sum();
+
+            var sumSqr1 = values1.Sum(x => Math.Pow((x - avg1), 2.0));
+            var sumSqr2 = values2.Sum(y => Math.Pow((y - avg2), 2.0));
+
+            var result = sum1 / Math.Sqrt(sumSqr1 * sumSqr2);
+
+            return result;
+        }
         private static IList<(DateTime datesInit, DateTime datesFinish)> GetDateBetweenValues(IList<Maintenance_Turbine> values)
         {
             IList<(DateTime datesInit, DateTime datesFinish)> _GetDateBetweenValues(IList<Maintenance_Turbine> maintenance_Turbines, IList<(DateTime datesInit, DateTime datesFinish)> valueAndDates) => maintenance_Turbines switch
@@ -49,15 +77,16 @@ namespace PltWindTurbine.Database.Utils
 
             return _GetDateBetweenValues(values, new List<(DateTime, DateTime)>());
         }
+        private static IList<(DateTime init, DateTime finish)> GetIntervalTime(ConnectionToDatabase connection,int idTurbine) => 
+            GetDateBetweenValues(connection.Maintenance_Turbine.Where(info => info.Id_Turbine == idTurbine).ToList());
         public async void ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine)
         {
-            using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
-            var totalPeriodMaintenance = connection.Maintenance_Turbine.Where(info=>info.Id_Turbine==idTurbine).ToList();
-            var intervalTime = GetDateBetweenValues(totalPeriodMaintenance); 
+            using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase(); 
+            var intervalTime = GetIntervalTime(connection,idTurbine); 
             IAsyncEnumerable<ILoadInfoTurbine> sequence() => ObtainsAllWarningAndErrorInPeriodMaintenance(idTurbine, connection, intervalTime);
             await CallSelectSeriesFinal(sequence); 
         }
-        public async IAsyncEnumerable<ILoadInfoTurbine> ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine, ConnectionToDatabase connectionTo, IList<(DateTime init, DateTime finish)> dates)
+        private async IAsyncEnumerable<ILoadInfoTurbine> ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine, ConnectionToDatabase connectionTo, IList<(DateTime init, DateTime finish)> dates)
         { 
             foreach (var (init, finish) in dates)
             {
