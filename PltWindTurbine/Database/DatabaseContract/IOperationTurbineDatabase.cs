@@ -12,14 +12,14 @@ namespace PltWindTurbine.Database.DatabaseContract
     interface IOperationTurbineDatabase
     { 
         public abstract Dictionary<string, List<string>> SelectSerieTurbineByError();
-        public abstract void SelectSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info);
+        public abstract Task SelectSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info);
         public abstract Dictionary<string, List<string>> SelectAllSerieBySensorByTurbineByError();
-        public abstract void SelectSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info);
+        public abstract Task SelectSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info);
         public abstract List<Wind_Turbine_Info> ReadAllTurbine();
         public abstract Task<List<string>> GetErrorByTurbine(int idTurbine);
         public abstract Task<List<(int,string)>> GetNameChart();
-        public abstract void SelectAllSensors();
-        public abstract void SelectAllTurbines();
+        public abstract Task SelectAllSensors();
+        public abstract Task SelectAllTurbines();
         public (List<string>,bool) TurbineExistInDatabase();
 
         public void InsertInfoPlt(DataTable dt_info, string name_table);
@@ -35,12 +35,13 @@ namespace PltWindTurbine.Database.DatabaseContract
         public DataTable SelectPivotValueSensorByTurbine();
         public DataTable SelectErrorTableByTurbine();
         public DataTable SelectErrorTurbineByCondition();
-        void SelectOwnSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info);
-        void SelectOwnSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info);
+        Task SelectOwnSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info);
+        Task SelectOwnSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info);
 
         public Task SelectWarningAllTurbines(int period);
         public Task SaveMaintenanceTurbines(SaveTurbineInfoMaintenance infoMaintenance, bool isFinish);
         void CalculateFourierInAngleSerie(int idTurbine, int periodInDays);
-        void ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine);
+        Task ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine);
+        Task CalculateCorrelationAllSeriesAllTurbines(int periodDays);
     }
 }

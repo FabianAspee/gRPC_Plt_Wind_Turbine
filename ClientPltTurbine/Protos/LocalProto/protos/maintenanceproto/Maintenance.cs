@@ -30,19 +30,19 @@ namespace PltWindTurbine.Services.MaintenanceService {
             "bWFpbnRlbmFuY2UuU2F2ZVR1cmJpbmVJbmZvTWFpbnRlbmFuY2VIABIQCghp",
             "c0ZpbmlzaBgCIAEoCEIICgZBY3Rpb24iYQobTWFpbnRlbmFuY2VUdXJiaW5l",
             "c1Jlc3BvbnNlEgwKBG5hbWUYASABKAkSHwoGc3RhdHVzGAIgASgOMg8udXRp",
-            "bGl0eS5TdGF0dXMSEwoLZGVzY3JpcHRpb24YAyABKAkiPQoaU2F2ZVR1cmJp",
+            "bGl0eS5TdGF0dXMSEwoLZGVzY3JpcHRpb24YAyABKAkiTAoaU2F2ZVR1cmJp",
             "bmVJbmZvTWFpbnRlbmFuY2USEQoJaWRUdXJiaW5lGAEgASgFEgwKBGRhdGUY",
-            "AiABKAkygAEKDE1haW50ZW5hbmNlcxJwChdTYXZlTWFpbnRlbmFuY2VUdXJi",
-            "aW5lcxInLm1haW50ZW5hbmNlLk1haW50ZW5hbmNlVHVyYmluZXNSZXF1ZXN0",
-            "GigubWFpbnRlbmFuY2UuTWFpbnRlbmFuY2VUdXJiaW5lc1Jlc3BvbnNlKAEw",
-            "AUItqgIqUGx0V2luZFR1cmJpbmUuU2VydmljZXMuTWFpbnRlbmFuY2VTZXJ2",
-            "aWNlYgZwcm90bzM="));
+            "AiABKAkSDQoFZGF0ZWYYAyABKAkygAEKDE1haW50ZW5hbmNlcxJwChdTYXZl",
+            "TWFpbnRlbmFuY2VUdXJiaW5lcxInLm1haW50ZW5hbmNlLk1haW50ZW5hbmNl",
+            "VHVyYmluZXNSZXF1ZXN0GigubWFpbnRlbmFuY2UuTWFpbnRlbmFuY2VUdXJi",
+            "aW5lc1Jlc3BvbnNlKAEwAUItqgIqUGx0V2luZFR1cmJpbmUuU2VydmljZXMu",
+            "TWFpbnRlbmFuY2VTZXJ2aWNlYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::PltWindTurbine.Protos.UtilProto.UtilityReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesRequest), global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesRequest.Parser, new[]{ "Msg1", "IsFinish" }, new[]{ "Action" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesResponse), global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesResponse.Parser, new[]{ "Name", "Status", "Description" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.SaveTurbineInfoMaintenance), global::PltWindTurbine.Services.MaintenanceService.SaveTurbineInfoMaintenance.Parser, new[]{ "IdTurbine", "Date" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.SaveTurbineInfoMaintenance), global::PltWindTurbine.Services.MaintenanceService.SaveTurbineInfoMaintenance.Parser, new[]{ "IdTurbine", "Date", "Datef" }, null, null, null, null)
           }));
     }
     #endregion
@@ -573,6 +573,7 @@ namespace PltWindTurbine.Services.MaintenanceService {
     public SaveTurbineInfoMaintenance(SaveTurbineInfoMaintenance other) : this() {
       idTurbine_ = other.idTurbine_;
       date_ = other.date_;
+      datef_ = other.datef_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -603,6 +604,17 @@ namespace PltWindTurbine.Services.MaintenanceService {
       }
     }
 
+    /// <summary>Field number for the "datef" field.</summary>
+    public const int DatefFieldNumber = 3;
+    private string datef_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Datef {
+      get { return datef_; }
+      set {
+        datef_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as SaveTurbineInfoMaintenance);
@@ -618,6 +630,7 @@ namespace PltWindTurbine.Services.MaintenanceService {
       }
       if (IdTurbine != other.IdTurbine) return false;
       if (Date != other.Date) return false;
+      if (Datef != other.Datef) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -626,6 +639,7 @@ namespace PltWindTurbine.Services.MaintenanceService {
       int hash = 1;
       if (IdTurbine != 0) hash ^= IdTurbine.GetHashCode();
       if (Date.Length != 0) hash ^= Date.GetHashCode();
+      if (Datef.Length != 0) hash ^= Datef.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -650,6 +664,10 @@ namespace PltWindTurbine.Services.MaintenanceService {
         output.WriteRawTag(18);
         output.WriteString(Date);
       }
+      if (Datef.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(Datef);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -667,6 +685,10 @@ namespace PltWindTurbine.Services.MaintenanceService {
         output.WriteRawTag(18);
         output.WriteString(Date);
       }
+      if (Datef.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(Datef);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -681,6 +703,9 @@ namespace PltWindTurbine.Services.MaintenanceService {
       }
       if (Date.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Date);
+      }
+      if (Datef.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Datef);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -698,6 +723,9 @@ namespace PltWindTurbine.Services.MaintenanceService {
       }
       if (other.Date.Length != 0) {
         Date = other.Date;
+      }
+      if (other.Datef.Length != 0) {
+        Datef = other.Datef;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -721,6 +749,10 @@ namespace PltWindTurbine.Services.MaintenanceService {
             Date = input.ReadString();
             break;
           }
+          case 26: {
+            Datef = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -741,6 +773,10 @@ namespace PltWindTurbine.Services.MaintenanceService {
           }
           case 18: {
             Date = input.ReadString();
+            break;
+          }
+          case 26: {
+            Datef = input.ReadString();
             break;
           }
         }

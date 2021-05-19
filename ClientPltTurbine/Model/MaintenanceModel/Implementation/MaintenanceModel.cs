@@ -27,12 +27,12 @@ namespace ClientPltTurbine.Model.MaintenanceModel.Implementation
             }
         }
 
-        public Task SaveMaintenanceTurbines(Dictionary<string, (int id, string date)> infoTurbineMaintenance) => Task.Run(() =>
+        public Task SaveMaintenanceTurbines(Dictionary<string, (int id, string date, string datef)> infoTurbineMaintenance) => Task.Run(() =>
         {
             var listTurbineMaintenance = infoTurbineMaintenance.Values.ToList();
             var total = listTurbineMaintenance.Count; 
             listTurbineMaintenance.ForEach((index,values)=>{
-                var request = new MaintenanceTurbinesRequest() { Msg1 = new SaveTurbineInfoMaintenance() { IdTurbine = values.id, Date = values.date },IsFinish=total==(index+1)};
+                var request = new MaintenanceTurbinesRequest() { Msg1 = new SaveTurbineInfoMaintenance() { IdTurbine = values.id, Date = values.date, Datef = values.datef },IsFinish=total==(index+1)};
                 _duplexStreamMaintenance.RequestStream.WriteAsync(request).Wait();
             });
         }); 

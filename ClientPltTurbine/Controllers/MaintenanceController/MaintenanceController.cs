@@ -11,6 +11,6 @@ namespace ClientPltTurbine.Controllers.MaintenanceController
     {
         private readonly IMaintenanceModel Maintenance = new MaintenanceModel();
         public Task CallAllTurbines() => GetAllNameTurbines();
-        public Task SaveMaintenanceTurbines(Dictionary<string, (int id, string date)> infoTurbineMaintenance) => Maintenance.SaveMaintenanceTurbines(infoTurbineMaintenance);
+        public Task SaveMaintenanceTurbines(Dictionary<string, (int id, string date, string datef)> infoTurbineMaintenance) => Maintenance.SaveMaintenanceTurbines(infoTurbineMaintenance);
     }
 }

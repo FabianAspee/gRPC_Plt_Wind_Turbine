@@ -16,40 +16,34 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
  
         public Task<List<string>> GetErrorByTurbine(int id)=> database.GetErrorByTurbine(id);
 
-        public Task<List<(int, string)>> GetInfoChart() => Task.Run(() =>database.GetNameChart()); 
+        public Task<List<(int, string)>> GetInfoChart() => database.GetNameChart(); 
        
-        public Task GetInfoSensors() => Task.Run(() =>
-        {
-            database.SelectAllSensors();
-        });
-        public Task GetInfoTurbines() => Task.Run(() =>
-        {
-            database.SelectAllTurbines();
-        });
+        public Task GetInfoSensors() => database.SelectAllSensors();
+        public Task GetInfoTurbines() => database.SelectAllTurbines();
 
-        public Task GetInfoTurbine(OnlySerieByPeriodAndCode info)=>Task.Run(() =>
+        public Task GetInfoTurbine(OnlySerieByPeriodAndCode info) 
         {
-            SendEventLoadInfo(info.NameTurbine, Status.InProgress, "Init process search series"); 
-            database.SelectSerieBySensorByTurbineByError(info); 
-        });
+            SendEventLoadInfo(info.NameTurbine, Status.InProgress, "Init process search series");
+            return database.SelectSerieBySensorByTurbineByError(info); 
+        }
 
-        public Task GetInfoTurbineOwnSerie(OnlySerieByOwnSeries info) => Task.Run(() =>
+        public Task GetInfoTurbineOwnSerie(OnlySerieByOwnSeries info) 
         {
             SendEventLoadInfo(info.Info.NameTurbine, Status.InProgress, "Init process search series");
-            database.SelectOwnSerieBySensorByTurbineByError(info.Info);
-        });
+            return database.SelectOwnSerieBySensorByTurbineByError(info.Info);
+        } 
         
-        public Task GetInfoTurbineOwnSerieWithWarning(OnlySerieByOwnSeriesWithWarning info) => Task.Run(() =>
+        public Task GetInfoTurbineOwnSerieWithWarning(OnlySerieByOwnSeriesWithWarning info)
         {
             SendEventLoadInfo(info.Info.NameTurbine, Status.InProgress, "Init process search series");
-            database.SelectOwnSerieBySensorByTurbineByErrorWithWarning(info.Info);
-        }); 
+            return database.SelectOwnSerieBySensorByTurbineByErrorWithWarning(info.Info);
+        }
 
-        public Task GetInfoTurbineWithWarning(OnlySerieByPeriodAndCodeWithWarning info) => Task.Run(() =>
+        public Task GetInfoTurbineWithWarning(OnlySerieByPeriodAndCodeWithWarning info) 
         {
             SendEventLoadInfo(info.Info.NameTurbine, Status.InProgress, "Init process search series with warning");
-            database.SelectSerieBySensorByTurbineByErrorWithWarning(info.Info);
-        });
+            return database.SelectSerieBySensorByTurbineByErrorWithWarning(info.Info);
+        } 
 
         public Task SerieByPeriodWithStandardDeviation(SeriePeriodByCodeWithStandarDeviation info)
         {

@@ -43,6 +43,6 @@ namespace ClientPltTurbine.Pages.Component.MaintenanceComponent
             await Controller.CallAllTurbines().ConfigureAwait(false);
         }
 
-        internal Task SaveMaintenanceForTurbine(Dictionary<string, (int id, string date)> infoTurbineMaintenance) => Controller.SaveMaintenanceTurbines(infoTurbineMaintenance);
+        internal Task SaveMaintenanceForTurbine(Dictionary<string, (int id, string date, string datef)> infoTurbineMaintenance) => Controller.SaveMaintenanceTurbines(infoTurbineMaintenance);
     }
 }

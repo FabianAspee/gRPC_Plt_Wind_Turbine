@@ -38,7 +38,7 @@ namespace PltWindTurbine.Database.Utils
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
 
         }
-        public async void CalculateCorrelationAllSeriesAllTurbines(int periodDays)
+        public async Task CalculateCorrelationAllSeriesAllTurbines(int periodDays)
         {
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             var allIdTurbine = connection.Wind_Turbine_Info.Select(info => info.Id).ToList();
@@ -79,7 +79,7 @@ namespace PltWindTurbine.Database.Utils
         }
         private static IList<(DateTime init, DateTime finish)> GetIntervalTime(ConnectionToDatabase connection,int idTurbine) => 
             GetDateBetweenValues(connection.Maintenance_Turbine.Where(info => info.Id_Turbine == idTurbine).ToList());
-        public async void ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine)
+        public async Task ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine)
         {
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase(); 
             var intervalTime = GetIntervalTime(connection,idTurbine); 
@@ -183,14 +183,14 @@ namespace PltWindTurbine.Database.Utils
         private readonly Func<Own_Serie_Turbine, SensorInfo> SelectOwnNameAndIdSensor = sensor => new SensorInfo(sensor.Id, sensor.Name,true);
         private readonly Func<Sensor_Info, SensorInfo> SelectNameAndIdSensor = sensor => new SensorInfo(sensor.Id, sensor.Sensor_Name,false);
         private readonly Func<Wind_Turbine_Info, TurbineInfo> SelectNameAndIdTurbine = turbine => new TurbineInfo(turbine.Id, turbine.Turbine_Name);
-        public async void SelectAllSensors()
+        public async Task SelectAllSensors()
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             var allSensor = connectionTo.Sensor_Info.Select(SelectNameAndIdSensor).ToList();
             connectionTo.Own_Serie_Turbine.Select(SelectOwnNameAndIdSensor).ToList().ForEach(val=>allSensor.Add(val)); 
             await SendEventLoadInfoTurbine(new AllSensorInfo(allSensor));  
         }
-        public async void SelectAllTurbines()
+        public async Task SelectAllTurbines()
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();  
             await SendEventLoadInfoTurbine(new AllTurbineInfo(connectionTo.Wind_Turbine_Info.Select(SelectNameAndIdTurbine).ToList())); 
@@ -358,13 +358,13 @@ namespace PltWindTurbine.Database.Utils
             await CallSelectSeriesFinal(sequence);
         }
 
-        public async void SelectSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info) => await CallSelectSeries(info); 
+        public async Task SelectSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info) => await CallSelectSeries(info); 
 
-        public async void SelectSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info) => await CallSelectSeries(info, true);
+        public async Task SelectSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info) => await CallSelectSeries(info, true);
 
-        public async void SelectOwnSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info) => await CallSelectOwnSeries(info); 
+        public async Task SelectOwnSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info) => await CallSelectOwnSeries(info); 
 
-        public async void SelectOwnSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info) => await CallSelectOwnSeries(info, true);
+        public async Task SelectOwnSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info) => await CallSelectOwnSeries(info, true);
 
         private readonly IReadOnlyList<double> errors = new List<double> { 180, 3370, 186, 182, 181 };
         private readonly IReadOnlyList<double> warnings = new List<double> { 892, 891, 183, 79, 356 };
@@ -476,7 +476,7 @@ namespace PltWindTurbine.Database.Utils
             var query = connectionTo.Maintenance_Turbine.Where(info => info.Id_Turbine == infoMaintenance.IdTurbine && info.Date == infoMaintenance.Date);
             if (!query.Any())
             {
-                var maintenance = new Maintenance_Turbine() { Id_Turbine = infoMaintenance.IdTurbine, Date = infoMaintenance.Date };
+                var maintenance = new Maintenance_Turbine() { Id_Turbine = infoMaintenance.IdTurbine, Date = infoMaintenance.Date, Date_Finish = infoMaintenance.Datef };
                 connectionTo.Maintenance_Turbine.Add(maintenance);
                 connectionTo.SaveChanges();
                 if (isFinish)

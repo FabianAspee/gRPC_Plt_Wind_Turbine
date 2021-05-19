@@ -4,14 +4,17 @@
 
 @foreach (var id in Ids)
 {
-    <div class="row g-3"> 
-        <div class="col-auto">
-            <SelectComponent Id=@id Values="Turbines" Text="(Choose Turbine)" ValueChanged="@ChangeInfoTurbine" Warning="Turbine is required" />
-        </div>
-        <div class="col-auto">
-            <InputDateComponent Id=@id ValueChanged="@ChangeInfoPeriod" Value=@DateTime.Now.ToString("yyyy-MM-dd")></InputDateComponent>
-        </div>
+<div class="row g-3">
+    <div class="col-auto">
+        <SelectComponent Id=@id Values="Turbines" Text="(Choose Turbine)" ValueChanged="@ChangeInfoTurbine" Warning="Turbine is required" />
     </div>
+    <div class="col-auto">
+        <InputDateComponent Id=@id ValueChanged="@ChangeInfoPeriod" Value=@DateTime.Now.ToString("yyyy-MM-dd")></InputDateComponent>
+    </div>
+    <div class="col-auto">
+        <InputDateComponent Id=@id ValueChanged="@ChangeInfoPeriodFinish" Value=@DateTime.Now.ToString("yyyy-MM-dd")></InputDateComponent>
+    </div>
+</div>
 }
 
 <div class="col-auto">

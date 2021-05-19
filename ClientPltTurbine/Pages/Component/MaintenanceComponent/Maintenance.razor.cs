@@ -10,7 +10,7 @@ namespace ClientPltTurbine.Pages.Component.MaintenanceComponent
     {
         private readonly List<string> Ids = new(); 
         private readonly MaintenanceClass maintenance = new();
-        private readonly Dictionary<string, (int id, string date)> InfoTurbineMaintenance = new(); 
+        private readonly Dictionary<string, (int id, string dateInit,string dateFinish)> InfoTurbineMaintenance = new(); 
         private readonly List<Turbine> Turbines = new();
         private async void InitializedComponent()
         {
@@ -40,26 +40,39 @@ namespace ClientPltTurbine.Pages.Component.MaintenanceComponent
             var splitString = idTurbine.Split(",");
             (string id, string idT) = (splitString[0],splitString[1]);
             var myId = Convert.ToInt32(idT);
-            if (!InfoTurbineMaintenance.TryGetValue(id, out (int id,string _) info))
+            if (!InfoTurbineMaintenance.TryGetValue(id, out (int id,string _, string __) info))
             {
-                InfoTurbineMaintenance.Add(id,(myId,string.Empty));
+                InfoTurbineMaintenance.Add(id,(myId, string.Empty, string.Empty));
             }
             else
             {
-                InfoTurbineMaintenance[id]=(myId, info._);
+                InfoTurbineMaintenance[id]=(myId, info._, info.__);
             }
         }
         private void ChangeInfoPeriod(string period)
         {
             var splitString = period.Split(",");
             (string id, string periodT) = (splitString[0], splitString[1]); 
-            if (!InfoTurbineMaintenance.TryGetValue(id, out (int _, string date) info))
+            if (!InfoTurbineMaintenance.TryGetValue(id, out (int _, string date, string __) info))
             {
-                InfoTurbineMaintenance.Add(id, (default,periodT));
+                InfoTurbineMaintenance.Add(id, (default,periodT,string.Empty));
             }
             else
             {
-                InfoTurbineMaintenance[id] = (info._, periodT);
+                InfoTurbineMaintenance[id] = (info._, periodT,info.__);
+            }
+        }
+        private void ChangeInfoPeriodFinish(string period)
+        {
+            var splitString = period.Split(",");
+            (string id, string periodT) = (splitString[0], splitString[1]);
+            if (!InfoTurbineMaintenance.TryGetValue(id, out (int _, string __, string datef) info))
+            {
+                InfoTurbineMaintenance.Add(id, (default, string.Empty, periodT));
+            }
+            else
+            {
+                InfoTurbineMaintenance[id] = (info._, info.__, periodT);
             }
         }
         private async void SaveMaintenanceDate()
