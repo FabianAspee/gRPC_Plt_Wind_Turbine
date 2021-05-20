@@ -38,15 +38,39 @@ namespace PltWindTurbine.Database.Utils
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
 
         }
+        private static Dictionary<int, List<Maintenance_Turbine>> JoinTableWindTurbineMaintenance(ConnectionToDatabase connection) =>
+            connection.Wind_Turbine_Info.Select(turbine => turbine.Id)
+                .Join(connection.Maintenance_Turbine,
+                turbine => turbine,
+                maintenance => maintenance.Id,
+                (turbine, maintenance) => new { IdTurbine = turbine, MaintenanceTurbine = maintenance })
+                .Where(turbineAndMaintenance => turbineAndMaintenance.IdTurbine == turbineAndMaintenance.MaintenanceTurbine.Id_Turbine)
+                .GroupBy(key => key.IdTurbine, value => value.MaintenanceTurbine).ToDictionary(key => key.Key, value => value.ToList());
+        private static Dictionary<int, List<Value_Sensor_Error>> JoinTableWindTurbineValueError(ConnectionToDatabase connection) =>
+            connection.Wind_Turbine_Info.Select(info => info.Id)
+                .Join(connection.Value_Sensor_Error,
+                turbine => turbine,
+                error => error.Id_Turbine,
+                (turbine, error) => new { IdTurbine = turbine, ErrorTurbineInfo = error })
+                .Where(turbineAndError => turbineAndError.IdTurbine == turbineAndError.ErrorTurbineInfo.Id_Turbine)
+                .GroupBy(key => key.IdTurbine, value => value.ErrorTurbineInfo).ToDictionary(key => key.Key, value => value.ToList());
+
+        
         public async Task CalculateCorrelationAllSeriesAllTurbines(int periodDays)
-        {
+        { 
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
-            var allIdTurbine = connection.Wind_Turbine_Info.Select(info => info.Id).ToList();
+            var allMantenaince = JoinTableWindTurbineMaintenance(connection).Select(values=> (values.Key,GetDateBetweenValues(values.Value))).ToDictionary(key => key.Key, value => value.Item2.ToList());
+            var allIdTurbine = JoinTableWindTurbineValueError(connection);
+            allIdTurbine.Select(infoTurbine=>)
+
+
             var allSensor = connection.Sensor_Info.Select(info => info.Id).ToList();
-            var allOwnSensor = connection.Own_Serie_Turbine.Select(info => info.Id).ToList();
-            allIdTurbine.ForEach(async idTurbine=>
-            { 
-            });
+            var allOwnSensor = connection.Own_Serie_Turbine.Select(info => info.Id).ToList(); 
+            
+            var permutation = allIdTurbine.SelectMany(turbine => allSensor.SelectMany(sensor => allOwnSensor.Select(ownSensor => (turbine, sensor, ownSensor)))).ToList();
+            permutation.ForEach(async value =>
+            {
+            }); 
 
         }
         private double ComputeCoeff(double[] values1, double[] values2)
