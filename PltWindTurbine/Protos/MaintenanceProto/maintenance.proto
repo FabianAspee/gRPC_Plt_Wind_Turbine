@@ -26,4 +26,5 @@ message SaveTurbineInfoMaintenance{
 	int32 idTurbine = 1;
 	string date = 2;
 	string datef = 3;
+	bool isNormalMaintenance =4;
 } 

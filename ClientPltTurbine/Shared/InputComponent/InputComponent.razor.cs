@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Shared.InputComponent
@@ -24,7 +20,8 @@ namespace ClientPltTurbine.Shared.InputComponent
         private Task Cast(object value)=>value switch
         {
             int val => ValueChanged.InvokeAsync(val), 
-            _ => ValueChanged.InvokeAsync(default), 
+            _ => ValueChanged.InvokeAsync(default),
         };
+         
     }
 }

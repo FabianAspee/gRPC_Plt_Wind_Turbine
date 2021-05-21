@@ -27,6 +27,8 @@ namespace PltWindTurbine.Database.Utils
     {
         private static readonly int IdAngleSensor = 1;
         private static readonly int TotalGrade = 360;
+        private readonly IReadOnlyList<double> errors = new List<double> { 180, 3370, 186, 182, 181 };
+        private readonly IReadOnlyList<double> warnings = new List<double> { 892, 891, 183, 79, 356 };
         private static IReadOnlyList<TurbineInfo> NameTurbine { get;}
         static CommonImplementationDatabase()
         {
@@ -60,8 +62,15 @@ namespace PltWindTurbine.Database.Utils
         { 
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             var allMantenaince = JoinTableWindTurbineMaintenance(connection).Select(values=> (values.Key,GetDateBetweenValues(values.Value))).ToDictionary(key => key.Key, value => value.Item2.ToList());
-            var allIdTurbine = JoinTableWindTurbineValueError(connection);
-            allIdTurbine.Select(infoTurbine=>)
+            var allIdTurbine = JoinTableWindTurbineValueError(connection).Join(allMantenaince,
+                valueMySensor=>valueMySensor.Key,
+                allMantenaince=>allMantenaince.Key,
+                (sensor,maintenance)=>new {IdTurbine= sensor.Key,MaintenanceAndValueError=(maintenance.Value,sensor.Value)})
+                .ToList()
+                .Select(value=>(value.IdTurbine,value.MaintenanceAndValueError.Item1,value.MaintenanceAndValueError.Item2)).ToList();
+
+
+            //allIdTurbine.Select(infoTurbine=>)
 
 
             var allSensor = connection.Sensor_Info.Select(info => info.Id).ToList();
@@ -335,7 +344,7 @@ namespace PltWindTurbine.Database.Utils
 
         private static string ValidationFormatData(string date) => DateTime.Parse(date).ToString("yyyy/MM/dd HH:mm:ss");
 
-        private static DateTime ParserDateSpecificFormat(string date) => DateTime.Parse(DateTime.Parse(date).ToString("yyyy/MM/dd HH:mm:ss"));
+        private static DateTime ParserDateSpecificFormat(string date) => DateTime.Parse(ValidationFormatData(date));
 
         private static IEnumerable<SerieBySensorTurbineWarning> DateTimeRange(DateTime start, DateTime end, int delta, List<SerieBySensorTurbineWarning> serieBySensors)
         {
@@ -390,8 +399,6 @@ namespace PltWindTurbine.Database.Utils
 
         public async Task SelectOwnSerieBySensorByTurbineByErrorWithWarning(OnlySerieByPeriodAndCode info) => await CallSelectOwnSeries(info, true);
 
-        private readonly IReadOnlyList<double> errors = new List<double> { 180, 3370, 186, 182, 181 };
-        private readonly IReadOnlyList<double> warnings = new List<double> { 892, 891, 183, 79, 356 };
 
         public Task<List<string>> GetErrorByTurbine(int idTurbine) => Task.Run(() =>
         {
@@ -500,7 +507,8 @@ namespace PltWindTurbine.Database.Utils
             var query = connectionTo.Maintenance_Turbine.Where(info => info.Id_Turbine == infoMaintenance.IdTurbine && info.Date == infoMaintenance.Date);
             if (!query.Any())
             {
-                var maintenance = new Maintenance_Turbine() { Id_Turbine = infoMaintenance.IdTurbine, Date = infoMaintenance.Date, Date_Finish = infoMaintenance.Datef };
+                var maintenance = new Maintenance_Turbine() { Id_Turbine = infoMaintenance.IdTurbine, Date = ParseData(infoMaintenance.Date), 
+                    Date_Finish = ParseData(infoMaintenance.Datef), Is_Normal_Maintenance = infoMaintenance.IsNormalMaintenance };
                 connectionTo.Maintenance_Turbine.Add(maintenance);
                 connectionTo.SaveChanges();
                 if (isFinish)
@@ -513,6 +521,6 @@ namespace PltWindTurbine.Database.Utils
                 }
             }
         });
-         
+        private static string ParseData(string data) => ValidationFormatData(data);
     }
 }

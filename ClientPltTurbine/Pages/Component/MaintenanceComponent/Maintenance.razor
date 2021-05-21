@@ -9,11 +9,14 @@
         <SelectComponent Id=@id Values="Turbines" Text="(Choose Turbine)" ValueChanged="@ChangeInfoTurbine" Warning="Turbine is required" />
     </div>
     <div class="col-auto">
-        <InputDateComponent Id=@id ValueChanged="@ChangeInfoPeriod" Value=@DateTime.Now.ToString("yyyy-MM-dd")></InputDateComponent>
+        <InputDateComponent DateType="datetime-local" Id=@id ValueChanged="@ChangeInfoPeriod"></InputDateComponent>
     </div>
     <div class="col-auto">
-        <InputDateComponent Id=@id ValueChanged="@ChangeInfoPeriodFinish" Value=@DateTime.Now.ToString("yyyy-MM-dd")></InputDateComponent>
+        <InputDateComponent DateType="datetime-local" Id=@id ValueChanged="@ChangeInfoPeriodFinish"></InputDateComponent>
     </div>
+    <div class="col-auto">
+        <InputCheckBoxComponent Id=@id ValueChanged="@ChangeIsNormalMaintenance"></InputCheckBoxComponent>
+    </div> 
 </div>
 }
 

@@ -8,6 +8,6 @@ namespace ClientPltTurbine.Controllers.MaintenanceController
     interface IMaintenanceController
     {
         Task CallAllTurbines();
-        Task SaveMaintenanceTurbines(Dictionary<string, (int id, string date, string datef)> infoTurbineMaintenance);
+        Task SaveMaintenanceTurbines(Dictionary<string, (int, string, string, bool)> infoTurbineMaintenance);
     }
 }

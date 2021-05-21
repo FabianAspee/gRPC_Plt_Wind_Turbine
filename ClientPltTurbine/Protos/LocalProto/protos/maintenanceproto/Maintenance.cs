@@ -30,19 +30,20 @@ namespace PltWindTurbine.Services.MaintenanceService {
             "bWFpbnRlbmFuY2UuU2F2ZVR1cmJpbmVJbmZvTWFpbnRlbmFuY2VIABIQCghp",
             "c0ZpbmlzaBgCIAEoCEIICgZBY3Rpb24iYQobTWFpbnRlbmFuY2VUdXJiaW5l",
             "c1Jlc3BvbnNlEgwKBG5hbWUYASABKAkSHwoGc3RhdHVzGAIgASgOMg8udXRp",
-            "bGl0eS5TdGF0dXMSEwoLZGVzY3JpcHRpb24YAyABKAkiTAoaU2F2ZVR1cmJp",
+            "bGl0eS5TdGF0dXMSEwoLZGVzY3JpcHRpb24YAyABKAkiaQoaU2F2ZVR1cmJp",
             "bmVJbmZvTWFpbnRlbmFuY2USEQoJaWRUdXJiaW5lGAEgASgFEgwKBGRhdGUY",
-            "AiABKAkSDQoFZGF0ZWYYAyABKAkygAEKDE1haW50ZW5hbmNlcxJwChdTYXZl",
-            "TWFpbnRlbmFuY2VUdXJiaW5lcxInLm1haW50ZW5hbmNlLk1haW50ZW5hbmNl",
-            "VHVyYmluZXNSZXF1ZXN0GigubWFpbnRlbmFuY2UuTWFpbnRlbmFuY2VUdXJi",
-            "aW5lc1Jlc3BvbnNlKAEwAUItqgIqUGx0V2luZFR1cmJpbmUuU2VydmljZXMu",
-            "TWFpbnRlbmFuY2VTZXJ2aWNlYgZwcm90bzM="));
+            "AiABKAkSDQoFZGF0ZWYYAyABKAkSGwoTaXNOb3JtYWxNYWludGVuYW5jZRgE",
+            "IAEoCDKAAQoMTWFpbnRlbmFuY2VzEnAKF1NhdmVNYWludGVuYW5jZVR1cmJp",
+            "bmVzEicubWFpbnRlbmFuY2UuTWFpbnRlbmFuY2VUdXJiaW5lc1JlcXVlc3Qa",
+            "KC5tYWludGVuYW5jZS5NYWludGVuYW5jZVR1cmJpbmVzUmVzcG9uc2UoATAB",
+            "Qi2qAipQbHRXaW5kVHVyYmluZS5TZXJ2aWNlcy5NYWludGVuYW5jZVNlcnZp",
+            "Y2ViBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::PltWindTurbine.Protos.UtilProto.UtilityReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesRequest), global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesRequest.Parser, new[]{ "Msg1", "IsFinish" }, new[]{ "Action" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesResponse), global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesResponse.Parser, new[]{ "Name", "Status", "Description" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.SaveTurbineInfoMaintenance), global::PltWindTurbine.Services.MaintenanceService.SaveTurbineInfoMaintenance.Parser, new[]{ "IdTurbine", "Date", "Datef" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.SaveTurbineInfoMaintenance), global::PltWindTurbine.Services.MaintenanceService.SaveTurbineInfoMaintenance.Parser, new[]{ "IdTurbine", "Date", "Datef", "IsNormalMaintenance" }, null, null, null, null)
           }));
     }
     #endregion
@@ -574,6 +575,7 @@ namespace PltWindTurbine.Services.MaintenanceService {
       idTurbine_ = other.idTurbine_;
       date_ = other.date_;
       datef_ = other.datef_;
+      isNormalMaintenance_ = other.isNormalMaintenance_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -615,6 +617,17 @@ namespace PltWindTurbine.Services.MaintenanceService {
       }
     }
 
+    /// <summary>Field number for the "isNormalMaintenance" field.</summary>
+    public const int IsNormalMaintenanceFieldNumber = 4;
+    private bool isNormalMaintenance_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool IsNormalMaintenance {
+      get { return isNormalMaintenance_; }
+      set {
+        isNormalMaintenance_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as SaveTurbineInfoMaintenance);
@@ -631,6 +644,7 @@ namespace PltWindTurbine.Services.MaintenanceService {
       if (IdTurbine != other.IdTurbine) return false;
       if (Date != other.Date) return false;
       if (Datef != other.Datef) return false;
+      if (IsNormalMaintenance != other.IsNormalMaintenance) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -640,6 +654,7 @@ namespace PltWindTurbine.Services.MaintenanceService {
       if (IdTurbine != 0) hash ^= IdTurbine.GetHashCode();
       if (Date.Length != 0) hash ^= Date.GetHashCode();
       if (Datef.Length != 0) hash ^= Datef.GetHashCode();
+      if (IsNormalMaintenance != false) hash ^= IsNormalMaintenance.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -668,6 +683,10 @@ namespace PltWindTurbine.Services.MaintenanceService {
         output.WriteRawTag(26);
         output.WriteString(Datef);
       }
+      if (IsNormalMaintenance != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(IsNormalMaintenance);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -689,6 +708,10 @@ namespace PltWindTurbine.Services.MaintenanceService {
         output.WriteRawTag(26);
         output.WriteString(Datef);
       }
+      if (IsNormalMaintenance != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(IsNormalMaintenance);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -706,6 +729,9 @@ namespace PltWindTurbine.Services.MaintenanceService {
       }
       if (Datef.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Datef);
+      }
+      if (IsNormalMaintenance != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -726,6 +752,9 @@ namespace PltWindTurbine.Services.MaintenanceService {
       }
       if (other.Datef.Length != 0) {
         Datef = other.Datef;
+      }
+      if (other.IsNormalMaintenance != false) {
+        IsNormalMaintenance = other.IsNormalMaintenance;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -753,6 +782,10 @@ namespace PltWindTurbine.Services.MaintenanceService {
             Datef = input.ReadString();
             break;
           }
+          case 32: {
+            IsNormalMaintenance = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -777,6 +810,10 @@ namespace PltWindTurbine.Services.MaintenanceService {
           }
           case 26: {
             Datef = input.ReadString();
+            break;
+          }
+          case 32: {
+            IsNormalMaintenance = input.ReadBool();
             break;
           }
         }

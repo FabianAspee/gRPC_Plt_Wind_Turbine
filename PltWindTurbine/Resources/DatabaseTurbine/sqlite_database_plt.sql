@@ -84,6 +84,7 @@ CREATE TABLE IF NOT EXISTS maintenance_turbine(
     id_turbine INTEGER,
     date TEXT,
     date_finish TEXT,
+    is_normal_maintenance NUMERIC,
     FOREIGN KEY(id_turbine) REFERENCES wind_turbine_info(id));
 
 INSERT INTO chart_system(chart_name) 

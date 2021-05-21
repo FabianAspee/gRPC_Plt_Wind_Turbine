@@ -13,5 +13,6 @@ namespace PltWindTurbine.Database.TableDatabase
         public int Id_Turbine { get; set; }
         public string Date { get; set; }
         public string Date_Finish { get; set; }
+        public bool Is_Normal_Maintenance { get; set; }
     }
 } 
