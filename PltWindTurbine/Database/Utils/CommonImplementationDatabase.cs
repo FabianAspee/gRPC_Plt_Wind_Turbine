@@ -504,11 +504,14 @@ namespace PltWindTurbine.Database.Utils
         public Task SaveMaintenanceTurbines(SaveTurbineInfoMaintenance infoMaintenance, bool isFinish) => Task.Run(() =>
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
-            var query = connectionTo.Maintenance_Turbine.Where(info => info.Id_Turbine == infoMaintenance.IdTurbine && info.Date == infoMaintenance.Date);
+            infoMaintenance.Date = ParseData(infoMaintenance.Date);
+            infoMaintenance.Datef = ParseData(infoMaintenance.Datef);
+            var query = connectionTo.Maintenance_Turbine.Where(info => info.Id_Turbine == infoMaintenance.IdTurbine && info.Date == infoMaintenance.Date && info.Date_Finish == infoMaintenance.Datef
+            && info.Is_Normal_Maintenance==infoMaintenance.IsNormalMaintenance);
             if (!query.Any())
             {
-                var maintenance = new Maintenance_Turbine() { Id_Turbine = infoMaintenance.IdTurbine, Date = ParseData(infoMaintenance.Date), 
-                    Date_Finish = ParseData(infoMaintenance.Datef), Is_Normal_Maintenance = infoMaintenance.IsNormalMaintenance };
+                var maintenance = new Maintenance_Turbine() { Id_Turbine = infoMaintenance.IdTurbine, Date = infoMaintenance.Date, 
+                    Date_Finish = infoMaintenance.Datef, Is_Normal_Maintenance = infoMaintenance.IsNormalMaintenance };
                 connectionTo.Maintenance_Turbine.Add(maintenance);
                 connectionTo.SaveChanges();
                 if (isFinish)
@@ -519,6 +522,10 @@ namespace PltWindTurbine.Database.Utils
                 { 
                     SendEventLoadMaintenanceInfo(NameTurbine.FirstOrDefault(x => x.IdTurbine == infoMaintenance.IdTurbine)?.NameTurbine, "Save Turbine");
                 }
+            }
+            else
+            {
+                SendEventFinishLoadMaintenanceInfo("", "Event maintenance already exist");
             }
         });
         private static string ParseData(string data) => ValidationFormatData(data);
