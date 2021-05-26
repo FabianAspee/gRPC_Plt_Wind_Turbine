@@ -50,6 +50,15 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 }
                 Service.ShowSuccess($"Load {status.Record.RecordLinearChart.NameTurbine}");
             }),
+            ResponseSerieByMaintenancePeriod status => Task.Run(() =>
+            {
+                InfoTurbineForChart.SendAsync(status);
+                if (status.IsFinish)
+                {
+                    isCompleteChart.SetResult(true);
+                }
+                Service.ShowSuccess($"Load {status.Record.RecordLinearChart.NameTurbine}");
+            }),
             ResponseSerieByPeriodWithStandardDeviation status => Task.Run(() => Service.ShowError(status.StandardDeviation.ToString())),
             _ => Task.Run(() => Service.ShowError("ERROR"))
         };
@@ -77,18 +86,20 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 yield return await InfoTurbineForChartWithSTD.ReceiveAsync();
             }
         }
-        private Task CallTypeChart(InfoChartRecord info, int idChart) => idChart switch
+        private Task CallTypeChart(IBaseChart info, int idChart) => (idChart,info) switch
         {
-            1 or 3 => Controller.ChartAllTurbines(info),
-            2 or 4 or 5 or 6 or 7=> Controller.ChartAllTurbinesWarning(info),
+            (1 or 3, InfoChartRecord infoChart) => Controller.ChartAllTurbines(infoChart),
+            (2 or 4 or 5 or 6 or 7, InfoChartRecord infoChart) => Controller.ChartAllTurbinesWarning(infoChart),
+            (8,InfoChartRecordMaintenancePeriod infoChartMaintenance) => Controller.ChartTurbineByMaintenancePeriod(infoChartMaintenance),
             _ => throw new NotImplementedException()
         };
-        public async Task ChartInfoTurbine(InfoChartRecord info, int type)
+        public async Task ChartInfoTurbine(IBaseChart info, int type)
         {
             isCompleteChart = new();
             InfoTurbineForChart = new();
             await CallTypeChart(info, type).ConfigureAwait(false);
-        }
+        } 
+
         public async Task CallTurbinesAndSensor()
         {
             InitliazidedComponent();

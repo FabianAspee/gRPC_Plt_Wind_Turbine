@@ -112,23 +112,26 @@ namespace PltWindTurbine.Database.Utils
         }
         private static IList<(DateTime init, DateTime finish)> GetIntervalTime(ConnectionToDatabase connection,int idTurbine) => 
             GetDateBetweenValues(connection.Maintenance_Turbine.Where(info => info.Id_Turbine == idTurbine).ToList());
-        public async Task ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine)
+        public async Task ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine, string nameTurbine)
         {
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase(); 
             var intervalTime = GetIntervalTime(connection,idTurbine); 
-            IAsyncEnumerable<ILoadInfoTurbine> sequence() => ObtainsAllWarningAndErrorInPeriodMaintenance(idTurbine, connection, intervalTime);
-            await CallSelectSeriesFinal(sequence); 
+            IAsyncEnumerable<ILoadInfoTurbine> sequence() => ObtainsAllWarningAndErrorInPeriodMaintenance(idTurbine, nameTurbine, connection, intervalTime);
+            void eventDelegate(ILoadInfoTurbine value) => SendEventLoadInfoMaintenance(value);
+            await CallSelectSeriesFinal(sequence, eventDelegate); 
         }
-        private async IAsyncEnumerable<ILoadInfoTurbine> ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine, ConnectionToDatabase connectionTo, IList<(DateTime init, DateTime finish)> dates)
-        { 
-            foreach (var (init, finish) in dates)
+        private async IAsyncEnumerable<ILoadInfoTurbine> ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine, string nameTurbine, ConnectionToDatabase connectionTo, IList<(DateTime init, DateTime finish)> dates)
+        {
+            var final = dates.Count;
+            foreach (var ((init, finish),index) in dates.Zip(Enumerable.Range(0, final)))
             {
                 var warning = await connectionTo.Value_Sensor_Error.Where(error => error.Value.HasValue && error.Id_Turbine == idTurbine &&
                     string.Compare(error.Date, finish.ToString("yyyy/MM/dd HH:mm:ss")) < 0 && string.Compare(error.Date, init.ToString("yyyy/MM/dd HH:mm:ss")) > 0)
                          .Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync();
-                warning = warning.OrderBy(val => val.Date).ToList(); 
-                yield return new ResponseSerieOnlyWarning(JsonSerializer.Serialize(warning), JsonSerializer.Serialize(warnings));
-            }
+                warning = warning.OrderBy(val => val.Date).ToList();
+                yield return new WarningAndErrorTurbine(new ValuesByTurbine(nameTurbine, JsonSerializer.Serialize(warning), index== final), JsonSerializer.Serialize(warnings));  
+            }  
+                
         }
         public void InsertInfoPlt(DataTable dt_info, string name_table)
         { 
@@ -285,8 +288,9 @@ namespace PltWindTurbine.Database.Utils
                         .Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync();
             warning = warning.OrderBy(val => val.Date).ToList();
             warning = DateTimeRange(dates, ParserDateSpecificFormat(infoError.Date), 10, warning).ToList();
-            var serieByPeriod = new ResponseSerieByPeriod(info.NameTurbine, info.NameSensor, JsonSerializer.Serialize(resultSerie), infoError.Id == last.Id);
-            return new ResponseSerieByPeriodWithWarning(serieByPeriod, JsonSerializer.Serialize(warning), JsonSerializer.Serialize(warnings));
+
+            var serieByPeriod = new ResponseSerieByPeriod(new ValuesByTurbine(info.NameTurbine, JsonSerializer.Serialize(resultSerie), infoError.Id == last.Id), info.NameSensor);
+            return new ResponseSerieByPeriodWithWarning(serieByPeriod, new ResponseSerieOnlyWarning(JsonSerializer.Serialize(warning), JsonSerializer.Serialize(warnings)));
         }
         private async IAsyncEnumerable<ILoadInfoTurbine> GenerateSequence(OnlySerieByPeriodAndCode info, bool isWarning=false)
         {
@@ -317,13 +321,15 @@ namespace PltWindTurbine.Database.Utils
         private delegate ResponseSerieByPeriod GetResponseSerieByPeriod(OnlySerieByPeriodAndCode info, IList<SerieBySensorTurbineError> resultSerie, bool isFinal);
 
         private readonly GetResponseSerieByPeriod callFunctionResponseSerie = (info, resultSerie, isFinal) =>
-        new ResponseSerieByPeriod(info.NameTurbine, info.NameSensor, JsonSerializer.Serialize(resultSerie), isFinal);
+        new ResponseSerieByPeriod(new ValuesByTurbine(info.NameTurbine, JsonSerializer.Serialize(resultSerie), isFinal), info.NameSensor);
 
         private readonly GetNewValuewWithDate callFunction= (errors, info)=>
             errors.Count > 1 ? GetDateBetweenValues(errors, info.Days) : errors.Select(val => (val, DateTime.Parse(errors.First().Date).AddDays(info.Days))).ToList();
 
-        private delegate IAsyncEnumerable<ILoadInfoTurbine> Sequence(); 
+        private delegate IAsyncEnumerable<ILoadInfoTurbine> Sequence();
 
+
+        private delegate void EventDelegate(ILoadInfoTurbine infoTurbine); 
         private async IAsyncEnumerable<ILoadInfoTurbine> GenerateOwnSequence(OnlySerieByPeriodAndCode info, bool isWarning = false)
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
@@ -373,14 +379,14 @@ namespace PltWindTurbine.Database.Utils
 
         private async Task CallSelectSeries(OnlySerieByPeriodAndCode info, bool isWarning = false) {
             IAsyncEnumerable<ILoadInfoTurbine> sequence() => GenerateSequence(info, isWarning);
-            await CallSelectSeriesFinal(sequence);
+            void eventDelegate(ILoadInfoTurbine value) => SendEventLoadInfo(value);
+            await CallSelectSeriesFinal(sequence, eventDelegate);
         }
-        
-        private async Task CallSelectSeriesFinal(Sequence generateSequence)
+        private static async Task CallSelectSeriesFinal(Sequence generateSequence, EventDelegate eventDelegate)
         { 
             await foreach (var values in generateSequence())
             {
-                SendEventLoadInfo(values);
+                eventDelegate(values);
             }
         }
 
@@ -388,7 +394,8 @@ namespace PltWindTurbine.Database.Utils
         {
             await CalculateAngleSerieAllTurbines();
             IAsyncEnumerable<ILoadInfoTurbine> sequence() => GenerateOwnSequence(info, isWarning);
-            await CallSelectSeriesFinal(sequence);
+            void eventDelegate(ILoadInfoTurbine value) => SendEventLoadInfo(value);
+            await CallSelectSeriesFinal(sequence, eventDelegate);
         }
 
         public async Task SelectSerieBySensorByTurbineByError(OnlySerieByPeriodAndCode info) => await CallSelectSeries(info); 

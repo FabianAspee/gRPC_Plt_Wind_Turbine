@@ -18,7 +18,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         private int error;
         private int idChart=-1;
         private bool recallChartInfo = false;
-        private string text = string.Empty;
+        private string text = string.Empty; 
         private static int GetId(string id) => Convert.ToInt32(id);
         private void ChangeInfoSensor(string idSensor)
         { 
@@ -44,6 +44,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
             }
             await Call(InfoTurbine);
         }
-        public bool IsWarningChart => idChart is not 5 and not 6 and not 7 and not -1;
+        public bool IsWarningChart => idChart is not 5 and not 6 and not 7 and not -1 and not 8;
+        public bool IsPeriodMaintenanceChart => idChart is not -1 and not 8;
     }
 }

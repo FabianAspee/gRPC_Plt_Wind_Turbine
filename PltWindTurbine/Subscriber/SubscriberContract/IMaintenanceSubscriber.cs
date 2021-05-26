@@ -8,6 +8,7 @@ namespace PltWindTurbine.Subscriber.SubscriberContract
 {
     public interface IMaintenanceSubscriber : ISubscriber
     {
+        Task ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine, string nameTurbine);
         Task SaveMaintenanceTurbine(SaveTurbineInfoMaintenance saveTurbine, bool isFinish);
     }
 }

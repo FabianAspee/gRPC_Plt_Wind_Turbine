@@ -41,7 +41,7 @@ namespace PltWindTurbine.Database.DatabaseContract
         public Task SelectWarningAllTurbines(int period);
         public Task SaveMaintenanceTurbines(SaveTurbineInfoMaintenance infoMaintenance, bool isFinish);
         void CalculateFourierInAngleSerie(int idTurbine, int periodInDays);
-        Task ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine);
+        Task ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine, string nameTurbine);
         Task CalculateCorrelationAllSeriesAllTurbines(int periodDays);
     }
 }

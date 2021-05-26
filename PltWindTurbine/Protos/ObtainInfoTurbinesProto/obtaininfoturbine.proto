@@ -34,8 +34,7 @@ message InfoChart{
 	int32 idChart=1;
 	string nameChart=2;
 }
-message ChartSystemResponse{ 
-
+message ChartSystemResponse{  
 	repeated InfoChart info=1;
 }
 
@@ -50,7 +49,7 @@ message CodeAndPeriodRequest{
 		SeriePeriodByCodeWithStandarDeviation msg2=2;
 		OnlySerieByPeriodAndCodeWithWarning msg3 = 3;
 		OnlySerieByOwnSeries msg4 = 4;
-		OnlySerieByOwnSeriesWithWarning msg5 = 5;
+		OnlySerieByOwnSeriesWithWarning msg5 = 5; 
 	}
 }
 

@@ -28,7 +28,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
             }; 
              
         }
-        public ConfigChart CreateLineChartWarning(ResponseSerieByPeriodWarning serieByPeriodWarning)
+        public ConfigChart CreateLineChart(ResponseSerieByPeriodWarning serieByPeriodWarning)
         {
             var variant = _variants($"Serie Turbine {serieByPeriodWarning.Record.RecordLinearChart.NameTurbine} Sensor {serieByPeriodWarning.Record.RecordLinearChart.NameSensor} with warnings");
              
@@ -80,6 +80,10 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
             var newWeek = initSerie.AddDays(8 - Convert.ToInt32(initSerie.DayOfWeek));
             return (week, _CalculusWeekAndInitfinishWeek(newWeek, weekDate));
         }
-       
+
+        public ConfigChart CreateLineChart(ResponseSerieByMaintenancePeriod serieByPeriodMaintenance)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

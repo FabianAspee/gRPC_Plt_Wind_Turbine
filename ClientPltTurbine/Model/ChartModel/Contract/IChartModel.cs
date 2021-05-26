@@ -14,5 +14,6 @@ namespace ClientPltTurbine.Model.ChartModel.Contract
         Task<List<(int, string)>> GetAllChart();
         Task GetAllInfoTurbineForChartOwnSeries(InfoChartRecord info);
         Task GetAllInfoTurbineForChartWithWarningOwnSeries(InfoChartRecord info);
+        Task GetMaintenancePeriodChart(InfoChartRecordMaintenancePeriod infoChartMaintenance);
     }
 }

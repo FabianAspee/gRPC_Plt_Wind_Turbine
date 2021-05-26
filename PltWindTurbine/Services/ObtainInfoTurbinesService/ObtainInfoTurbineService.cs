@@ -15,6 +15,7 @@ using PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Contract;
 using PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Implementation;
 using PltWindTurbine.Subscriber.SubscriberContract;
 using PltWindTurbine.Subscriber.SubscriberFactory;
+using PltWindTurbine.Utils;
 
 namespace PltWindTurbine.Services.ObtaininfoTurbinesService
 {
@@ -209,20 +210,19 @@ namespace PltWindTurbine.Services.ObtaininfoTurbinesService
                     Msg3 = new OnlySerieByPeriodAndCodeResponseWithWarning() 
                     { 
                         Msg1 = GetByPeriodAndCodeResponse(responseSerieByPeriodWithWarning.SerieByPeriod),
-                        Warning = GetBytes(responseSerieByPeriodWithWarning.Warning),
-                        OriginalWarning= GetBytes(responseSerieByPeriodWithWarning.OriginalWarning)
+                        Warning = UtilGeneralMethod.GetBytes(responseSerieByPeriodWithWarning.Warning),
+                        OriginalWarning= UtilGeneralMethod.GetBytes(responseSerieByPeriodWithWarning.OriginalWarning)
                     }
                 }
             },
             _ => throw new NotImplementedException()
-        };
-        private static ByteString GetBytes(string values) => ByteString.CopyFrom(Encoding.UTF8.GetBytes(values));
+        }; 
         private static OnlySerieByPeriodAndCodeResponse GetByPeriodAndCodeResponse(ResponseSerieByPeriod responseSerieBy) =>
             new()
             { 
                 NameTurbine = responseSerieBy.NameTurbine,
                 NameSensor  = responseSerieBy.NameSensor,
-                Values = GetBytes(responseSerieBy.Values),
+                Values = UtilGeneralMethod.GetBytes(responseSerieBy.Values),
                 IsFinish = responseSerieBy.IsFinish
             };
 

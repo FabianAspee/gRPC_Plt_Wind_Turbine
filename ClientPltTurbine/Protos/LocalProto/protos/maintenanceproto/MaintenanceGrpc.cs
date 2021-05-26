@@ -44,6 +44,8 @@ namespace PltWindTurbine.Services.MaintenanceService {
 
     static readonly grpc::Marshaller<global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesRequest> __Marshaller_maintenance_MaintenanceTurbinesRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesRequest.Parser));
     static readonly grpc::Marshaller<global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesResponse> __Marshaller_maintenance_MaintenanceTurbinesResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesResponse.Parser));
+    static readonly grpc::Marshaller<global::PltWindTurbine.Services.MaintenanceService.TurbineRequest> __Marshaller_maintenance_TurbineRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::PltWindTurbine.Services.MaintenanceService.TurbineRequest.Parser));
+    static readonly grpc::Marshaller<global::PltWindTurbine.Services.MaintenanceService.TurbineResponse> __Marshaller_maintenance_TurbineResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::PltWindTurbine.Services.MaintenanceService.TurbineResponse.Parser));
 
     static readonly grpc::Method<global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesRequest, global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesResponse> __Method_SaveMaintenanceTurbines = new grpc::Method<global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesRequest, global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesResponse>(
         grpc::MethodType.DuplexStreaming,
@@ -51,6 +53,13 @@ namespace PltWindTurbine.Services.MaintenanceService {
         "SaveMaintenanceTurbines",
         __Marshaller_maintenance_MaintenanceTurbinesRequest,
         __Marshaller_maintenance_MaintenanceTurbinesResponse);
+
+    static readonly grpc::Method<global::PltWindTurbine.Services.MaintenanceService.TurbineRequest, global::PltWindTurbine.Services.MaintenanceService.TurbineResponse> __Method_ObtainsAllWarningAndErrorInPeriodMaintenance = new grpc::Method<global::PltWindTurbine.Services.MaintenanceService.TurbineRequest, global::PltWindTurbine.Services.MaintenanceService.TurbineResponse>(
+        grpc::MethodType.DuplexStreaming,
+        __ServiceName,
+        "ObtainsAllWarningAndErrorInPeriodMaintenance",
+        __Marshaller_maintenance_TurbineRequest,
+        __Marshaller_maintenance_TurbineResponse);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -88,6 +97,14 @@ namespace PltWindTurbine.Services.MaintenanceService {
       public virtual grpc::AsyncDuplexStreamingCall<global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesRequest, global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesResponse> SaveMaintenanceTurbines(grpc::CallOptions options)
       {
         return CallInvoker.AsyncDuplexStreamingCall(__Method_SaveMaintenanceTurbines, null, options);
+      }
+      public virtual grpc::AsyncDuplexStreamingCall<global::PltWindTurbine.Services.MaintenanceService.TurbineRequest, global::PltWindTurbine.Services.MaintenanceService.TurbineResponse> ObtainsAllWarningAndErrorInPeriodMaintenance(grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return ObtainsAllWarningAndErrorInPeriodMaintenance(new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      public virtual grpc::AsyncDuplexStreamingCall<global::PltWindTurbine.Services.MaintenanceService.TurbineRequest, global::PltWindTurbine.Services.MaintenanceService.TurbineResponse> ObtainsAllWarningAndErrorInPeriodMaintenance(grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncDuplexStreamingCall(__Method_ObtainsAllWarningAndErrorInPeriodMaintenance, null, options);
       }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       protected override MaintenancesClient NewInstance(ClientBaseConfiguration configuration)

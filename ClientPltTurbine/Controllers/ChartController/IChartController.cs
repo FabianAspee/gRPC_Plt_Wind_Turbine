@@ -13,5 +13,6 @@ namespace ClientPltTurbine.Controllers.ChartController
         Task CallAllTurbinesAndSensors();
         Task<(int, List<string>)> GetErrorByTurbine(int idTurbine);
         Task<List<(int, string)>> GetAllChart();
+        Task ChartTurbineByMaintenancePeriod(InfoChartRecordMaintenancePeriod infoChartMaintenance);
     }
 }

@@ -8,6 +8,7 @@ import "Protos/UtilProto/utility.proto";
 service Maintenances {
 
   rpc SaveMaintenanceTurbines(stream MaintenanceTurbinesRequest) returns (stream MaintenanceTurbinesResponse); 
+  rpc ObtainsAllWarningAndErrorInPeriodMaintenance(stream TurbineRequest) returns (stream TurbineResponse); 
 }
 
 message MaintenanceTurbinesRequest{
@@ -16,6 +17,23 @@ message MaintenanceTurbinesRequest{
 	}
 	bool isFinish=2;
 } 
+
+message TurbineRequest{
+	int32 idTurbine=1;
+	string nameTurbine = 2;
+}  
+
+message WarningAndError{ 
+	string nameTurbine = 1; 
+	bytes values =3;
+	bool isFinish =4;
+}
+
+message TurbineResponse{
+	WarningAndError msg1=1; 
+	bytes originalWarning=3;
+}
+
 message MaintenanceTurbinesResponse {
   string name = 1;
   utility.Status status = 2;

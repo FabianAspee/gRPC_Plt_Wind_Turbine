@@ -12,7 +12,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
     public class MaintenanceSubscriber : AbstractSubscriber, IMaintenanceSubscriber
     {
         private readonly IOperationTurbineDatabase database = RetreiveImplementationDatabase.Instance.ImplementationDatabase;
-
+        public Task ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine, string nameTurbine) => database.ObtainsAllWarningAndErrorInPeriodMaintenance(idTurbine, nameTurbine);
         public Task SaveMaintenanceTurbine(SaveTurbineInfoMaintenance saveTurbine, bool isFinish) => database.SaveMaintenanceTurbines(saveTurbine, isFinish);
     }
 }

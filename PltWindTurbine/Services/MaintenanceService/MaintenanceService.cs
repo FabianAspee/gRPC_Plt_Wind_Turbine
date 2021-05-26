@@ -5,10 +5,13 @@ using PltWindTurbine.Subscriber.EventArgument.EventContainer;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer.Contract;
 using PltWindTurbine.Subscriber.EventArgument.EventContainer.Implementation;
 using PltWindTurbine.Subscriber.EventArgument.LoadFileTurbine.Contract;
+using PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Contract;
+using PltWindTurbine.Subscriber.EventArgument.LoadInfoTurbine.Implementation;
 using PltWindTurbine.Subscriber.EventArgument.MaintenanceTurbine.Contract;
 using PltWindTurbine.Subscriber.EventArgument.MaintenanceTurbine.Implementation;
 using PltWindTurbine.Subscriber.SubscriberContract;
 using PltWindTurbine.Subscriber.SubscriberFactory;
+using PltWindTurbine.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +56,49 @@ namespace PltWindTurbine.Services.MaintenanceService
             _logger.LogInformation("Subscription finished.");
         }
 
+        public override async Task ObtainsAllWarningAndErrorInPeriodMaintenance(IAsyncStreamReader<TurbineRequest> request, IServerStreamWriter<TurbineResponse> response, ServerCallContext context)
+        {
+
+            using var subscriberMaintenanceTurbine = _factoryMethod.GetMaintenanceSubscriber();
+            StatusMaintenance += async (sender, args) =>
+               await WriteLoadWarningAndErrorMaintenanceResponse(response, args as ILoadInfoTurbine);
+            RegisterEvent(EventKey.MAINTENANCE_KEY);
+            try
+            {
+                await HandleLoadMaintenanceTurbine(request, subscriberMaintenanceTurbine);
+            }
+            catch (Exception e)
+            {
+                _logger.LogInformation(e.ToString());
+            }
+            _logger.LogInformation("Subscription finished.");
+        }
+
+        private async Task WriteLoadWarningAndErrorMaintenanceResponse(IServerStreamWriter<TurbineResponse> stream, ILoadInfoTurbine maintenance)
+        {
+            try
+            {
+                var response = CreateResponseMaintenance(maintenance);
+                await stream.WriteAsync(response);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Failed to write message: {e.Message}");
+            }
+        }
+
+        private static TurbineResponse CreateResponseMaintenance(ILoadInfoTurbine maintenance) => maintenance switch
+        {
+            WarningAndErrorTurbine info => new TurbineResponse() { Msg1 = new WarningAndError() {
+                NameTurbine=info.NameTurbine,
+                Values=UtilGeneralMethod.GetBytes(info.Values), 
+                IsFinish=info.IsFinish 
+            },
+                OriginalWarning=UtilGeneralMethod.GetBytes(info.OriginalWarning) 
+            },
+            _ => throw new NotImplementedException()
+        };
+
         private async Task WriteStatusMaintenanceResponse(IServerStreamWriter<MaintenanceTurbinesResponse> stream, IMaintenanceTurbine maintenance)
         {
             try
@@ -70,7 +116,15 @@ namespace PltWindTurbine.Services.MaintenanceService
         {
             StatusEventLoadMaintenance info => new MaintenanceTurbinesResponse() {Name = info.Status.Name, Status = info.Status.Status,Description=info.Status.Description},
             _ => throw new NotImplementedException()
-        }; 
+        };
+
+        private static async Task HandleLoadMaintenanceTurbine(IAsyncStreamReader<TurbineRequest> request, IMaintenanceSubscriber subscriberMaintenanceTurbine)
+        {
+            await foreach (var action in request.ReadAllAsync())
+            { 
+                await subscriberMaintenanceTurbine.ObtainsAllWarningAndErrorInPeriodMaintenance(action.IdTurbine, action.NameTurbine);  
+            }
+        }
 
         private async Task HandleActionsMaintenanceTurbine(IAsyncStreamReader<MaintenanceTurbinesRequest> request, IMaintenanceSubscriber subscriberMaintenanceTurbine)
         {

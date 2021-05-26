@@ -28,20 +28,30 @@ namespace PltWindTurbine.Services.MaintenanceService {
             "bWFpbnRlbmFuY2UaHlByb3Rvcy9VdGlsUHJvdG8vdXRpbGl0eS5wcm90byJx",
             "ChpNYWludGVuYW5jZVR1cmJpbmVzUmVxdWVzdBI3CgRtc2cxGAEgASgLMicu",
             "bWFpbnRlbmFuY2UuU2F2ZVR1cmJpbmVJbmZvTWFpbnRlbmFuY2VIABIQCghp",
-            "c0ZpbmlzaBgCIAEoCEIICgZBY3Rpb24iYQobTWFpbnRlbmFuY2VUdXJiaW5l",
-            "c1Jlc3BvbnNlEgwKBG5hbWUYASABKAkSHwoGc3RhdHVzGAIgASgOMg8udXRp",
-            "bGl0eS5TdGF0dXMSEwoLZGVzY3JpcHRpb24YAyABKAkiaQoaU2F2ZVR1cmJp",
-            "bmVJbmZvTWFpbnRlbmFuY2USEQoJaWRUdXJiaW5lGAEgASgFEgwKBGRhdGUY",
-            "AiABKAkSDQoFZGF0ZWYYAyABKAkSGwoTaXNOb3JtYWxNYWludGVuYW5jZRgE",
-            "IAEoCDKAAQoMTWFpbnRlbmFuY2VzEnAKF1NhdmVNYWludGVuYW5jZVR1cmJp",
-            "bmVzEicubWFpbnRlbmFuY2UuTWFpbnRlbmFuY2VUdXJiaW5lc1JlcXVlc3Qa",
-            "KC5tYWludGVuYW5jZS5NYWludGVuYW5jZVR1cmJpbmVzUmVzcG9uc2UoATAB",
-            "Qi2qAipQbHRXaW5kVHVyYmluZS5TZXJ2aWNlcy5NYWludGVuYW5jZVNlcnZp",
-            "Y2ViBnByb3RvMw=="));
+            "c0ZpbmlzaBgCIAEoCEIICgZBY3Rpb24iOAoOVHVyYmluZVJlcXVlc3QSEQoJ",
+            "aWRUdXJiaW5lGAEgASgFEhMKC25hbWVUdXJiaW5lGAIgASgJIkgKD1dhcm5p",
+            "bmdBbmRFcnJvchITCgtuYW1lVHVyYmluZRgBIAEoCRIOCgZ2YWx1ZXMYAyAB",
+            "KAwSEAoIaXNGaW5pc2gYBCABKAgiVgoPVHVyYmluZVJlc3BvbnNlEioKBG1z",
+            "ZzEYASABKAsyHC5tYWludGVuYW5jZS5XYXJuaW5nQW5kRXJyb3ISFwoPb3Jp",
+            "Z2luYWxXYXJuaW5nGAMgASgMImEKG01haW50ZW5hbmNlVHVyYmluZXNSZXNw",
+            "b25zZRIMCgRuYW1lGAEgASgJEh8KBnN0YXR1cxgCIAEoDjIPLnV0aWxpdHku",
+            "U3RhdHVzEhMKC2Rlc2NyaXB0aW9uGAMgASgJImkKGlNhdmVUdXJiaW5lSW5m",
+            "b01haW50ZW5hbmNlEhEKCWlkVHVyYmluZRgBIAEoBRIMCgRkYXRlGAIgASgJ",
+            "Eg0KBWRhdGVmGAMgASgJEhsKE2lzTm9ybWFsTWFpbnRlbmFuY2UYBCABKAgy",
+            "7wEKDE1haW50ZW5hbmNlcxJwChdTYXZlTWFpbnRlbmFuY2VUdXJiaW5lcxIn",
+            "Lm1haW50ZW5hbmNlLk1haW50ZW5hbmNlVHVyYmluZXNSZXF1ZXN0GigubWFp",
+            "bnRlbmFuY2UuTWFpbnRlbmFuY2VUdXJiaW5lc1Jlc3BvbnNlKAEwARJtCixP",
+            "YnRhaW5zQWxsV2FybmluZ0FuZEVycm9ySW5QZXJpb2RNYWludGVuYW5jZRIb",
+            "Lm1haW50ZW5hbmNlLlR1cmJpbmVSZXF1ZXN0GhwubWFpbnRlbmFuY2UuVHVy",
+            "YmluZVJlc3BvbnNlKAEwAUItqgIqUGx0V2luZFR1cmJpbmUuU2VydmljZXMu",
+            "TWFpbnRlbmFuY2VTZXJ2aWNlYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::PltWindTurbine.Protos.UtilProto.UtilityReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesRequest), global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesRequest.Parser, new[]{ "Msg1", "IsFinish" }, new[]{ "Action" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.TurbineRequest), global::PltWindTurbine.Services.MaintenanceService.TurbineRequest.Parser, new[]{ "IdTurbine", "NameTurbine" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.WarningAndError), global::PltWindTurbine.Services.MaintenanceService.WarningAndError.Parser, new[]{ "NameTurbine", "Values", "IsFinish" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.TurbineResponse), global::PltWindTurbine.Services.MaintenanceService.TurbineResponse.Parser, new[]{ "Msg1", "OriginalWarning" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesResponse), global::PltWindTurbine.Services.MaintenanceService.MaintenanceTurbinesResponse.Parser, new[]{ "Name", "Status", "Description" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::PltWindTurbine.Services.MaintenanceService.SaveTurbineInfoMaintenance), global::PltWindTurbine.Services.MaintenanceService.SaveTurbineInfoMaintenance.Parser, new[]{ "IdTurbine", "Date", "Datef", "IsNormalMaintenance" }, null, null, null, null)
           }));
@@ -299,6 +309,675 @@ namespace PltWindTurbine.Services.MaintenanceService {
 
   }
 
+  public sealed partial class TurbineRequest : pb::IMessage<TurbineRequest>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<TurbineRequest> _parser = new pb::MessageParser<TurbineRequest>(() => new TurbineRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<TurbineRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::PltWindTurbine.Services.MaintenanceService.MaintenanceReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public TurbineRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public TurbineRequest(TurbineRequest other) : this() {
+      idTurbine_ = other.idTurbine_;
+      nameTurbine_ = other.nameTurbine_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public TurbineRequest Clone() {
+      return new TurbineRequest(this);
+    }
+
+    /// <summary>Field number for the "idTurbine" field.</summary>
+    public const int IdTurbineFieldNumber = 1;
+    private int idTurbine_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int IdTurbine {
+      get { return idTurbine_; }
+      set {
+        idTurbine_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "nameTurbine" field.</summary>
+    public const int NameTurbineFieldNumber = 2;
+    private string nameTurbine_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string NameTurbine {
+      get { return nameTurbine_; }
+      set {
+        nameTurbine_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as TurbineRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(TurbineRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (IdTurbine != other.IdTurbine) return false;
+      if (NameTurbine != other.NameTurbine) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (IdTurbine != 0) hash ^= IdTurbine.GetHashCode();
+      if (NameTurbine.Length != 0) hash ^= NameTurbine.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (IdTurbine != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(IdTurbine);
+      }
+      if (NameTurbine.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(NameTurbine);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (IdTurbine != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(IdTurbine);
+      }
+      if (NameTurbine.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(NameTurbine);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (IdTurbine != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(IdTurbine);
+      }
+      if (NameTurbine.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(NameTurbine);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(TurbineRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.IdTurbine != 0) {
+        IdTurbine = other.IdTurbine;
+      }
+      if (other.NameTurbine.Length != 0) {
+        NameTurbine = other.NameTurbine;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            IdTurbine = input.ReadInt32();
+            break;
+          }
+          case 18: {
+            NameTurbine = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            IdTurbine = input.ReadInt32();
+            break;
+          }
+          case 18: {
+            NameTurbine = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class WarningAndError : pb::IMessage<WarningAndError>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<WarningAndError> _parser = new pb::MessageParser<WarningAndError>(() => new WarningAndError());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<WarningAndError> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::PltWindTurbine.Services.MaintenanceService.MaintenanceReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public WarningAndError() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public WarningAndError(WarningAndError other) : this() {
+      nameTurbine_ = other.nameTurbine_;
+      values_ = other.values_;
+      isFinish_ = other.isFinish_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public WarningAndError Clone() {
+      return new WarningAndError(this);
+    }
+
+    /// <summary>Field number for the "nameTurbine" field.</summary>
+    public const int NameTurbineFieldNumber = 1;
+    private string nameTurbine_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string NameTurbine {
+      get { return nameTurbine_; }
+      set {
+        nameTurbine_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "values" field.</summary>
+    public const int ValuesFieldNumber = 3;
+    private pb::ByteString values_ = pb::ByteString.Empty;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pb::ByteString Values {
+      get { return values_; }
+      set {
+        values_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "isFinish" field.</summary>
+    public const int IsFinishFieldNumber = 4;
+    private bool isFinish_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool IsFinish {
+      get { return isFinish_; }
+      set {
+        isFinish_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as WarningAndError);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(WarningAndError other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (NameTurbine != other.NameTurbine) return false;
+      if (Values != other.Values) return false;
+      if (IsFinish != other.IsFinish) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (NameTurbine.Length != 0) hash ^= NameTurbine.GetHashCode();
+      if (Values.Length != 0) hash ^= Values.GetHashCode();
+      if (IsFinish != false) hash ^= IsFinish.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (NameTurbine.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(NameTurbine);
+      }
+      if (Values.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteBytes(Values);
+      }
+      if (IsFinish != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(IsFinish);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (NameTurbine.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(NameTurbine);
+      }
+      if (Values.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteBytes(Values);
+      }
+      if (IsFinish != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(IsFinish);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (NameTurbine.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(NameTurbine);
+      }
+      if (Values.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(Values);
+      }
+      if (IsFinish != false) {
+        size += 1 + 1;
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(WarningAndError other) {
+      if (other == null) {
+        return;
+      }
+      if (other.NameTurbine.Length != 0) {
+        NameTurbine = other.NameTurbine;
+      }
+      if (other.Values.Length != 0) {
+        Values = other.Values;
+      }
+      if (other.IsFinish != false) {
+        IsFinish = other.IsFinish;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            NameTurbine = input.ReadString();
+            break;
+          }
+          case 26: {
+            Values = input.ReadBytes();
+            break;
+          }
+          case 32: {
+            IsFinish = input.ReadBool();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            NameTurbine = input.ReadString();
+            break;
+          }
+          case 26: {
+            Values = input.ReadBytes();
+            break;
+          }
+          case 32: {
+            IsFinish = input.ReadBool();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class TurbineResponse : pb::IMessage<TurbineResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<TurbineResponse> _parser = new pb::MessageParser<TurbineResponse>(() => new TurbineResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<TurbineResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::PltWindTurbine.Services.MaintenanceService.MaintenanceReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public TurbineResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public TurbineResponse(TurbineResponse other) : this() {
+      msg1_ = other.msg1_ != null ? other.msg1_.Clone() : null;
+      originalWarning_ = other.originalWarning_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public TurbineResponse Clone() {
+      return new TurbineResponse(this);
+    }
+
+    /// <summary>Field number for the "msg1" field.</summary>
+    public const int Msg1FieldNumber = 1;
+    private global::PltWindTurbine.Services.MaintenanceService.WarningAndError msg1_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::PltWindTurbine.Services.MaintenanceService.WarningAndError Msg1 {
+      get { return msg1_; }
+      set {
+        msg1_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "originalWarning" field.</summary>
+    public const int OriginalWarningFieldNumber = 3;
+    private pb::ByteString originalWarning_ = pb::ByteString.Empty;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pb::ByteString OriginalWarning {
+      get { return originalWarning_; }
+      set {
+        originalWarning_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as TurbineResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(TurbineResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(Msg1, other.Msg1)) return false;
+      if (OriginalWarning != other.OriginalWarning) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (msg1_ != null) hash ^= Msg1.GetHashCode();
+      if (OriginalWarning.Length != 0) hash ^= OriginalWarning.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (msg1_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Msg1);
+      }
+      if (OriginalWarning.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteBytes(OriginalWarning);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (msg1_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(Msg1);
+      }
+      if (OriginalWarning.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteBytes(OriginalWarning);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (msg1_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Msg1);
+      }
+      if (OriginalWarning.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(OriginalWarning);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(TurbineResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.msg1_ != null) {
+        if (msg1_ == null) {
+          Msg1 = new global::PltWindTurbine.Services.MaintenanceService.WarningAndError();
+        }
+        Msg1.MergeFrom(other.Msg1);
+      }
+      if (other.OriginalWarning.Length != 0) {
+        OriginalWarning = other.OriginalWarning;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (msg1_ == null) {
+              Msg1 = new global::PltWindTurbine.Services.MaintenanceService.WarningAndError();
+            }
+            input.ReadMessage(Msg1);
+            break;
+          }
+          case 26: {
+            OriginalWarning = input.ReadBytes();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (msg1_ == null) {
+              Msg1 = new global::PltWindTurbine.Services.MaintenanceService.WarningAndError();
+            }
+            input.ReadMessage(Msg1);
+            break;
+          }
+          case 26: {
+            OriginalWarning = input.ReadBytes();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class MaintenanceTurbinesResponse : pb::IMessage<MaintenanceTurbinesResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -311,7 +990,7 @@ namespace PltWindTurbine.Services.MaintenanceService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::PltWindTurbine.Services.MaintenanceService.MaintenanceReflection.Descriptor.MessageTypes[1]; }
+      get { return global::PltWindTurbine.Services.MaintenanceService.MaintenanceReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -555,7 +1234,7 @@ namespace PltWindTurbine.Services.MaintenanceService {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::PltWindTurbine.Services.MaintenanceService.MaintenanceReflection.Descriptor.MessageTypes[2]; }
+      get { return global::PltWindTurbine.Services.MaintenanceService.MaintenanceReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

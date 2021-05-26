@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using PltWindTurbine.Protos.UtilProto;
 using PltWindTurbine.Subscriber.EventArgument.MaintenanceTurbine.Implementation;
 using PltWindTurbine.Subscriber.EventArgument.UtilEventTurbine.Implementation;
+using PltWindTurbine.Subscriber.EventArgument.MaintenanceTurbine.Contract;
 
 namespace PltWindTurbine.Subscriber.EventArgument.EventContainer
 {
@@ -53,6 +54,10 @@ namespace PltWindTurbine.Subscriber.EventArgument.EventContainer
         {
             await container.SelectEvent<IBaseEvent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, infoTurbine));
         }
+        public async void SendEventLoadInfoMaintenance(ILoadInfoTurbine infoTurbine)
+        {
+            await container.SelectEvent<IBaseEvent>(EventKey.MAINTENANCE_KEY).ContinueWith(evento => evento.Result.Invoke(this, infoTurbine));
+        }
         public async void SendEventLoadMaintenanceInfo(string name, string description) => await SendEventLoadMaintenanceInfo(name, description, Status.InProgress);
 
         public async void SendEventFinishLoadMaintenanceInfo(string name, string description) => await SendEventLoadMaintenanceInfo(name, description, Status.Success);
@@ -66,7 +71,7 @@ namespace PltWindTurbine.Subscriber.EventArgument.EventContainer
         public async void SendEventLoadInfoStandardDeviation(string nameTurbine, string nameSensor, string values, bool isFinish, double standardDeviation)
         {
             await container.SelectEvent<IBaseEvent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, 
-                new ResponseSerieByPeriodWithStandardDeviation(new ResponseSerieByPeriod(nameTurbine, nameSensor, values, isFinish), standardDeviation)));
+                new ResponseSerieByPeriodWithStandardDeviation(new ResponseSerieByPeriod(new ValuesByTurbine(nameTurbine, values, isFinish), nameSensor), standardDeviation)));
         }
     }
 }
