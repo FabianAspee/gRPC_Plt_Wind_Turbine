@@ -94,6 +94,10 @@ namespace ClientPltTurbine.Pages.Component.MaintenanceComponent
         {
             await maintenance.SaveMaintenanceForTurbine(InfoTurbineMaintenance);
         }
+        private async void LoadFromCsv()
+        {
+            await Task.Delay(1);
+        }
         private void CreateAndSaveId()
         {
             var Id = string.Concat(Guid.NewGuid().ToString("N").Select(c => (char)(c + 17)));
