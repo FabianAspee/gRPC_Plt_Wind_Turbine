@@ -28,4 +28,5 @@ RUN update-ca-certificates
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY ["ClientPltTurbine/App.config", "/app/config/App.config"] 
+COPY ["ClientPltTurbine/wwwroot/images/", "/app/wwwroot/images/"] 
 ENTRYPOINT ["dotnet", "ClientPltTurbine.dll"]

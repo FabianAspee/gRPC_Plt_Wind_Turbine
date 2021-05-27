@@ -29,12 +29,9 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         private readonly IChartController Controller = new ChartController(); 
         public const int InitalCount = 7;
         public bool initSensor = true;
-        public event EventHandler<IEventComponent> InfoChart;
-        private readonly static Lazy<ChartSingleton> instance = new(() => new ChartSingleton());
-        private ChartSingleton() { }
-        public static ChartSingleton Instace => instance.Value;
+        public event EventHandler<IEventComponent> InfoChart; 
         public void RegisterEvent()
-        {
+        { 
             container.AddEvent(EventKey.GRAPH_KEY, InfoChart);
         }
 
@@ -121,7 +118,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
             InfoTurbineForChart = new();
             await CallTypeChart(info, type).ConfigureAwait(false);
         }
-        private void InitliazidedComponent()
+        public void InitliazidedComponent()
         { 
             isCompleteS = new();
             isCompleteT = new();

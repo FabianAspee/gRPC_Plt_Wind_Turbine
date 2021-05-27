@@ -18,8 +18,8 @@ using System.Threading.Tasks;
 namespace ClientPltTurbine.Pages.Component.ChartComponent
 {
     public partial class Charts
-    { 
-        private ChartSingleton ChartSingleton = ChartSingleton.Instace; 
+    {  
+        private readonly ChartSingleton ChartSingletonF = new();
         private readonly IList<IEventComponent> infoChart = new List<IEventComponent>(); 
         private readonly ILineChartDraw lineChartDraw = LineChartDraw.Instance;
         private readonly IScatterChartDraw scatterChartDraw = ScatterChartDraw.Instance;
@@ -29,20 +29,21 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         protected override bool ShouldRender() => shouldRender;
         private async void InitializedComponent()
         {
-            ChartSingleton.Service = toastService;
-            ChartSingleton.InfoChart += async (sender, args) =>
-               await ChartSingleton.WriteInfo(args);
-            await Task.Run(() => ChartSingleton.RegisterEvent());
+            ChartSingletonF.InitliazidedComponent();
+            ChartSingletonF.Service = toastService;
+            ChartSingletonF.InfoChart += async (sender, args) =>
+               await ChartSingletonF.WriteInfo(args);
+            await Task.Run(() => ChartSingletonF.RegisterEvent());
         }
         protected override async Task OnInitializedAsync()
         {
+            InitializedComponent();
             async Task Initialized(){
                 if (!Sensors.Any() && !Turbines.Any())
                 {
-                    InitializedComponent();
-                    await ChartSingleton.CallTurbinesAndSensor();
+                    await ChartSingletonF.CallTurbinesAndSensor();
                     await AwaitSensorAndTurbine();
-                    var allChart = await ChartSingleton.GetAllChart();
+                    var allChart = await ChartSingletonF.GetAllChart();
                     ChartInfo.AddRange(allChart.Select(info => new ChartInfo(info.Item1, info.Item2)).ToList());
                 }
             }
@@ -63,11 +64,11 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         }  
         private async Task AwaitSensorAndTurbine()
         {
-            await foreach (var sensor in ChartSingleton.GetSensor())
+            await foreach (var sensor in ChartSingletonF.GetSensor())
             {
                 Sensors.Add(sensor);
             }
-            await foreach (var turbine in ChartSingleton.GetTurbine())
+            await foreach (var turbine in ChartSingletonF.GetTurbine())
             {
                 Turbines.Add(turbine);
             }
@@ -80,9 +81,9 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 var nameSensor = Sensors.Find(value => value.Id == idSensor).Value;
                 var valueError = ErrorByTurbine.Find(value => value.Id == error).Value;
                 var info = new InfoChartRecord(idTurbine, nameTurbine, idSensor, nameSensor, Convert.ToInt32(valueError), period);
-                await ChartSingleton.ChartInfoTurbine(info, idChart);
+                await ChartSingletonF.ChartInfoTurbine(info, idChart);
                 infoChart.Clear();
-                await foreach (var turbine in ChartSingleton.GetInfoChart())
+                await foreach (var turbine in ChartSingletonF.GetInfoChart())
                 {
                     infoChart.Add(turbine);
                 }

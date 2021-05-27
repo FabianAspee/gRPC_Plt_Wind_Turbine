@@ -29,7 +29,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 ErrorByTurbine.Clear();
                 infoChart.Clear();
                 this.idTurbine = idTurbine;
-                var result = await ChartSingleton.CallErrorByTurbine(idTurbine);
+                var result = await ChartSingletonF.CallErrorByTurbine(idTurbine);
                 ErrorByTurbine.AddRange(result.Item2.Zip(Enumerable.Range(0, result.Item2.Count))
                     .Select(values => new ErrorTurbine(values.Second, values.First)).ToList());
                 StateHasChanged();

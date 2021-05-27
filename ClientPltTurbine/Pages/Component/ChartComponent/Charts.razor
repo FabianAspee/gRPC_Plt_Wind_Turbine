@@ -1,7 +1,8 @@
 ﻿@page "/charts-turbines"
+ 
 @inject IToastService toastService
 <h1>Graphic Turbine</h1>
-<p>Current Turbines: @ChartSingleton.NumTurbine</p>
+<p>Current Turbines: @ChartSingletonF.NumTurbine</p>
 <div class="row g-3">
     <div class="col-auto">
         <SelectComponent Values="ChartInfo" Text="(Choose Chart)" ValueChanged="@ChangeInfoChart" Warning="Chart is required" />

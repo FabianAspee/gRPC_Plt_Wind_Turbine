@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using System.IO;
+using System.IO; 
 using System.Threading.Tasks;
 
 namespace ClientPltTurbine
@@ -35,6 +35,7 @@ namespace ClientPltTurbine
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<LoadFile>();
             services.AddSingleton<ModelPrediction>();  
+            services.AddSingleton<ChartSingleton>();  
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,14 +53,13 @@ namespace ClientPltTurbine
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(); 
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images")),
-                RequestPath = "/images"
+                Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images")),
+                RequestPath = "/wwwroot/images"
             });
-
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
