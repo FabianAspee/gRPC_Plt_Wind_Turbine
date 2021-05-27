@@ -121,6 +121,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
             TypeChartUtils.LinearChart => lineChartDraw.CreateLineChart(GetResponseSerieByPeriod(periods)),
             TypeChartUtils.LinearChartWithWarning when periods is ResponseSerieByPeriodWarning periodWarning=> lineChartDraw.CreateLineChart(periodWarning),
             TypeChartUtils.PeriodMaintenanceChart when periods is ResponseSerieByMaintenancePeriod periodWarning => lineChartDraw.CreateLineChart(periodWarning),
+            TypeChartUtils.PeriodMaintenanceChart when periods is not ResponseSerieByMaintenancePeriod => RecallChartData(),
             TypeChartUtils.ScatterChart => scatterChartDraw.CreateScatterChart(GetResponseSerieByPeriod(periods)),
             TypeChartUtils.ScatterChartWithWarning when periods is ResponseSerieByPeriodWarning periodWarning => scatterChartDraw.CreateScatterChartWithWarning(periodWarning),
             TypeChartUtils.RadarChartWithWarning when periods is ResponseSerieByPeriodWarning periodWarning => radarCharttDraw.CreateRadarChartWithWarning(periodWarning),

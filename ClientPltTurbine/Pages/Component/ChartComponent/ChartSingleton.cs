@@ -50,14 +50,14 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
                 }
                 Service.ShowSuccess($"Load {status.Record.RecordLinearChart.NameTurbine}");
             }),
-            ResponseSerieByMaintenancePeriod status => Task.Run(() =>
+            ResponseSerieByMaintenancePeriod status => Task.Run(async () =>
             {
-                InfoTurbineForChart.SendAsync(status);
+                await InfoTurbineForChart.SendAsync(status);
                 if (status.IsFinish)
                 {
                     isCompleteChart.SetResult(true);
                 }
-                Service.ShowSuccess($"Load {status.Record.RecordLinearChart.NameTurbine}");
+                Service.ShowSuccess($"Load {status.Record.RecordLinearChart.NameTurbine} {status.IsFinish} {InfoTurbineForChart.Count}");
             }),
             ResponseSerieByPeriodWithStandardDeviation status => Task.Run(() => Service.ShowError(status.StandardDeviation.ToString())),
             _ => Task.Run(() => Service.ShowError("ERROR"))
@@ -74,14 +74,14 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         }
         public async IAsyncEnumerable<IEventComponent> GetInfoChart()
         {
-            while (!isCompleteChart.Task.IsCompleted)
+            while (!isCompleteChart.Task.IsCompleted || InfoTurbineForChart.Count!=0)
             {  
                 yield return await InfoTurbineForChart.ReceiveAsync();
             }
         }
         public async IAsyncEnumerable<ResponseSerieByPeriodWithStandardDeviation> GetInfoChartStd()
         {
-            while (!isCompleteStd.Task.IsCompleted)
+            while (!isCompleteStd.Task.IsCompleted || InfoTurbineForChartWithSTD.Count != 0)
             {
                 yield return await InfoTurbineForChartWithSTD.ReceiveAsync();
             }

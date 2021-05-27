@@ -150,9 +150,9 @@ namespace ClientPltTurbine.Model.ChartModel.Implementation
             var originalWarning = EncodingByteToString(ReturnByteFromContent(parameterToChart.OriginalWarning));
             try
             {
-                var customInfos = DeserializeObject<List<CustomInfoTurbine>>(result); 
+                var customInfos = DeserializeObject<List<CustomInfoTurbineWarningAndError>>(result); 
                 var customInfosOriginalWarning = DeserializeObject<List<string>>(originalWarning);
-                var info = new RecordLinearChartMaintenancePeriod(new RecordLinearChartBase(parameterToChart.NameTurbine,customInfos), customInfosOriginalWarning); 
+                var info = new RecordLinearChartMaintenancePeriod(new RecordLinearChartBaseWarningAndError(parameterToChart.NameTurbine,customInfos), customInfosOriginalWarning); 
                 SendEventLoadInfo(new ResponseSerieByMaintenancePeriod(parameterToChart.IsFinish, info));
             }
             catch (Exception e)

@@ -83,7 +83,16 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
 
         public ConfigChart CreateLineChart(ResponseSerieByMaintenancePeriod serieByPeriodMaintenance)
         {
-            throw new NotImplementedException();
+            var variant = _variants($"Warning Turbine {serieByPeriodMaintenance.Record.RecordLinearChart.NameTurbine}");
+             
+            var warning = serieByPeriodMaintenance.Record.RecordLinearChart.CustomInfo.Select(value => value.Value.HasValue ? value.Value.ToString() : null).ToArray(); 
+            var colors = GetWarningColor(warning);
+            return new LineChart()
+            {
+                Type = Shared.ChartJsComponent.ChartType.Line.ToString().ToLower(),
+                Options = new OptionChart(true, false, new Interaction(false), 0),
+                Data = new DataChart(SelectRecords(serieByPeriodMaintenance).ToList(), new[]{new DataSetChart(warning, variant.Title, colors, BackgroundColor: colors) }.ToArray())
+            };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System;
 using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Shared.InputComponent
@@ -19,7 +20,7 @@ namespace ClientPltTurbine.Shared.InputComponent
         private Task OnValueChanged(ChangeEventArgs e) => Cast(e.Value); 
         private Task Cast(object value)=>value switch
         {
-            int val => ValueChanged.InvokeAsync(val), 
+            _ when int.TryParse(value.ToString(), out int val)=> ValueChanged.InvokeAsync(val), 
             _ => ValueChanged.InvokeAsync(default),
         };
          

@@ -14,18 +14,18 @@ namespace PltWindTurbine.Database.Sqlite
         private static readonly Lazy<TurbineCrud> instance = new(() => new TurbineCrud());
         private TurbineCrud() { }
         public static TurbineCrud Instance => instance.Value;
-        public override void InsertInfoWindTurbine(InfoByTurbineToTable infoTurbine)
+        public override Task InsertInfoWindTurbine(InfoByTurbineToTable infoTurbine)
         {
             lock (this)
             {
-                base.InsertInfoWindTurbine(infoTurbine);
+                return base.InsertInfoWindTurbine(infoTurbine);
             }
         }
-        public override void InsertInfoEventWindTurbine(InfoByTurbineToTable infoTurbine)
+        public override Task InsertInfoEventWindTurbine(InfoByTurbineToTable infoTurbine)
         {
             lock (this)
             {
-                base.InsertInfoEventWindTurbine(infoTurbine);
+                return base.InsertInfoEventWindTurbine(infoTurbine);
             }
         }
         public override Task SelectWarningAllTurbines(int period)

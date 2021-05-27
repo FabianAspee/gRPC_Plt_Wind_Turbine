@@ -35,6 +35,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart
         {
             ResponseSerieByPeriod value => value.Record.CustomInfo.Select(x => x.Date.ToString("yyyy/MM/dd HH:mm:ss")),
             ResponseSerieByPeriodWarning value => value.Record.InfoTurbineWarnings.Select(x => x.Date.ToString("yyyy/MM/dd HH:mm:ss")),
+            ResponseSerieByMaintenancePeriod value => value.Record.CustomInfo.Select(x => x.Date.ToString("yyyy/MM/dd HH:mm:ss")),
             _ => throw new NotImplementedException(),
         };
         protected static DataSetChart GetInfoWarningByWeek(List<(DateTime, DateTime)> weekList, List<(DateTime Date, double? Value)> warningVal, string color)

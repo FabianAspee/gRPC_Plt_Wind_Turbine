@@ -15,18 +15,20 @@ using PltWindTurbine.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace PltWindTurbine.Services.MaintenanceService
 {
-    public class MaintenanceService: Maintenances.MaintenancesBase 
+    public class MaintenanceService: Maintenances.MaintenancesBase
     {
+        private static SemaphoreSlim semaphore = new(1);
         private readonly ISubscriberFactory _factoryMethod;
         private readonly ILogger<MaintenanceService> _logger;
         private readonly IEventContainer container = EventContainer.Container;
         private event EventHandler<IBaseEvent> StatusMaintenance; 
         public MaintenanceService(ISubscriberFactory factoryMethod, ILogger<MaintenanceService> logger)
-        {
+        { 
             _logger = logger;
             _factoryMethod = factoryMethod;
         }
@@ -78,12 +80,17 @@ namespace PltWindTurbine.Services.MaintenanceService
         {
             try
             {
+                await semaphore.WaitAsync(); 
                 var response = CreateResponseMaintenance(maintenance);
-                await stream.WriteAsync(response);
+                await stream.WriteAsync(response);  
             }
             catch (Exception e)
             {
                 _logger.LogError($"Failed to write message: {e.Message}");
+            }
+            finally
+            {
+                semaphore.Release();
             }
         }
 

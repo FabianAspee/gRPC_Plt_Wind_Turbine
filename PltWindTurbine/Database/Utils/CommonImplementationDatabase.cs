@@ -117,17 +117,17 @@ namespace PltWindTurbine.Database.Utils
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase(); 
             var intervalTime = GetIntervalTime(connection,idTurbine); 
             IAsyncEnumerable<ILoadInfoTurbine> sequence() => ObtainsAllWarningAndErrorInPeriodMaintenance(idTurbine, nameTurbine, connection, intervalTime);
-            void eventDelegate(ILoadInfoTurbine value) => SendEventLoadInfoMaintenance(value);
+            async void eventDelegate(ILoadInfoTurbine value) => await SendEventLoadInfoMaintenance(value);
             await CallSelectSeriesFinal(sequence, eventDelegate); 
         }
         private async IAsyncEnumerable<ILoadInfoTurbine> ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine, string nameTurbine, ConnectionToDatabase connectionTo, IList<(DateTime init, DateTime finish)> dates)
         {
             var final = dates.Count;
-            foreach (var ((init, finish),index) in dates.Zip(Enumerable.Range(0, final)))
+            foreach (var ((init, finish),index) in dates.Zip(Enumerable.Range(1, final)))
             {
                 var warning = await connectionTo.Value_Sensor_Error.Where(error => error.Value.HasValue && error.Id_Turbine == idTurbine &&
                     string.Compare(error.Date, finish.ToString("yyyy/MM/dd HH:mm:ss")) < 0 && string.Compare(error.Date, init.ToString("yyyy/MM/dd HH:mm:ss")) > 0)
-                         .Select(values => new SerieBySensorTurbineWarning(values.Id, values.Date, values.Value)).ToListAsync();
+                         .Select(values => new SerieBySensorTurbineWarningAndError(values.Id, values.Date, values.Value, errors.Any(error=> error==values.Value.Value))).ToListAsync();
                 warning = warning.OrderBy(val => val.Date).ToList();
                 yield return new WarningAndErrorTurbine(new ValuesByTurbine(nameTurbine, JsonSerializer.Serialize(warning), index== final), JsonSerializer.Serialize(warnings));  
             }  
@@ -156,9 +156,9 @@ namespace PltWindTurbine.Database.Utils
             transaction.Commit();
         } 
          
-        public virtual void InsertInfoWindTurbine(InfoByTurbineToTable infoByTurbine)
+        public virtual async Task InsertInfoWindTurbine(InfoByTurbineToTable infoByTurbine)
         {
-            SendEventFile(infoByTurbine.IdTurbine.ToString(),$"Insert sensor info {infoByTurbine.IdSensor}"); 
+            await SendEventFile(infoByTurbine.IdTurbine.ToString(),  $"Insert sensor info {infoByTurbine.IdSensor}"); 
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             using var transaction = connection.Database.BeginTransaction();
             using var command = connection.Database.GetDbConnection().CreateCommand(); 
@@ -191,9 +191,9 @@ namespace PltWindTurbine.Database.Utils
 
         private static (string, string) GetIdTurbineAndSensor(InfoByTurbineToTable infoByTurbine) => (infoByTurbine.IdTurbine.idTurbine.ToString(), infoByTurbine.IdSensor.idSensor.ToString());
 
-        public virtual void InsertInfoEventWindTurbine(InfoByTurbineToTable infoByTurbine)
+        public virtual async Task InsertInfoEventWindTurbine(InfoByTurbineToTable infoByTurbine)
         {
-            SendEventFile(infoByTurbine.IdTurbine.ToString(), $"Insert Event sensor info {infoByTurbine.IdSensor}"); 
+            await SendEventFile(infoByTurbine.IdTurbine.ToString(), $"Insert Event sensor info {infoByTurbine.IdSensor}"); 
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             using var transaction = connection.Database.BeginTransaction();
             using var command = connection.Database.GetDbConnection().CreateCommand();
@@ -379,7 +379,7 @@ namespace PltWindTurbine.Database.Utils
 
         private async Task CallSelectSeries(OnlySerieByPeriodAndCode info, bool isWarning = false) {
             IAsyncEnumerable<ILoadInfoTurbine> sequence() => GenerateSequence(info, isWarning);
-            void eventDelegate(ILoadInfoTurbine value) => SendEventLoadInfo(value);
+            async void eventDelegate(ILoadInfoTurbine value) => await SendEventLoadInfo(value);
             await CallSelectSeriesFinal(sequence, eventDelegate);
         }
         private static async Task CallSelectSeriesFinal(Sequence generateSequence, EventDelegate eventDelegate)
@@ -394,7 +394,7 @@ namespace PltWindTurbine.Database.Utils
         {
             await CalculateAngleSerieAllTurbines();
             IAsyncEnumerable<ILoadInfoTurbine> sequence() => GenerateOwnSequence(info, isWarning);
-            void eventDelegate(ILoadInfoTurbine value) => SendEventLoadInfo(value);
+            async void eventDelegate(ILoadInfoTurbine value) => await SendEventLoadInfo(value);
             await CallSelectSeriesFinal(sequence, eventDelegate);
         }
 
@@ -508,7 +508,7 @@ namespace PltWindTurbine.Database.Utils
             throw new NotImplementedException();
         }
 
-        public Task SaveMaintenanceTurbines(SaveTurbineInfoMaintenance infoMaintenance, bool isFinish) => Task.Run(() =>
+        public Task SaveMaintenanceTurbines(SaveTurbineInfoMaintenance infoMaintenance, bool isFinish) => Task.Run(async () =>
         {
             using var connectionTo = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             infoMaintenance.Date = ParseData(infoMaintenance.Date);
@@ -523,16 +523,16 @@ namespace PltWindTurbine.Database.Utils
                 connectionTo.SaveChanges();
                 if (isFinish)
                 {
-                    SendEventFinishLoadMaintenanceInfo("", "Finish Save Maintenance");
+                    await SendEventFinishLoadMaintenanceInfo("", "Finish Save Maintenance");
                 }
                 else
                 { 
-                    SendEventLoadMaintenanceInfo(NameTurbine.FirstOrDefault(x => x.IdTurbine == infoMaintenance.IdTurbine)?.NameTurbine, "Save Turbine");
+                    await SendEventLoadMaintenanceInfo(NameTurbine.FirstOrDefault(x => x.IdTurbine == infoMaintenance.IdTurbine)?.NameTurbine, "Save Turbine");
                 }
             }
             else
             {
-                SendEventFinishLoadMaintenanceInfo("", "Event maintenance already exist");
+                await SendEventFinishLoadMaintenanceInfo ("", "Event maintenance already exist");
             }
         });
         private static string ParseData(string data) => ValidationFormatData(data);

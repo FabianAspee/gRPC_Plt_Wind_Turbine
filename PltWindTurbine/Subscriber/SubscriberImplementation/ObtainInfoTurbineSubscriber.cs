@@ -21,28 +21,28 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
         public Task GetInfoSensors() => database.SelectAllSensors();
         public Task GetInfoTurbines() => database.SelectAllTurbines();
 
-        public Task GetInfoTurbine(OnlySerieByPeriodAndCode info) 
+        public async Task GetInfoTurbine(OnlySerieByPeriodAndCode info) 
         {
-            SendEventLoadInfo(info.NameTurbine, Status.InProgress, "Init process search series");
-            return database.SelectSerieBySensorByTurbineByError(info); 
+            await SendEventLoadInfo(info.NameTurbine, Status.InProgress, "Init process search series");
+            await database.SelectSerieBySensorByTurbineByError(info); 
         }
 
-        public Task GetInfoTurbineOwnSerie(OnlySerieByOwnSeries info) 
+        public async Task GetInfoTurbineOwnSerie(OnlySerieByOwnSeries info) 
         {
-            SendEventLoadInfo(info.Info.NameTurbine, Status.InProgress, "Init process search series");
-            return database.SelectOwnSerieBySensorByTurbineByError(info.Info);
+            await SendEventLoadInfo(info.Info.NameTurbine, Status.InProgress, "Init process search series");
+            await database.SelectOwnSerieBySensorByTurbineByError(info.Info);
         } 
         
-        public Task GetInfoTurbineOwnSerieWithWarning(OnlySerieByOwnSeriesWithWarning info)
+        public async Task GetInfoTurbineOwnSerieWithWarning(OnlySerieByOwnSeriesWithWarning info)
         {
-            SendEventLoadInfo(info.Info.NameTurbine, Status.InProgress, "Init process search series");
-            return database.SelectOwnSerieBySensorByTurbineByErrorWithWarning(info.Info);
+            await SendEventLoadInfo(info.Info.NameTurbine, Status.InProgress, "Init process search series");
+            await database.SelectOwnSerieBySensorByTurbineByErrorWithWarning(info.Info);
         }
 
-        public Task GetInfoTurbineWithWarning(OnlySerieByPeriodAndCodeWithWarning info) 
+        public async Task GetInfoTurbineWithWarning(OnlySerieByPeriodAndCodeWithWarning info) 
         {
-            SendEventLoadInfo(info.Info.NameTurbine, Status.InProgress, "Init process search series with warning");
-            return database.SelectSerieBySensorByTurbineByErrorWithWarning(info.Info);
+            await SendEventLoadInfo(info.Info.NameTurbine, Status.InProgress, "Init process search series with warning");
+            await database.SelectSerieBySensorByTurbineByErrorWithWarning(info.Info);
         } 
 
         public Task SerieByPeriodWithStandardDeviation(SeriePeriodByCodeWithStandarDeviation info)
