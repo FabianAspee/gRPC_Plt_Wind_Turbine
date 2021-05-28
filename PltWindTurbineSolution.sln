@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientPltTurbine", "ClientP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PltTurbineShared", "PltTurbineShared\PltTurbineShared.csproj", "{7A99440D-BFB7-40C3-973A-6061846645D3}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ScriptStatisticWindTurbine", "ScriptStatisticWindTurbine\ScriptStatisticWindTurbine.pyproj", "{6DFB4ACF-0F68-40F9-AA68-F47A9DA070B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,8 @@ Global
 		{7A99440D-BFB7-40C3-973A-6061846645D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A99440D-BFB7-40C3-973A-6061846645D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A99440D-BFB7-40C3-973A-6061846645D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DFB4ACF-0F68-40F9-AA68-F47A9DA070B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DFB4ACF-0F68-40F9-AA68-F47A9DA070B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

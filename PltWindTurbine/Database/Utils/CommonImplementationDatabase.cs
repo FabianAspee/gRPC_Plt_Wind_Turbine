@@ -99,19 +99,20 @@ namespace PltWindTurbine.Database.Utils
 
             return result;
         }
-        private static IList<(DateTime datesInit, DateTime datesFinish)> GetDateBetweenValues(IList<Maintenance_Turbine> values)
+        private static IList<(DateTime datesInit, DateTime datesFinish)> GetDateBetweenValues(IList<Maintenance_Turbine> values, DateTime datesInit= default)
         {
             IList<(DateTime datesInit, DateTime datesFinish)> _GetDateBetweenValues(IList<Maintenance_Turbine> maintenance_Turbines, IList<(DateTime datesInit, DateTime datesFinish)> valueAndDates) => maintenance_Turbines switch
             {
-                (Maintenance_Turbine head, Maintenance_Turbine head2, IList<Maintenance_Turbine> tail) => _GetDateBetweenValues(tail.Prepend(head2).ToList(), valueAndDates.Append((DateTime.Parse(head.Date), DateTime.Parse(head2.Date))).ToList()),
-                (Maintenance_Turbine head, Maintenance_Turbine head2, _) => _GetDateBetweenValues(new List<Maintenance_Turbine>() { head2 }, valueAndDates.Append((DateTime.Parse(head.Date), DateTime.Parse(head2.Date))).ToList()),
-                (Maintenance_Turbine head, _) => valueAndDates.Append((DateTime.Parse(head.Date), DateTime.Now)).ToList()
+                (Maintenance_Turbine head, Maintenance_Turbine head2, IList<Maintenance_Turbine> tail) => _GetDateBetweenValues(tail.Prepend(head2).ToList(), valueAndDates.Append((DateTime.Parse(head.Date_Finish), DateTime.Parse(head2.Date))).ToList()),
+                (Maintenance_Turbine head, Maintenance_Turbine head2, _) => _GetDateBetweenValues(new List<Maintenance_Turbine>() { head2 }, valueAndDates.Append((DateTime.Parse(head.Date_Finish), DateTime.Parse(head2.Date))).ToList()),
+                (Maintenance_Turbine head, _) => valueAndDates.Append((DateTime.Parse(head.Date_Finish), DateTime.Now)).ToList()
             };
 
-            return _GetDateBetweenValues(values, new List<(DateTime, DateTime)>());
+            return _GetDateBetweenValues(values, new List<(DateTime, DateTime)>() { (datesInit, DateTime.Parse(values.First().Date)) });
         }
         private static IList<(DateTime init, DateTime finish)> GetIntervalTime(ConnectionToDatabase connection,int idTurbine) => 
-            GetDateBetweenValues(connection.Maintenance_Turbine.Where(info => info.Id_Turbine == idTurbine).ToList());
+            GetDateBetweenValues(connection.Maintenance_Turbine.Where(info => info.Id_Turbine == idTurbine).ToList(), DateTime.Parse(connection.Value_Sensor_Turbine.Where(turbine=>turbine.Id_Turbine==idTurbine)
+                .Min(turbine=>turbine.Date).ToString()));
         public async Task ObtainsAllWarningAndErrorInPeriodMaintenance(int idTurbine, string nameTurbine)
         {
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase(); 
