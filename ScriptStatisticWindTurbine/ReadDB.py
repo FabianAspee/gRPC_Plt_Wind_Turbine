@@ -1,5 +1,9 @@
 from AllQueryDB import AllQueryDB
+import os
 
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname) 
 import numpy as np
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
@@ -8,8 +12,8 @@ from sqlalchemy.exc import SQLAlchemyError
 class ReadDB:
     """description of class""" 
     @staticmethod
-    def __connection_sqlite__():
-        return create_engine('sqlite:///../PltWindTurbine/Resources/DatabaseTurbine/plt_wind_turbine.db')
+    def __connection_sqlite__(): 
+        return create_engine('sqlite:///..\\PltWindTurbine\\Resources\\DatabaseTurbine\\plt_wind_turbine.db')
     def __init__(self, *args, **kwargs):
         connection = ReadDB.__connection_sqlite__()
         self.connection = connection.connect()

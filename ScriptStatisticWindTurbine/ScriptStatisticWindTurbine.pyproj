@@ -24,10 +24,22 @@
     <Compile Include="AllQueryDB.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CaseClassPlt.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CorrelationPlt.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ReadDB.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ScriptStatisticWindTurbine.py" />
+    <Compile Include="tail_recursion.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="UtilsPLT.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

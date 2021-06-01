@@ -193,7 +193,7 @@ namespace PltWindTurbine.Database.Utils
         private static (string, string) GetIdTurbineAndSensor(InfoByTurbineToTable infoByTurbine) => (infoByTurbine.IdTurbine.idTurbine.ToString(), infoByTurbine.IdSensor.idSensor.ToString());
 
         public virtual async Task InsertInfoEventWindTurbine(InfoByTurbineToTable infoByTurbine)
-        {
+        {  
             await SendEventFile(infoByTurbine.IdTurbine.ToString(), $"Insert Event sensor info {infoByTurbine.IdSensor}"); 
             using var connection = RetreiveImplementationDatabase.Instance.GetConnectionToDatabase();
             using var transaction = connection.Database.BeginTransaction();
