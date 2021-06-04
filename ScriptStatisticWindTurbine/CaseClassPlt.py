@@ -5,6 +5,7 @@ from dataclasses import dataclass
 class DateTurbine:
     date_init: str
     date_finish: str
+    is_normal: bool
 
 @dataclass(frozen=True)
 class TotalWarning:
