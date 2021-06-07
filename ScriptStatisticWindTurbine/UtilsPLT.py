@@ -1,4 +1,4 @@
-from CaseClassPlt import DateTurbine, TotalWarning
+from CaseClassPlt import DateTurbine, TotalWarning, DateTurbineCustom, DateTurbineErrorCustom
 from datetime import datetime, timedelta
 from functools import reduce
 from tail_recursion import tail_recursive, recurse
@@ -6,21 +6,38 @@ import numpy as np
 
 errors = [180, 3370, 186, 182, 181]
 warnings = [892, 891, 183, 79, 356]
+format_date = "%Y/%m/%d %H:%M:%S"
+
+
+def create_final_list_with_date_custom(all_dates_by_turbine: list, time_interval: int) -> list:
+    def _create_final_list_with_date_(all_dates_by_turbine_aux: list, custom_list_own: list) -> list:
+        if len(all_dates_by_turbine_aux) >= 0:
+            custom_list_own.append(
+                DateTurbineCustom((datetime.strptime(all_dates_by_turbine_aux[0].date_init, format_date) -
+                                   timedelta(time_interval)).strftime(format_date),
+                                  all_dates_by_turbine_aux[0].date_init))
+            return _create_final_list_with_date_(all_dates_by_turbine_aux[1:], custom_list_own)
+        else:
+            return custom_list_own
+
+    custom_list: list = []
+    return _create_final_list_with_date_(all_dates_by_turbine, custom_list)
 
 
 def create_final_list_with_date(all_dates_by_turbine: list) -> list:
-    def _create_final_list_with_date_(all_dates_by_turbine: list, custom_list: list) -> list:
-        if len(all_dates_by_turbine) >= 2:
-            custom_list.append(DateTurbine(all_dates_by_turbine[0].date_finish, all_dates_by_turbine[1].date_init,
-                                           all_dates_by_turbine[0].is_normal & all_dates_by_turbine[1].is_normal))
-            return _create_final_list_with_date_(all_dates_by_turbine[1:], custom_list)
-        elif len(all_dates_by_turbine) == 1:
-            custom_list.append(
-                DateTurbine(all_dates_by_turbine[0].date_finish, datetime.now().strftime("%Y/%m/%d %H:%M:%S"),
-                            all_dates_by_turbine[0].is_normal))
-            return custom_list
+    def _create_final_list_with_date_(all_dates_by_turbine_aux: list, custom_list_own: list) -> list:
+        if len(all_dates_by_turbine_aux) >= 2:
+            custom_list_own.append(DateTurbine(all_dates_by_turbine_aux[0].date_finish,
+                                               all_dates_by_turbine_aux[1].date_init, all_dates_by_turbine_aux[0]
+                                               .is_normal & all_dates_by_turbine_aux[1].is_normal))
+            return _create_final_list_with_date_(all_dates_by_turbine_aux[1:], custom_list)
+        elif len(all_dates_by_turbine_aux) == 1:
+            custom_list_own.append(
+                DateTurbine(all_dates_by_turbine_aux[0].date_finish, datetime.now().strftime(format_date),
+                            all_dates_by_turbine_aux[0].is_normal))
+            return custom_list_own
         else:
-            return custom_list
+            return custom_list_own
 
     custom_list: list = []
     if len(all_dates_by_turbine) >= 2:
@@ -143,4 +160,36 @@ def divide_series_by_week(all_value_period: list) -> list:
     date_init = datetime.strptime(first_date, "%Y/%m/%d %H:%M:%S")
     date_finish = datetime.strptime(end_date, "%Y/%m/%d %H:%M:%S")
 
-    return [len([res for res in val if res[3] != 'null']) for val in divide_by_week(date_init, date_finish, all_value_period[1])]
+    return [len([res for res in val if res[3] != 'null']) for val in
+            divide_by_week(date_init, date_finish, all_value_period[1])]
+
+
+def create_final_list_with_date_error(all_dates_by_turbine, days_period):
+    def _create_final_list_with_date_(all_dates_by_turbine_aux: list, custom_list_own: list) -> list:
+        if len(all_dates_by_turbine_aux) > 0:
+            custom_list_own.append(
+                DateTurbineErrorCustom((datetime.strptime(all_dates_by_turbine_aux[0].date_error, format_date) -
+                                        timedelta(days_period)).strftime(format_date),
+                                       all_dates_by_turbine_aux[0].date_error,
+                                       all_dates_by_turbine_aux[0].error))
+            return _create_final_list_with_date_(all_dates_by_turbine_aux[1:], custom_list_own)
+        else:
+            return custom_list_own
+
+    custom_list: list = []
+    return _create_final_list_with_date_(all_dates_by_turbine, custom_list)
+
+
+def filter_series_by_active_power(all_values: list):
+    dictionary = {}
+    for val in all_values:
+        if val[2] in dictionary:
+            dictionary[val[2]].append((val[3], val[4]))
+        else:
+            dictionary[val[2]] = [(val[3], val[4])]
+
+    for active_power in dictionary[1]:
+        if (active_power[0] is None) or (active_power[0] <= 0):
+            dictionary[2] = [val for val in dictionary[2] if val[1] != active_power[1]]
+            dictionary[4] = [val for val in dictionary[4] if val[1] != active_power[1]]
+    return [dictionary[2], dictionary[4]]

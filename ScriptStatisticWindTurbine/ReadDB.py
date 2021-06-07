@@ -20,13 +20,16 @@ class ReadDB:
     def __init__(self, *args, **kwargs):
         connection = ReadDB.__connection_sqlite__()
         self.connection = connection.connect()
-        return super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def read_min_data_series(self, id_turbine: int):
         return self.connection.execute(AllQueryDB.query_to_min_data_series(id_turbine)).fetchall()
 
     def read_data_turbines(self, id_turbine: int):
         return self.connection.execute(AllQueryDB.query_to_different_period(id_turbine)).fetchall()
+
+    def read_data_error_turbines(self, id_turbine: int):
+        return self.connection.execute(AllQueryDB.query_to_select_date_error(id_turbine)).fetchall()
 
     def read_warning_and_error_turbine(self, id_turbine: int, date_init: str, date_finish: str):
         return self.connection.execute(
@@ -37,3 +40,7 @@ class ReadDB:
 
     def read_all_maintenance_turbine(self):
         return self.connection.execute(AllQueryDB.query_to_all_maintenance_turbine()).fetchall()
+
+    def read_nacelle_and_wind_direction(self, id_turbine, date_init, date_finish):
+        return self.connection.execute(
+            AllQueryDB.query_to_nacelle_and_wind_direction(id_turbine, date_init, date_finish)).fetchall()
