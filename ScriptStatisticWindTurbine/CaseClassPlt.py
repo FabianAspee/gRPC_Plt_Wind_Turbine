@@ -31,3 +31,11 @@ class DateTurbineErrorCustom:
 class TotalWarning:
     total_warning: int
     error_code: float
+
+
+@dataclass(frozen=True)
+class MaintenanceTurbine:
+    id_turbine: int
+    date_init: str
+    date_finish: str
+    is_normal: bool

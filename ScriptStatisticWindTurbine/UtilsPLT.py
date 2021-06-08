@@ -1,8 +1,8 @@
-from CaseClassPlt import DateTurbine, TotalWarning, DateTurbineCustom, DateTurbineErrorCustom
 from datetime import datetime, timedelta
-from functools import reduce
+from typing import List
+
+from CaseClassPlt import DateTurbine, TotalWarning, DateTurbineCustom, DateTurbineErrorCustom
 from tail_recursion import tail_recursive, recurse
-import numpy as np
 
 errors = [180, 3370, 186, 182, 181]
 warnings = [892, 891, 183, 79, 356]
@@ -22,6 +22,27 @@ def create_final_list_with_date_custom(all_dates_by_turbine: list, time_interval
 
     custom_list: list = []
     return _create_final_list_with_date_(all_dates_by_turbine, custom_list)
+
+
+def create_date_turbine_custom(init: str, finish: str):
+    return DateTurbineCustom(init, finish)
+
+
+def create_final_list_with_date_turbine(all_dates_by_turbine: list) -> list:
+    def _create_final_list_with_date_(all_dates_by_turbine_aux: list, custom_list_own: list) -> list:
+        if len(all_dates_by_turbine_aux) > 1:
+            custom_list_own.append(
+                create_date_turbine_custom(all_dates_by_turbine[0].date_finish, all_dates_by_turbine[1].date_init))
+            return _create_final_list_with_date_(all_dates_by_turbine_aux[1:], custom_list_own)
+        else:
+            custom_list_own.append(
+                create_date_turbine_custom(all_dates_by_turbine[0].date_finish, datetime.now().strftime(format_date)))
+            return custom_list_own
+
+    if len(all_dates_by_turbine) > 1:
+        custom_list: list = [
+            create_date_turbine_custom(all_dates_by_turbine[0].date_finish, all_dates_by_turbine[1].date_init)]
+        return _create_final_list_with_date_(all_dates_by_turbine[1:], custom_list)
 
 
 def create_final_list_with_date(all_dates_by_turbine: list) -> list:
@@ -88,24 +109,25 @@ def insert_new_value_to_final(new_value: list, val: object, final: list):
 
 def verify_value_period(all_value_period: list, number_time: int, size_period: int):
     @tail_recursive
-    def __verify_value_period__(all_value_period_aux: list, index: int, size_period: int, count_aux: int = 0,
+    def __verify_value_period__(all_value_period_aux: list, index: int, size_period_aux: int, count_aux: int = 0,
                                 new_value: list = None, final: list = None):
         head, *tail = all_value_period_aux
         if len(tail) == 0:
             return insert_new_value_to_final(new_value, head, final)
-        if head not in errors and count_aux < size_period and len(tail) > 0:
+        if head not in errors and count_aux < size_period_aux and len(tail) > 0:
             new_value.append(head)
-            return recurse(tail, index + 1, size_period, count_aux + 1, new_value, final)
-        elif count_aux == size_period and len(tail) > 0:
-            tail, index, size_period, final = verify_next_50([head] + tail, index, size_period, final, new_value,
-                                                             number_time, len(all_value_period))
-            return recurse(tail, index + 1, size_period, 1, [], final)
+            return recurse(tail, index + 1, size_period_aux, count_aux + 1, new_value, final)
+        elif count_aux == size_period_aux and len(tail) > 0:
+            tail, index, size_period_aux, final = verify_next_50([head] + tail, index, size_period_aux, final,
+                                                                 new_value,
+                                                                 number_time, len(all_value_period))
+            return recurse(tail, index + 1, size_period_aux, 1, [], final)
         elif head in errors:
             final = insert_new_value_to_final(new_value, head, final)
             new_value = []
-            size_period = int(
+            size_period_aux = int(
                 (len(all_value_period) - index) / (1 if number_time == len(final) else number_time - len(final)))
-            return recurse(tail, index + 1, size_period, 0, new_value, final)
+            return recurse(tail, index + 1, size_period_aux, 0, new_value, final)
 
     return __verify_value_period__(all_value_period, 1, size_period)
 
@@ -193,3 +215,9 @@ def filter_series_by_active_power(all_values: list):
             dictionary[2] = [val for val in dictionary[2] if val[1] != active_power[1]]
             dictionary[4] = [val for val in dictionary[4] if val[1] != active_power[1]]
     return [dictionary[2], dictionary[4]]
+
+
+def calculus_difference_between_dates(all_dates: List[DateTurbineCustom]):
+    return list(map(lambda val: datetime.strptime(val.date_init, format_date) - datetime.strptime(val.date_finish,
+                                                                                                  format_date),
+                    all_dates)) if not not all_dates else None
