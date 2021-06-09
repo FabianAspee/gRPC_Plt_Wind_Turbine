@@ -26,9 +26,13 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.RadarChart
             {
                 Type = Shared.ChartJsComponent.ChartType.Radar.ToString().ToLower(),
                 Options = new OptionChart(true, false, new Interaction(false), 0),
+<<<<<<< HEAD
                 Data = new DataChart(finalWarning, new[] { new DataSetChart(warning.
                 Select(value => value.Item2.ToString()).ToArray(), variant.Title, "red", 
                 BackgroundColor: "red") })
+=======
+                Data = new DataChart(finalWarning, new[] { new DataSetChart(warning.Select(value => $"warning {value.Key} qta {value.Item2.ToString()}").ToArray(), variant.Title, "red", BackgroundColor: "red") })
+>>>>>>> 29de40746d4fca32f05a1d781072a6deee3682c7
             };
         }
     }

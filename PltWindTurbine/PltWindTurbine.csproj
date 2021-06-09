@@ -8,23 +8,29 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.15.8" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.36.0" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.5" />
-    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="5.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.5" />
+    <PackageReference Include="Google.Protobuf" Version="3.17.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.37.0" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="5.0.6" />
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="5.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.13" />
-    <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.0" />
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.3.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PltTurbineShared\PltTurbineShared.csproj" />
+  </ItemGroup>
 	
     <ItemGroup>
-		<Protobuf Include="Protos\LoadFilesProto\loadfile.proto" GrpcServices="Server" />
-		<Protobuf Include="Protos\MetricCalculusProto\metriccalculus.proto" GrpcServices="Server" />
-		<Protobuf Include="Protos\ViewFailuresProto\viewfailure.proto" GrpcServices="Server" />
-		<Protobuf Include="Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" GrpcServices="Server" />
-    </ItemGroup>
-
-</Project>
+		<Protobuf Include="Protos\LoadFilesProto\loadfile.proto" Link="Protos\LoadFilesProto\loadfile.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\MetricCalculusProto\metriccalculus.proto" Link="Protos\MetricCalculusProto\metriccalculus.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\ViewFailuresProto\viewfailure.proto" Link="Protos\ViewFailuresProto\viewfailure.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" Link="Protos\ObtainInfoTurbinesProto\obtaininfoturbine.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\MaintenanceProto\maintenance.proto" Link="Protos\MaintenanceProto\maintenance.proto" GrpcServices="Server" />
+		<Protobuf Include="Protos\UtilProto\utility.proto" Link="Protos\UtilProto\utility.proto" GrpcServices="Server" />
+    
+	</ItemGroup> 
+</Project> 

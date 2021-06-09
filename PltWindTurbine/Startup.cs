@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PltWindTurbine.Database.DatabaseConnection;
 using PltWindTurbine.Services.LoadFilesService;
+using PltWindTurbine.Services.MaintenanceService;
 using PltWindTurbine.Services.MetricCalculusService;
 using PltWindTurbine.Services.ObtaininfoTurbinesService;
 using PltWindTurbine.Services.ViewFailuresService;
@@ -41,6 +42,7 @@ namespace PltWindTurbine
                 endpoints.MapGrpcService<MetricCalculuService>();
                 endpoints.MapGrpcService<ObtainInfoTurbineService>();
                 endpoints.MapGrpcService<ViewFailureService>();
+                endpoints.MapGrpcService<MaintenanceService>();
 
                 endpoints.MapGet("/", async context =>
                 {

@@ -13,14 +13,15 @@
 // limitations under the License.
 
 syntax = "proto3";
-
+ 
 option csharp_namespace = "PltWindTurbine.Services.ObtainInfoTurbinesService";
 package obtaininfoturbine;
+import "Protos/UtilProto/utility.proto"; 
 
 service ObtainInfoTurbines {
  
   rpc InfoFailureTurbine(stream CodeAndPeriodRequest) returns (stream CodeAndPeriodResponse);
-  rpc GetNameTurbineAndSensor(WithoutMessage) returns (stream ResponseNameTurbineAndSensor);
+  rpc GetNameTurbineAndSensor(stream TurbineOrSensor) returns (stream ResponseNameTurbineAndSensor);
   rpc GetChartSystem(WithoutMessage) returns (ChartSystemResponse);
   rpc GetErrorByTurbine(ErrorByTurbineRequest) returns (ErrorByTurbineResponse);
 }
@@ -33,8 +34,7 @@ message InfoChart{
 	int32 idChart=1;
 	string nameChart=2;
 }
-message ChartSystemResponse{ 
-
+message ChartSystemResponse{  
 	repeated InfoChart info=1;
 }
 
@@ -48,6 +48,8 @@ message CodeAndPeriodRequest{
 		OnlySerieByPeriodAndCode msg1 =1;
 		SeriePeriodByCodeWithStandarDeviation msg2=2;
 		OnlySerieByPeriodAndCodeWithWarning msg3 = 3;
+		OnlySerieByOwnSeries msg4 = 4;
+		OnlySerieByOwnSeriesWithWarning msg5 = 5; 
 	}
 }
 
@@ -67,6 +69,17 @@ message ResponseNameTurbineAndSensor{
 	}
 }
 
+message TurbineOrSensor{
+	oneof Action{
+		Turbine msg1=1;
+		Sensor msg2=2;
+	}
+}
+
+message Turbine{}
+
+message Sensor{}
+
 message WithoutMessage{}
 
 message AllInfoSensor{
@@ -80,6 +93,7 @@ message AllInfoTurbine{
 message InfoSensor{
 	int32 idSensor=1;
 	string nameSensor=2;
+	bool isOwn=3;
 }
 
 message InfoTurbine{
@@ -96,8 +110,16 @@ message OnlySerieByPeriodAndCodeWithWarning{
 	OnlySerieByPeriodAndCode info=1;
 }
 
+message OnlySerieByOwnSeries{
+	OnlySerieByPeriodAndCode info=1;
+}
+
+message OnlySerieByOwnSeriesWithWarning{
+	OnlySerieByPeriodAndCode info=1;
+}
+
 message OnlySerieByPeriodAndCode{
-	int32 months =1;
+	int32 days =1;
 	int32 qtaGraph=2;
 	int32 code = 3;
 	int32 idTurbine = 4;
@@ -117,7 +139,7 @@ message ResponseCodePeriod{
 
 message StatusLoadInfo {
   string name = 1;
-  Status status = 2;
+  utility.Status status = 2;
   string description = 3;
 }
 
@@ -137,11 +159,4 @@ message OnlySerieByPeriodAndCodeResponseWithWarning{
 message SeriePeriodByCodeWithStandarDeviationResponse{
 	OnlySerieByPeriodAndCodeResponse msg1=1;
 	double standardDeviation = 2;
-}
-
-enum Status {
-  PENDING = 0;
-  IN_PROGRESS = 1;
-  SUCCESS = 2;
-  FAILED = 3;
-}
+} 

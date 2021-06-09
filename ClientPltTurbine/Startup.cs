@@ -10,7 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using System.IO; 
+using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ClientPltTurbine
@@ -58,7 +59,7 @@ namespace ClientPltTurbine
             {
                 FileProvider = new PhysicalFileProvider(
                 Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images")),
-                RequestPath = "/wwwroot/images"
+                RequestPath = "/images"
             });
             app.UseRouting();
 

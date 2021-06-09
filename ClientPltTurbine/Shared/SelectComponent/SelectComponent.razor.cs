@@ -10,18 +10,20 @@ namespace ClientPltTurbine.Shared.SelectComponent
     public partial class SelectComponent : ComponentBase
     {
         [Parameter]
+        public string Id { get; set;} = string.Empty;
+        [Parameter]
         public string Warning { get; set; }
         [Parameter]
         public string Text { get; set; } 
         [Parameter]
         public IReadOnlyList<IInformationDropDrownComponent> Values { get; set; } 
         public IReadOnlyList<IInformationDropDrownComponent> ValuesView { get; set; }  
-        private int Value { get; set; }
+        private string Value { get; set; }
         [Parameter]
-        public EventCallback<int> ValueChanged { get; set; } 
+        public EventCallback<string> ValueChanged { get; set; } 
         private Task OnValueChanged(ChangeEventArgs e)
         {
-            Value = Convert.ToInt32(e.Value); 
+            Value = Id==string.Empty? e.Value.ToString():string.Concat(Id,",",e.Value.ToString());
             return ValueChanged.InvokeAsync(Value);
         } 
         

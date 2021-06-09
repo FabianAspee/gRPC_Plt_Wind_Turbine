@@ -2,9 +2,9 @@
 using ClientPltTurbine.Pages.Component;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
 using ClientPltTurbine.Pages.Component.LoadFileComponent.EventLoadFile;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using ClientPltTurbine.Pages.Component.MaintenanceComponent.EventMaintenance;
+using PltWindTurbine.Protos.UtilProto;
+using System; 
 using System.Threading.Tasks;
 
 namespace ClientPltTurbine.EventContainer
@@ -25,10 +25,10 @@ namespace ClientPltTurbine.EventContainer
         {
             await container.SelectEvent<IEventComponent>(EventKey.LOAD_FILE_KEY).ContinueWith(evento => evento.Result.Invoke(this, new LoadStatusRecord(3, msg)));
         }
-
+         
         protected async void SendEventInfoTurbineAndSensor(IEventComponent component)
         {
-            await container.SelectEvent<IEventComponent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, component));
+            await container.SelectEvent<IEventComponent>(EventKey.COMMON_KEY).ContinueWith(evento => evento.Result.Invoke(this, component));
         }
         protected async void SendEventLoadInfoTurbine(string msg,string nameTurbine)
         {
@@ -46,6 +46,22 @@ namespace ClientPltTurbine.EventContainer
         {
             await container.SelectEvent<IEventComponent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, info));
         }
+
+        public async void SendEventLoadMaintenanceInfo(string name, string description, Status status ) => await SendEventLoadMaintenanceInfo(name, description, SelectTypeMsg(status));
+
+        private static int SelectTypeMsg(Status status) => status switch
+        {
+            Status.InProgress  => 1,
+            Status.Success => 2,
+            Status.Failed  => 3,
+            _ =>  throw new NotImplementedException()
+        };
+
+        private async Task SendEventLoadMaintenanceInfo(string name, string description, int status)
+        {
+            await container.SelectEvent<IEventComponent>(EventKey.MAINTENANCE_KEY).ContinueWith(evento => evento.Result.Invoke(this, new MaintenanceStatusRecord(status, $"{name} {description}")));
+        }
+
         protected async void SendEventLoadInfoStandardDeviation(ResponseSerieByPeriodWithStandardDeviation responseSerieByPeriod)
         {
             await container.SelectEvent<IEventComponent>(EventKey.GRAPH_KEY).ContinueWith(evento => evento.Result.Invoke(this, responseSerieByPeriod));

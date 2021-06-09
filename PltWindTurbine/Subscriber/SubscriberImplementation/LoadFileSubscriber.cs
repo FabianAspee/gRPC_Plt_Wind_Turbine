@@ -8,14 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using PltWindTurbine.Subscriber.EventArgument;
+using PltTurbineShared.ExtensionMethodList;
+using PltTurbineShared.ExtensionMethodDataTable;
 using PltWindTurbine.Database.Utils;
 using PltWindTurbine.Database.DatabaseConnection;
 using PltWindTurbine.Database.TableDatabase;
 using System.Text.RegularExpressions;
-using PltWindTurbine.Subscriber.EventArgument.EventContainer;
-using System.Threading;
-
+ 
 namespace PltWindTurbine.Subscriber.SubscriberImplementation
 {
     public class LoadFileSubscriber : AbstractSubscriber, ILoadFileSubscriber
@@ -61,7 +60,7 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                 var percent = await RemainingCalculus(info, table.TotalDimension);
                 if (percent % 10 == 0)
                 {
-                    SendEventLoadFile(table.Name, "Load File", Convert.ToInt32(percent));
+                    await SendEventLoadFile(table.Name, "Load File", Convert.ToInt32(percent));
                 }
                 return info;
             }
@@ -132,20 +131,19 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
 
             }
             else if (infoTurbines.ContainsKey(table.Name))
-            { 
-                SendEventFile(table.Name, "Init process file in server");
-                await CreateDataTableInfoF(table).ContinueWith(result =>
+            {
+                await SendEventFile(table.Name, "Init process file in server");
+                await CreateDataTableInfoF(table).ContinueWith(async result =>
                 {
                     var data = result.Result;
                     var tableName = ReturnNameTable(table, table.Name);
-                    var columnReplace = database.SelectColumnFrom(tableName); 
-                    SendEventFile(table.Name, "Init insert data into database");
+                    var columnReplace = database.SelectColumnFrom(tableName);
+                    await SendEventFile(table.Name, "Init insert data into database");
                     return (ChangeColumnsNameError(data, columnReplace), tableName);
-                }, TaskContinuationOptions.OnlyOnRanToCompletion).ContinueWith(result =>
-                { 
-                    var (data,tableName) = result.Result; 
+                }, TaskContinuationOptions.OnlyOnRanToCompletion).ContinueWith(result =>result.Result.ContinueWith(fResult=>{
+                    var (data, tableName) = fResult.Result;
                     database.InsertInfoPlt(data, tableName);
-                });
+                }));
 
 
             }
@@ -160,15 +158,15 @@ namespace PltWindTurbine.Subscriber.SubscriberImplementation
                 var groupDt = !isEvent ? AddNameSensor(normalizedData, nameSensors) : AddNameSensor(ChangeNameColumn(normalizedData, nameTurbine), nameSensors, isEvent); 
                 return CreateDataFrameTurbine(groupDt, nameTurbine, nameSensors, isEvent);
             }, TaskContinuationOptions.OnlyOnRanToCompletion).ContinueWith(finalResult=> { 
-                finalResult.Result.ForEach(task =>task.ContinueWith(res =>
+                finalResult.Result.ForEach(task =>task.ContinueWith(async res =>
                 {
                     if (isEvent)
-                    { 
-                        database.InsertInfoEventWindTurbine(res.Result);
+                    {
+                        await database.InsertInfoEventWindTurbine(res.Result);
                     }
                     else
-                    { 
-                        database.InsertInfoWindTurbine(res.Result);
+                    {
+                        await database.InsertInfoWindTurbine(res.Result);
                     }
                 }, TaskContinuationOptions.ExecuteSynchronously));
                   

@@ -10,8 +10,10 @@ namespace ClientPltTurbine.Model.ChartModel.Contract
     {
         Task GetAllInfoTurbineForChart(InfoChartRecord info);
         Task GetAllInfoTurbineForChartWithWarning(InfoChartRecord info);
-        Task GetAllNameTurbineAndSensor();
         Task<(int,List<string>)> GetErroByTurbine(int idTurbine);
         Task<List<(int, string)>> GetAllChart();
+        Task GetAllInfoTurbineForChartOwnSeries(InfoChartRecord info);
+        Task GetAllInfoTurbineForChartWithWarningOwnSeries(InfoChartRecord info);
+        Task GetMaintenancePeriodChart(InfoChartRecordMaintenancePeriod infoChartMaintenance);
     }
 }

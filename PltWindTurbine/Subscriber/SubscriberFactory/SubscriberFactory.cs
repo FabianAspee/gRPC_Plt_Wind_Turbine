@@ -11,6 +11,8 @@ namespace PltWindTurbine.Subscriber.SubscriberFactory
     {
         public ILoadFileSubscriber GetLoadFileSubscriber() => new LoadFileSubscriber();
 
+        public IMaintenanceSubscriber GetMaintenanceSubscriber() => new MaintenanceSubscriber();
+
         public IMetricCalculusSubscriber GetMetricCalculusSubscriber() => new MetricCalculusSubscriber();
 
         public IObtainInfoTurbinesSubscriber GetObtainInfoTurbinesSubscriber() => new ObtainInfoTurbineSubscriber();

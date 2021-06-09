@@ -55,18 +55,68 @@ CREATE TABLE IF NOT EXISTS error_sensor(
 
 CREATE TABLE IF NOT EXISTS chart_system(
     id INTEGER PRIMARY KEY,
-    chart_name TEXT
-    );
+    chart_name TEXT);
    
 CREATE TABLE IF NOT EXISTS model_system(
     id INTEGER PRIMARY KEY,
     model_name TEXT
     );
 
-INSERT INTO chart_system(chart_name) VALUES("Line Chart");
-INSERT INTO chart_system(chart_name) VALUES("Line Chart with Warning");
-INSERT INTO chart_system(chart_name) VALUES("Scatter Chart");
-INSERT INTO chart_system(chart_name) VALUES("Scatter Chart with Warning");
-INSERT INTO chart_system(chart_name) VALUES("Radar Chart");
-INSERT INTO chart_system(chart_name) VALUES("Line Chart Draw Warning");
-INSERT INTO chart_system(chart_name) VALUES("Bar Chart Draw Warning");
+CREATE TABLE IF NOT EXISTS own_serie_turbine(
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    is_ok NUMERIC,
+    sensor_data_type TEXT);
+
+CREATE TABLE IF NOT EXISTS value_own_serie_turbine(
+    id INTEGER PRIMARY KEY,
+    id_turbine INTEGER,
+    id_own_serie INTEGER,
+    value REAL,
+    date TEXT,
+    FOREIGN KEY(id_turbine) REFERENCES wind_turbine_info(id),
+    FOREIGN KEY(id_own_serie) REFERENCES own_serie_turbine(id)
+    ); 
+
+    
+CREATE TABLE IF NOT EXISTS maintenance_turbine(
+    id INTEGER PRIMARY KEY,
+    id_turbine INTEGER,
+    date TEXT,
+    date_finish TEXT,
+    is_normal_maintenance NUMERIC,
+    FOREIGN KEY(id_turbine) REFERENCES wind_turbine_info(id));
+
+INSERT INTO chart_system(chart_name) 
+SELECT 'Line Chart' 
+WHERE NOT EXISTS(SELECT 1 FROM chart_system WHERE chart_name = 'Line Chart');
+
+INSERT INTO chart_system(chart_name) 
+SELECT 'Line Chart with Warning' 
+WHERE NOT EXISTS(SELECT 1 FROM chart_system WHERE chart_name = 'Line Chart with Warning');
+
+INSERT INTO chart_system(chart_name) 
+SELECT 'Scatter Chart' 
+WHERE NOT EXISTS(SELECT 1 FROM chart_system WHERE chart_name = 'Scatter Chart');
+
+INSERT INTO chart_system(chart_name) 
+SELECT 'Scatter Chart with Warning' 
+WHERE NOT EXISTS(SELECT 1 FROM chart_system WHERE chart_name = 'Scatter Chart with Warning');
+
+INSERT INTO chart_system(chart_name) 
+SELECT 'Radar Chart' 
+WHERE NOT EXISTS(SELECT 1 FROM chart_system WHERE chart_name = 'Radar Chart');
+
+INSERT INTO chart_system(chart_name) 
+SELECT 'Line Chart Draw Warning' 
+WHERE NOT EXISTS(SELECT 1 FROM chart_system WHERE chart_name = 'Line Chart Draw Warning');
+
+INSERT INTO chart_system(chart_name) 
+SELECT 'Bar Chart Draw Warning' 
+WHERE NOT EXISTS(SELECT 1 FROM chart_system WHERE chart_name = 'Bar Chart Draw Warning'); 
+
+INSERT INTO own_serie_turbine(name,is_ok,sensor_data_type) 
+SELECT 'Angle',0,'DMAV' 
+WHERE NOT EXISTS(SELECT 1 FROM own_serie_turbine WHERE name = 'Angle');  
+
+ 

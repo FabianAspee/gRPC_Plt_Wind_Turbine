@@ -28,7 +28,7 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
             }; 
              
         }
-        public ConfigChart CreateLineChartWarning(ResponseSerieByPeriodWarning serieByPeriodWarning)
+        public ConfigChart CreateLineChart(ResponseSerieByPeriodWarning serieByPeriodWarning)
         {
             var variant = _variants($"Serie Turbine {serieByPeriodWarning.Record.RecordLinearChart.NameTurbine} Sensor {serieByPeriodWarning.Record.RecordLinearChart.NameSensor} with warnings");
              
@@ -80,6 +80,19 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.LineChartD
             var newWeek = initSerie.AddDays(8 - Convert.ToInt32(initSerie.DayOfWeek));
             return (week, _CalculusWeekAndInitfinishWeek(newWeek, weekDate));
         }
-       
+
+        public ConfigChart CreateLineChart(ResponseSerieByMaintenancePeriod serieByPeriodMaintenance)
+        {
+            var variant = _variants($"Warning Turbine {serieByPeriodMaintenance.Record.RecordLinearChart.NameTurbine}");
+             
+            var warning = serieByPeriodMaintenance.Record.RecordLinearChart.CustomInfo.Select(value => value.Value.HasValue ? value.Value.ToString() : null).ToArray(); 
+            var colors = GetWarningColor(warning);
+            return new LineChart()
+            {
+                Type = Shared.ChartJsComponent.ChartType.Line.ToString().ToLower(),
+                Options = new OptionChart(true, false, new Interaction(false), 0),
+                Data = new DataChart(SelectRecords(serieByPeriodMaintenance).ToList(), new[]{new DataSetChart(warning, variant.Title, colors, BackgroundColor: colors) }.ToArray())
+            };
+        }
     }
 }

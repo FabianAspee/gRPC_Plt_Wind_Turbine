@@ -9,5 +9,6 @@
         public const int RadarChartWithWarning = 5;
         public const int LineAreaChartWithWarning = 6;
         public const int BarChartWithWarning = 7;
+        public const int PeriodMaintenanceChart= 8;
     }
 }

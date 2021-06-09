@@ -8,6 +8,7 @@ using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.RadarChartDraw
 using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterChartDraw.Contract;
 using ClientPltTurbine.Pages.Component.ChartComponent.DesignChart.ScatterChartDraw.Implementation;
 using ClientPltTurbine.Pages.Component.ChartComponent.EventChart;
+using ClientPltTurbine.Pages.Component.UtilComponent;
 using ClientPltTurbine.Shared.ChartJsComponent.ConfigGeneral;
 using PltTurbineShared;
 using System;
@@ -17,9 +18,9 @@ using System.Threading.Tasks;
 
 namespace ClientPltTurbine.Pages.Component.ChartComponent
 {
-    public partial class Charts
-    {  
-        private readonly ChartSingleton ChartSingletonF = new();
+    public partial class Charts 
+    {
+        private readonly ChartSingleton ChartSingleton = new();
         private readonly IList<IEventComponent> infoChart = new List<IEventComponent>(); 
         private readonly ILineChartDraw lineChartDraw = LineChartDraw.Instance;
         private readonly IScatterChartDraw scatterChartDraw = ScatterChartDraw.Instance;
@@ -29,22 +30,23 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         protected override bool ShouldRender() => shouldRender;
         private async void InitializedComponent()
         {
-            ChartSingletonF.InitliazidedComponent();
-            ChartSingletonF.Service = toastService;
-            ChartSingletonF.InfoChart += async (sender, args) =>
-               await ChartSingletonF.WriteInfo(args);
-            await Task.Run(() => ChartSingletonF.RegisterEvent());
+            ChartSingleton.Service = toastService;
+            ChartSingleton.InfoChart += async (sender, args) =>
+               await ChartSingleton.WriteInfo(args);
+            ChartSingleton.CommonInfoEvent += async (sender, args) =>
+               await ChartSingleton.CommonInfo(args);
+            await Task.Run(() => ChartSingleton.RegisterEvent());
         }
         protected override async Task OnInitializedAsync()
         {
-            InitializedComponent();
             async Task Initialized(){
                 if (!Sensors.Any() && !Turbines.Any())
                 {
-                    await ChartSingletonF.CallTurbinesAndSensor();
+                    InitializedComponent();
+                    await ChartSingleton.CallTurbinesAndSensor();
                     await AwaitSensorAndTurbine();
-                    var allChart = await ChartSingletonF.GetAllChart();
-                    ChartInfo.AddRange(allChart.Select(info => new ChartInfo(info.Item1, info.Item2)).ToList());
+                    var allChart = await ChartSingleton.GetAllChart();
+                    ChartInfo.AddRange(allChart.Select(info => new ChartInfo(info.Item1, info.Item2, info.Item1.ToString())).ToList());
                 }
             }
             await Call(Initialized);
@@ -64,40 +66,62 @@ namespace ClientPltTurbine.Pages.Component.ChartComponent
         }  
         private async Task AwaitSensorAndTurbine()
         {
-            await foreach (var sensor in ChartSingletonF.GetSensor())
+            await foreach (var sensor in ChartSingleton.GetSensor())
             {
                 Sensors.Add(sensor);
             }
-            await foreach (var turbine in ChartSingletonF.GetTurbine())
+            await foreach (var turbine in ChartSingleton.GetTurbine())
             {
                 Turbines.Add(turbine);
             }
         } 
         private async void CallChartData()
         {
-            async Task ChartData()
+            await (idChart switch
             {
-                var nameTurbine = Turbines.Find(value => value.Id == idTurbine).Value;
-                var nameSensor = Sensors.Find(value => value.Id == idSensor).Value;
-                var valueError = ErrorByTurbine.Find(value => value.Id == error).Value;
-                var info = new InfoChartRecord(idTurbine, nameTurbine, idSensor, nameSensor, Convert.ToInt32(valueError), period);
-                await ChartSingletonF.ChartInfoTurbine(info, idChart);
-                infoChart.Clear();
-                await foreach (var turbine in ChartSingletonF.GetInfoChart())
-                {
-                    infoChart.Add(turbine);
-                }
-                recallChartInfo = true;
-
-                StateHasChanged();
-            } 
-            await Call(ChartData);
+                8 =>Call(ChartDataMaintenancePeriod),
+                _ =>Call(ChartData)
+            });
         } 
          
+        private async Task ChartData()
+        {
+            var nameTurbine = Turbines.Find(value => value.Id == idTurbine).Value;
+            var nameSensor = Sensors.Find(value => value.Id == infoSensor.idSensor && value.IsOwn == infoSensor.isOwn);
+            var valueError = ErrorByTurbine.Find(value => value.Id == error).Value;
+            var info = new InfoChartRecord(new BaseInfoTurbine(idTurbine, nameTurbine), infoSensor.idSensor, nameSensor.Value, Convert.ToInt32(valueError), period, nameSensor.IsOwn);
+            await ChartSingleton.ChartInfoTurbine(info, idChart);
+            infoChart.Clear();
+            await foreach (var turbine in ChartSingleton.GetInfoChart())
+            {
+                infoChart.Add(turbine);
+            }
+            recallChartInfo = true;
+
+            StateHasChanged();
+        }
+
+        private async Task ChartDataMaintenancePeriod()
+        {
+            var nameTurbine = Turbines.Find(value => value.Id == idTurbine).Value; 
+            var info = new InfoChartRecordMaintenancePeriod(new BaseInfoTurbine(idTurbine, nameTurbine));
+            await ChartSingleton.ChartInfoTurbine(info, idChart);
+            infoChart.Clear();
+            await foreach (var turbine in ChartSingleton.GetInfoChart())
+            {
+                infoChart.Add(turbine);
+            }
+            recallChartInfo = true;
+
+            StateHasChanged();
+        }
+
         private ConfigChart GetConfig(IEventComponent periods) => idChart switch//attenzione con chart with warning e quelli senza
         {
             TypeChartUtils.LinearChart => lineChartDraw.CreateLineChart(GetResponseSerieByPeriod(periods)),
-            TypeChartUtils.LinearChartWithWarning when periods is ResponseSerieByPeriodWarning periodWarning=> lineChartDraw.CreateLineChartWarning(periodWarning),
+            TypeChartUtils.LinearChartWithWarning when periods is ResponseSerieByPeriodWarning periodWarning=> lineChartDraw.CreateLineChart(periodWarning),
+            TypeChartUtils.PeriodMaintenanceChart when periods is ResponseSerieByMaintenancePeriod periodWarning => lineChartDraw.CreateLineChart(periodWarning),
+            TypeChartUtils.PeriodMaintenanceChart when periods is not ResponseSerieByMaintenancePeriod => RecallChartData(),
             TypeChartUtils.ScatterChart => scatterChartDraw.CreateScatterChart(GetResponseSerieByPeriod(periods)),
             TypeChartUtils.ScatterChartWithWarning when periods is ResponseSerieByPeriodWarning periodWarning => scatterChartDraw.CreateScatterChartWithWarning(periodWarning),
             TypeChartUtils.RadarChartWithWarning when periods is ResponseSerieByPeriodWarning periodWarning => radarCharttDraw.CreateRadarChartWithWarning(periodWarning),

@@ -16,7 +16,7 @@ namespace PltWindTurbine.Database.Mysql
              new(infoByTurbines.BaseInfoTurbine.Select(keyValues=>
             (keyValues.Key,keyValues.Value.Select(value=>value=="NV"?null:value))).ToDictionary(key=>key.Key,value=>value.Item2.ToList())
             , infoByTurbines.IdTurbine, infoByTurbines.IdSensor); 
-        public override void InsertInfoWindTurbine(InfoByTurbineToTable infoTurbine)=> base.InsertInfoWindTurbine(ReplaceSpecialCharacter(infoTurbine));
+        public override Task InsertInfoWindTurbine(InfoByTurbineToTable infoTurbine)=> base.InsertInfoWindTurbine(ReplaceSpecialCharacter(infoTurbine));
         
     }
 }
