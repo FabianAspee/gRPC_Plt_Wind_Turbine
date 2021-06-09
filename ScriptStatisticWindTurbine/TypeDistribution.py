@@ -5,6 +5,7 @@ import UtilsPLT as Util_Plt
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm
+from scipy.stats import kstest, norm
 import pylab
 
 db_call = db()
@@ -94,6 +95,23 @@ def calculus_qq_plot(days_period: int) -> None:
         sm.qqplot(series_to_plot[__nacelle_direction__].values.astype(float), line='45')
         pylab.show()
 
+def calculus_ks_statisctic(days_period: int)->None:
+    """
+    Kolmogorov Smirnov (KS) Statistic If the observed data perfectly 
+    follow a normal distribution, the value of the KS statistic will be 0. 
+    The P-Value is used to decide whether the difference is 
+    large enough to reject the null hypothesis:
+    is the p-value is larger than X value, then we can considerate 
+    that this series is normal, in otherwise will be not normal  
+    :return:
+    """
+    for (id_turbine, series) in create_data_frame_with_data_filter_by_active_power(days_period):
+        np_array = create_np_array(series, [__date__, __nacelle_direction__, __wind_direction__])
+        series_to_plot = pd.DataFrame(np_array[1:, 1:], index=np_array[1:, 0], columns=np_array[0, 1:])
+        ks_statistic, p_value = kstest(series_to_plot[__wind_direction__].values.astype(float),'norm')
+        print(f"turbine {id_turbine} ks_statistic {ks_statistic} P-value {p_value}")
+        ks_statistic, p_value = kstest(series_to_plot[__nacelle_direction__].values.astype(float), 'norm')
+        print(f"turbine {id_turbine} ks_statistic {ks_statistic} P-value {p_value}")
 
 def type_distribution_series():
     all_maintenance = db_call.read_all_maintenance_turbine()

@@ -2,6 +2,7 @@ import CorrelationPlt as Cr
 import HistogramTurbine as Hs
 import TypeDistribution as Tp
 if __name__ == '__main__':
+    Tp.calculus_ks_statisctic(5)
     Tp.calculus_histogram(5)
     Tp.calculus_box_plot(5)
     Tp.calculus_qq_plot(5)
