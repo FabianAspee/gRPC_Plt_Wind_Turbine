@@ -1,11 +1,11 @@
-from ReadDB import ReadDB as db
+from ReadDB import ReadDB as Db
 from datetime import datetime
 import pandas as pd
 import numpy as np
 from CaseClassPlt import DateTurbine, DateTurbineCustom, DateTurbineError
-import UtilsPLT as utilplt
+import UtilsPLT as Util_Plt
 
-db_call = db()
+db_call = Db()
 
 
 def get_all_date_by_turbine(id_turbine: int) -> list:
@@ -62,7 +62,7 @@ def calculate_correlation_divide_period(number_time: int):
     values = ((val, id_turbine) for value_series, id_turbine in get_all_series_maintenance_by_turbine()
               for val in value_series)
     for value_series, id_turbine in values:
-        final_save_all_series_result = utilplt.divide_series_same_len(value_series, number_time)
+        final_save_all_series_result = Util_Plt.divide_series_same_len(value_series, number_time)
         if not not final_save_all_series_result:
             final_len = min(list(map(lambda value_turbine: len(value_turbine), final_save_all_series_result)),
                             key=lambda x: x)
@@ -77,7 +77,7 @@ def calculate_correlation_divide_period(number_time: int):
 
 def calculate_correlation_sum_warning_week_period(number_time: int):
     for value_series, id_turbine in get_all_series_maintenance_by_turbine():
-        final_series = [utilplt.divide_series_by_week(val) for val in value_series]
+        final_series = [Util_Plt.divide_series_by_week(val) for val in value_series]
         final_len = min([len(list_value) for list_value in final_series], key=lambda x: x)
         final_element = list(map(lambda value: value[len(value) - final_len:], final_series))
         calculus_correlation(final_len, final_element, id_turbine)
@@ -90,7 +90,7 @@ def calculate_correlation_sum_warning_week_periods():
     :return:
     """
     for value_series, id_turbine in get_all_series_maintenance_by_turbine():
-        final_series = [utilplt.divide_series_by_week(val) for val in value_series]
+        final_series = [Util_Plt.divide_series_by_week(val) for val in value_series]
         final_len = min([len(list_value) for list_value in final_series], key=lambda x: x)
         final_element = list(map(lambda value: value[len(value) - final_len:], final_series))
         calculus_correlation(final_len, final_element, id_turbine)
@@ -134,7 +134,7 @@ def get_all_series_maintenance_by_turbine():
     :return:
     """
     for (id_turbine, all_dates_by_turbine) in yield_get_all_date_by_turbine():
-        date_to_query = utilplt.create_final_list_with_date(all_dates_by_turbine)
+        date_to_query = Util_Plt.create_final_list_with_date(all_dates_by_turbine)
         if date_to_query is not None:
             save_all_series_result: list = []
             for value in date_to_query:
@@ -151,7 +151,7 @@ def get_all_series_maintenance_inside_extra_maintenance_by_turbine():
     """
     for (id_turbine,) in db_call.read_id_turbine():
         all_dates_by_turbine = get_all_date_by_turbine(id_turbine)
-        date_to_query = utilplt.create_final_list_with_date(all_dates_by_turbine)
+        date_to_query = Util_Plt.create_final_list_with_date(all_dates_by_turbine)
         if date_to_query is not None:
             save_all_series_result: list = []
             iterator_date = (val for val in date_to_query if val.is_normal is False)
@@ -166,15 +166,24 @@ def reshape_array(final_len: int, element_to_reshape: list):
     return np.array(element_to_reshape).reshape(final_len, -1)
 
 
-def calculus_corr_before_failure_between_nacelle_and_wind_direction(days_period: int):
+def create_final_list_with_date_error(days_period: int) -> (int, list):
+    """
+    Method that return all dates of the error by turbine
+    :param days_period: days backward to be selected in the time series
+    :return:id of turbine and list with all date with init and finish
+    """
+    for (id_turbine, all_dates_by_turbine) in yield_get_all_date_error_by_turbine():
+        yield id_turbine, Util_Plt.create_final_list_with_date_error(all_dates_by_turbine, days_period)
+
+
+def calculus_corr_before_failure_between_nacelle_and_wind_direction(days_period: int) -> None:
     """
     Method that calculates the correlation between the nacelle and the wind direction before the failure happens,
     it selects the amount of information given by days_period
     :param days_period: is the amount of days that selects us by calculation correlation
     :return:
     """
-    for (id_turbine, all_dates_by_turbine) in yield_get_all_date_error_by_turbine():
-        date_to_query = utilplt.create_final_list_with_date_error(all_dates_by_turbine, days_period)
+    for (id_turbine, date_to_query) in create_final_list_with_date_error(days_period):
         calculus_correlation_nacelle_wind_direction(date_to_query, id_turbine)
 
 
@@ -183,7 +192,7 @@ def calculus_correlation_nacelle_wind_direction(date_to_query: list, id_turbine:
         for value in date_to_query:
             result = db_call.read_nacelle_and_wind_direction(id_turbine, value.date_init, value.date_finish)
             save_all_series_result = [(len(my_list), my_list) for my_list in
-                                      utilplt.filter_series_by_active_power(result)]
+                                      Util_Plt.filter_series_by_active_power(result)]
             final_len = search_min_value(save_all_series_result)
             final_element = list(map(lambda value_list: list(map(lambda val: val[0], value_list[1][len(value_list[1]) -
                                                                                                    final_len:])),
@@ -199,7 +208,7 @@ def calculus_corr_before_maintenance_between_nacelle_and_wind_direction(days_per
     :return:
     """
     for (id_turbine, all_dates_by_turbine) in yield_get_all_date_by_turbine_original():
-        date_to_query = utilplt.create_final_list_with_date_custom(all_dates_by_turbine, days_period)
+        date_to_query = Util_Plt.create_final_list_with_date_custom(all_dates_by_turbine, days_period)
         calculus_correlation_nacelle_wind_direction(date_to_query, id_turbine)
 
 
@@ -235,7 +244,7 @@ def calculus_correlation(final_len: int, final_element: list, id_turbine: int) -
 def search_warning_before_failure_inside_maintenance_period():
     for value_series, id_turbine in get_all_series_maintenance_by_turbine():
         for value_series_single in value_series:
-            final_info = utilplt.search_warning_after_failure(value_series_single)
+            final_info = Util_Plt.search_warning_after_failure(value_series_single)
             print(f'ID TURBINE {id_turbine} \n')
             for info_by_error in final_info:
                 print(f'Error Code {info_by_error.error_code} \n')
