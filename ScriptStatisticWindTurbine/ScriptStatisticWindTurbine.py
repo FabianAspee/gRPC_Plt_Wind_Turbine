@@ -4,8 +4,8 @@ import TypeDistribution as Tp
 import AutoCorrelation as Ac
 import ChartMaintenance as Ch
 if __name__ == '__main__':
-    Ch.chart_maintenance_period_by_turbine_with_angle(10)
     Ch.chart_maintenance_period_by_turbine_with_warning()
+    Ch.chart_maintenance_period_by_turbine_with_angle(10)
     Ac.calculus_auto_correlation_warning_series_before_error(4, 10)
     Cr.calculate_correlation_between_period()
     Cr.calculus_corr_before_failure_between_nacelle_and_wind_direction(3)

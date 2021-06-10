@@ -41,3 +41,7 @@ class AllQueryDB:
     @staticmethod
     def query_to_all_maintenance_turbine():
         return f'SELECT * FROM maintenance_turbine'
+
+    @staticmethod
+    def query_to_max_data_series(id_turbine):
+        return f'SELECT  * FROM value_sensor_turbine WHERE id_turbine={id_turbine} ORDER BY date DESC LIMIT 1'

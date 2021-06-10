@@ -57,3 +57,6 @@ class ReadDB:
         for (id_turbine,) in self.read_id_turbine():
             all_info.append((id_turbine, self.read_min_data_series(id_turbine)[0][4]))
         return all_info
+
+    def read_max_data_series(self, id_turbine):
+        return self.connection.execute(AllQueryDB.query_to_max_data_series(id_turbine)).fetchall()

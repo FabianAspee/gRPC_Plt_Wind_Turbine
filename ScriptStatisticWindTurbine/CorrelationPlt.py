@@ -18,6 +18,21 @@ def get_all_date_by_turbine(id_turbine: int) -> list:
                     db_call.read_min_data_series(id_turbine))) + get_all_init_date_by_turbine(id_turbine)
 
 
+def get_all_date_by_turbine_finish_true(id_turbine: int) -> list:
+    """
+    this method return a list with all date of maintenance for a turbine
+    the first date is w.r.t first value of sensor and
+    ended date is w.r.t to final date of sensor both contains true for is_normal that indicate
+    that a maintenance is a normal maintenance and not extra maintenance
+    :param id_turbine: id of a turbine
+    :return: list with date turbine in maintenance period
+    """
+    return list(map(lambda value: DateTurbine("", value[4], True),
+                    db_call.read_min_data_series(id_turbine))) + get_all_init_date_by_turbine(id_turbine) + \
+           list(map(lambda value: DateTurbine(value[4], value[4], True),
+                    db_call.read_max_data_series(id_turbine)))
+
+
 def get_all_init_date_by_turbine(id_turbine: int) -> list:
     """
     this method return a list with all date of maintenance for a turbine
@@ -104,6 +119,17 @@ def yield_get_all_date_by_turbine():
     """
     for (id_turbine,) in db_call.read_id_turbine():
         yield id_turbine, get_all_date_by_turbine(id_turbine)
+
+
+def yield_get_all_date_by_turbine_with_final():
+    """
+    Selects all maintenance period dates by turbine, adds the initial period, i.e.,
+    the initial date of when the information for the series begins to exist and the final period when information
+    existed
+    :return:
+    """
+    for (id_turbine,) in db_call.read_id_turbine():
+        yield id_turbine, get_all_date_by_turbine_finish_true(id_turbine)
 
 
 def yield_get_all_date_by_turbine_original():
