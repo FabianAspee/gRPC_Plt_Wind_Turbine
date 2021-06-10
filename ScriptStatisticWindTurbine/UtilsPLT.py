@@ -221,7 +221,7 @@ def filter_series_by_active_power(all_values: list):
     dictionary = create_dictionary_by_values(all_values)
 
     for active_power in dictionary[1]:
-        if (active_power[0] is None) or (active_power[0] <= 0):
+        if (active_power[0] is None) or (active_power[0] == 'null') or (float(active_power[0]) <= 0):
             dictionary[2] = [val for val in dictionary[2] if val[1] != active_power[1]]
             dictionary[4] = [val for val in dictionary[4] if val[1] != active_power[1]]
     return [dictionary[2], dictionary[4]]

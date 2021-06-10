@@ -25,13 +25,12 @@ def create_dictionary_by_values(all_values: list):
 
 
 def calculus_angle(save_all_series_result):
-    print()
     save_all_series_result = list(map(lambda val: val[1], save_all_series_result))
     dictionary = create_dictionary_by_values(save_all_series_result)
     for first in dictionary:
         first_val, second_val = dictionary[first]
-        yield ((first, (__total_grade__ - abs(first_val - second_val))) if abs(
-            first_val - second_val) > 180 else (first, abs(first_val - second_val))) \
+        yield ((first, (__total_grade__ - abs(float(first_val) - float(second_val)))) if abs(
+            float(first_val) - float(second_val)) > 180 else (first, abs(float(first_val) - float(second_val)))) \
             if first_val != 'null' and second_val != 'null' and first_val is not None and second_val is not None else \
             (first, np.NaN)
 
@@ -72,7 +71,7 @@ def general_plot_custom_date(dates, value, days_period, name_turbine):
     ax.set_ylabel('Angoli differenza')
     fig.suptitle(f'Angle before {days_period} days when turbine produce energy ')
     fig.autofmt_xdate()
-    plt.savefig(f"images/angle_difference/turbine-{name_turbine}-period{date_min}-{date_max}")
+    plt.savefig(f"images/angle_difference/turbine-{name_turbine}-period-{date_min}-{date_max}")
     plt.show()
 
 
