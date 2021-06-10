@@ -7,6 +7,11 @@ from tail_recursion import tail_recursive, recurse
 errors = [180, 3370, 186, 182, 181]
 warnings = [892, 891, 183, 79, 356]
 format_date = "%Y/%m/%d %H:%M:%S"
+__date__ = "date"
+__nacelle_direction__ = "nacelle direction"
+__wind_direction__ = "wind direction"
+__active_power__ = "active power"
+__rotor_rpm__ = "rotor rpm"
 
 
 def create_final_list_with_date_custom(all_dates_by_turbine: list, time_interval: int) -> list:
@@ -97,7 +102,7 @@ def verify_next_50(element: list, index: int, size_period: int, final: list, new
                 (all_value_period_len - index) / (1 if number_time == len(final) else number_time - len(final)))
             return tail, index_aux, size_period_aux, final
 
-    return __verify_next_50__(element, index, final)
+    return __verify_next_50__(element, index, final, new_val_aux=[])
 
 
 def insert_new_value_to_final(new_value: list, val: object, final: list):
@@ -129,7 +134,7 @@ def verify_value_period(all_value_period: list, number_time: int, size_period: i
                 (len(all_value_period) - index) / (1 if number_time == len(final) else number_time - len(final)))
             return recurse(tail, index + 1, size_period_aux, 0, new_value, final)
 
-    return __verify_value_period__(all_value_period, 1, size_period)
+    return __verify_value_period__(all_value_period, 1, size_period, new_value=[], final=[])
 
 
 def divide_series_same_len(all_value_period: list, number_time: int) -> list:
@@ -202,13 +207,18 @@ def create_final_list_with_date_error(all_dates_by_turbine, days_period):
     return _create_final_list_with_date_(all_dates_by_turbine, custom_list)
 
 
-def filter_series_by_active_power(all_values: list):
+def create_dictionary_by_values(all_values: list):
     dictionary = {}
     for val in all_values:
         if val[2] in dictionary:
             dictionary[val[2]].append((val[3], val[4]))
         else:
             dictionary[val[2]] = [(val[3], val[4])]
+    return dictionary
+
+
+def filter_series_by_active_power(all_values: list):
+    dictionary = create_dictionary_by_values(all_values)
 
     for active_power in dictionary[1]:
         if (active_power[0] is None) or (active_power[0] <= 0):

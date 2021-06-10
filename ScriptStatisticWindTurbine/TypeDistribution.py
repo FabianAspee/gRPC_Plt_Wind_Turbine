@@ -1,19 +1,18 @@
-from ReadDB import ReadDB as db
+from pandas import DataFrame
+
+from ReadDB import ReadDB as Db
 import matplotlib.pyplot as plt
 import CorrelationPlt as Cr
 import UtilsPLT as Util_Plt
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm
-from scipy.stats import kstest, norm
+from scipy.stats import kstest, shapiro, normaltest
 import pylab
 
-db_call = db()
-__date__ = "date"
-__nacelle_direction__ = "nacelle direction"
-__wind_direction__ = "wind direction"
-__active_power__ = "active power"
-__rotor_rpm__ = "rotor rpm"
+db_call = Db()
+
+my_custom_array = [Util_Plt.__date__, Util_Plt.__nacelle_direction__, Util_Plt.__wind_direction__]
 
 
 def read_data(days_period: int):
@@ -59,9 +58,10 @@ def calculus_histogram(days_period: int) -> None:
     :return:
     """
     for (id_turbine, series) in create_data_frame_with_data_filter_by_active_power(days_period):
-        np_array = create_np_array(series, [__date__, __nacelle_direction__, __wind_direction__])
+        np_array = create_np_array(series, my_custom_array)
         series_to_plot = pd.DataFrame(np_array[1:, 1:], index=np_array[1:, 0], columns=np_array[0, 1:])
-        series_to_plot = series_to_plot.astype({__nacelle_direction__: float, __wind_direction__: float})
+        series_to_plot = series_to_plot.astype({Util_Plt.__nacelle_direction__: float,
+                                                Util_Plt.__wind_direction__: float})
         series_to_plot.hist()
         plt.show()
 
@@ -74,9 +74,10 @@ def calculus_box_plot(days_period: int) -> None:
     :return:
     """
     for (id_turbine, series) in create_data_frame_with_data_filter_by_active_power(days_period):
-        np_array = create_np_array(series, [__date__, __nacelle_direction__, __wind_direction__])
+        np_array = create_np_array(series, my_custom_array)
         series_to_plot = pd.DataFrame(np_array[1:, 1:], index=np_array[1:, 0], columns=np_array[0, 1:])
-        series_to_plot = series_to_plot.astype({__nacelle_direction__: float, __wind_direction__: float})
+        series_to_plot = series_to_plot.astype({Util_Plt.__nacelle_direction__: float,
+                                                Util_Plt.__wind_direction__: float})
         series_to_plot.plot(kind='box')
         plt.show()
 
@@ -89,13 +90,16 @@ def calculus_qq_plot(days_period: int) -> None:
     :return:
     """
     for (id_turbine, series) in create_data_frame_with_data_filter_by_active_power(days_period):
-        np_array = create_np_array(series, [__date__, __nacelle_direction__, __wind_direction__])
+        np_array = create_np_array(series, my_custom_array)
         series_to_plot = pd.DataFrame(np_array[1:, 1:], index=np_array[1:, 0], columns=np_array[0, 1:])
-        sm.qqplot(series_to_plot[__wind_direction__].values.astype(float), line='45')
-        sm.qqplot(series_to_plot[__nacelle_direction__].values.astype(float), line='45')
+        #series_to_plot = pre_processing_min_max_scaler(series_to_plot)
+        sm.qqplot(series_to_plot[Util_Plt.__wind_direction__].values.astype(float), line='45')
+        sm.qqplot(series_to_plot[Util_Plt.__nacelle_direction__].values.astype(float), line='45')
         pylab.show()
+        plt.show()
 
-def calculus_ks_statisctic(days_period: int)->None:
+
+def calculus_ks_statistic(days_period: int) -> None:
     """
     Kolmogorov Smirnov (KS) Statistic If the observed data perfectly 
     follow a normal distribution, the value of the KS statistic will be 0. 
@@ -106,12 +110,54 @@ def calculus_ks_statisctic(days_period: int)->None:
     :return:
     """
     for (id_turbine, series) in create_data_frame_with_data_filter_by_active_power(days_period):
-        np_array = create_np_array(series, [__date__, __nacelle_direction__, __wind_direction__])
+        np_array = create_np_array(series, my_custom_array)
         series_to_plot = pd.DataFrame(np_array[1:, 1:], index=np_array[1:, 0], columns=np_array[0, 1:])
-        ks_statistic, p_value = kstest(series_to_plot[__wind_direction__].values.astype(float),'norm')
+        ks_statistic, p_value = kstest(series_to_plot[Util_Plt.__wind_direction__].values.astype(float), 'norm')
         print(f"turbine {id_turbine} ks_statistic {ks_statistic} P-value {p_value}")
-        ks_statistic, p_value = kstest(series_to_plot[__nacelle_direction__].values.astype(float), 'norm')
+        ks_statistic, p_value = kstest(series_to_plot[Util_Plt.__nacelle_direction__].values.astype(float), 'norm')
         print(f"turbine {id_turbine} ks_statistic {ks_statistic} P-value {p_value}")
+
+
+def calculate_shapiro_test(days_period: int) -> None:
+    """
+    This method use the shapiro test to identified if series has a normal distribution
+     shapiro has been developed specifically for the normal distribution and
+     it cannot be used for testing against other distributions like for example
+     the KS test.
+    :return:
+    """
+    for (id_turbine, series) in create_data_frame_with_data_filter_by_active_power(days_period):
+        np_array = create_np_array(series, my_custom_array)
+        series_to_plot = pd.DataFrame(np_array[1:, 1:], index=np_array[1:, 0], columns=np_array[0, 1:])
+        shapiro_statistic, p_value = shapiro(series_to_plot[Util_Plt.__wind_direction__].values.astype(float))
+        print(f"turbine {id_turbine} shapiro_statistic {shapiro_statistic} P-value {p_value}")
+        shapiro_statistic, p_value = shapiro(series_to_plot[Util_Plt.__nacelle_direction__].values.astype(float))
+        print(f"turbine {id_turbine} shapiro_statistic {shapiro_statistic} P-value {p_value}")
+
+
+def calculate_normal_test(days_period: int) -> None:
+    """
+    This function tests the null hypothesis that a sample comes from a normal distribution.
+    It is based on D’Agostino and Pearson’s test that combines skew and kurtosis to produce an omnibus test of
+    normality.
+    :return:
+    """
+    for (id_turbine, series) in create_data_frame_with_data_filter_by_active_power(days_period):
+        np_array = create_np_array(series, my_custom_array)
+        series_to_plot = pd.DataFrame(np_array[1:, 1:], index=np_array[1:, 0], columns=np_array[0, 1:])
+        normal_test, p_value = normaltest(series_to_plot[Util_Plt.__wind_direction__].values.astype(float))
+        print(f"turbine {id_turbine} normal_test {normal_test} P-value {p_value}")
+        shapiro_statistic, p_value = normaltest(series_to_plot[Util_Plt.__nacelle_direction__].values.astype(float))
+        print(f"turbine {id_turbine} normal_test {normal_test} P-value {p_value}")
+
+
+def pre_processing_min_max_scaler(data: DataFrame) -> DataFrame:
+    from sklearn.preprocessing import Normalizer
+    scaler = Normalizer()
+    scaler.fit(data[Util_Plt.__wind_direction__].values.reshape(1, -1))
+    data[Util_Plt.__wind_direction__] = scaler.transform(data[Util_Plt.__wind_direction__].values.reshape(1, -1)).reshape(-1,1)
+    return data
+
 
 def type_distribution_series():
     all_maintenance = db_call.read_all_maintenance_turbine()
