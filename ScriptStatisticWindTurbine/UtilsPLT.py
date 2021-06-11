@@ -4,8 +4,8 @@ from typing import List
 from CaseClassPlt import DateTurbine, TotalWarning, DateTurbineCustom, DateTurbineErrorCustom
 from tail_recursion import tail_recursive, recurse
 
-errors = [180, 3370, 186, 182, 181]
-warnings = [892, 891, 183, 79, 356]
+errors: List[int] = [180, 3370, 186, 182, 181]
+warnings: List[int] = [892, 891, 183, 79, 356]
 format_date = "%Y/%m/%d %H:%M:%S"
 __date__ = "date"
 __nacelle_direction__ = "nacelle direction"

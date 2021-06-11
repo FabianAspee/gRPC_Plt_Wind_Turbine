@@ -39,3 +39,17 @@ class MaintenanceTurbine:
     date_init: str
     date_finish: str
     is_normal: bool
+
+
+@dataclass(frozen=True)
+class ErrorInfo:
+    error: float
+    color: (int, int, int)
+    dimension: float
+
+
+@dataclass(frozen=True)
+class WarningInfo:
+    warning: float
+    color: (int, int, int)
+    dimension: float

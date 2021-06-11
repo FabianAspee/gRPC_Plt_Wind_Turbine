@@ -4,9 +4,11 @@ class Recurse(Exception):
         self.args = args
         self.kwargs = kwargs
 
+
 def recurse(*args, **kwargs):
     raise Recurse(*args, **kwargs)
-        
+
+
 def tail_recursive(f):
     def decorated(*args, **kwargs):
         while True:
@@ -16,4 +18,5 @@ def tail_recursive(f):
                 args = r.args
                 kwargs = r.kwargs
                 continue
+
     return decorated

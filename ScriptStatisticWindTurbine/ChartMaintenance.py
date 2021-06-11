@@ -1,3 +1,9 @@
+import random
+
+from matplotlib import colors
+from matplotlib.colors import LinearSegmentedColormap
+
+from tail_recursion import tail_recursive, recurse
 from pandas import DataFrame
 import UtilsPLT as Util_Plt
 from ReadDB import ReadDB as Db
@@ -7,10 +13,43 @@ import CorrelationPlt as Cr
 import TypeDistribution as Tp
 import matplotlib.dates as mdates
 import pandas as pd
+from CaseClassPlt import ErrorInfo, WarningInfo
 
 db_call = Db()
 
+
+def load_color_errors():
+    return [ErrorInfo(error[0], error[1], error[2] + error[0]) for error in zip(Util_Plt.errors, color_error,
+                                                                                dimension_error)]
+
+
+def load_color_warnings():
+    return [WarningInfo(warning[0], warning[1], warning[2]) for warning in
+            zip(Util_Plt.warnings, color_warning, dimension_warning)]
+
+
 __total_grade__ = 360
+
+
+def get_int_from_rgb(rgb):
+    red = rgb[0]
+    green = rgb[1]
+    blue = rgb[2]
+    print(red, green, blue)
+    rgb_int = (red << 16) + (green << 8) + blue
+    return rgb_int
+
+
+color_error = [(255 / 255, 6 / 255, 6 / 255), (122 / 255, 39 / 255, 55 / 255), (158 / 255, 19 / 255, 19 / 255),
+               (127 / 255, 17 / 255, 17 / 255), (247 / 255, 52 / 255, 52 / 255)]
+dimension_error = [110, 100, 120, 130, 140]
+color_warning = [(255 / 255, 255 / 255, 0 / 255), (255 / 255, 255 / 255, 112 / 255), (152 / 255, 152 / 255, 8 / 255),
+                 (111 / 255, 111 / 255, 9 / 255), (169 / 255, 131 / 255, 6 / 255)]
+dimension_warning = [90, 80, 70, 60, 50]
+errors = load_color_errors()
+warnings = load_color_warnings()
+aux_errors = Util_Plt.errors
+aux_warning = Util_Plt.warnings
 
 
 def create_dictionary_by_values(all_values: list):
@@ -76,27 +115,91 @@ def is_int_or_float(date):
         return False
 
 
+def filter_color(value: float):
+    return filter_color_error(value) if value in aux_errors else filter_color_warning(value)
+
+
+def filter_dimension(value: float):
+    return filter_dimension_error(value) if value in aux_errors else filter_dimension_warning(value)
+
+
+def filter_color_error(value: float):
+    return list(filter(lambda value_error: value_error.error == value, errors))[0].color
+
+
+def filter_color_warning(value: float):
+    return list(filter(lambda value_warning: value_warning.warning == value, warnings))[0].color
+
+
+def filter_dimension_error(value: float):
+    return list(filter(lambda value_error: value_error.error == value, errors))[0].dimension
+
+
+def filter_dimension_warning(value: float):
+    return list(filter(lambda value_warning: value_warning.warning == value, warnings))[0].dimension
+
+
+def create_color(my_unique_values):
+    @tail_recursive
+    def _create_color_(unique_values, my_colors: list = None):
+        if len(unique_values) > 0:
+            result = (random.random(), random.random(), random.random())
+            if result not in color_error and color_warning:
+                my_colors.append(result)
+                return recurse(unique_values[1:], my_colors)
+            else:
+                return recurse(unique_values, my_colors)
+        else:
+            return my_colors
+
+    return _create_color_(my_unique_values, [])
+
+
+def change_string(label: str, final_list_error: np.array):
+    search = int(label[label.find('{') + 1:len(label) - 2])
+    label_f = label[:label.find('{')+1] + str(final_list_error[search]) + "}$"
+    return label_f
+
+
+def change_strings(labels: list, final_list_error: np.array):
+    return [change_string(label, final_list_error) for label in labels]
+
+
 def plot_warning(final, id_turbine, name_turbine):
     date = np.array([pd.to_datetime(date[4]) for date in final if is_int_or_float(date[3])])
     fig, ax = plt.subplots(figsize=(40, 6))
 
-    rng = np.random.RandomState(0)
     value_warning = np.array([float(date[3]) for date in final if is_int_or_float(date[3])])
-    my_unique_values = list(set(value_warning))
-    colors = rng.rand(len(my_unique_values))
+    my_unique_values = list(
+        filter(lambda value: value not in aux_errors and value not in aux_warning, set(value_warning)))
+    colors_custom = create_color(my_unique_values)
     final_element_with_color_and_size = []
     sizes = my_unique_values  # mod size by error, more great the error more great the dimension
     for val in value_warning:
-        final_element_with_color_and_size.append(
-            (colors[my_unique_values.index(val)], sizes[my_unique_values.index(val)]))
+        if val in my_unique_values:
+            final_element_with_color_and_size.append(
+                (colors_custom[my_unique_values.index(val)], sizes[my_unique_values.index(val)]))
+        else:
+            final_element_with_color_and_size.append(
+                (filter_color(val), filter_dimension(val)))
+    final_colors = list(map(lambda color: color[0], final_element_with_color_and_size))
 
-    ax.scatter(date, value_warning, c=list(map(lambda color: color[0], final_element_with_color_and_size)),
-               s=list(map(lambda size: size[1], final_element_with_color_and_size)), alpha=0.3, cmap='viridis')
+    c_map_name = 'custom_color_map'
+    c_map = LinearSegmentedColormap.from_list(c_map_name, colors_custom + color_error + color_warning)
+    color_index = np.array([colors_custom.index(x) if x in colors_custom else (
+        len(colors_custom) + color_error.index(x) if x in color_error
+        else len(colors_custom) + len(color_error) + color_warning.index(x))
+                            for x in final_colors])
+    scatter = ax.scatter(date, value_warning, c=color_index,
+                         s=list(map(lambda size: size[1], final_element_with_color_and_size)), alpha=0.3, cmap=c_map)
+    handles, labels = scatter.legend_elements(prop="colors", alpha=0.6)
+    labels = change_strings(labels, value_warning)
+    legend1 = ax.legend(handles, labels, loc="upper right", title="Errors")
+    ax.add_artist(legend1)
     ax.plot(date, value_warning)
-
-    # Major ticks every 6 months.
     fmt_half_year = mdates.DayLocator(interval=15)
     create_chart(ax, fmt_half_year, date, fig, name_turbine, "maintenance_period")
+    print(value_warning)
 
 
 def create_chart(ax, fmt_half_year, date, fig, name_turbine, directory):
