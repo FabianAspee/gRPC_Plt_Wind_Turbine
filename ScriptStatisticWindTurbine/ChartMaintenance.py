@@ -157,7 +157,7 @@ def create_color(my_unique_values):
 
 def change_string(label: str, final_list_error: np.array):
     search = int(label[label.find('{') + 1:len(label) - 2])
-    label_f = label[:label.find('{')+1] + str(final_list_error[search]) + "}$"
+    label_f = label[:label.find('{') + 1] + str(final_list_error[search]) + "}$"
     return label_f
 
 
@@ -186,9 +186,23 @@ def plot_warning(final, id_turbine, name_turbine):
 
     c_map_name = 'custom_color_map'
     c_map = LinearSegmentedColormap.from_list(c_map_name, colors_custom + color_error + color_warning)
+    for x in final_colors:
+        if x in colors_custom:
+            print(colors_custom.index(x), value_warning[colors_custom.index(x)])
+        else:
+            if x in color_error:#error con el indice para capturar el valor delcolor
+                print(len(colors_custom)-1 + color_error.index(x),
+                      value_warning[len(colors_custom) - 1 + color_error.index(x)],
+                      value_warning[len(colors_custom) - 1 + color_error.index(x)] in aux_errors)
+            else:
+                print(len(colors_custom)-1 + len(color_error)-1 + color_warning.index(x),
+                      value_warning[len(colors_custom) - 1 + len(color_error) - 1 + color_warning.index(x)],
+                      value_warning[
+                          len(colors_custom) - 1 + len(color_error) - 1 + color_warning.index(x)] in aux_warning)
+
     color_index = np.array([colors_custom.index(x) if x in colors_custom else (
-        len(colors_custom) + color_error.index(x) if x in color_error
-        else len(colors_custom) + len(color_error) + color_warning.index(x))
+        len(colors_custom)-1 + color_error.index(x) if x in color_error
+        else len(colors_custom)-1 + len(color_error)-1 + color_warning.index(x))
                             for x in final_colors])
     scatter = ax.scatter(date, value_warning, c=color_index,
                          s=list(map(lambda size: size[1], final_element_with_color_and_size)), alpha=0.3, cmap=c_map)
