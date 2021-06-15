@@ -75,7 +75,7 @@ def calculus_angle(save_all_series_result):
             (first, np.NaN)
 
 
-def general_plot_custom_date(dates, value, days_period, name_turbine, round_day: int):
+def general_plot_custom_date(dates, value, days_period, name_turbine, round_day: int, error):
     # Load a numpy structured array from yahoo csv data with fields date, open,
     # close, volume, adj_close from the mpl-data/example directory.  This array
     # stores the date as an np.datetime64 with a day unit ('D') in the 'date'
@@ -87,7 +87,8 @@ def general_plot_custom_date(dates, value, days_period, name_turbine, round_day:
     # Major ticks every 6 months.
     fmt_half_year = mdates.HourLocator(interval=8)
 
-    create_chart(ax, fmt_half_year, date, fig, name_turbine, "angle_difference", 'Angoli differenza', round_day)
+    create_chart(ax, fmt_half_year, date, fig, name_turbine, "angle_difference", 'Angoli differenza',
+                 f"Differenza between nacelle direction e wind direction prima del errore {error}", round_day)
 
 
 def chart_maintenance_period_by_turbine_with_angle(days_period: int, round_day: int):
@@ -103,7 +104,7 @@ def chart_maintenance_period_by_turbine_with_angle(days_period: int, round_day: 
 
         angle = list(map(lambda values: float(values[1]), total_angle))
         date = list(map(lambda values: values[0], total_angle))
-        general_plot_custom_date(date, angle, days_period, name_turbine, round_day)
+        general_plot_custom_date(date, angle, days_period, name_turbine, round_day, value.error)
 
 
 def is_int_or_float(date):
@@ -243,10 +244,11 @@ def plot_warning(final, id_turbine, name_turbine):
     ax.add_artist(legend1)
     ax.plot(date, values_warning)
     fmt_half_year = mdates.DayLocator(interval=15)
-    create_chart(ax, fmt_half_year, date, fig, name_turbine, "maintenance_period", "warning and error")
+    create_chart(ax, fmt_half_year, date, fig, name_turbine, "maintenance_period", "warning and error",
+                 'warning before error')
 
 
-def create_chart(ax, fmt_half_year, date, fig, name_turbine, directory, y_label, round_day: int = 2):
+def create_chart(ax, fmt_half_year, date, fig, name_turbine, directory, y_label, title: str, round_day: int = 2):
     ax.xaxis.set_major_locator(fmt_half_year)
 
     # Minor ticks every month.
@@ -270,7 +272,7 @@ def create_chart(ax, fmt_half_year, date, fig, name_turbine, directory, y_label,
     # Rotates and right aligns the x labels, and moves the bottom of the
     # axes up to make room for them.
     ax.set_ylabel(y_label)
-    fig.suptitle(f'warning before error')
+    fig.suptitle(title)
     fig.autofmt_xdate()
     plt.savefig(f"images/{directory}/turbine-{name_turbine}-period-{date_min}-{date_max}")
     plt.show()
@@ -314,8 +316,10 @@ def chart_histogram_maintenance():
             final = Util_Plt.calculus_difference_month_between_dates(custom_date[:len(custom_date) - 1])
             final_mont.extend(final)
         else:
-            print(id_turbine, "not contains maintenance")
+            print(id_turbine, "not contains normal maintenance")
             print(custom_date)
 
     pd_histogram = pd.DataFrame(final_mont, columns=["month_difference"])
     pd_histogram.hist(legend=True)
+    plt.savefig(f"images/histogram/histogram_turbine_maintenance")
+    plt.show()
