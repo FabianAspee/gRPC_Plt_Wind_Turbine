@@ -8,10 +8,23 @@ import ChartMaintenance as Ch
 import numpy
 import matplotlib.pyplot as plt
 if __name__ == '__main__':
-    Ch.chart_maintenance_period_by_turbine_with_angle(10, 1)
+   import numpy as np
+   import matplotlib.pyplot as plt
+   from matplotlib import cm
+   from matplotlib.colors import ListedColormap, LinearSegmentedColormap
+   viridis = cm.get_cmap('viridis', 256)
+   newcolors = viridis(np.linspace(0, 1, 256))
+   pink = np.array([248 / 256, 24 / 256, 148 / 256, 1])
+   newcolors[:25, :] = pink
+   newcmp = ListedColormap(newcolors)
+
+
+   Ch.chart_maintenance_period_by_turbine_with_defined_warning()
+   Ch.chart_histogram_maintenance_with()
+   #Ch.chart_maintenance_period_by_turbine_with_angle(10, 1)
     #Ch.chart_histogram_maintenance()
-    #Ch.chart_maintenance_period_by_turbine_with_warning()
-    """Ac.calculus_auto_correlation_warning_series_before_error(4, 10)
+   Ch.chart_maintenance_period_by_turbine_with_warning()
+   """Ac.calculus_auto_correlation_warning_series_before_error(4, 10)
    Cr.calculate_correlation_between_period()
    Cr.calculus_corr_before_failure_between_nacelle_and_wind_direction(3)
    Tp.calculus_qq_plot(15)

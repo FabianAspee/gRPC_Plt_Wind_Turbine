@@ -193,14 +193,25 @@ def divide_series_by_week(all_value_period: list) -> list:
             divide_by_week(date_init, date_finish, all_value_period[1])]
 
 
+def verify_date_and_insert(all_dates_by_turbine_aux, days_period: int, custom_list: list):
+    if len(custom_list) > 0:
+        date_init = datetime.strptime(all_dates_by_turbine_aux.date_error, format_date) - timedelta(days_period)
+        end_date = datetime.strptime(custom_list[len(custom_list) - 1].date_finish, format_date)
+
+        return DateTurbineErrorCustom(
+            (end_date + timedelta(seconds=10)).strftime(format_date) if date_init < end_date else date_init.strftime(
+                format_date), all_dates_by_turbine_aux.date_error,
+            all_dates_by_turbine_aux.error)
+    else:
+        date_init = datetime.strptime(all_dates_by_turbine_aux.date_error, format_date) - timedelta(days_period)
+        return DateTurbineErrorCustom(date_init.strftime(format_date), all_dates_by_turbine_aux.date_error,
+                                      all_dates_by_turbine_aux.error)
+
+
 def create_final_list_with_date_error(all_dates_by_turbine, days_period):
     def _create_final_list_with_date_(all_dates_by_turbine_aux: list, custom_list_own: list) -> list:
         if len(all_dates_by_turbine_aux) > 0:
-            custom_list_own.append(
-                DateTurbineErrorCustom((datetime.strptime(all_dates_by_turbine_aux[0].date_error, format_date) -
-                                        timedelta(days_period)).strftime(format_date),
-                                       all_dates_by_turbine_aux[0].date_error,
-                                       all_dates_by_turbine_aux[0].error))
+            custom_list_own.append(verify_date_and_insert(all_dates_by_turbine_aux[0], days_period, custom_list_own))
             return _create_final_list_with_date_(all_dates_by_turbine_aux[1:], custom_list_own)
         else:
             return custom_list_own
@@ -220,13 +231,16 @@ def create_dictionary_by_values(all_values: list):
 
 
 def filter_series_by_active_power(all_values: list):
-    dictionary = create_dictionary_by_values(all_values)
 
-    for active_power in dictionary[1]:
-        if (active_power[0] is None) or (active_power[0] == 'null') or (float(active_power[0]) <= 0):
-            dictionary[2] = [val for val in dictionary[2] if val[1] != active_power[1]]
-            dictionary[4] = [val for val in dictionary[4] if val[1] != active_power[1]]
-    return [dictionary[2], dictionary[4]]
+    dictionary = create_dictionary_by_values(all_values)
+    if bool(dictionary):
+        for active_power in dictionary[1]:
+            if (active_power[0] is None) or (active_power[0] == 'null') or (float(active_power[0]) <= 0):
+                dictionary[2] = [val for val in dictionary[2] if val[1] != active_power[1]]
+                dictionary[4] = [val for val in dictionary[4] if val[1] != active_power[1]]
+        return [dictionary[2], dictionary[4]]
+    else:
+        return []
 
 
 def calculus_difference_between_dates(all_dates: List[DateTurbineCustom]):
@@ -238,5 +252,5 @@ def calculus_difference_between_dates(all_dates: List[DateTurbineCustom]):
 def calculus_difference_month_between_dates(all_dates: List[DateTurbineCustom]):
     return list(map(lambda val: (datetime.strptime(val.date_finish, format_date).year -
                                  datetime.strptime(val.date_init, format_date).year) * 12 + (
-                                            datetime.strptime(val.date_finish, format_date).month - datetime.strptime(
-                                        val.date_init, format_date).month), all_dates)) if not not all_dates else None
+                                        datetime.strptime(val.date_finish, format_date).month - datetime.strptime(
+                                    val.date_init, format_date).month), all_dates)) if not not all_dates else None

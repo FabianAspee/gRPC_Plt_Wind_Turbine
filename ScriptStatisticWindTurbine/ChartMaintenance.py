@@ -41,12 +41,13 @@ def get_int_from_rgb(rgb):
     return rgb_int
 
 
-color_error = [(255 / 255, 6 / 255, 6 / 255), (122 / 255, 39 / 255, 55 / 255), (158 / 255, 19 / 255, 19 / 255),
-               (127 / 255, 17 / 255, 17 / 255), (247 / 255, 52 / 255, 52 / 255)]
+color_error = [(255 / 255, 0 / 255, 0 / 255, 1), (178 / 255, 1 / 255, 1 / 255, 1), (158 / 255, 19 / 255, 19 / 255, 1),
+               (127 / 255, 17 / 255, 17 / 255, 1), (247 / 255, 52 / 255, 52 / 255, 1)]
 dimension_error = [1500, 1400, 1600, 1700, 1800]
-color_warning = [(255 / 255, 255 / 255, 0 / 255), (255 / 255, 255 / 255, 112 / 255), (152 / 255, 152 / 255, 8 / 255),
-                 (111 / 255, 111 / 255, 9 / 255), (169 / 255, 131 / 255, 6 / 255)]
-dimension_warning = [800, 700, 600, 500, 400]
+color_warning = [(255 / 255, 255 / 255, 0 / 255, 1), (255 / 255, 255 / 255, 112 / 255, 1),
+                 (152 / 255, 152 / 255, 8 / 255, 1),
+                 (111 / 255, 111 / 255, 9 / 255, 1), (169 / 255, 131 / 255, 6 / 255, 1)]
+dimension_warning = [100, 200, 800, 900, 500]
 errors = load_color_errors()
 warnings = load_color_warnings()
 aux_errors = Util_Plt.errors
@@ -82,11 +83,11 @@ def general_plot_custom_date(dates, value, days_period, name_turbine, round_day:
     # column.
     date = np.array([pd.to_datetime(date) for date in dates])
     fig, ax = plt.subplots(figsize=(40, 6))
+    plt.ylim(0, 180)
     ax.plot(date, value)
 
     # Major ticks every 6 months.
     fmt_half_year = mdates.HourLocator(interval=8)
-
     create_chart(ax, fmt_half_year, date, fig, name_turbine, "angle_difference", 'Angoli differenza',
                  f"Differenza between nacelle direction e wind direction prima del errore {error}", round_day)
 
@@ -95,16 +96,17 @@ def chart_maintenance_period_by_turbine_with_angle(days_period: int, round_day: 
     for (id_turbine, value) in Tp.read_data(days_period):
         name_turbine = db_call.read_name_turbine(id_turbine)[0][0]
         result = db_call.read_nacelle_and_wind_direction(id_turbine, value.date_init, value.date_finish)
-        save_all_series_result = [(len(my_list), my_list) for my_list in
-                                  Util_Plt.filter_series_by_active_power(result)]
-        total_angle = []
         print(value)
-        for angle_by_turbine in calculus_angle(save_all_series_result):
-            total_angle.append(angle_by_turbine)
+        save_all_series_result = [(len(my_list), my_list) for my_list in Util_Plt.filter_series_by_active_power(result)
+                                  if len(my_list) > 0]
+        if len(save_all_series_result) > 0:
+            total_angle = []
+            for angle_by_turbine in calculus_angle(save_all_series_result):
+                total_angle.append(angle_by_turbine)
 
-        angle = list(map(lambda values: float(values[1]), total_angle))
-        date = list(map(lambda values: values[0], total_angle))
-        general_plot_custom_date(date, angle, days_period, name_turbine, round_day, value.error)
+            angle = list(map(lambda values: float(values[1]), total_angle))
+            date = list(map(lambda values: values[0], total_angle))
+            general_plot_custom_date(date, angle, days_period, name_turbine, round_day, value.error)
 
 
 def is_int_or_float(date):
@@ -114,7 +116,18 @@ def is_int_or_float(date):
             return True
         else:
             return False
-    except:
+    except Exception:
+        return False
+
+
+def is_int_or_float_unique_warning(date):
+    try:
+        val = float(date)
+        if val != 0.0 and val != np.NaN and (val in aux_warning or val in aux_errors):
+            return True
+        else:
+            return False
+    except Exception:
         return False
 
 
@@ -146,7 +159,7 @@ def create_color(my_unique_values) -> list:
     @tail_recursive
     def _create_color_(unique_values, my_colors: list = None):
         if len(unique_values) > 0:
-            result = (random.random(), random.random(), random.random())
+            result = (random.random(), random.random(), random.random(), 1)
             if result not in color_error and color_warning:
                 my_colors.append(result)
                 return recurse(unique_values[1:], my_colors)
@@ -198,11 +211,11 @@ def get_final_element_color_and_size(my_unique_values: list, values_warning: np.
     return final_element_with_color_and_size
 
 
-def plot_warning(final, id_turbine, name_turbine):
-    date = np.array([pd.to_datetime(date[4]) for date in final if is_int_or_float(date[3])])
+def plot_warning(final, id_turbine, name_turbine, function, directory):
+    date = np.array([pd.to_datetime(date[4]) for date in final if function(date[3])])
     fig, ax = plt.subplots(figsize=(40, 6))
 
-    values_warning = np.array([float(date[3]) for date in final if is_int_or_float(date[3])])
+    values_warning = np.array([float(date[3]) for date in final if function(date[3])])
     my_unique_values = get_unique_values(values_warning, condition_without_error_and_warning)
     colors_custom = create_color(my_unique_values)
     sizes = my_unique_values
@@ -233,7 +246,6 @@ def plot_warning(final, id_turbine, name_turbine):
     scatter = ax.scatter(date, values_warning, c=color_index,
                          s=list(map(lambda size: size[1], final_element_with_color_and_size)), alpha=0.3, cmap=c_map,
                          label=len(my_unique_colors))
-
     handles, labels = scatter.legend_elements(num=len(my_unique_colors), prop="colors", alpha=0.3)
 
     labels = change_strings(labels, get_unique_values(values_warning, condition_with_error_and_warning))
@@ -244,7 +256,7 @@ def plot_warning(final, id_turbine, name_turbine):
     ax.add_artist(legend1)
     ax.plot(date, values_warning)
     fmt_half_year = mdates.DayLocator(interval=15)
-    create_chart(ax, fmt_half_year, date, fig, name_turbine, "maintenance_period", "warning and error",
+    create_chart(ax, fmt_half_year, date, fig, name_turbine, directory, "warning and error",
                  'warning before error')
 
 
@@ -283,19 +295,9 @@ def chart_maintenance_period_by_turbine_with_warning():
     method that create chart with all warning inside maintenance period
     :return:
     """
-    for (id_turbine, all_dates_by_turbine) in Cr.yield_get_all_date_by_turbine_with_final():
-        date_to_query = Util_Plt.create_final_list_with_date(list(
-            filter(lambda values: values.is_normal, all_dates_by_turbine)))
-        name_turbine = db_call.read_name_turbine(id_turbine)[0][0]
-        if date_to_query is not None:
-            save_all_series_result: list = []
-            for value in date_to_query:
-                result = db_call.read_warning_and_error_turbine(id_turbine, value.date_init, value.date_finish)
-                save_all_series_result.append((len(result), result))
-
-            final = list(filter(lambda filter_value: filter_value[0] != 0, save_all_series_result))
-            for value_final in final:
-                plot_warning(value_final[1], id_turbine, name_turbine)
+    for (id_turbine, all_dates_by_turbine, name_turbine) in chart_maintenance():
+        for value_final in all_dates_by_turbine:
+            plot_warning(value_final[1], id_turbine, name_turbine, is_int_or_float, "maintenance_period")
 
 
 def chart_histogram_maintenance():
@@ -323,3 +325,52 @@ def chart_histogram_maintenance():
     pd_histogram.hist(legend=True)
     plt.savefig(f"images/histogram/histogram_turbine_maintenance")
     plt.show()
+
+
+def chart_histogram_maintenance_with():
+    """
+    Selects all normal maintenance period dates by turbine, adds the initial period, i.e.,
+    the initial date of when the information for the series begins to exist
+    :return:
+    """
+    final_mont = []
+    for (id_turbine, date_maintenance) in Cr.yield_get_all_date_by_turbine_with_final():
+        custom_date = Util_Plt.create_final_list_with_date_turbine(date_maintenance)
+        if custom_date is not None:
+            print(id_turbine)
+            final = Util_Plt.calculus_difference_month_between_dates(custom_date[:len(custom_date) - 1])
+            final_mont.extend(final)
+        else:
+            print(id_turbine, "not contains normal maintenance")
+            print(custom_date)
+
+    pd_histogram = pd.DataFrame(final_mont, columns=["month_difference"])
+    pd_histogram.hist(legend=True)
+    plt.savefig(f"images/histogram/histogram_turbine_maintenance")
+    plt.show()
+
+
+def chart_maintenance():
+    for (id_turbine, all_dates_by_turbine) in Cr.yield_get_all_date_by_turbine_with_final():
+        date_to_query = Util_Plt.create_final_list_with_date(list(
+            filter(lambda values: values.is_normal, all_dates_by_turbine)))
+        name_turbine = db_call.read_name_turbine(id_turbine)[0][0]
+        if date_to_query is not None:
+            save_all_series_result: list = []
+            for value in date_to_query:
+                result = db_call.read_warning_and_error_turbine(id_turbine, value.date_init, value.date_finish)
+                save_all_series_result.append((len(result), result))
+
+            final = list(filter(lambda filter_value: filter_value[0] != 0, save_all_series_result))
+            yield id_turbine, final, name_turbine
+
+
+def chart_maintenance_period_by_turbine_with_defined_warning():
+    """
+    method that create chart with all warning inside maintenance period
+    :return:
+    """
+    for (id_turbine, all_dates_by_turbine, name_turbine) in chart_maintenance():
+        for value_final in all_dates_by_turbine:
+            plot_warning(value_final[1], id_turbine, name_turbine, is_int_or_float_unique_warning,
+                         "maintenance_with_unique_warning")
