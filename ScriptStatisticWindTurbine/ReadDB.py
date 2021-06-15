@@ -1,13 +1,11 @@
-from AllQueryDB import AllQueryDB
 import os
+
+from AllQueryDB import AllQueryDB
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
-import numpy as np
 from sqlalchemy import create_engine
-from sqlalchemy.engine import Engine
-from sqlalchemy.exc import SQLAlchemyError
 
 
 class ReadDB:
@@ -27,6 +25,9 @@ class ReadDB:
 
     def read_data_turbines(self, id_turbine: int):
         return self.connection.execute(AllQueryDB.query_to_different_period(id_turbine)).fetchall()
+
+    def read_normal_maintenance(self, id_turbine: int):
+        return self.connection.execute(AllQueryDB.query_to_select_normal_maintenance(id_turbine)).fetchall()
 
     def read_name_turbine(self, id_turbine: int):
         return self.connection.execute(AllQueryDB.query_to_read_name_turbine(id_turbine)).fetchall()

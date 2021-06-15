@@ -11,6 +11,11 @@ class AllQueryDB:
         return f'SELECT * FROM maintenance_turbine WHERE id_turbine={id_turbine} ORDER BY date'
 
     @staticmethod
+    def query_to_select_normal_maintenance(id_turbine: int):
+        return f'SELECT * FROM maintenance_turbine WHERE id_turbine={id_turbine} AND is_normal_maintenance' \
+               f' ORDER BY date'
+
+    @staticmethod
     def query_to_select_date_error(id_turbine: int):
         return f'SELECT * FROM value_sensor_error WHERE id_turbine={id_turbine} AND value IN ' \
                f'{tuple(AllQueryDB.__errors__)} ORDER BY date'

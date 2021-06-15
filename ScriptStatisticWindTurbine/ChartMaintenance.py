@@ -14,7 +14,7 @@ import CorrelationPlt as Cr
 import TypeDistribution as Tp
 import matplotlib.dates as mdates
 import pandas as pd
-from CaseClassPlt import ErrorInfo, WarningInfo
+from CaseClassPlt import ErrorInfo, WarningInfo, DateTurbine
 
 db_call = Db()
 
@@ -43,7 +43,7 @@ def get_int_from_rgb(rgb):
 
 color_error = [(255 / 255, 6 / 255, 6 / 255), (122 / 255, 39 / 255, 55 / 255), (158 / 255, 19 / 255, 19 / 255),
                (127 / 255, 17 / 255, 17 / 255), (247 / 255, 52 / 255, 52 / 255)]
-dimension_error = [1400, 1000, 1500, 1600, 1700]
+dimension_error = [1500, 1400, 1600, 1700, 1800]
 color_warning = [(255 / 255, 255 / 255, 0 / 255), (255 / 255, 255 / 255, 112 / 255), (152 / 255, 152 / 255, 8 / 255),
                  (111 / 255, 111 / 255, 9 / 255), (169 / 255, 131 / 255, 6 / 255)]
 dimension_warning = [800, 700, 600, 500, 400]
@@ -75,7 +75,7 @@ def calculus_angle(save_all_series_result):
             (first, np.NaN)
 
 
-def general_plot_custom_date(dates, value, days_period, name_turbine):
+def general_plot_custom_date(dates, value, days_period, name_turbine, round_day: int):
     # Load a numpy structured array from yahoo csv data with fields date, open,
     # close, volume, adj_close from the mpl-data/example directory.  This array
     # stores the date as an np.datetime64 with a day unit ('D') in the 'date'
@@ -87,22 +87,23 @@ def general_plot_custom_date(dates, value, days_period, name_turbine):
     # Major ticks every 6 months.
     fmt_half_year = mdates.HourLocator(interval=8)
 
-    create_chart(ax, fmt_half_year, date, fig, name_turbine, "angle_difference", 'Angoli differenza')
+    create_chart(ax, fmt_half_year, date, fig, name_turbine, "angle_difference", 'Angoli differenza', round_day)
 
 
-def chart_maintenance_period_by_turbine_with_angle(days_period: int):
+def chart_maintenance_period_by_turbine_with_angle(days_period: int, round_day: int):
     for (id_turbine, value) in Tp.read_data(days_period):
         name_turbine = db_call.read_name_turbine(id_turbine)[0][0]
         result = db_call.read_nacelle_and_wind_direction(id_turbine, value.date_init, value.date_finish)
         save_all_series_result = [(len(my_list), my_list) for my_list in
                                   Util_Plt.filter_series_by_active_power(result)]
         total_angle = []
+        print(value)
         for angle_by_turbine in calculus_angle(save_all_series_result):
             total_angle.append(angle_by_turbine)
 
         angle = list(map(lambda values: float(values[1]), total_angle))
         date = list(map(lambda values: values[0], total_angle))
-        general_plot_custom_date(date, angle, days_period, name_turbine)
+        general_plot_custom_date(date, angle, days_period, name_turbine, round_day)
 
 
 def is_int_or_float(date):
@@ -156,14 +157,13 @@ def create_color(my_unique_values) -> list:
     return _create_color_(my_unique_values, [])
 
 
-def change_string(label: str, error: float, index: (float, float, float)):
-    search = int(label[label.find('{') + 1:len(label) - 2])
+def change_string(label: str, error: float):
     label_f = label[:label.find('{') + 1] + str(error) + "}$"
     return label_f
 
 
-def change_strings(labels: list, final_list_error: np.array, total_color: List[tuple]):
-    return [change_string(label, error, []) for label, error in zip(labels, final_list_error)]
+def change_strings(labels: list, final_list_error: np.array):
+    return [change_string(label, error) for label, error in zip(labels, final_list_error)]
 
 
 def condition_without_error_and_warning(value_warning, my_unique_values: list):
@@ -178,7 +178,7 @@ def condition_with_error_and_warning(value_warning, my_unique_values: list):
 def get_unique_values(values_warning: np.array, condition) -> list:
     my_unique_values = []
     for value_warning in values_warning:
-        if condition(value_warning,my_unique_values):
+        if condition(value_warning, my_unique_values):
             my_unique_values.append(value_warning)
     return my_unique_values
 
@@ -202,9 +202,9 @@ def plot_warning(final, id_turbine, name_turbine):
     fig, ax = plt.subplots(figsize=(40, 6))
 
     values_warning = np.array([float(date[3]) for date in final if is_int_or_float(date[3])])
-    my_unique_values = get_unique_values(values_warning,condition_without_error_and_warning)
+    my_unique_values = get_unique_values(values_warning, condition_without_error_and_warning)
     colors_custom = create_color(my_unique_values)
-    sizes = my_unique_values  # mod size by error, more great the error more great the dimension
+    sizes = my_unique_values
     final_element_with_color_and_size = get_final_element_color_and_size(my_unique_values, values_warning,
                                                                          colors_custom, sizes)
 
@@ -213,35 +213,40 @@ def plot_warning(final, id_turbine, name_turbine):
     c_map_name = 'custom_color_map'
     total_color = colors_custom + color_error + color_warning
     final_list_color_unique = []
-    for color_l in final_colors:
+    final_index = []
+    for index, color_l in enumerate(final_colors, start=0):
         if color_l not in final_list_color_unique:
             final_list_color_unique.append(color_l)
-    color_index = np.array([final_list_color_unique.index(color) for color in final_colors])#controlar indices, porque no estan bien
+            final_index.append(index)
+    color_index = np.array([[final_list_color_unique.index(color), total_color.index(color)] for color in
+                            final_colors])
     my_unique_colors = []
-    for value_color in color_index:
+    color_index_aux = color_index[:, 1]
+    color_index = color_index[:, 0]
+    for value_color in color_index_aux:
         if value_color not in my_unique_colors:
             my_unique_colors.append(value_color)
 
     c_map = LinearSegmentedColormap.from_list(c_map_name, [total_color[index] for index in
-                                                           my_unique_colors])  # set new arrya with new index by color
+                                                           my_unique_colors])  # set new array with new index by color
     scatter = ax.scatter(date, values_warning, c=color_index,
                          s=list(map(lambda size: size[1], final_element_with_color_and_size)), alpha=0.3, cmap=c_map,
                          label=len(my_unique_colors))
 
     handles, labels = scatter.legend_elements(num=len(my_unique_colors), prop="colors", alpha=0.3)
 
-    labels = change_strings(labels, get_unique_values(values_warning,condition_with_error_and_warning), values_warning)
-    n_col = int(len(my_unique_colors)/2)
-    legend1 = ax.legend(handles, labels,loc='upper center', ncol=n_col, mode="expand", shadow=True, fancybox=True, title="Errors")
+    labels = change_strings(labels, get_unique_values(values_warning, condition_with_error_and_warning))
+    n_col = int(len(my_unique_colors) / 2)
+    legend1 = ax.legend(handles, labels, loc='upper center', ncol=n_col, mode="expand", shadow=True, fancybox=True,
+                        title="Errors")
     legend1.get_frame().set_alpha(0.1)
     ax.add_artist(legend1)
     ax.plot(date, values_warning)
     fmt_half_year = mdates.DayLocator(interval=15)
     create_chart(ax, fmt_half_year, date, fig, name_turbine, "maintenance_period", "warning and error")
-    print(values_warning)
 
 
-def create_chart(ax, fmt_half_year, date, fig, name_turbine, directory, y_label):
+def create_chart(ax, fmt_half_year, date, fig, name_turbine, directory, y_label, round_day: int = 2):
     ax.xaxis.set_major_locator(fmt_half_year)
 
     # Minor ticks every month.
@@ -252,8 +257,8 @@ def create_chart(ax, fmt_half_year, date, fig, name_turbine, directory, y_label)
     ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
 
     # Round to nearest years.
-    date_min = np.datetime64(pd.to_datetime(date[0]), 'D')
-    date_max = np.datetime64(pd.to_datetime(date[-1]), 'D') + np.timedelta64(1, 'D')
+    date_min = np.datetime64(pd.to_datetime(date[0]), 'D') - np.timedelta64(round_day, 'D')
+    date_max = np.datetime64(pd.to_datetime(date[-1]), 'D') + np.timedelta64(round_day, 'D')
     ax.set_xlim(date_min, date_max)
 
     # Format the coords message box, i.e. the numbers displayed as the cursor moves
@@ -267,7 +272,7 @@ def create_chart(ax, fmt_half_year, date, fig, name_turbine, directory, y_label)
     ax.set_ylabel(y_label)
     fig.suptitle(f'warning before error')
     fig.autofmt_xdate()
-    plt.savefig(f"images/{directory}/turbine-{name_turbine}-period{date_min}-{date_max}")
+    plt.savefig(f"images/{directory}/turbine-{name_turbine}-period-{date_min}-{date_max}")
     plt.show()
 
 
@@ -289,3 +294,28 @@ def chart_maintenance_period_by_turbine_with_warning():
             final = list(filter(lambda filter_value: filter_value[0] != 0, save_all_series_result))
             for value_final in final:
                 plot_warning(value_final[1], id_turbine, name_turbine)
+
+
+def chart_histogram_maintenance():
+    """
+    Selects all normal maintenance period dates by turbine, adds the initial period, i.e.,
+    the initial date of when the information for the series begins to exist
+    :return:
+    """
+    final_mont = []
+    for (id_turbine,) in db_call.read_id_turbine():
+        normal_maintenance = list(map(lambda value: DateTurbine("", value[4], False),
+                                      db_call.read_min_data_series(id_turbine))) + list(
+            map(lambda value: DateTurbine(value[2], value[3], bool(value[4])),
+                db_call.read_normal_maintenance(id_turbine)))
+        custom_date = Util_Plt.create_final_list_with_date_turbine(normal_maintenance)
+        if custom_date is not None:
+            print(id_turbine)
+            final = Util_Plt.calculus_difference_month_between_dates(custom_date[:len(custom_date) - 1])
+            final_mont.extend(final)
+        else:
+            print(id_turbine, "not contains maintenance")
+            print(custom_date)
+
+    pd_histogram = pd.DataFrame(final_mont, columns=["month_difference"])
+    pd_histogram.hist(legend=True)

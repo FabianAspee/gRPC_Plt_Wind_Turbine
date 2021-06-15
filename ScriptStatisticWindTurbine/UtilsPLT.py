@@ -37,11 +37,13 @@ def create_final_list_with_date_turbine(all_dates_by_turbine: list) -> list:
     def _create_final_list_with_date_(all_dates_by_turbine_aux: list, custom_list_own: list) -> list:
         if len(all_dates_by_turbine_aux) > 1:
             custom_list_own.append(
-                create_date_turbine_custom(all_dates_by_turbine[0].date_finish, all_dates_by_turbine[1].date_init))
+                create_date_turbine_custom(all_dates_by_turbine_aux[0].date_finish,
+                                           all_dates_by_turbine_aux[1].date_init))
             return _create_final_list_with_date_(all_dates_by_turbine_aux[1:], custom_list_own)
         else:
             custom_list_own.append(
-                create_date_turbine_custom(all_dates_by_turbine[0].date_finish, datetime.now().strftime(format_date)))
+                create_date_turbine_custom(all_dates_by_turbine_aux[0].date_finish,
+                                           datetime.now().strftime(format_date)))
             return custom_list_own
 
     if len(all_dates_by_turbine) > 1:
@@ -228,6 +230,13 @@ def filter_series_by_active_power(all_values: list):
 
 
 def calculus_difference_between_dates(all_dates: List[DateTurbineCustom]):
-    return list(map(lambda val: datetime.strptime(val.date_init, format_date) - datetime.strptime(val.date_finish,
-                                                                                                  format_date),
+    return list(map(lambda val: datetime.strptime(val.date_finish, format_date) - datetime.strptime(val.date_init,
+                                                                                                    format_date),
                     all_dates)) if not not all_dates else None
+
+
+def calculus_difference_month_between_dates(all_dates: List[DateTurbineCustom]):
+    return list(map(lambda val: (datetime.strptime(val.date_finish, format_date).year -
+                                 datetime.strptime(val.date_init, format_date).year) * 12 + (
+                                            datetime.strptime(val.date_finish, format_date).month - datetime.strptime(
+                                        val.date_init, format_date).month), all_dates)) if not not all_dates else None
