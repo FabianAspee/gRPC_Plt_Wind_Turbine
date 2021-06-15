@@ -1,4 +1,5 @@
 import random
+from typing import List
 
 from matplotlib import colors
 from matplotlib.colors import LinearSegmentedColormap
@@ -42,10 +43,10 @@ def get_int_from_rgb(rgb):
 
 color_error = [(255 / 255, 6 / 255, 6 / 255), (122 / 255, 39 / 255, 55 / 255), (158 / 255, 19 / 255, 19 / 255),
                (127 / 255, 17 / 255, 17 / 255), (247 / 255, 52 / 255, 52 / 255)]
-dimension_error = [110, 100, 120, 130, 140]
+dimension_error = [1400, 1000, 1500, 1600, 1700]
 color_warning = [(255 / 255, 255 / 255, 0 / 255), (255 / 255, 255 / 255, 112 / 255), (152 / 255, 152 / 255, 8 / 255),
                  (111 / 255, 111 / 255, 9 / 255), (169 / 255, 131 / 255, 6 / 255)]
-dimension_warning = [90, 80, 70, 60, 50]
+dimension_warning = [800, 700, 600, 500, 400]
 errors = load_color_errors()
 warnings = load_color_warnings()
 aux_errors = Util_Plt.errors
@@ -86,7 +87,7 @@ def general_plot_custom_date(dates, value, days_period, name_turbine):
     # Major ticks every 6 months.
     fmt_half_year = mdates.HourLocator(interval=8)
 
-    create_chart(ax, fmt_half_year, date, fig, name_turbine, "angle_difference")
+    create_chart(ax, fmt_half_year, date, fig, name_turbine, "angle_difference", 'Angoli differenza')
 
 
 def chart_maintenance_period_by_turbine_with_angle(days_period: int):
@@ -139,7 +140,7 @@ def filter_dimension_warning(value: float):
     return list(filter(lambda value_warning: value_warning.warning == value, warnings))[0].dimension
 
 
-def create_color(my_unique_values):
+def create_color(my_unique_values) -> list:
     @tail_recursive
     def _create_color_(unique_values, my_colors: list = None):
         if len(unique_values) > 0:
@@ -155,68 +156,92 @@ def create_color(my_unique_values):
     return _create_color_(my_unique_values, [])
 
 
-def change_string(label: str, final_list_error: np.array):
+def change_string(label: str, error: float, index: (float, float, float)):
     search = int(label[label.find('{') + 1:len(label) - 2])
-    label_f = label[:label.find('{') + 1] + str(final_list_error[search]) + "}$"
+    label_f = label[:label.find('{') + 1] + str(error) + "}$"
     return label_f
 
 
-def change_strings(labels: list, final_list_error: np.array):
-    return [change_string(label, final_list_error) for label in labels]
+def change_strings(labels: list, final_list_error: np.array, total_color: List[tuple]):
+    return [change_string(label, error, []) for label, error in zip(labels, final_list_error)]
+
+
+def condition_without_error_and_warning(value_warning, my_unique_values: list):
+    return True if value_warning not in my_unique_values and value_warning not in aux_errors \
+                   and value_warning not in aux_warning else False
+
+
+def condition_with_error_and_warning(value_warning, my_unique_values: list):
+    return False if value_warning in my_unique_values else True
+
+
+def get_unique_values(values_warning: np.array, condition) -> list:
+    my_unique_values = []
+    for value_warning in values_warning:
+        if condition(value_warning,my_unique_values):
+            my_unique_values.append(value_warning)
+    return my_unique_values
+
+
+def get_final_element_color_and_size(my_unique_values: list, values_warning: np.array, colors_custom: list,
+                                     sizes: list) -> list:
+    final_element_with_color_and_size = []
+    for val in values_warning:
+        if val in my_unique_values:
+            size = sizes[my_unique_values.index(val)]
+            final_element_with_color_and_size.append(
+                (colors_custom[my_unique_values.index(val)], size if size < 300 else 300))
+        else:
+            final_element_with_color_and_size.append(
+                (filter_color(val), filter_dimension(val)))
+    return final_element_with_color_and_size
 
 
 def plot_warning(final, id_turbine, name_turbine):
     date = np.array([pd.to_datetime(date[4]) for date in final if is_int_or_float(date[3])])
     fig, ax = plt.subplots(figsize=(40, 6))
 
-    value_warning = np.array([float(date[3]) for date in final if is_int_or_float(date[3])])
-    my_unique_values = list(
-        filter(lambda value: value not in aux_errors and value not in aux_warning, set(value_warning)))
+    values_warning = np.array([float(date[3]) for date in final if is_int_or_float(date[3])])
+    my_unique_values = get_unique_values(values_warning,condition_without_error_and_warning)
     colors_custom = create_color(my_unique_values)
-    final_element_with_color_and_size = []
     sizes = my_unique_values  # mod size by error, more great the error more great the dimension
-    for val in value_warning:
-        if val in my_unique_values:
-            final_element_with_color_and_size.append(
-                (colors_custom[my_unique_values.index(val)], sizes[my_unique_values.index(val)]))
-        else:
-            final_element_with_color_and_size.append(
-                (filter_color(val), filter_dimension(val)))
+    final_element_with_color_and_size = get_final_element_color_and_size(my_unique_values, values_warning,
+                                                                         colors_custom, sizes)
+
     final_colors = list(map(lambda color: color[0], final_element_with_color_and_size))
 
     c_map_name = 'custom_color_map'
-    c_map = LinearSegmentedColormap.from_list(c_map_name, colors_custom + color_error + color_warning)
-    for x in final_colors:
-        if x in colors_custom:
-            print(colors_custom.index(x), value_warning[colors_custom.index(x)])
-        else:
-            if x in color_error:#error con el indice para capturar el valor delcolor
-                print(len(colors_custom)-1 + color_error.index(x),
-                      value_warning[len(colors_custom) - 1 + color_error.index(x)],
-                      value_warning[len(colors_custom) - 1 + color_error.index(x)] in aux_errors)
-            else:
-                print(len(colors_custom)-1 + len(color_error)-1 + color_warning.index(x),
-                      value_warning[len(colors_custom) - 1 + len(color_error) - 1 + color_warning.index(x)],
-                      value_warning[
-                          len(colors_custom) - 1 + len(color_error) - 1 + color_warning.index(x)] in aux_warning)
+    total_color = colors_custom + color_error + color_warning
+    final_list_color_unique = []
+    for color_l in final_colors:
+        if color_l not in final_list_color_unique:
+            final_list_color_unique.append(color_l)
+    color_index = np.array([final_list_color_unique.index(color) for color in final_colors])#controlar indices, porque no estan bien
+    my_unique_colors = []
+    for value_color in color_index:
+        if value_color not in my_unique_colors:
+            my_unique_colors.append(value_color)
 
-    color_index = np.array([colors_custom.index(x) if x in colors_custom else (
-        len(colors_custom)-1 + color_error.index(x) if x in color_error
-        else len(colors_custom)-1 + len(color_error)-1 + color_warning.index(x))
-                            for x in final_colors])
-    scatter = ax.scatter(date, value_warning, c=color_index,
-                         s=list(map(lambda size: size[1], final_element_with_color_and_size)), alpha=0.3, cmap=c_map)
-    handles, labels = scatter.legend_elements(prop="colors", alpha=0.6)
-    labels = change_strings(labels, value_warning)
-    legend1 = ax.legend(handles, labels, loc="upper right", title="Errors")
+    c_map = LinearSegmentedColormap.from_list(c_map_name, [total_color[index] for index in
+                                                           my_unique_colors])  # set new arrya with new index by color
+    scatter = ax.scatter(date, values_warning, c=color_index,
+                         s=list(map(lambda size: size[1], final_element_with_color_and_size)), alpha=0.3, cmap=c_map,
+                         label=len(my_unique_colors))
+
+    handles, labels = scatter.legend_elements(num=len(my_unique_colors), prop="colors", alpha=0.3)
+
+    labels = change_strings(labels, get_unique_values(values_warning,condition_with_error_and_warning), values_warning)
+    n_col = int(len(my_unique_colors)/2)
+    legend1 = ax.legend(handles, labels,loc='upper center', ncol=n_col, mode="expand", shadow=True, fancybox=True, title="Errors")
+    legend1.get_frame().set_alpha(0.1)
     ax.add_artist(legend1)
-    ax.plot(date, value_warning)
+    ax.plot(date, values_warning)
     fmt_half_year = mdates.DayLocator(interval=15)
-    create_chart(ax, fmt_half_year, date, fig, name_turbine, "maintenance_period")
-    print(value_warning)
+    create_chart(ax, fmt_half_year, date, fig, name_turbine, "maintenance_period", "warning and error")
+    print(values_warning)
 
 
-def create_chart(ax, fmt_half_year, date, fig, name_turbine, directory):
+def create_chart(ax, fmt_half_year, date, fig, name_turbine, directory, y_label):
     ax.xaxis.set_major_locator(fmt_half_year)
 
     # Minor ticks every month.
@@ -239,7 +264,7 @@ def create_chart(ax, fmt_half_year, date, fig, name_turbine, directory):
 
     # Rotates and right aligns the x labels, and moves the bottom of the
     # axes up to make room for them.
-    ax.set_ylabel('Angoli differenza')
+    ax.set_ylabel(y_label)
     fig.suptitle(f'warning before error')
     fig.autofmt_xdate()
     plt.savefig(f"images/{directory}/turbine-{name_turbine}-period{date_min}-{date_max}")
