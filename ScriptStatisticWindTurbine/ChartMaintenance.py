@@ -213,51 +213,54 @@ def get_final_element_color_and_size(my_unique_values: list, values_warning: np.
 
 def plot_warning(final, id_turbine, name_turbine, function, directory):
     date = np.array([pd.to_datetime(date[4]) for date in final if function(date[3])])
-    fig, ax = plt.subplots(figsize=(40, 6))
+    if len(date)>0:
+        fig, ax = plt.subplots(figsize=(40, 6))
 
-    values_warning = np.array([float(date[3]) for date in final if function(date[3])])
-    my_unique_values = get_unique_values(values_warning, condition_without_error_and_warning)
-    colors_custom = create_color(my_unique_values)
-    sizes = my_unique_values
-    final_element_with_color_and_size = get_final_element_color_and_size(my_unique_values, values_warning,
-                                                                         colors_custom, sizes)
+        values_warning = np.array([float(date[3]) for date in final if function(date[3])])
+        my_unique_values = get_unique_values(values_warning, condition_without_error_and_warning)
+        colors_custom = create_color(my_unique_values)
+        sizes = my_unique_values
+        final_element_with_color_and_size = get_final_element_color_and_size(my_unique_values, values_warning,
+                                                                             colors_custom, sizes)
 
-    final_colors = list(map(lambda color: color[0], final_element_with_color_and_size))
+        final_colors = list(map(lambda color: color[0], final_element_with_color_and_size))
 
-    c_map_name = 'custom_color_map'
-    total_color = colors_custom + color_error + color_warning
-    final_list_color_unique = []
-    final_index = []
-    for index, color_l in enumerate(final_colors, start=0):
-        if color_l not in final_list_color_unique:
-            final_list_color_unique.append(color_l)
-            final_index.append(index)
-    color_index = np.array([[final_list_color_unique.index(color), total_color.index(color)] for color in
-                            final_colors])
-    my_unique_colors = []
-    color_index_aux = color_index[:, 1]
-    color_index = color_index[:, 0]
-    for value_color in color_index_aux:
-        if value_color not in my_unique_colors:
-            my_unique_colors.append(value_color)
+        c_map_name = 'custom_color_map'
+        total_color = colors_custom + color_error + color_warning
+        final_list_color_unique = []
+        final_index = []
+        for index, color_l in enumerate(final_colors, start=0):
+            if color_l not in final_list_color_unique:
+                final_list_color_unique.append(color_l)
+                final_index.append(index)
+        color_index = np.array([[final_list_color_unique.index(color), total_color.index(color)] for color in
+                                final_colors])
 
-    c_map = LinearSegmentedColormap.from_list(c_map_name, [total_color[index] for index in
-                                                           my_unique_colors])  # set new array with new index by color
-    scatter = ax.scatter(date, values_warning, c=color_index,
-                         s=list(map(lambda size: size[1], final_element_with_color_and_size)), alpha=0.3, cmap=c_map,
-                         label=len(my_unique_colors))
-    handles, labels = scatter.legend_elements(num=len(my_unique_colors), prop="colors", alpha=0.3)
+        my_unique_colors = []
+        color_index_aux = color_index[:, 1]
+        color_index = color_index[:, 0]
+        for value_color in color_index_aux:
+            if value_color not in my_unique_colors:
+                my_unique_colors.append(value_color)
+        color_list = [total_color[index] for index in my_unique_colors]
+        if len(color_list)==1:
+            color_list.append(color_warning[0])
+        c_map = LinearSegmentedColormap.from_list(c_map_name, color_list)  # set new array with new index by color
+        scatter = ax.scatter(date, values_warning, c=color_index,
+                             s=list(map(lambda size: size[1], final_element_with_color_and_size)), alpha=0.3, cmap=c_map,
+                             label=len(my_unique_colors))
+        handles, labels = scatter.legend_elements(num=len(my_unique_colors), prop="colors", alpha=0.3)
 
-    labels = change_strings(labels, get_unique_values(values_warning, condition_with_error_and_warning))
-    n_col = int(len(my_unique_colors) / 2)
-    legend1 = ax.legend(handles, labels, loc='upper center', ncol=n_col, mode="expand", shadow=True, fancybox=True,
-                        title="Errors")
-    legend1.get_frame().set_alpha(0.1)
-    ax.add_artist(legend1)
-    ax.plot(date, values_warning)
-    fmt_half_year = mdates.DayLocator(interval=15)
-    create_chart(ax, fmt_half_year, date, fig, name_turbine, directory, "warning and error",
-                 'warning before error')
+        labels = change_strings(labels, get_unique_values(values_warning, condition_with_error_and_warning))
+        n_col = int(len(my_unique_colors) / 2)
+        legend1 = ax.legend(handles, labels, loc='upper center', ncol=n_col, mode="expand", shadow=True, fancybox=True,
+                            title="Errors")
+        legend1.get_frame().set_alpha(0.1)
+        ax.add_artist(legend1)
+        ax.plot(date, values_warning)
+        fmt_half_year = mdates.DayLocator(interval=15)
+        create_chart(ax, fmt_half_year, date, fig, name_turbine, directory, "warning and error",
+                     'warning before error')
 
 
 def create_chart(ax, fmt_half_year, date, fig, name_turbine, directory, y_label, title: str, round_day: int = 2):
@@ -346,7 +349,7 @@ def chart_histogram_maintenance_with():
 
     pd_histogram = pd.DataFrame(final_mont, columns=["month_difference"])
     pd_histogram.hist(legend=True)
-    plt.savefig(f"images/histogram/histogram_turbine_maintenance")
+    plt.savefig(f"images/histogram/histogram_turbine_maintenance_extra")
     plt.show()
 
 
