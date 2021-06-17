@@ -1,4 +1,6 @@
+import calendar
 import random
+from datetime import datetime
 from typing import List
 
 from matplotlib import colors
@@ -15,7 +17,7 @@ import CorrelationPlt as Cr
 import TypeDistribution as Tp
 import matplotlib.dates as mdates
 import pandas as pd
-from CaseClassPlt import ErrorInfo, WarningInfo, DateTurbine
+from CaseClassPlt import ErrorInfo, WarningInfo, DateTurbine, InfoTurbine, InfoTurbineAll
 
 db_call = Db()
 
@@ -403,10 +405,15 @@ def get_value_event():
 def chart_maintenance_aggregate():
     for (name_turbine, date, size, max_warning, id_turbine, lines_aux, total_warning) in get_value_event():
         fig, ax = plt.subplots(figsize=(40, 6))
-        lines = [[(i, 0), (i, max_warning)] if lines_aux[i] == 1 else [(i, 0), (i, 0)] for i in range(len(lines_aux))]
-        plt.ylim(0, max_warning)
+        lines = [[(i, 0), (i, max_warning+1)] if lines_aux[i][0] == 1 else [(i, 0), (i, 0)] for i in
+                 range(len(lines_aux))]
+        plt.ylim(0, max_warning+1)
         line_coll = matcoll.LineCollection(lines)
         ax.scatter(date, total_warning, alpha=0.3)
+        [ax.text(x, int(max_warning / 2), "Manutenzione normale" if l_aux[0] == 1 else "Manutenzione straordinaria",
+                 rotation=90, verticalalignment="bottom")
+         for (x, l_aux) in zip(date, lines_aux) if l_aux[0] == 1]
+
         plt.plot(date, total_warning)
         ax.add_collection(line_coll)
 
@@ -416,27 +423,90 @@ def chart_maintenance_aggregate():
         plt.show()
 
 
+def check_format_date(date):
+    try:
+        return datetime.strptime(date, "%B-%Y")
+    except:
+        return datetime.strptime(date, "%B-%Y-%d %H:%M")
+
+
+def create_dictionary_warning_by_month(dates: list, dictionary: dict, total_warning: list, name_turbine: str,
+                                       lines_aux: list):
+    # print(f'dates {len(dates)} warning {len(total_warning)}')
+    for (date, warning, type_maintenance) in zip(dates, total_warning, lines_aux):
+        if date in dictionary:
+            dictionary[date].append((warning if type_maintenance == (0, False) else 0, name_turbine, type_maintenance))
+
+        else:
+            dictionary[date] = [(warning if type_maintenance == (0, False) else 0, name_turbine, type_maintenance)]
+    return dictionary
+
+
+def check_format(value, final_total_warning_aux):
+    index = final_total_warning_aux.index(value)
+    if not value.maintenance and index < len(final_total_warning_aux) - 1 and \
+            not not final_total_warning_aux[index + 1].maintenance:
+        return calendar.month_name[value.date.month] + "-" + str(value.date.year) + "-" + str(
+            value.date.day) + " " + str(value.date.hour) + ":" + str(value.date.minute)
+    if not value.maintenance and index > 0 and not not final_total_warning_aux[index + 0].maintenance:
+        return calendar.month_name[value.date.month] + "-" + str(value.date.year) + "-" + str(
+            value.date.day) + " " + str(value.date.hour) + ":" + str(value.date.minute)
+    if not not value.maintenance:
+        return calendar.month_name[value.date.month] + "-" + str(value.date.year) + "-" + str(
+            value.date.day) + " " + str(value.date.hour) + ":" + str(value.date.minute)
+    else:
+        return calendar.month_name[value.date.month] + "-" + str(value.date.year)
+
+
+def set_text_maintenance(info: InfoTurbineAll):
+    normal = []
+    extra = []
+    for val in info.maintenance:
+        if val[2] == (1, True):
+            normal.append(val[1])
+        else:
+            extra.append(val[1])
+    return " ".join(["Normal Maintenance" if not not normal else "", ' '.join(normal) if not not normal else "",
+                     "Extra Maintenance" if not not extra else "", ' '.join(extra) if not not extra else ""])
+
+
 def chart_maintenance_aggregate_all_turbine_event_month():
-    fig, ax = plt.subplots(figsize=(40, 6))
-    final_warning = []
+    info_turbines = []
+    final_warning = {}
     date = []
-    name_turbine = ""
+    all_names = [db_call.read_name_turbine(id_turbine)[0][0] for (id_turbine,) in db_call.read_id_turbine()]
     for (name_turbine, date, size, max_warning, id_turbine, lines_aux, total_warning) in get_value_event():
         date = date
-        name_turbine = name_turbine
-        if not not final_warning:
-            final_warning = [val1 + val2 for (val1, val2) in zip(final_warning, total_warning)]
-        else:
-            final_warning = total_warning
-    max_warning = max(final_warning)
-    # lines = [[(i, 0), (i, max_warning)] if lines_aux[i] == 1 else [(i, 0), (i, 0)] for i in range(len(lines_aux))]
+        info_turbines.append(InfoTurbine(lines_aux, date, name_turbine))
+        final_warning = create_dictionary_warning_by_month(date, final_warning, total_warning, name_turbine, lines_aux)
+        print(f"final warning {len(final_warning)}")
+    final_total_warning = list(map(lambda key: InfoTurbineAll(check_format_date(key),
+                                                              sum(list(map(lambda value_sum: value_sum[0], filter(
+                                                                  lambda value_list: value_list[2] == (0, False),
+                                                                  final_warning[key])))),
+                                                              list(filter(lambda value_list: value_list[2] == (1, True)
+                                                                                             or value_list[2] == (
+                                                                                                 1, False),
+                                                                          final_warning[key]))),
+                                   final_warning))
+    fig, ax = plt.subplots(figsize=(40, 6))
+    final_total_warning = sorted(final_total_warning, key=lambda info_turbine: info_turbine.date)
+    max_warning = max(final_total_warning, key=lambda info_turbine: info_turbine.qta_warning).qta_warning
+    lines = [[(i, 0), (i, max_warning)] if not not final_total_warning[i].maintenance else [(i, 0), (i, 0)]
+             for i in range(len(final_total_warning))]
     plt.ylim(0, max_warning)
-    # line_coll = matcoll.LineCollection(lines)
-    ax.scatter(date, final_warning, alpha=0.3)
-    plt.plot(date, final_warning)
-    # ax.add_collection(line_coll)
+    line_coll = matcoll.LineCollection(lines)
 
-    fig.suptitle(f"Error by month {name_turbine}")
+    dates = list(map(lambda value: check_format(value, final_total_warning), final_total_warning))
+    event = list(map(lambda value: value.qta_warning, final_total_warning))
+    ax.scatter(dates, event, alpha=0.3)
+    [ax.text(check_format(info, final_total_warning), int(max_warning / (10 if max_warning >= 100 else 5)),
+             set_text_maintenance(info),
+             rotation=90, horizontalalignment='left', verticalalignment='bottom') for index, info in
+     enumerate(final_total_warning, start=0) if not not info.maintenance]
+    plt.plot(dates, event)
+    ax.add_collection(line_coll)
+    fig.suptitle(f"Error by month {'-'.join(all_names)}")
     fig.autofmt_xdate()
-    plt.savefig(f"images/maintenance_aggregate_total/turbine-{name_turbine}-period-{date[0]}-{date[-1]}")
+    plt.savefig(f"images/maintenance_aggregate_total/all-turbine-period-{date[0]}-{date[-1]}")
     plt.show()

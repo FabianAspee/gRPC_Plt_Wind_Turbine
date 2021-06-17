@@ -37,7 +37,7 @@ class AllQueryDB:
 
     @staticmethod
     def query_to_read_id_turbine():
-        return f'SELECT id FROM wind_turbine_info'
+        return f'SELECT id FROM wind_turbine_info WHERE have_torquer'
 
     @staticmethod
     def query_to_read_name_turbine(id_turbine: int):

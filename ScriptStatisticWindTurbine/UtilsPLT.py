@@ -271,28 +271,81 @@ def create_all_month_name(min_max_date: DateTurbine):
     return list_date
 
 
-def check_date(maintenances: list, date: datetime):
+def get_date_from_str(dates: str):
+    return datetime.strptime(dates, format_date)
+
+
+def check_date(maintenances: list, date: datetime) -> (int, DateTurbine):
     val = 0
     for dates in maintenances:
-        finish = datetime.strptime(dates.date_finish, format_date)
+        finish = get_date_from_str(dates.date_finish)
         (_, end_date) = calendar.monthrange(finish.year, finish.month)
         finish = finish.replace(day=end_date, minute=59, second=59, hour=23)
-        init = datetime.strptime(dates.date_init, format_date)
+        init = get_date_from_str(dates.date_init)
         init = init.replace(day=1, minute=0, second=0, hour=0)
         if init <= date <= finish:
-            return 1
+            return 1, dates
         else:
             val = 0
-    return val
+    return val, None
+
+
+def create_info(date: datetime, total_warning: int):
+    return (calendar.month_name[date.month] + "-" + str(date.year) + "-" + str(date.day) + " " + str(
+        date.hour) + ":" + str(date.minute), total_warning)
+
+
+def check_is_maintenance(is_maintenance: int, date_turbine: DateTurbine, actual_date: datetime, total_info: list,
+                         total_warning: int):
+    if date_turbine is not None and is_maintenance:
+        finish = get_date_from_str(date_turbine.date_finish)
+        init = get_date_from_str(date_turbine.date_init)
+        if actual_date < init:
+            for date in [actual_date, init, finish]:
+                total_info.append(create_info(date, total_warning))
+        elif actual_date > init and actual_date > finish:
+            for date in [init, finish, actual_date]:
+                total_info.append(create_info(date, total_warning))
+        elif init <= actual_date <= finish:
+            for date in [init, actual_date, finish]:
+                total_info.append(create_info(date, total_warning))
+        return total_info
+    else:
+        total_info.append((calendar.month_name[actual_date.month] + "-" + str(actual_date.year), total_warning))
+        return total_info
+
+
+def create_line_info(is_maintenance, date_turbine, actual_date, lines):
+    if date_turbine is not None and is_maintenance:
+        finish = get_date_from_str(date_turbine.date_finish)
+        init = get_date_from_str(date_turbine.date_init)
+        if actual_date < init:
+            for date in [(int(not is_maintenance), False), (is_maintenance, date_turbine.is_normal),
+                         (is_maintenance, date_turbine.is_normal)]:
+                lines.append(date)
+        elif actual_date > init and actual_date > finish:
+            for date in [(is_maintenance, date_turbine.is_normal), (is_maintenance, date_turbine.is_normal),
+                         (int(not is_maintenance), False)]:
+                lines.append(date)
+        elif init <= actual_date <= finish:
+            for date in [(is_maintenance, date_turbine.is_normal), (int(not is_maintenance), False),
+                         (is_maintenance, date_turbine.is_normal)]:
+                lines.append(date)
+        return lines
+    else:
+        lines.append((is_maintenance, False))
+        return lines
 
 
 def aggregate_event_by_month(all_month: list, all_event: list, maintenances: list):
     total_info = []
     lines = []
     for index, date in enumerate(all_month, start=0):
-        lines.append(check_date(maintenances, date))
+        is_maintenance, date_turbine = check_date(maintenances, date)
+        lines = create_line_info(is_maintenance, date_turbine, date, lines)
         (_, end_date) = calendar.monthrange(date.year, date.month)
         date_f = date.replace(day=end_date)
         total_warning = len(list(filter(lambda value: date <= value[0] <= date_f, all_event)))
-        total_info.append((calendar.month_name[date.month] + "-" + str(date.year), total_warning))
+        total_info = check_is_maintenance(is_maintenance, date_turbine, date, total_info, total_warning)
+    #print(f'total_info {len(total_info)} lines {len(lines)}')
     return total_info, lines

@@ -1,3 +1,6 @@
+import datetime
+import calendar
+
 from matplotlib.colors import LinearSegmentedColormap
 
 import CorrelationPlt as Cr
@@ -7,16 +10,20 @@ import AutoCorrelation as Ac
 import ChartMaintenance as Ch
 import numpy
 import matplotlib.pyplot as plt
-if __name__ == '__main__':
-   Ch.chart_maintenance_aggregate_all_turbine_event_month()
 
-   Ch.chart_maintenance_aggregate()
-   #Ch.chart_maintenance_period_by_turbine_with_defined_warning()
-   #Ch.chart_histogram_maintenance_with()
-   #Ch.chart_maintenance_period_by_turbine_with_angle(10, 1)
-    #Ch.chart_histogram_maintenance()
-   #Ch.chart_maintenance_period_by_turbine_with_warning()
-   """Ac.calculus_auto_correlation_warning_series_before_error(4, 10)
+from matplotlib import collections as matcoll
+from CaseClassPlt import InfoTurbine, InfoTurbineAll, NormalOrExtraMaintenance
+
+if __name__ == '__main__':
+    #Ch.chart_maintenance_aggregate_all_turbine_event_month()
+    Ch.chart_maintenance_aggregate()
+
+    # Ch.chart_maintenance_period_by_turbine_with_defined_warning()
+    # Ch.chart_histogram_maintenance_with()
+    # Ch.chart_maintenance_period_by_turbine_with_angle(10, 1)
+    # Ch.chart_histogram_maintenance()
+    # Ch.chart_maintenance_period_by_turbine_with_warning()
+    """Ac.calculus_auto_correlation_warning_series_before_error(4, 10)
    Cr.calculate_correlation_between_period()
    Cr.calculus_corr_before_failure_between_nacelle_and_wind_direction(3)
    Tp.calculus_qq_plot(15)

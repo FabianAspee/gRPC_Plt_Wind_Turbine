@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 
 
 @dataclass(frozen=True)
@@ -53,3 +54,23 @@ class WarningInfo:
     warning: float
     color: (int, int, int)
     dimension: float
+
+
+@dataclass(frozen=True)
+class InfoTurbine:
+    lines: list
+    date: list
+    name: str
+
+
+@dataclass(frozen=True)
+class InfoTurbineAll:
+    date: datetime
+    qta_warning: int
+    maintenance: list
+
+
+@dataclass(frozen=True)
+class NormalOrExtraMaintenance:
+    name_turbine: str
+    is_normal: bool
