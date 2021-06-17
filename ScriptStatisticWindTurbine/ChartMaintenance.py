@@ -4,6 +4,7 @@ from typing import List
 from matplotlib import colors
 from matplotlib.colors import LinearSegmentedColormap
 
+from matplotlib import collections as matcoll
 from tail_recursion import tail_recursive, recurse
 from pandas import DataFrame
 import UtilsPLT as Util_Plt
@@ -213,7 +214,7 @@ def get_final_element_color_and_size(my_unique_values: list, values_warning: np.
 
 def plot_warning(final, id_turbine, name_turbine, function, directory):
     date = np.array([pd.to_datetime(date[4]) for date in final if function(date[3])])
-    if len(date)>0:
+    if len(date) > 0:
         fig, ax = plt.subplots(figsize=(40, 6))
 
         values_warning = np.array([float(date[3]) for date in final if function(date[3])])
@@ -243,11 +244,12 @@ def plot_warning(final, id_turbine, name_turbine, function, directory):
             if value_color not in my_unique_colors:
                 my_unique_colors.append(value_color)
         color_list = [total_color[index] for index in my_unique_colors]
-        if len(color_list)==1:
+        if len(color_list) == 1:
             color_list.append(color_warning[0])
         c_map = LinearSegmentedColormap.from_list(c_map_name, color_list)  # set new array with new index by color
         scatter = ax.scatter(date, values_warning, c=color_index,
-                             s=list(map(lambda size: size[1], final_element_with_color_and_size)), alpha=0.3, cmap=c_map,
+                             s=list(map(lambda size: size[1], final_element_with_color_and_size)), alpha=0.3,
+                             cmap=c_map,
                              label=len(my_unique_colors))
         handles, labels = scatter.legend_elements(num=len(my_unique_colors), prop="colors", alpha=0.3)
 
@@ -377,3 +379,64 @@ def chart_maintenance_period_by_turbine_with_defined_warning():
         for value_final in all_dates_by_turbine:
             plot_warning(value_final[1], id_turbine, name_turbine, is_int_or_float_unique_warning,
                          "maintenance_with_unique_warning")
+
+
+def get_value_event():
+    for (id_turbine, all_dates_by_turbine, name_turbine) in chart_maintenance():
+        flatten_list = [val for value_final in all_dates_by_turbine for val in value_final[1]]
+
+        name_turbine = db_call.read_name_turbine(id_turbine)[0][0]
+        date_and_value = [(pd.to_datetime(date[4]), date[3]) for date in flatten_list
+                          if is_int_or_float_unique_warning(date[3])]
+        min_and_max_date = Cr.get_min_and_max_date(id_turbine)
+        all_month = Util_Plt.create_all_month_name(min_and_max_date)
+        all_maintenance = Cr.get_all_init_date_by_turbine(id_turbine)
+        total_info, lines_aux = Util_Plt.aggregate_event_by_month(all_month, date_and_value, all_maintenance)
+
+        date = [date[0] for date in total_info]
+        total_warning = [warning[1] for warning in total_info]
+        size = [(warning[1] * 200) + 100 for warning in total_info]
+        max_warning = max(total_warning)
+        yield name_turbine, date, size, max_warning, id_turbine, lines_aux, total_warning
+
+
+def chart_maintenance_aggregate():
+    for (name_turbine, date, size, max_warning, id_turbine, lines_aux, total_warning) in get_value_event():
+        fig, ax = plt.subplots(figsize=(40, 6))
+        lines = [[(i, 0), (i, max_warning)] if lines_aux[i] == 1 else [(i, 0), (i, 0)] for i in range(len(lines_aux))]
+        plt.ylim(0, max_warning)
+        line_coll = matcoll.LineCollection(lines)
+        ax.scatter(date, total_warning, alpha=0.3)
+        plt.plot(date, total_warning)
+        ax.add_collection(line_coll)
+
+        fig.suptitle(f"Error by month {name_turbine}")
+        fig.autofmt_xdate()
+        plt.savefig(f"images/maintenance_aggregate/turbine-{name_turbine}-period-{date[0]}-{date[-1]}")
+        plt.show()
+
+
+def chart_maintenance_aggregate_all_turbine_event_month():
+    fig, ax = plt.subplots(figsize=(40, 6))
+    final_warning = []
+    date = []
+    name_turbine = ""
+    for (name_turbine, date, size, max_warning, id_turbine, lines_aux, total_warning) in get_value_event():
+        date = date
+        name_turbine = name_turbine
+        if not not final_warning:
+            final_warning = [val1 + val2 for (val1, val2) in zip(final_warning, total_warning)]
+        else:
+            final_warning = total_warning
+    max_warning = max(final_warning)
+    # lines = [[(i, 0), (i, max_warning)] if lines_aux[i] == 1 else [(i, 0), (i, 0)] for i in range(len(lines_aux))]
+    plt.ylim(0, max_warning)
+    # line_coll = matcoll.LineCollection(lines)
+    ax.scatter(date, final_warning, alpha=0.3)
+    plt.plot(date, final_warning)
+    # ax.add_collection(line_coll)
+
+    fig.suptitle(f"Error by month {name_turbine}")
+    fig.autofmt_xdate()
+    plt.savefig(f"images/maintenance_aggregate_total/turbine-{name_turbine}-period-{date[0]}-{date[-1]}")
+    plt.show()

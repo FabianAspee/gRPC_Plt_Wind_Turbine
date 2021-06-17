@@ -8,6 +8,16 @@ import UtilsPLT as Util_Plt
 db_call = Db()
 
 
+def get_min_and_max_date(id_turbine: int) -> DateTurbine:
+    """
+    return the min and max date in series turbine
+    :param id_turbine: represent a id of the turbine in the system
+    :return:
+    """
+    return list(map(lambda value: DateTurbine(value[0][4], value[1][4], False),
+                    zip(db_call.read_min_data_series(id_turbine),db_call.read_max_data_series(id_turbine))))[0]
+
+
 def get_all_date_by_turbine(id_turbine: int) -> list:
     """
     this method return a list with all date of maintenance for a turbine

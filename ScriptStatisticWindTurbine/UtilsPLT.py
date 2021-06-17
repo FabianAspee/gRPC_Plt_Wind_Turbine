@@ -1,5 +1,8 @@
+import calendar
 from datetime import datetime, timedelta
 from typing import List
+
+from dateutil.relativedelta import relativedelta
 
 from CaseClassPlt import DateTurbine, TotalWarning, DateTurbineCustom, DateTurbineErrorCustom
 from tail_recursion import tail_recursive, recurse
@@ -231,7 +234,6 @@ def create_dictionary_by_values(all_values: list):
 
 
 def filter_series_by_active_power(all_values: list):
-
     dictionary = create_dictionary_by_values(all_values)
     if bool(dictionary):
         for active_power in dictionary[1]:
@@ -254,3 +256,43 @@ def calculus_difference_month_between_dates(all_dates: List[DateTurbineCustom]):
                                  datetime.strptime(val.date_init, format_date).year) * 12 + (
                                         datetime.strptime(val.date_finish, format_date).month - datetime.strptime(
                                     val.date_init, format_date).month), all_dates)) if not not all_dates else None
+
+
+def create_all_month_name(min_max_date: DateTurbine):
+    date_init = datetime.strptime(min_max_date.date_init, format_date)
+    date_finish = datetime.strptime(min_max_date.date_finish, format_date)
+    date_init = date_init.replace(day=1)
+    date_finish = date_finish.replace(day=30)
+    date_init_aux = date_init
+    list_date = []
+    while date_init_aux <= date_finish:
+        list_date.append(date_init_aux)
+        date_init_aux = date_init_aux + relativedelta(months=1)
+    return list_date
+
+
+def check_date(maintenances: list, date: datetime):
+    val = 0
+    for dates in maintenances:
+        finish = datetime.strptime(dates.date_finish, format_date)
+        (_, end_date) = calendar.monthrange(finish.year, finish.month)
+        finish = finish.replace(day=end_date, minute=59, second=59, hour=23)
+        init = datetime.strptime(dates.date_init, format_date)
+        init = init.replace(day=1, minute=0, second=0, hour=0)
+        if init <= date <= finish:
+            return 1
+        else:
+            val = 0
+    return val
+
+
+def aggregate_event_by_month(all_month: list, all_event: list, maintenances: list):
+    total_info = []
+    lines = []
+    for index, date in enumerate(all_month, start=0):
+        lines.append(check_date(maintenances, date))
+        (_, end_date) = calendar.monthrange(date.year, date.month)
+        date_f = date.replace(day=end_date)
+        total_warning = len(list(filter(lambda value: date <= value[0] <= date_f, all_event)))
+        total_info.append((calendar.month_name[date.month] + "-" + str(date.year), total_warning))
+    return total_info, lines
