@@ -405,9 +405,9 @@ def get_value_event():
 def chart_maintenance_aggregate():
     for (name_turbine, date, size, max_warning, id_turbine, lines_aux, total_warning) in get_value_event():
         fig, ax = plt.subplots(figsize=(40, 6))
-        lines = [[(i, 0), (i, max_warning+1)] if lines_aux[i][0] == 1 else [(i, 0), (i, 0)] for i in
+        lines = [[(i, 0), (i, max_warning + 1)] if lines_aux[i][0] == 1 else [(i, 0), (i, 0)] for i in
                  range(len(lines_aux))]
-        plt.ylim(0, max_warning+1)
+        plt.ylim(0, max_warning + 1)
         line_coll = matcoll.LineCollection(lines)
         ax.scatter(date, total_warning, alpha=0.3)
         [ax.text(x, int(max_warning / 2), "Manutenzione normale" if l_aux[0] == 1 else "Manutenzione straordinaria",
@@ -415,12 +415,16 @@ def chart_maintenance_aggregate():
          for (x, l_aux) in zip(date, lines_aux) if l_aux[0] == 1]
 
         plt.plot(date, total_warning)
-        ax.add_collection(line_coll)
-
+        ax.add_collection(line_coll) 
         fig.suptitle(f"Error by month {name_turbine}")
         fig.autofmt_xdate()
-        plt.savefig(f"images/maintenance_aggregate/turbine-{name_turbine}-period-{date[0]}-{date[-1]}")
+        plt.savefig(f"images/maintenance_aggregate/turbine-{name_turbine}-period-{defined_format(date[0])}-{defined_format(date[-1])}")
         plt.show()
+
+
+def defined_format(date):
+    result = check_format_date(date)
+    return calendar.month_name[result.month] + "-" + str(result.year)
 
 
 def check_format_date(date):
