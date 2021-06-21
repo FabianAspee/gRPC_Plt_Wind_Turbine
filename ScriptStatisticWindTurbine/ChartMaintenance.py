@@ -95,7 +95,11 @@ def general_plot_custom_date(dates, value, days_period, name_turbine, round_day:
                  f"Differenza between nacelle direction e wind direction prima del errore {error}", round_day)
 
 
-def chart_maintenance_period_by_turbine_with_angle(days_period: int, round_day: int):
+def chart_event_and_angle_by_period_maintenance():
+    pass
+
+
+def get_info_to_chart_angle(days_period: int):
     for (id_turbine, value) in Tp.read_data(days_period):
         name_turbine = db_call.read_name_turbine(id_turbine)[0][0]
         result = db_call.read_nacelle_and_wind_direction(id_turbine, value.date_init, value.date_finish)
@@ -109,7 +113,77 @@ def chart_maintenance_period_by_turbine_with_angle(days_period: int, round_day: 
 
             angle = list(map(lambda values: float(values[1]), total_angle))
             date = list(map(lambda values: values[0], total_angle))
-            general_plot_custom_date(date, angle, days_period, name_turbine, round_day, value.error)
+            yield id_turbine, name_turbine, angle, date, value
+
+
+def plot_event_and_angle(final, id_turbine, name_turbine, function, name_chart, angle, date_angle):
+    date = np.array([pd.to_datetime(date[4]) for date in final if function(date[3])])
+    if len(date) > 0:
+        values_warning = np.array([float(date[3]) for date in final if function(date[3])])
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(40, 15))
+        fig.tight_layout(pad=5.0)
+        fig.suptitle(f'Information event and angle turbine {name_turbine}')
+
+        fmt_half_year = mdates.HourLocator(interval=8)
+        ax1.plot(date, values_warning, 'o-')
+        ax1.set_ylabel('event')
+        ax1 = set_axis_dates(ax1, fmt_half_year, date_angle)
+        ax2.plot(date_angle, angle, '.-')
+        ax2.set_xlabel('time (s)')
+        ax2.set_ylabel('angle when generate energy')
+        ax2 = set_axis_dates(ax2, fmt_half_year, date_angle)
+        # Rotates and right aligns the x labels, and moves the bottom of the
+        # axes up to make room for them.
+        date_min, date_max = get_date_min_max(date)
+        rotate_x_axis(ax1)
+        rotate_x_axis(ax2)
+        plt.savefig(f"images/{name_chart}/turbine-{name_turbine}-period-{date_min}-{date_max}")
+        plt.show()
+
+
+def get_date_min_max(date, round_day: int = 2):
+    return np.datetime64(pd.to_datetime(date[0]), 'D') - np.timedelta64(round_day, 'D'), \
+           np.datetime64(pd.to_datetime(date[-1]), 'D') + np.timedelta64(round_day, 'D')
+
+
+def set_axis_dates(axis, fmt_half_year, date, round_day: int = 2):
+    axis.xaxis.set_major_locator(fmt_half_year)
+
+    # Minor ticks every month.
+    fmt_month = mdates.MonthLocator()
+    axis.xaxis.set_minor_locator(fmt_month)
+
+    # Text in the x axis will be displayed in 'YYYY-mm' format.
+    axis.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+
+    # Round to nearest years.
+    date_min, date_max = get_date_min_max(date,round_day)
+    axis.set_xlim(date_min, date_max)
+
+    # Format the coords message box, i.e. the numbers displayed as the cursor moves
+    # across the axes within the interactive GUI.
+    axis.format_xdata = mdates.DateFormatter('%Y-%m-%d')
+    axis.format_ydata = lambda x: f'${x:.2f}'  # Format the price.
+    axis.grid(True)
+    return axis
+
+
+def rotate_x_axis(axis):
+    for tick in axis.get_xticklabels():
+        tick.set_rotation(45)
+
+
+def chart_event_and_angle(days_period: int):
+    for (id_turbine, name_turbine, angle, date, value) in get_info_to_chart_angle(days_period):
+        for final in get_read_warning_and_error_period([value], id_turbine):
+            for value_final in final:
+                plot_event_and_angle(value_final[1], id_turbine, name_turbine, is_int_or_float_unique_warning,
+                                     "angle_and_event", angle, [pd.to_datetime(date_value) for date_value in date])
+
+
+def chart_maintenance_period_by_turbine_with_angle(days_period: int, round_day: int):
+    for (id_turbine, name_turbine, angle, date, value) in get_info_to_chart_angle(days_period):
+        general_plot_custom_date(date, angle, days_period, name_turbine, round_day, value.error)
 
 
 def is_int_or_float(date):
@@ -119,7 +193,7 @@ def is_int_or_float(date):
             return True
         else:
             return False
-    except Exception:
+    except ValueError:
         return False
 
 
@@ -130,7 +204,7 @@ def is_int_or_float_unique_warning(date):
             return True
         else:
             return False
-    except Exception:
+    except ValueError:
         return False
 
 
@@ -268,26 +342,8 @@ def plot_warning(final, id_turbine, name_turbine, function, directory):
 
 
 def create_chart(ax, fmt_half_year, date, fig, name_turbine, directory, y_label, title: str, round_day: int = 2):
-    ax.xaxis.set_major_locator(fmt_half_year)
-
-    # Minor ticks every month.
-    fmt_month = mdates.MonthLocator()
-    ax.xaxis.set_minor_locator(fmt_month)
-
-    # Text in the x axis will be displayed in 'YYYY-mm' format.
-    ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
-
-    # Round to nearest years.
-    date_min = np.datetime64(pd.to_datetime(date[0]), 'D') - np.timedelta64(round_day, 'D')
-    date_max = np.datetime64(pd.to_datetime(date[-1]), 'D') + np.timedelta64(round_day, 'D')
-    ax.set_xlim(date_min, date_max)
-
-    # Format the coords message box, i.e. the numbers displayed as the cursor moves
-    # across the axes within the interactive GUI.
-    ax.format_xdata = mdates.DateFormatter('%Y-%m-%d')
-    ax.format_ydata = lambda x: f'${x:.2f}'  # Format the price.
-    ax.grid(True)
-
+    ax = set_axis_dates(ax, fmt_half_year, date, round_day)
+    date_min, date_max = get_date_min_max(date, round_day)
     # Rotates and right aligns the x labels, and moves the bottom of the
     # axes up to make room for them.
     ax.set_ylabel(y_label)
@@ -357,19 +413,24 @@ def chart_histogram_maintenance_with():
     plt.show()
 
 
+def get_read_warning_and_error_period(date_to_query, id_turbine):
+    save_all_series_result: list = []
+    for value in date_to_query:
+        result = db_call.read_warning_and_error_turbine(id_turbine, value.date_init, value.date_finish)
+        save_all_series_result.append((len(result), result))
+
+    final = list(filter(lambda filter_value: filter_value[0] != 0, save_all_series_result))
+    yield final
+
+
 def chart_maintenance():
     for (id_turbine, all_dates_by_turbine) in Cr.yield_get_all_date_by_turbine_with_final():
         date_to_query = Util_Plt.create_final_list_with_date(list(
             filter(lambda values: values.is_normal, all_dates_by_turbine)))
         name_turbine = db_call.read_name_turbine(id_turbine)[0][0]
         if date_to_query is not None:
-            save_all_series_result: list = []
-            for value in date_to_query:
-                result = db_call.read_warning_and_error_turbine(id_turbine, value.date_init, value.date_finish)
-                save_all_series_result.append((len(result), result))
-
-            final = list(filter(lambda filter_value: filter_value[0] != 0, save_all_series_result))
-            yield id_turbine, final, name_turbine
+            for final in get_read_warning_and_error_period(date_to_query, id_turbine):
+                yield id_turbine, final, name_turbine
 
 
 def chart_maintenance_period_by_turbine_with_defined_warning():
@@ -415,10 +476,11 @@ def chart_maintenance_aggregate():
          for (x, l_aux) in zip(date, lines_aux) if l_aux[0] == 1]
 
         plt.plot(date, total_warning)
-        ax.add_collection(line_coll) 
+        ax.add_collection(line_coll)
         fig.suptitle(f"Error by month {name_turbine}")
         fig.autofmt_xdate()
-        plt.savefig(f"images/maintenance_aggregate/turbine-{name_turbine}-period-{defined_format(date[0])}-{defined_format(date[-1])}")
+        plt.savefig(
+            f"images/maintenance_aggregate/turbine-{name_turbine}-period-{defined_format(date[0])}-{defined_format(date[-1])}")
         plt.show()
 
 

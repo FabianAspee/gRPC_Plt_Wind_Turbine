@@ -16,8 +16,8 @@ from CaseClassPlt import InfoTurbine, InfoTurbineAll, NormalOrExtraMaintenance
 
 if __name__ == '__main__':
     #Ch.chart_maintenance_aggregate_all_turbine_event_month()
-    Ch.chart_maintenance_aggregate()
-
+    #Ch.chart_maintenance_aggregate()
+    Ch.chart_event_and_angle(10)
     # Ch.chart_maintenance_period_by_turbine_with_defined_warning()
     # Ch.chart_histogram_maintenance_with()
     # Ch.chart_maintenance_period_by_turbine_with_angle(10, 1)
