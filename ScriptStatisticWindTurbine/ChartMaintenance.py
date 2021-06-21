@@ -96,24 +96,42 @@ def general_plot_custom_date(dates, value, days_period, name_turbine, round_day:
 
 
 def chart_event_and_angle_by_period_maintenance():
-    pass
+    for (id_turbine, all_dates_by_turbine, name_turbine, all_dates_of_period) in chart_maintenance():
+        for value in all_dates_of_period:
+            for angle, date in get_angle_by_date(id_turbine, value):
+                print()
+
+
+def get_info(id_turbine: int, value):
+    result = db_call.read_nacelle_and_wind_direction(id_turbine, value.date_init, value.date_finish)
+    print(value)
+    save_all_series_result = [(len(my_list), my_list) for my_list in Util_Plt.filter_series_by_active_power(result)
+                              if len(my_list) > 0]
+    if len(save_all_series_result) > 0:
+        total_angle = []
+        for angle_by_turbine in calculus_angle(save_all_series_result):
+            total_angle.append(angle_by_turbine)
+        yield total_angle, result[0][1]
+
+
+def get_angle(id_turbine: int, value):
+    for total_angle, id_sensor in get_info(id_turbine, value):
+        angle = list(map(lambda values: float(values[1]), total_angle))
+        yield angle, id_sensor
+
+
+def get_angle_by_date(id_turbine: int, value):
+    for total_angle, _ in get_info(id_turbine, value):
+        angle = list(map(lambda values: float(values[1]), total_angle))
+        date = list(map(lambda values: values[0], total_angle))
+        yield angle, date
 
 
 def get_info_to_chart_angle(days_period: int):
     for (id_turbine, value) in Tp.read_data(days_period):
         name_turbine = db_call.read_name_turbine(id_turbine)[0][0]
-        result = db_call.read_nacelle_and_wind_direction(id_turbine, value.date_init, value.date_finish)
-        print(value)
-        save_all_series_result = [(len(my_list), my_list) for my_list in Util_Plt.filter_series_by_active_power(result)
-                                  if len(my_list) > 0]
-        if len(save_all_series_result) > 0:
-            total_angle = []
-            for angle_by_turbine in calculus_angle(save_all_series_result):
-                total_angle.append(angle_by_turbine)
-
-            angle = list(map(lambda values: float(values[1]), total_angle))
-            date = list(map(lambda values: values[0], total_angle))
-            yield id_turbine, name_turbine, angle, date, value
+        angle, date = get_angle_by_date(id_turbine, value)
+        yield id_turbine, name_turbine, angle, date, value
 
 
 def plot_event_and_angle(final, id_turbine, name_turbine, function, name_chart, angle, date_angle):
@@ -157,7 +175,7 @@ def set_axis_dates(axis, fmt_half_year, date, round_day: int = 2):
     axis.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
 
     # Round to nearest years.
-    date_min, date_max = get_date_min_max(date,round_day)
+    date_min, date_max = get_date_min_max(date, round_day)
     axis.set_xlim(date_min, date_max)
 
     # Format the coords message box, i.e. the numbers displayed as the cursor moves
@@ -358,7 +376,7 @@ def chart_maintenance_period_by_turbine_with_warning():
     method that create chart with all warning inside maintenance period
     :return:
     """
-    for (id_turbine, all_dates_by_turbine, name_turbine) in chart_maintenance():
+    for (id_turbine, all_dates_by_turbine, name_turbine, _) in chart_maintenance():
         for value_final in all_dates_by_turbine:
             plot_warning(value_final[1], id_turbine, name_turbine, is_int_or_float, "maintenance_period")
 
@@ -430,7 +448,7 @@ def chart_maintenance():
         name_turbine = db_call.read_name_turbine(id_turbine)[0][0]
         if date_to_query is not None:
             for final in get_read_warning_and_error_period(date_to_query, id_turbine):
-                yield id_turbine, final, name_turbine
+                yield id_turbine, final, name_turbine, date_to_query
 
 
 def chart_maintenance_period_by_turbine_with_defined_warning():
@@ -438,14 +456,14 @@ def chart_maintenance_period_by_turbine_with_defined_warning():
     method that create chart with all warning inside maintenance period
     :return:
     """
-    for (id_turbine, all_dates_by_turbine, name_turbine) in chart_maintenance():
+    for (id_turbine, all_dates_by_turbine, name_turbine, _) in chart_maintenance():
         for value_final in all_dates_by_turbine:
             plot_warning(value_final[1], id_turbine, name_turbine, is_int_or_float_unique_warning,
                          "maintenance_with_unique_warning")
 
 
 def get_value_event():
-    for (id_turbine, all_dates_by_turbine, name_turbine) in chart_maintenance():
+    for (id_turbine, all_dates_by_turbine, name_turbine, _) in chart_maintenance():
         flatten_list = [val for value_final in all_dates_by_turbine for val in value_final[1]]
 
         name_turbine = db_call.read_name_turbine(id_turbine)[0][0]

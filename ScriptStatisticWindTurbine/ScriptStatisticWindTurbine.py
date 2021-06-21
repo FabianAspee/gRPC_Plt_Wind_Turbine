@@ -1,6 +1,7 @@
 import datetime
 import calendar
 
+import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 
 import CorrelationPlt as Cr
@@ -10,15 +11,17 @@ import AutoCorrelation as Ac
 import ChartMaintenance as Ch
 import numpy
 import matplotlib.pyplot as plt
-
+import RUL as Ru
 from matplotlib import collections as matcoll
 from CaseClassPlt import InfoTurbine, InfoTurbineAll, NormalOrExtraMaintenance
 
 if __name__ == '__main__':
-    #Ch.chart_maintenance_aggregate_all_turbine_event_month()
-    #Ch.chart_maintenance_aggregate()
-    Ch.chart_event_and_angle(10)
-    # Ch.chart_maintenance_period_by_turbine_with_defined_warning()
+    Ru.chart_event_and_angle_by_period_maintenance()
+    # Ch.chart_maintenance_aggregate_all_turbine_event_month()
+    # Ch.chart_maintenance_aggregate()
+    # Ch.chart_event_and_angle(10)
+    #Ch.chart_event_and_angle_by_period_maintenance()
+    #Ch.chart_maintenance_period_by_turbine_with_defined_warning()
     # Ch.chart_histogram_maintenance_with()
     # Ch.chart_maintenance_period_by_turbine_with_angle(10, 1)
     # Ch.chart_histogram_maintenance()

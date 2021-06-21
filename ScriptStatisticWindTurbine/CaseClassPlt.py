@@ -74,3 +74,11 @@ class InfoTurbineAll:
 class NormalOrExtraMaintenance:
     name_turbine: str
     is_normal: bool
+
+
+@dataclass(frozen=True)
+class SensorInformation:
+    id_sensor: int
+    value: float
+    date: str
+    is_real: bool

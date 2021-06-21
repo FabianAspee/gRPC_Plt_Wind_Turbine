@@ -35,6 +35,9 @@ class ReadDB:
     def read_data_error_turbines(self, id_turbine: int):
         return self.connection.execute(AllQueryDB.query_to_select_date_error(id_turbine)).fetchall()
 
+    def read_data_event_turbines(self, id_turbine: int):
+        return self.connection.execute(AllQueryDB.query_to_select_date_event(id_turbine)).fetchall()
+
     def read_warning_and_error_turbine(self, id_turbine: int, date_init: str, date_finish: str):
         return self.connection.execute(
             AllQueryDB.query_to_warning_and_error(id_turbine, date_init, date_finish)).fetchall()
@@ -44,6 +47,10 @@ class ReadDB:
 
     def read_all_maintenance_turbine(self):
         return self.connection.execute(AllQueryDB.query_to_all_maintenance_turbine()).fetchall()
+
+    def read_all_sensor_data_turbine_period(self, id_turbine: int, date_init, date_finish):
+        return self.connection.execute(
+            AllQueryDB.query_to_all_sensor_period(id_turbine, date_init, date_finish)).fetchall()
 
     def read_nacelle_and_wind_direction(self, id_turbine, date_init, date_finish):
         return self.connection.execute(

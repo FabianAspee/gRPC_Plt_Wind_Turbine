@@ -2,10 +2,12 @@ import calendar
 from datetime import datetime, timedelta
 from typing import List
 
+import numpy as np
 from dateutil.relativedelta import relativedelta
 
-from CaseClassPlt import DateTurbine, TotalWarning, DateTurbineCustom, DateTurbineErrorCustom
+from CaseClassPlt import DateTurbine, TotalWarning, DateTurbineCustom, DateTurbineErrorCustom, DateTurbineError
 from tail_recursion import tail_recursive, recurse
+from ThreadPool import ThreadPool
 
 errors: List[int] = [180, 3370, 186, 182, 181]
 warnings: List[int] = [892, 891, 183, 79, 356]
@@ -211,6 +213,22 @@ def verify_date_and_insert(all_dates_by_turbine_aux, days_period: int, custom_li
                                       all_dates_by_turbine_aux.error)
 
 
+def create_date_run_to_failure(date_failures: List[DateTurbineError]):
+    def _create_date_run_to_failure_(all_dates_by_turbine_aux: List[DateTurbineError],
+                                     custom_list_own: List[DateTurbineErrorCustom]) -> List[DateTurbineErrorCustom]:
+        if len(all_dates_by_turbine_aux) > 1:
+            custom_list_own.append(DateTurbineErrorCustom(all_dates_by_turbine_aux[0].date_error,
+                                                          all_dates_by_turbine_aux[1].date_error,
+                                                          all_dates_by_turbine_aux[1].error))
+            return _create_date_run_to_failure_(all_dates_by_turbine_aux[1:], custom_list_own)
+        else:
+            return custom_list_own
+
+    if len(date_failures) > 1:
+        custom_list: list = []
+        return _create_date_run_to_failure_(date_failures, custom_list)
+
+
 def create_final_list_with_date_error(all_dates_by_turbine, days_period):
     def _create_final_list_with_date_(all_dates_by_turbine_aux: list, custom_list_own: list) -> list:
         if len(all_dates_by_turbine_aux) > 0:
@@ -233,14 +251,88 @@ def create_dictionary_by_values(all_values: list):
     return dictionary
 
 
+def create_index(total, final):
+    list_slice = []
+    for val in range(1, total + 1):
+        if val == 1:
+            list_slice.append(slice(0, val * 6000))
+        else:
+            list_slice.append(slice((val - 1) * 6000, val * 6000))
+    list_slice.append(slice(total * 6000, total * 6000 + final))
+    return list_slice
+
+
+def calculate_index(dictionary: dict) -> List[dict]:
+    total = int(len(dictionary[1]) / 6000)
+    mod = len(dictionary[1]) % 6000
+    list_slice = create_index(total, mod)
+    total_dictionary = []
+    for index in list_slice:
+        new_dictionary = {}
+        for index_dict in dictionary:
+            new_dictionary[index_dict] = dictionary[index_dict][index]
+        total_dictionary.append(new_dictionary)
+    return total_dictionary
+
+
+def iterate_dictionary_parallel(dictionary: dict, function):
+    list_dict = calculate_index(dictionary)
+    all_dictionary = [ThreadPool.get_pool().apply_async(func=function, args=(my_dictionary,)) for
+                      my_dictionary in list_dict]
+    save_result = []
+    for dictionary_f in all_dictionary:
+        dictionary_f.wait()
+        save_result.append(dictionary_f.get())
+    head, *_ = save_result
+    total = len(head)
+    return flatten_list(save_result, total)
+
+
+def flatten_list(list_of_list: List[List[List]], total: int):
+    total_list = {}
+    for index in range(total):
+        for my_list in list_of_list:
+            if index in total_list:
+                total_list[index] = total_list[index] + my_list[index]
+            else:
+                total_list[index] = my_list[index]
+    return [total_list[index] for index in total_list]
+
+
+def iterate_dictionary(dictionary: dict) -> list:
+    for active_power in dictionary[1]:
+        if (active_power[0] is None) or (active_power[0] == 'null') or (float(active_power[0]) <= 0):
+            dictionary[2] = [val for val in dictionary[2] if val[1] != active_power[1]]
+            dictionary[4] = [val for val in dictionary[4] if val[1] != active_power[1]]
+    return [dictionary[2], dictionary[4]]
+
+
+def iterate_dictionary_active_power(dictionary: dict) -> list:
+    for active_power in dictionary[1]:
+        if (active_power[0] is None) or (active_power[0] == 'null') or (float(active_power[0]) <= 0):
+            for key in dictionary:
+                if key != 1:
+                    dictionary[key] = [val for val in dictionary[key] if val[1] != active_power[1]]
+    return [dictionary[key] for key in dictionary if key != 1][0]
+
+
+def filter_any_series_by_active_power(dictionary_with_active_power: dict):
+    if bool(dictionary_with_active_power):
+        if len(dictionary_with_active_power[1]) > 10000:
+            return iterate_dictionary_parallel(dictionary_with_active_power, iterate_dictionary_active_power)
+        else:
+            return iterate_dictionary_active_power(dictionary_with_active_power)
+    else:
+        return []
+
+
 def filter_series_by_active_power(all_values: list):
     dictionary = create_dictionary_by_values(all_values)
     if bool(dictionary):
-        for active_power in dictionary[1]:
-            if (active_power[0] is None) or (active_power[0] == 'null') or (float(active_power[0]) <= 0):
-                dictionary[2] = [val for val in dictionary[2] if val[1] != active_power[1]]
-                dictionary[4] = [val for val in dictionary[4] if val[1] != active_power[1]]
-        return [dictionary[2], dictionary[4]]
+        if len(dictionary[1]) > 10000:
+            return iterate_dictionary_parallel(dictionary, iterate_dictionary)
+        else:
+            return iterate_dictionary(dictionary)
     else:
         return []
 
@@ -347,5 +439,20 @@ def aggregate_event_by_month(all_month: list, all_event: list, maintenances: lis
         date_f = date.replace(day=end_date)
         total_warning = len(list(filter(lambda value: date <= value[0] <= date_f, all_event)))
         total_info = check_is_maintenance(is_maintenance, date_turbine, date, total_info, total_warning)
-    #print(f'total_info {len(total_info)} lines {len(lines)}')
+    # print(f'total_info {len(total_info)} lines {len(lines)}')
     return total_info, lines
+
+
+def set_same_dimension(all_list: list):
+    max_len = max(list(map(lambda val: len(val), all_list)))
+    for index in range(len(all_list)):
+        len_element = len(all_list[index])
+        difference = max_len - len_element
+        all_list[index] = all_list[index] + [np.nan for _ in range(difference)]
+    return all_list
+
+
+def remove_active_power_negative(active_power: list):
+    return list(
+        filter(lambda value: value[0] is not None and value != 'null' and float(value[0]) > 0, active_power))
+
