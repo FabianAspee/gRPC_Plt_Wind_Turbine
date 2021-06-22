@@ -1,4 +1,5 @@
 import calendar
+import os
 import random
 from datetime import datetime
 from typing import List
@@ -7,6 +8,8 @@ from matplotlib import colors
 from matplotlib.colors import LinearSegmentedColormap
 
 from matplotlib import collections as matcoll
+
+from MyEncoder import MyEncoder
 from tail_recursion import tail_recursive, recurse
 from pandas import DataFrame
 import UtilsPLT as Util_Plt
@@ -55,26 +58,28 @@ def print_angle_all_turbine(info_by_turbine: dict):
 
 
 def chart_event_and_angle_by_period_maintenance():
-    info_by_turbine: dict = {}
     for (id_turbine, all_dates_by_turbine) in yield_get_all_date_event_by_turbine():
-        if len(info_by_turbine) < 2:
-            periods_run_to_failure = Util_Plt.create_date_run_to_failure(all_dates_by_turbine)
-            all_angle: list = []
-            for value in periods_run_to_failure:
-                all_sensors = Util_Plt.create_dictionary_by_values([all_sensor for all_sensor in
-                                                                    db_call.read_all_sensor_data_turbine_period(
-                                                                        id_turbine, value.date_init,
-                                                                        value.date_finish)])
+        periods_run_to_failure = Util_Plt.create_date_run_to_failure(all_dates_by_turbine)
+        for value in periods_run_to_failure:
+            info_by_turbine: dict = {}
+            all_sensors = Util_Plt.create_dictionary_by_values([all_sensor for all_sensor in
+                                                                db_call.read_all_sensor_data_turbine_period(
+                                                                    id_turbine, value.date_init,
+                                                                    value.date_finish)])
+            print(value)
+            print(id_turbine, all_sensors.keys())
+            if len(all_sensors.keys()) == 5:
                 for key in all_sensors:
                     if key != 1:
                         all_sensors[key] = Util_Plt.filter_any_series_by_active_power(
                             {1: all_sensors[1], key: all_sensors[key]})
+
                 all_sensors[1] = Util_Plt.remove_active_power_negative(all_sensors[1])
                 info_by_turbine = get_info_sensor(info_by_turbine, id_turbine, all_sensors, value)
-            unique_sensor_id = info_by_turbine[id_turbine]
-            all_angle = Util_Plt.set_same_dimension(all_angle)
-            info_by_turbine[id_turbine] = all_angle
-    print_angle_all_turbine(info_by_turbine)
+                if len(all_sensors[next(iter(all_sensors.keys()))]) > 1:
+                    calculus_rul(info_by_turbine, value)
+
+    # print_angle_all_turbine(info_by_turbine)
 
 
 def get_info_sensor(info_by_turbine: dict, id_turbine: int, all_sensors: dict, value: str) -> dict:
@@ -82,12 +87,10 @@ def get_info_sensor(info_by_turbine: dict, id_turbine: int, all_sensors: dict, v
         for key in all_sensors:
             if (key, True) in info_by_turbine[id_turbine]:
                 info_by_turbine[id_turbine][(key, True)].append(
-                    [SensorInformation(key, val, "", True) for key in all_sensors for val
-                     in all_sensors[key]])
+                    [SensorInformation(key, val, "", True) for val in all_sensors[key]])
             else:
                 info_by_turbine[id_turbine][(key, True)] = [
-                    [SensorInformation(key, val, "", True) for key in all_sensors
-                     for val in all_sensors[key]]]
+                    [SensorInformation(key, val, "", True) for val in all_sensors[key]]]
     else:
         info_by_turbine[id_turbine] = {}
         for key in all_sensors:
@@ -103,5 +106,51 @@ def get_info_sensor(info_by_turbine: dict, id_turbine: int, all_sensors: dict, v
     return info_by_turbine
 
 
-def calculus_rul():
-    pass
+__dataset__ = "dataset/"
+
+
+def check_directory(key):
+    if not os.path.exists(f"{__dataset__}{key}"):
+        os.mkdir(f"{__dataset__}{key}")
+        print("Directory ", f"{__dataset__}{key}", " Created ")
+    else:
+        print("Directory ", f"{__dataset__}{key}", " already exists")
+
+
+def save_period_json(info_by_turbine, name_file):
+    import json
+    with open(f'{name_file}.json', 'w') as fp:
+        new_dictionary = {}
+        for k, v in info_by_turbine.items():
+            new_dictionary[k] = {}
+            for kk, vv in v.items():
+                new_dictionary[k][str(kk)] = vv
+        json.dump(new_dictionary, fp)
+
+
+def get_name_file(key, period):
+    date_init = datetime.strptime(period.date_init, Util_Plt.format_date)
+    date_finish = datetime.strptime(period.date_finish, Util_Plt.format_date)
+    return f'{__dataset__}{key}/{key}-{date_init.year}-{date_init.month}-{date_init.day}-{date_finish.year}-{date_finish.month}-{date_finish.day}'
+
+
+def convert_internal_element_in_normal_values(all_turbine):
+    for key in all_turbine:
+        all_turbine[key] = list(map(lambda value: value.value, all_turbine[key][0]))
+    return all_turbine
+
+
+def calculus_rul(all_turbine: dict, period):
+    key = next(iter(all_turbine))
+    check_directory(key)
+    internal_key = next(iter(all_turbine[key]))
+    all_turbine[key] = convert_internal_element_in_normal_values(all_turbine[key])
+    rul = np.array([x for x in reversed(range(len(all_turbine[key][internal_key])))])
+    health_condition = rul / max(rul)
+    all_turbine[key]["health_condition"] = list(health_condition)
+    save_period_json(all_turbine, f'{get_name_file(key, period)}')
+
+
+"""            for key in info_by_turbine:
+                for key_sensor in info_by_turbine[key]:
+                    info_by_turbine[key][key_sensor] = Util_Plt.set_same_dimension(info_by_turbine[key][key_sensor])"""

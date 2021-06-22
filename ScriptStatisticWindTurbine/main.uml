@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>772233a4-c58f-437c-a628-e7859a4ea01a.SCHEMA:main</OriginalElement>
+  <nodes>
+    <node x="1416.762088974855" y="617.8201160541586">772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.sqlite_master</node>
+    <node x="761.3846153846154" y="44.0">772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.error_sensor</node>
+    <node x="343.0" y="627.0">772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.chart_system</node>
+    <node x="28.25" y="338.0">772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.value_own_serie_turbine</node>
+    <node x="664.25" y="338.0">772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.value_sensor_error</node>
+    <node x="435.25" y="338.0">772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.maintenance_turbine</node>
+    <node x="842.25" y="239.0">772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.error_code</node>
+    <node x="168.0" y="627.0">772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.model_system</node>
+    <node x="243.24999999999997" y="338.0">772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.value_sensor_turbine</node>
+    <node x="210.75" y="44.0">772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.sensor_info</node>
+    <node x="471.90384615384613" y="0.0">772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.wind_turbine_info</node>
+    <node x="0.0" y="33.0">772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.own_serie_turbine</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.value_own_serie_turbine" target="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.wind_turbine_info" relationship="REFERENCES">
+      <point x="48.75" y="-72.5" />
+      <point x="174.5" y="214.0" />
+      <point x="550.4038461538462" y="214.0" />
+      <point x="0.0" y="94.5" />
+    </edge>
+    <edge source="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.value_sensor_turbine" target="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.wind_turbine_info" relationship="REFERENCES">
+      <point x="43.0" y="-72.5" />
+      <point x="372.25" y="214.0" />
+      <point x="550.4038461538462" y="214.0" />
+      <point x="0.0" y="94.5" />
+    </edge>
+    <edge source="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.value_own_serie_turbine" target="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.own_serie_turbine" relationship="REFERENCES">
+      <point x="-48.75" y="-72.5" />
+      <point x="0.0" y="61.5" />
+    </edge>
+    <edge source="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.error_code" target="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.error_sensor" relationship="REFERENCES">
+      <point x="0.0" y="-171.5" />
+      <point x="921.25" y="214.0" />
+      <point x="839.3846153846154" y="214.0" />
+      <point x="0.0" y="50.5" />
+    </edge>
+    <edge source="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.value_sensor_turbine" target="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.sensor_info" relationship="REFERENCES">
+      <point x="-43.0" y="-72.5" />
+      <point x="0.0" y="50.5" />
+    </edge>
+    <edge source="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.value_sensor_error" target="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.wind_turbine_info" relationship="REFERENCES">
+      <point x="-39.5" y="-72.5" />
+      <point x="703.75" y="214.0" />
+      <point x="550.4038461538462" y="214.0" />
+      <point x="0.0" y="94.5" />
+    </edge>
+    <edge source="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.value_sensor_error" target="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.error_sensor" relationship="REFERENCES">
+      <point x="39.5" y="-72.5" />
+      <point x="782.75" y="214.0" />
+      <point x="839.3846153846154" y="214.0" />
+      <point x="0.0" y="50.5" />
+    </edge>
+    <edge source="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.maintenance_turbine" target="772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.wind_turbine_info" relationship="REFERENCES">
+      <point x="0.0" y="-72.5" />
+      <point x="539.75" y="214.0" />
+      <point x="550.4038461538462" y="214.0" />
+      <point x="0.0" y="94.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.6536030341340076" showDependencies="false" x="632.07833655706" y="435.2243713733076" />
+  <SelectedNodes>
+    <node>772233a4-c58f-437c-a628-e7859a4ea01a.TABLE:main.sqlite_master</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

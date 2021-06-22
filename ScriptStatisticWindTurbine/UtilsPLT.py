@@ -289,14 +289,10 @@ def iterate_dictionary_parallel(dictionary: dict, function):
 
 
 def flatten_list(list_of_list: List[List[List]], total: int):
-    total_list = {}
-    for index in range(total):
-        for my_list in list_of_list:
-            if index in total_list:
-                total_list[index] = total_list[index] + my_list[index]
-            else:
-                total_list[index] = my_list[index]
-    return [total_list[index] for index in total_list]
+    total_list = []
+    for my_list in list_of_list:
+        total_list = total_list + my_list
+    return total_list
 
 
 def iterate_dictionary(dictionary: dict) -> list:
@@ -455,4 +451,3 @@ def set_same_dimension(all_list: list):
 def remove_active_power_negative(active_power: list):
     return list(
         filter(lambda value: value[0] is not None and value != 'null' and float(value[0]) > 0, active_power))
-

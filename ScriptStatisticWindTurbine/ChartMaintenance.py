@@ -104,7 +104,7 @@ def chart_event_and_angle_by_period_maintenance():
 
 def get_info(id_turbine: int, value):
     result = db_call.read_nacelle_and_wind_direction(id_turbine, value.date_init, value.date_finish)
-    print(value)
+    #print(value)
     save_all_series_result = [(len(my_list), my_list) for my_list in Util_Plt.filter_series_by_active_power(result)
                               if len(my_list) > 0]
     if len(save_all_series_result) > 0:
