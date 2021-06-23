@@ -62,12 +62,7 @@ def print_angle_all_turbine(info_by_turbine: dict):
 
 def read_json(path_file):
     with open(f'{path_file}.json') as json_file:
-        data = json.load(json_file)
-
-        # Print the type of data variable
-        print("Type:", type(data))
-        print(data.keys())
-        return data
+        return json.load(json_file)
 
 
 def create_scatter3d(info_period_failure):
@@ -134,11 +129,19 @@ def create_cluster(info_period_failure):
         for index in range(len(keys)):
             values = info_period_failure[next(iter(info_period_failure))][keys[index]]
             if len(values) < max_val:
-                values = values + [None for _ in range(max_val-len(values))]
+                values = values + [None for _ in range(max_val - len(values))]
             X[:, index] = [float(x) if x is not None else np.nan for x in values]
         col_mean = np.nanmean(X, axis=0)
         index_c = np.where(np.isnan(X))
-
+        xx = X[:, 0]
+        yy = X[:, 1]
+        zz = X[:, 2]
+        print(max(xx))
+        print(max(yy))
+        print(max(zz))
+        for i,x in enumerate(zz,start=0):
+            if x >10000:
+                print()
         X[index_c] = np.take(col_mean, index_c[1])
         from sklearn.datasets import load_digits
 
@@ -155,38 +158,42 @@ def create_cluster(info_period_failure):
         visualizer = KElbowVisualizer(model, k=(2, 30), timings=True)
         visualizer.fit(X)  # Fit data to visualizer
         visualizer.show()
-        Sum_of_squared_distances = []
-        K = range(2, 15)
-        for k in K:
-            km = KMeans(n_clusters=k)
-            km = km.fit(X)
-            Sum_of_squared_distances.append(km.inertia_)
-        plt.plot(K, Sum_of_squared_distances, 'bx-')
-        plt.xlabel('k')
-        plt.ylabel('Sum_of_squared_distances')
-        plt.title('Elbow Method For Optimal k')
-        plt.show()
-        k_means = KMeans(n_clusters=6)
+        k_means = KMeans(n_clusters=visualizer.elbow_value_)
         k_means.fit_predict(X)
         fig = plt.figure()
         ax = fig.add_subplot(projection='3d')
-        ax.plot(X[:, 0], X[:, 1], X[:, 2],  'k.', markersize=2)
+        ax.plot(X[:, 0], X[:, 1], X[:, 2], 'k.', markersize=2)
         centroids = k_means.cluster_centers_
         ax.scatter(centroids[:, 0], centroids[:, 1], marker="x", s=169, linewidths=3,
-                    color="b", zorder=10)
+                   color="b", zorder=10)
         ax.set_xlabel('Nacelle Direction')
         ax.set_ylabel('Wind Direction')
         ax.set_zlabel('Wind Speed')
         plt.show()
 
 
+def group_info_turbine(dictionary, final_dictionary):
+    for key_turbine in dictionary:
+        for key_sensor in dictionary[key_turbine]:
+            if not bool(final_dictionary):
+                final_dictionary[key_turbine] = {}
+            if key_sensor in final_dictionary[key_turbine]:
+                final_dictionary[key_turbine][key_sensor] = final_dictionary[key_turbine][key_sensor] + \
+                                                            dictionary[key_turbine][key_sensor]
+            else:
+                final_dictionary[key_turbine][key_sensor] = dictionary[key_turbine][key_sensor]
+    return final_dictionary
+
+
 def chart_event_and_angle_by_period_maintenance():
     for (id_turbine, all_dates_by_turbine) in yield_get_all_date_event_by_turbine():
         periods_run_to_failure = Util_Plt.create_date_run_to_failure(all_dates_by_turbine)
+        final_dictionary = {}
         for value in periods_run_to_failure:
             dictionary = read_json(f'{get_name_file(id_turbine, value)}')
-            create_cluster(dictionary)
-            chart_create_scatter3d_nacelle_wind_active(dictionary)
+            final_dictionary = group_info_turbine(dictionary, final_dictionary)
+        create_cluster(final_dictionary)
+        chart_create_scatter3d_nacelle_wind_active(final_dictionary)
 
 
 def save_in_json_event_and_angle_by_period_maintenance():

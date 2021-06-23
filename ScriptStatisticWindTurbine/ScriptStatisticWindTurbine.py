@@ -16,6 +16,7 @@ from matplotlib import collections as matcoll
 from CaseClassPlt import InfoTurbine, InfoTurbineAll, NormalOrExtraMaintenance
 
 if __name__ == '__main__':
+    #Ru.save_in_json_event_and_angle_by_period_maintenance()
     Ru.chart_event_and_angle_by_period_maintenance()
     # Ch.chart_maintenance_aggregate_all_turbine_event_month()
     # Ch.chart_maintenance_aggregate()
