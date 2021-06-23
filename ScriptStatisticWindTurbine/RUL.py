@@ -1,5 +1,6 @@
 import calendar
 import os
+import json
 import random
 from datetime import datetime
 from typing import List
@@ -8,7 +9,9 @@ from matplotlib import colors
 from matplotlib.colors import LinearSegmentedColormap
 
 from matplotlib import collections as matcoll
-
+from numpy import mat
+from sklearn.cluster import KMeans
+from sklearn.datasets import make_blobs
 from MyEncoder import MyEncoder
 from tail_recursion import tail_recursive, recurse
 from pandas import DataFrame
@@ -57,7 +60,136 @@ def print_angle_all_turbine(info_by_turbine: dict):
     plt.show()
 
 
+def read_json(path_file):
+    with open(f'{path_file}.json') as json_file:
+        data = json.load(json_file)
+
+        # Print the type of data variable
+        print("Type:", type(data))
+        print(data.keys())
+        return data
+
+
+def create_scatter3d(info_period_failure):
+    # Fixing random state for reproducibility
+    np.random.seed(19680801)
+    # For each set of style and range settings, plot n random points in the box
+    # defined by x in [23, 32], y in [0, 100], z in [zlow, zhigh].
+    all_key = []
+    for key in info_period_failure:
+        all_keys = list(info_period_failure[key].keys())
+        for value in range(len(all_keys)):
+            if len(all_keys) - value >= 3:
+                all_key.append([all_keys[value], all_keys[value + 1], all_keys[value + 2]])
+            elif len(all_keys) - value == 2:
+                all_key.append([all_keys[value], all_keys[value + 1], all_keys[0]])
+            else:
+                all_key.append([all_keys[value], all_keys[0], all_keys[1]])
+    for keys in all_key:
+        fig = plt.figure()
+        ax = fig.add_subplot(projection='3d')
+        ax = scatter3d(ax, info_period_failure, keys)
+        plt.show()
+    print()
+
+
+def scatter3d(ax, dictionary, keys):
+    xs = np.array([float(x) if x is not None else np.nan for x in
+                   dictionary[next(iter(dictionary))][keys[0]]])
+    ys = np.array([float(x) if x is not None else np.nan for x in
+                   dictionary[next(iter(dictionary))][keys[1]]])
+    zs = np.array([float(x) if x is not None else np.nan for x in
+                   dictionary[next(iter(dictionary))][keys[2]]])
+    ax.scatter(xs, ys, zs, marker='o')
+
+    ax.set_xlabel('Nacelle Direction')
+    ax.set_ylabel('Wind Direction')
+    ax.set_zlabel('Wind Speed')
+    plt.show()
+
+
+def chart_create_scatter3d_nacelle_wind_active(info_period_failure):
+    # Fixing random state for reproducibility
+    np.random.seed(19680801)
+    # For each set of style and range settings, plot n random points in the box
+    # defined by x in [23, 32], y in [0, 100], z in [zlow, zhigh].
+    all_keys = [['(1, True)', '(3, True)', '(5, True)'], ['(2, True)', '(4, True)', '(1, False)'],
+                ['(1, True)', '(3, True)', '(1, False)'], ['(2, True)', '(4, True)', '(5, True)']]
+    for keys in all_keys:
+        fig = plt.figure()
+        ax = fig.add_subplot(projection='3d')
+        scatter3d(ax, info_period_failure, keys)
+
+
+def create_cluster(info_period_failure):
+    from sklearn import datasets
+
+    np.random.seed(5)
+    all_keys = [['(1, True)', '(3, True)', '(5, True)'], ['(2, True)', '(4, True)', '(1, False)'],
+                ['(1, True)', '(3, True)', '(1, False)'], ['(2, True)', '(4, True)', '(5, True)']]
+    for keys in all_keys:
+        max_val = max(list(map(lambda val_f: len(info_period_failure[next(iter(info_period_failure))][val_f]),
+                               map(lambda val: val, info_period_failure[next(iter(info_period_failure))]))))
+        X = np.empty((max_val, 3))
+        for index in range(len(keys)):
+            values = info_period_failure[next(iter(info_period_failure))][keys[index]]
+            if len(values) < max_val:
+                values = values + [None for _ in range(max_val-len(values))]
+            X[:, index] = [float(x) if x is not None else np.nan for x in values]
+        col_mean = np.nanmean(X, axis=0)
+        index_c = np.where(np.isnan(X))
+
+        X[index_c] = np.take(col_mean, index_c[1])
+        from sklearn.datasets import load_digits
+
+        data, labels = load_digits(return_X_y=True)
+
+        from sklearn.decomposition import PCA
+
+        (n_samples, n_features), n_digits = data.shape, np.unique(labels).size
+        reduced_data = PCA(n_components=2).fit_transform(data)
+        # Place column means in the indices. Align the arrays using take
+        from yellowbrick.cluster import KElbowVisualizer
+        model = KMeans()
+        # k is range of number of clusters.
+        visualizer = KElbowVisualizer(model, k=(2, 30), timings=True)
+        visualizer.fit(X)  # Fit data to visualizer
+        visualizer.show()
+        Sum_of_squared_distances = []
+        K = range(2, 15)
+        for k in K:
+            km = KMeans(n_clusters=k)
+            km = km.fit(X)
+            Sum_of_squared_distances.append(km.inertia_)
+        plt.plot(K, Sum_of_squared_distances, 'bx-')
+        plt.xlabel('k')
+        plt.ylabel('Sum_of_squared_distances')
+        plt.title('Elbow Method For Optimal k')
+        plt.show()
+        k_means = KMeans(n_clusters=6)
+        k_means.fit_predict(X)
+        fig = plt.figure()
+        ax = fig.add_subplot(projection='3d')
+        ax.plot(X[:, 0], X[:, 1], X[:, 2],  'k.', markersize=2)
+        centroids = k_means.cluster_centers_
+        ax.scatter(centroids[:, 0], centroids[:, 1], marker="x", s=169, linewidths=3,
+                    color="b", zorder=10)
+        ax.set_xlabel('Nacelle Direction')
+        ax.set_ylabel('Wind Direction')
+        ax.set_zlabel('Wind Speed')
+        plt.show()
+
+
 def chart_event_and_angle_by_period_maintenance():
+    for (id_turbine, all_dates_by_turbine) in yield_get_all_date_event_by_turbine():
+        periods_run_to_failure = Util_Plt.create_date_run_to_failure(all_dates_by_turbine)
+        for value in periods_run_to_failure:
+            dictionary = read_json(f'{get_name_file(id_turbine, value)}')
+            create_cluster(dictionary)
+            chart_create_scatter3d_nacelle_wind_active(dictionary)
+
+
+def save_in_json_event_and_angle_by_period_maintenance():
     for (id_turbine, all_dates_by_turbine) in yield_get_all_date_event_by_turbine():
         periods_run_to_failure = Util_Plt.create_date_run_to_failure(all_dates_by_turbine)
         for value in periods_run_to_failure:
@@ -118,7 +250,6 @@ def check_directory(key):
 
 
 def save_period_json(info_by_turbine, name_file):
-    import json
     with open(f'{name_file}.json', 'w') as fp:
         new_dictionary = {}
         for k, v in info_by_turbine.items():
