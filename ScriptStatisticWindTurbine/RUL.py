@@ -61,7 +61,7 @@ def print_angle_all_turbine(info_by_turbine: dict):
 
 
 def read_json(path_file):
-    with open(f'{path_file}.json') as json_file:
+    with open(path_file) as json_file:
         return json.load(json_file)
 
 
@@ -190,8 +190,10 @@ def chart_event_and_angle_by_period_maintenance():
         periods_run_to_failure = Util_Plt.create_date_run_to_failure(all_dates_by_turbine)
         final_dictionary = {}
         for value in periods_run_to_failure:
-            dictionary = read_json(f'{get_name_file(id_turbine, value)}')
-            final_dictionary = group_info_turbine(dictionary, final_dictionary)
+            file = f'{get_name_file(id_turbine, value)}.json'
+            if os.path.exists(file):
+                dictionary = read_json(file)
+                final_dictionary = group_info_turbine(dictionary, final_dictionary)
         create_cluster(final_dictionary)
         chart_create_scatter3d_nacelle_wind_active(final_dictionary)
 
@@ -215,6 +217,7 @@ def save_in_json_event_and_angle_by_period_maintenance():
 
                 all_sensors[1] = Util_Plt.remove_active_power_negative(all_sensors[1])
                 info_by_turbine = get_info_sensor(info_by_turbine, id_turbine, all_sensors, value)
+                print(len(all_sensors[next(iter(all_sensors.keys()))]))
                 if len(all_sensors[next(iter(all_sensors.keys()))]) > 1:
                     calculus_rul(info_by_turbine, value)
 
